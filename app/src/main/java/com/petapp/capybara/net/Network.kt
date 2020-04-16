@@ -1,5 +1,6 @@
-package com.petapp.capybara
+package com.petapp.capybara.net
 
+import com.petapp.capybara.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor

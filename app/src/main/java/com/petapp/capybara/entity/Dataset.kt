@@ -1,4 +1,4 @@
-package com.petapp.capybara
+package com.petapp.capybara.entity
 
 import com.google.gson.annotations.SerializedName
 
