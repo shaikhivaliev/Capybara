@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/tab_types"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_add"
         android:title="@string/tab_types"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
     <item
-        android:id="@+id/tab_list"
-        android:icon="@drawable/ic_launcher_background"
+        android:id="@+id/tab_all_survey"
+        android:icon="@drawable/ic_add"
         android:title="@string/tab_list"
         app:showAsAction="always" />
     <item
         android:id="@+id/tab_calendar"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_add"
         android:title="@string/tab_calendar"
         app:showAsAction="always" />
     <item
-        android:id="@+id/tab_profile"
-        android:icon="@drawable/ic_launcher_background"
+        android:id="@+id/tab_new_profile"
+        android:icon="@drawable/ic_add"
         android:title="@string/tab_new_profile"
         app:showAsAction="always" />
 

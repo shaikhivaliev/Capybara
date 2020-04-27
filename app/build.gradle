@@ -11,12 +11,9 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField "String", "API_URL", '"https://apidata.mos.ru/"'
-        buildConfigField "String", "API_KEY", '"eeb9a1319a731862eebae66e396dd51c"'
 
     }
 
@@ -40,19 +37,19 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
 
-    // network
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
+    // fragment manager
+    implementation "ru.terrakok.cicerone:cicerone:5.1.0"
 
-    // coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+    // recycler adapter
+    implementation "com.hannesdorfmann:adapterdelegates4:4.3.0"
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'
+
+    // image
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     // test
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
