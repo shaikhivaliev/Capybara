@@ -1,3 +1,20 @@
 <resources>
+    <!-- commom-->
     <string name="app_name">Capybara</string>
+    <string name="delete">Удалить</string>
+    <string name="done">Готово</string>
+
+    <!-- tabs-->
+    <string name="tab_types">Типы</string>
+    <string name="tab_list">Список</string>
+    <string name="tab_calendar">Календарь</string>
+    <string name="tab_new_profile">Профиль</string>
+
+    <!-- new profile-->
+    <string name="mark">Метка</string>
+    <string name="change_mark">Изменить метку</string>
+    <string name="title_hint">Введите имя</string>
+
+
+
 </resources>
