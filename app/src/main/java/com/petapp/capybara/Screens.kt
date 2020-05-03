@@ -1,10 +1,10 @@
 package com.petapp.capybara
 
 import androidx.fragment.app.FragmentActivity
-import com.petapp.capybara.ui.allsurveys.AllSurveysFragment
+import com.petapp.capybara.ui.surveys.SurveysFragment
 import com.petapp.capybara.ui.calendar.CalendarFragment
 import com.petapp.capybara.ui.main.MainFragment
-import com.petapp.capybara.ui.newprofile.NewProfileFragment
+import com.petapp.capybara.ui.profiles.ProfilesFragment
 import com.petapp.capybara.ui.types.TypesFragment
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Screen
@@ -27,7 +27,7 @@ object Screens {
     }
 
     object NewProfile : SupportAppScreen() {
-        override fun getFragment() = NewProfileFragment()
+        override fun getFragment() = ProfilesFragment()
     }
 
     object Calendar : SupportAppScreen() {
@@ -39,6 +39,6 @@ object Screens {
     }
 
     object AllSurvey : SupportAppScreen() {
-        override fun getFragment() = AllSurveysFragment()
+        override fun getFragment() = SurveysFragment()
     }
 }

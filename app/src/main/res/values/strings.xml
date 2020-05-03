@@ -5,16 +5,17 @@
     <string name="done">Готово</string>
 
     <!-- tabs-->
-    <string name="tab_types">Типы</string>
-    <string name="tab_list">Список</string>
+    <string name="tab_types">По типам</string>
+    <string name="tab_list">Исследования</string>
     <string name="tab_calendar">Календарь</string>
-    <string name="tab_new_profile">Профиль</string>
+    <string name="tab_new_profile">Профили</string>
 
     <!-- new profile-->
     <string name="mark">Метка</string>
     <string name="change_mark">Изменить метку</string>
     <string name="title_hint">Введите имя</string>
-
+    <string name="cancel_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
+    <string name="mock_profiles_explanation">Список профилей пуст</string>
 
 
 </resources>
