@@ -18,5 +18,5 @@
         android:layout_gravity="bottom"
         android:background="@android:color/white"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation"/>
 </LinearLayout>
