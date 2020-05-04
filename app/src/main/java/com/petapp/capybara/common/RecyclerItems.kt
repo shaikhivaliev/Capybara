@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.common
+package com.petapp.capybara.common
 
 abstract class RecyclerItems {
     abstract val id: Int

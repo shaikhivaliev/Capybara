@@ -1,13 +1,7 @@
-package com.petapp.capybara.ui
+package com.petapp.capybara
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.petapp.capybara.R
-import com.petapp.capybara.Screens
-import com.petapp.capybara.ui.main.MainFragment
-import kotlinx.android.synthetic.main.layout_container.*
 
 class AppActivity : AppCompatActivity(R.layout.layout_container) {
 

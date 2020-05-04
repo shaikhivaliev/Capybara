@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.main
+package com.petapp.capybara.main
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -20,10 +20,26 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         activity?.let {
             when (item.itemId) {
-                R.id.tab_new_profile -> Screens.navigateTo(it, Screens.NewProfile, R.id.main_container)
-                R.id.tab_calendar -> Screens.navigateTo(it, Screens.Calendar, R.id.main_container)
-                R.id.tab_all_survey -> Screens.navigateTo(it, Screens.AllSurvey, R.id.main_container)
-                R.id.tab_types -> Screens.navigateTo(it, Screens.Types, R.id.main_container)
+                R.id.tab_new_profile -> Screens.navigateTo(
+                    it,
+                    Screens.Profiles,
+                    R.id.main_container
+                )
+                R.id.tab_calendar -> Screens.navigateTo(
+                    it,
+                    Screens.Calendar,
+                    R.id.main_container
+                )
+                R.id.tab_all_survey -> Screens.navigateTo(
+                    it,
+                    Screens.Surveys,
+                    R.id.main_container
+                )
+                R.id.tab_types -> Screens.navigateTo(
+                    it,
+                    Screens.Types,
+                    R.id.main_container
+                )
             }
         }
         return true

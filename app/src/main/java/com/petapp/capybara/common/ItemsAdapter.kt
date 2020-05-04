@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.common
+package com.petapp.capybara.common
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate

@@ -16,6 +16,7 @@
     <string name="title_hint">Введите имя</string>
     <string name="cancel_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="mock_profiles_explanation">Список профилей пуст</string>
+    <string name="add_profile">Добавить профиль</string>
 
 
 </resources>

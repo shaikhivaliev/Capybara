@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.calendar
+package com.petapp.capybara.calendar
 
 import androidx.fragment.app.Fragment
 import com.petapp.capybara.R
