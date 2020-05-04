@@ -1,16 +1,12 @@
-package com.petapp.capybara.ui.profiles
+package com.petapp.capybara
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
-import com.petapp.capybara.R
 import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.model.EditProfile
-import com.petapp.capybara.model.Profile
-import com.petapp.capybara.model.flatten
-import com.petapp.capybara.ui.common.ItemsAdapter
+import com.petapp.capybara.common.ItemsAdapter
 import kotlinx.android.synthetic.main.fragment_profiles.*
 
 class ProfilesFragment : Fragment(R.layout.fragment_profiles) {

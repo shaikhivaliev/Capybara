@@ -1,6 +1,6 @@
-package com.petapp.capybara.model
+package com.petapp.capybara
 
-import com.petapp.capybara.ui.common.RecyclerItems
+import com.petapp.capybara.common.RecyclerItems
 
 data class EditProfile(
     override val id: Int = UniqueId.id,

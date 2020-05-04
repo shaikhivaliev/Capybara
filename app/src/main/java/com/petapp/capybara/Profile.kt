@@ -1,13 +1,15 @@
-package com.petapp.capybara.model
+package com.petapp.capybara
 
-import com.petapp.capybara.ui.common.RecyclerItems
+import com.petapp.capybara.common.RecyclerItems
 import java.util.concurrent.atomic.AtomicInteger
 
 class Profile(
     override var id: Int = UniqueId.id,
     val title: String,
     var color: Int = android.R.color.white,
-    var editProfile: EditProfile = EditProfile(parentId = id),
+    var editProfile: EditProfile = EditProfile(
+        parentId = id
+    ),
     var isExpandedEdit: Boolean = false,
     var isEditMode: Boolean = false
 ) : RecyclerItems()

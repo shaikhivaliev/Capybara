@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.types
+package com.petapp.capybara.types
 
 import androidx.fragment.app.Fragment
 import com.petapp.capybara.R

@@ -1,11 +1,7 @@
-package com.petapp.capybara.ui.profiles
+package com.petapp.capybara
 
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import com.petapp.capybara.R
-import com.petapp.capybara.model.Color
-import com.petapp.capybara.model.EditProfile
-import com.petapp.capybara.model.Profile
-import com.petapp.capybara.ui.common.RecyclerItems
+import com.petapp.capybara.common.RecyclerItems
 import kotlinx.android.synthetic.main.item_color.*
 import kotlinx.android.synthetic.main.item_edit_profile.*
 import kotlinx.android.synthetic.main.item_new_profile.*
