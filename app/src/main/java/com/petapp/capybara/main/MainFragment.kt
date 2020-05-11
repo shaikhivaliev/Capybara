@@ -22,7 +22,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
             when (item.itemId) {
                 R.id.tab_new_profile -> Screens.navigateTo(
                     it,
-                    Screens.NewProfile,
+                    Screens.Profiles,
                     R.id.main_container
                 )
                 R.id.tab_calendar -> Screens.navigateTo(
@@ -32,7 +32,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
                 )
                 R.id.tab_all_survey -> Screens.navigateTo(
                     it,
-                    Screens.AllSurvey,
+                    Screens.Surveys,
                     R.id.main_container
                 )
                 R.id.tab_types -> Screens.navigateTo(
