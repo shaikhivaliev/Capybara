@@ -6,8 +6,12 @@ import com.petapp.capybara.profiles.domain.ProfilesRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class ProfilesDataRepository(private val appDao: AppDao, private val mapper: ProfileEntityMapper) : ProfilesRepository {
+class ProfilesDataRepository @Inject constructor(
+    private val appDao: AppDao,
+    private val mapper: ProfileEntityMapper
+) : ProfilesRepository {
 
     override fun getProfiles(): Single<MutableList<Profile>> {
         return appDao.getProfiles().map(mapper::transformToDomain)

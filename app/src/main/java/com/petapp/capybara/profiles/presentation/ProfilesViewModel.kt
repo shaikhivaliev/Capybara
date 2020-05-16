@@ -9,8 +9,9 @@ import com.petapp.capybara.profiles.domain.Profile
 import com.petapp.capybara.profiles.domain.ProfilesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class ProfilesViewModel(private val repository: ProfilesRepository) : BaseViewModel() {
+class ProfilesViewModel @Inject constructor(private val repository: ProfilesRepository) : BaseViewModel() {
 
     var profiles = MutableLiveData<MutableList<Profile>>()
     var isShowMock = MutableLiveData<Boolean>()

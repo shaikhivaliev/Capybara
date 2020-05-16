@@ -4,19 +4,24 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.R
+import com.petapp.capybara.common.App
 import com.petapp.capybara.common.ItemsAdapter
+import com.petapp.capybara.di.componet.DaggerAppComponent
 import com.petapp.capybara.extensions.visible
 import com.petapp.capybara.profiles.domain.ProfileEdit
 import com.petapp.capybara.profiles.domain.Profile
 import kotlinx.android.synthetic.main.fragment_profiles.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
-    private val viewModel: ProfilesViewModel by viewModel()
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: ProfilesViewModel
 
     private val adapter: ItemsAdapter by lazy {
         ItemsAdapter(
@@ -31,6 +36,8 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        App.appComponent.inject(this)
+        activity?.let { viewModel = ViewModelProvider(it, factory).get(ProfilesViewModel::class.java) }
         viewModel.updateProfiles()
         initObservers()
 
