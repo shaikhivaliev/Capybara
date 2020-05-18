@@ -9,15 +9,24 @@ import com.petapp.capybara.R
 import com.petapp.capybara.navigation.Screens
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
+import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
 
 class MainFragment : Fragment(R.layout.fragment_main),
     BottomNavigationView.OnNavigationItemSelectedListener {
+
+    lateinit var navigator: Navigator
+    private val navigatorHolder by inject<NavigatorHolder>()
 
     private val viewModel: MainViewModel by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.let {navigator = object : SupportAppNavigator(it, childFragmentManager, R.id.main_container) {} }
+        navigatorHolder.setNavigator(navigator)
         bottom_navigation.setOnNavigationItemSelectedListener(this)
+        bottom_navigation.selectedItemId = R.id.tab_new_profile
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

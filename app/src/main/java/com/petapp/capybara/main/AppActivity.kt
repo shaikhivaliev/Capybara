@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.petapp.capybara.R
 import com.petapp.capybara.navigation.Screens
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
@@ -17,6 +18,7 @@ class AppActivity : AppCompatActivity(R.layout.layout_container) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = getViewModel()
         viewModel.setRootScreen(Screens.Main)
     }
 
