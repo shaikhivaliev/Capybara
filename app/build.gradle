@@ -42,7 +42,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
 
     // fragment manager
-    implementation "ru.terrakok.cicerone:cicerone:5.1.0"
+    implementation "ru.terrakok.cicerone:cicerone:5.1.1"
 
     // rx
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")

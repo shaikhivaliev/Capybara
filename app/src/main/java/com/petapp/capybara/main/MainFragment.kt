@@ -6,11 +6,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.petapp.capybara.R
-import com.petapp.capybara.Screens
+import com.petapp.capybara.navigation.Screens
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.android.ext.android.inject
 
 class MainFragment : Fragment(R.layout.fragment_main),
     BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private val viewModel: MainViewModel by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,26 +23,10 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         activity?.let {
             when (item.itemId) {
-                R.id.tab_new_profile -> Screens.navigateTo(
-                    it,
-                    Screens.Profiles,
-                    R.id.main_container
-                )
-                R.id.tab_calendar -> Screens.navigateTo(
-                    it,
-                    Screens.Calendar,
-                    R.id.main_container
-                )
-                R.id.tab_all_survey -> Screens.navigateTo(
-                    it,
-                    Screens.Surveys,
-                    R.id.main_container
-                )
-                R.id.tab_types -> Screens.navigateTo(
-                    it,
-                    Screens.Types,
-                    R.id.main_container
-                )
+                R.id.tab_new_profile -> viewModel.navigateTo(Screens.Profiles)
+                R.id.tab_calendar -> viewModel.navigateTo(Screens.Calendar)
+                R.id.tab_all_survey -> viewModel.navigateTo(Screens.Surveys)
+                R.id.tab_types -> viewModel.navigateTo(Screens.Types)
             }
         }
         return true
