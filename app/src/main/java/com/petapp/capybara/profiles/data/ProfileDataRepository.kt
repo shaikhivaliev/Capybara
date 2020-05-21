@@ -2,12 +2,12 @@ package com.petapp.capybara.profiles.data
 
 import com.petapp.capybara.database.AppDao
 import com.petapp.capybara.profiles.domain.Profile
-import com.petapp.capybara.profiles.domain.ProfilesRepository
+import com.petapp.capybara.profiles.domain.ProfileRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class ProfilesDataRepository(private val appDao: AppDao, private val mapper: ProfileEntityMapper) : ProfilesRepository {
+class ProfileDataRepository(private val appDao: AppDao, private val mapper: ProfileEntityMapper) : ProfileRepository {
 
     override fun getProfiles(): Single<MutableList<Profile>> {
         return appDao.getProfiles().map(mapper::transformToDomain)

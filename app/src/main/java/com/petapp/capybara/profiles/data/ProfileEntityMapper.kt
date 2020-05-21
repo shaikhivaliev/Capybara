@@ -5,11 +5,11 @@ import com.petapp.capybara.profiles.domain.Profile
 class ProfileEntityMapper {
 
     private fun transformToDomain(profileEntity: ProfileEntity): Profile {
-        return Profile(id = profileEntity.id, title = profileEntity.title, color = profileEntity.color)
+        return Profile(id = profileEntity.id, name = profileEntity.name, color = profileEntity.color, photo = profileEntity.photo)
     }
 
     fun transformToData(profile: Profile): ProfileEntity {
-        return ProfileEntity(id = profile.id, title = profile.title, color = profile.color)
+        return ProfileEntity(id = profile.id, name = profile.name, color = profile.color, photo = profile.photo)
     }
 
     fun transformToDomain(profileEntities: MutableList<ProfileEntity>): MutableList<Profile> {
