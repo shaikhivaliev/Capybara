@@ -1,10 +1,15 @@
 package com.petapp.capybara.extensions
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -13,6 +18,14 @@ fun View.visible(visible: Boolean) {
 }
 
 fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_LONG) = this?.let { Toast.makeText(it, text, duration).show() }
+
+fun Context.createImageFile(): File {
+    @SuppressLint("SimpleDateFormat")
+    val timeStamp = SimpleDateFormat("yyyy.MM.dd_hh:mm:ss").format(Date())
+    val imageFileName = "capybara_${timeStamp}.jpg"
+    val storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    return File(storageDir, imageFileName)
+}
 
 
 /**

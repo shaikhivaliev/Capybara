@@ -58,7 +58,6 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             items.clear()
             items.addAll(profiles)
             notifyDataSetChanged()
-            recycler_view.smoothScrollToPosition(itemCount)
         }
     }
 
