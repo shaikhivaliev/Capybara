@@ -9,17 +9,17 @@ import io.reactivex.schedulers.Schedulers
 
 class ProfileDataRepository(private val appDao: AppDao, private val mapper: ProfileEntityMapper) : ProfileRepository {
 
-    override fun getProfiles(): Single<MutableList<Profile>> {
-        return appDao.getProfiles().map(mapper::transformToDomain)
+    override fun getProfiles(): Single<List<Profile>> {
+        return appDao.getProfiles().map(mapper::transformToProfile)
     }
 
     override fun insertProfile(profile: Profile): Completable {
-        return Completable.fromAction { appDao.insertProfile(mapper.transformToData(profile)) }
+        return Completable.fromAction { appDao.insertProfile(mapper.transformToProfileEntity(profile)) }
             .subscribeOn(Schedulers.io())
     }
 
     override fun updateProfile(profile: Profile): Completable {
-        return Completable.fromAction { appDao.updateProfile(mapper.transformToData(profile)) }
+        return Completable.fromAction { appDao.updateProfile(mapper.transformToProfileEntity(profile)) }
             .subscribeOn(Schedulers.io())
     }
 
@@ -29,6 +29,6 @@ class ProfileDataRepository(private val appDao: AppDao, private val mapper: Prof
     }
 
     override fun getProfile(profileId: String): Single<Profile> {
-        return appDao.getProfile(profileId).map(mapper::transformToDomain)
+        return appDao.getProfile(profileId).map(mapper::transformToProfile)
     }
 }

@@ -15,7 +15,7 @@ class ProfilesViewModel(
     private val router: Router
 ) : BaseViewModel() {
 
-    var profiles = MutableLiveData<MutableList<Profile>>()
+    var profiles = MutableLiveData<List<Profile>>()
     var isShowMock = MutableLiveData<Boolean>()
 
     fun getProfiles() {

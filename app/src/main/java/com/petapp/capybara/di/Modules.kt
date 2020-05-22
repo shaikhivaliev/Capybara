@@ -1,5 +1,9 @@
 package com.petapp.capybara.di
 
+import com.petapp.capybara.calendar.data.CalendarDataRepository
+import com.petapp.capybara.calendar.data.CalendarEntityMapper
+import com.petapp.capybara.calendar.domain.CalendarRepository
+import com.petapp.capybara.calendar.presentation.CalendarViewModel
 import com.petapp.capybara.database.DatabaseProvider
 import com.petapp.capybara.main.AppViewModel
 import com.petapp.capybara.profiles.data.ProfileEntityMapper
@@ -14,17 +18,23 @@ import ru.terrakok.cicerone.Cicerone
 
 val appModule = module {
 
+    single { DatabaseProvider(androidContext()).appDao() }
+
     viewModel { AppViewModel(get()) }
 
     viewModel { ProfilesViewModel(get(), get()) }
 
     viewModel { ProfileViewModel(get(), get()) }
 
+    viewModel { CalendarViewModel(get(), get()) }
+
     single<ProfileRepository> { ProfileDataRepository(get(), get()) }
 
-    single { DatabaseProvider(androidContext()).appDao() }
+    single<CalendarRepository> { CalendarDataRepository(get(), get()) }
 
     single { ProfileEntityMapper() }
+
+    single { CalendarEntityMapper() }
 
 }
 

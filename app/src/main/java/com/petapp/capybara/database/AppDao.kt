@@ -2,15 +2,13 @@ package com.petapp.capybara.database
 
 import androidx.room.*
 import com.petapp.capybara.profiles.data.ProfileEntity
-import com.petapp.capybara.profiles.domain.Profile
-import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
 interface AppDao {
 
     @Query("SELECT * FROM profile")
-    fun getProfiles(): Single<MutableList<ProfileEntity>>
+    fun getProfiles(): Single<List<ProfileEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProfile(profile: ProfileEntity)

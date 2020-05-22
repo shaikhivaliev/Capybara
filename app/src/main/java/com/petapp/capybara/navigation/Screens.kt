@@ -1,6 +1,6 @@
 package com.petapp.capybara.navigation
 
-import com.petapp.capybara.calendar.CalendarFragment
+import com.petapp.capybara.calendar.presentation.CalendarFragment
 import com.petapp.capybara.main.MainFragment
 import com.petapp.capybara.profiles.presentation.profile.ProfileFragment
 import com.petapp.capybara.profiles.presentation.profiles.ProfilesFragment

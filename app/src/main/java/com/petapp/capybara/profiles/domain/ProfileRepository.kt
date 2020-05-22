@@ -5,7 +5,7 @@ import io.reactivex.Single
 
 interface ProfileRepository {
 
-    fun getProfiles(): Single<MutableList<Profile>>
+    fun getProfiles(): Single<List<Profile>>
 
     fun getProfile(profileId: String): Single<Profile>
 
