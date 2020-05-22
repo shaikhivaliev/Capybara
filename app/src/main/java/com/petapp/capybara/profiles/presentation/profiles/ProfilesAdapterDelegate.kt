@@ -9,14 +9,14 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.petapp.capybara.R
 import com.petapp.capybara.profiles.domain.Profile
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_test.view.*
+import kotlinx.android.synthetic.main.item_profile.view.*
 
 class ProfilesAdapterDelegate(
     private val itemClick: (Profile) -> Unit
 ) : AdapterDelegate<MutableList<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_test, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_profile, parent, false))
     }
 
     override fun isForViewType(items: MutableList<Any>, position: Int): Boolean {
@@ -39,11 +39,11 @@ class ProfilesAdapterDelegate(
 
         fun bind(profile: Profile) {
             this.profile = profile
-            containerView.color.setBackgroundResource(profile.color)
-            containerView.name.text = profile.name
+            containerView.color_mark.setBackgroundResource(profile.color)
+            containerView.profile_name.text = profile.name
             Glide.with(containerView)
                 .load(profile.photo)
-                .placeholder(R.drawable.ic_add_photo)
+                .placeholder(R.drawable.ic_add_photo_black)
                 .into(containerView.photo)
         }
     }

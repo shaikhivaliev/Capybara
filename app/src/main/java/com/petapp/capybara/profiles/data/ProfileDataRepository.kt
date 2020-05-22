@@ -23,8 +23,12 @@ class ProfileDataRepository(private val appDao: AppDao, private val mapper: Prof
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteProfile(profileId: Int): Completable {
+    override fun deleteProfile(profileId: String): Completable {
         return Completable.fromAction { appDao.deleteProfile(profileId) }
             .subscribeOn(Schedulers.io())
+    }
+
+    override fun getProfile(profileId: String): Single<Profile> {
+        return appDao.getProfile(profileId).map(mapper::transformToDomain)
     }
 }

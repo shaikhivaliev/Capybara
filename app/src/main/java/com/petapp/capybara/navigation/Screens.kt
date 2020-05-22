@@ -19,9 +19,10 @@ object Screens {
     }
 
     data class Profile(
-        val profileId: String
+        val profileId: String?,
+        val isNewProfile: Boolean
     ) : SupportAppScreen() {
-        override fun getFragment() = ProfileFragment.create(profileId)
+        override fun getFragment() = ProfileFragment.create(profileId, isNewProfile)
     }
 
 

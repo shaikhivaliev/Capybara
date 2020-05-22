@@ -14,25 +14,9 @@ import kotlinx.android.synthetic.main.fragment_profiles.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.atomic.AtomicInteger
 
-
 class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
     private val viewModel: ProfilesViewModel by viewModel()
-
-/*
-    private val navigator: Navigator by lazy {
-        object : SupportAppNavigator(this.activity, supportFragmentManager, R.id.container) {
-            override fun setupFragmentTransaction(
-                command: Command,
-                currentFragment: Fragment?,
-                nextFragment: Fragment?,
-                fragmentTransaction: FragmentTransaction
-            ) {
-                fragmentTransaction.setCustomAnimations()
-            }
-        }
-    }
-*/
 
     private val adapter: ProfileAdapter by lazy { ProfileAdapter() }
 
@@ -46,9 +30,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             adapter = this@ProfilesFragment.adapter
         }
         add_profile.setOnClickListener {
-            val profile = Profile(id = UniqueId.id.toString(), color = android.R.color.white, name = "", photo = null)
-            adapter.setData(profile)
-            viewModel.navigateTo(Screens.Profile(profile.id))
+            viewModel.navigateTo(Screens.Profile(null, true))
         }
     }
 
@@ -68,28 +50,15 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             delegatesManager
                 .addDelegate(
                     ProfilesAdapterDelegate(
-                        itemClick = { viewModel.navigateTo(Screens.Profile(it.id)) })
+                        itemClick = { viewModel.navigateTo(Screens.Profile(it.id, false)) })
                 )
         }
 
-        fun setData(profile: Profile) {
-            items.add(profile)
-            notifyDataSetChanged()
-            recycler_view.smoothScrollToPosition(itemCount)
-        }
-
         fun setDataSet(profiles: List<Profile>) {
+            items.clear()
             items.addAll(profiles)
             notifyDataSetChanged()
             recycler_view.smoothScrollToPosition(itemCount)
-        }
-    }
-
-    class UniqueId {
-        companion object {
-            private val c = AtomicInteger(0)
-            val id: Int
-                get() = c.incrementAndGet()
         }
     }
 

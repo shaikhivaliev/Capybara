@@ -4,7 +4,7 @@ import com.petapp.capybara.profiles.domain.Profile
 
 class ProfileEntityMapper {
 
-    private fun transformToDomain(profileEntity: ProfileEntity): Profile {
+    fun transformToDomain(profileEntity: ProfileEntity): Profile {
         return Profile(id = profileEntity.id, name = profileEntity.name, color = profileEntity.color, photo = profileEntity.photo)
     }
 

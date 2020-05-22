@@ -19,5 +19,8 @@ interface AppDao {
     fun updateProfile(profile: ProfileEntity)
 
     @Query("DELETE FROM profile WHERE id = :profileId")
-    fun deleteProfile(profileId: Int)
+    fun deleteProfile(profileId: String)
+
+    @Query("SELECT * FROM profile WHERE id = :profileId")
+    fun getProfile(profileId: String): Single<ProfileEntity>
 }

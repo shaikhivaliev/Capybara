@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"   >
 
     <com.google.android.material.card.MaterialCardView
-
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,9 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_gravity="start"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/white"
                 android:scaleType="centerInside"
+                android:src="@drawable/ic_add_photo_black"
                 android:tintMode="multiply"
                 tools:ignore="ContentDescription" />
 
@@ -34,11 +33,11 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/color"
+                    android:id="@+id/color_mark"
                     android:layout_width="60dp"
                     android:layout_height="0dp"
                     android:layout_gravity="start"
-                    android:background="@android:color/holo_blue_dark"
+                    android:background="@android:color/white"
                     android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -46,12 +45,11 @@
                     tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:gravity="center"
-                    android:text="Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:background="@color/light_gray"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:errorEnabled="true"
@@ -80,37 +79,27 @@
             android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:background="@color/light_gray"
             android:hint="@string/name_hint"
             android:inputType="text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingStart="0dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:ignore="RtlSymmetry" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/color_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:text="@string/choose_color"
-        app:layout_constraintTop_toBottomOf="@id/name_layout"/>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/color_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         app:chipSpacingHorizontal="8dp"
-        app:layout_constraintTop_toBottomOf="@id/color_title"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_layout"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
@@ -118,6 +107,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:checked="true"
             app:chipBackgroundColor="@android:color/white"
             app:chipIcon="@drawable/ic_done" />
 
@@ -162,6 +152,35 @@
             app:chipIcon="@drawable/ic_done" />
 
     </com.google.android.material.chip.ChipGroup>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/edit_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:paddingEnd="20dp"
+        app:icon="@drawable/ic_add_photo"
+        app:iconGravity="textEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/color_group"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:paddingEnd="20dp"
+        app:icon="@drawable/ic_delete"
+        app:iconGravity="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/color_group"
+        tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/done"

@@ -26,6 +26,7 @@ class ProfilesViewModel(
                 {
                     isShowMock.value = it.isEmpty()
                     profiles.value = it
+                    Log.d("database", "Get profiles success")
                 },
                 { Log.d("database", "Get profiles error") }
             ).connect()
