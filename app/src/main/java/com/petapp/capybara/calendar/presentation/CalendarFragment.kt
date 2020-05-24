@@ -43,9 +43,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             chipEndPadding = CHIP_PADDING
             chipStartPadding = CHIP_PADDING
             text = mark.name
-            setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+            setTextColor(ContextCompat.getColor(requireContext(), android.R.color.black))
             isCheckable = true
-            checkedIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_done)
+            checkedIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_done_black)
             chipBackgroundColor = getColorStateList(requireContext(), mark.color)
 
         }

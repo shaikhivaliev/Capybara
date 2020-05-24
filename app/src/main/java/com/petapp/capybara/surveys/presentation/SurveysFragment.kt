@@ -1,4 +1,4 @@
-package com.petapp.capybara.surveys
+package com.petapp.capybara.surveys.presentation
 
 import androidx.fragment.app.Fragment
 import com.petapp.capybara.R

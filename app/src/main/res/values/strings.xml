@@ -12,14 +12,10 @@
 
     <!-- new profile-->
     <string name="mark">Метка</string>
-    <string name="change_mark">Изменить метку</string>
     <string name="name_hint">Изменить имя</string>
     <string name="cancel_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="cancel_explanation_empty">Вы действительно хотите удалить профиль?</string>
     <string name="mock_profiles_explanation">Список профилей пуст</string>
-    <string name="add_profile">Добавить профиль</string>
-    <string name="choose_color">Выберите цвет:</string>
-    <string name="change_photo">Изменить фотографию:</string>
     <string name="name">Имя</string>
 
 

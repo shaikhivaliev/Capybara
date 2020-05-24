@@ -4,8 +4,7 @@ import com.petapp.capybara.calendar.presentation.CalendarFragment
 import com.petapp.capybara.main.MainFragment
 import com.petapp.capybara.profiles.presentation.profile.ProfileFragment
 import com.petapp.capybara.profiles.presentation.profiles.ProfilesFragment
-import com.petapp.capybara.surveys.SurveysFragment
-import com.petapp.capybara.types.TypesFragment
+import com.petapp.capybara.surveys.presentation.SurveysFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 object Screens {
@@ -28,10 +27,6 @@ object Screens {
 
     object Calendar : SupportAppScreen() {
         override fun getFragment() = CalendarFragment()
-    }
-
-    object Types : SupportAppScreen() {
-        override fun getFragment() = TypesFragment()
     }
 
     object Surveys : SupportAppScreen() {

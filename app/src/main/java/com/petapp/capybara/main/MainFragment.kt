@@ -20,16 +20,15 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bottom_navigation.setOnNavigationItemSelectedListener(this)
-        bottom_navigation.selectedItemId = R.id.tab_new_profile
+        bottom_navigation.selectedItemId = R.id.tab_profiles
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (!item.isChecked) {
             when (item.itemId) {
-                R.id.tab_new_profile -> selectTab(Screens.Profiles)
+                R.id.tab_profiles -> selectTab(Screens.Profiles)
                 R.id.tab_calendar -> selectTab(Screens.Calendar)
-                R.id.tab_all_survey -> selectTab(Screens.Surveys)
-                R.id.tab_types -> selectTab(Screens.Types)
+                R.id.tab_surveys -> selectTab(Screens.Surveys)
             }
         }
         return true
@@ -55,6 +54,5 @@ class MainFragment : Fragment(R.layout.fragment_main),
             }
         }.commitNow()
     }
-
 
 }

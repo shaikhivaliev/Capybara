@@ -6,8 +6,8 @@ import com.petapp.capybara.calendar.domain.CalendarRepository
 import com.petapp.capybara.calendar.presentation.CalendarViewModel
 import com.petapp.capybara.database.DatabaseProvider
 import com.petapp.capybara.main.AppViewModel
-import com.petapp.capybara.profiles.data.ProfileEntityMapper
 import com.petapp.capybara.profiles.data.ProfileDataRepository
+import com.petapp.capybara.profiles.data.ProfileEntityMapper
 import com.petapp.capybara.profiles.domain.ProfileRepository
 import com.petapp.capybara.profiles.presentation.profile.ProfileViewModel
 import com.petapp.capybara.profiles.presentation.profiles.ProfilesViewModel
@@ -35,6 +35,8 @@ val appModule = module {
     single { ProfileEntityMapper() }
 
     single { CalendarEntityMapper() }
+
+
 
 }
 

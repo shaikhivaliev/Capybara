@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.afollestad.materialdialogs.MaterialDialog
@@ -47,6 +48,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel.getProfile(profileId)
         initObservers()
 
+        name_et.doAfterTextChanged { name_layout.error = null }
+
         color_group.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.white -> color_mark.setBackgroundResource(android.R.color.white)
@@ -72,6 +75,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 if (isNewProfile) viewModel.insertProfile(newProfile) else viewModel.updateProfile(updateProfile)
             }
         }
+
+
     }
 
     private fun getChipColor(): Int {
