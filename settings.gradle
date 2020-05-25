@@ -1,2 +1,8 @@
 rootProject.name='Capybara'
 include ':app'
+include ':sources'
+include ':sources:profiles'
+include ':sources:calendar'
+include ':sources:surveys'
+include ':sources:core'
+include ':sources:base'
