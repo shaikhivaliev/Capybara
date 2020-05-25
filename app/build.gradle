@@ -4,18 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.petapp.capybara"
-        minSdkVersion 23
-        targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -40,51 +35,43 @@ androidExtensions {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0'
+// main
+    implementation deps.kotlin
+    implementation deps.appCompat
+    implementation deps.ktx
 
     // ui
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
+    implementation deps.constraintLayout
+    implementation deps.material
+    implementation deps.lifecycleViewmodel
 
     // fragment manager
-    implementation "ru.terrakok.cicerone:cicerone:5.1.1"
-    implementation "androidx.fragment:fragment:1.3.0-alpha04"
+    implementation deps.cicerone
+    implementation deps.fragment
 
     // rx
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.13")
-    implementation("com.jakewharton.rxrelay2:rxrelay:2.1.1")
-
-    // di
-    implementation 'org.koin:koin-android:2.0.1'
-    implementation 'org.koin:koin-androidx-scope:2.0.1'
-    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
+    implementation deps.rxandroid
+    implementation deps.rxjava
 
     // recycler adapter
-    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.0'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.72"
+    implementation deps.adapterDelegates
+    implementation deps.kotlinReflect
 
     // database
-    implementation 'androidx.room:room-runtime:2.2.5'
-    implementation "androidx.room:room-rxjava2:2.2.5"
-    kapt 'androidx.room:room-compiler:2.2.5'
+    implementation deps.room
+    implementation deps.roomRxjava
+    //kapt
+    implementation deps.roomCompiler
 
     // database debug
-    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation deps.stetho
 
     // image
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation deps.glide
+    //annotationProcessor
+    implementation deps.glideCompiler
 
     // material dialog
-    implementation 'com.afollestad.material-dialogs:core:3.1.1'
+    implementation deps.materialDialogs
 
-    // test
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
