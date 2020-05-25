@@ -45,6 +45,10 @@ dependencies {
     implementation deps.material
     implementation deps.lifecycleViewmodel
 
+    //di
+    implementation deps.dagger
+    implementation deps.daggerCompiler
+
     // fragment manager
     implementation deps.cicerone
     implementation deps.fragment
