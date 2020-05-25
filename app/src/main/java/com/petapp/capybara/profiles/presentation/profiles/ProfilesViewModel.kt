@@ -9,8 +9,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.Screen
+import javax.inject.Inject
 
-class ProfilesViewModel(
+class ProfilesViewModel @Inject constructor(
     private val repository: ProfileRepository,
     private val router: Router
 ) : BaseViewModel() {

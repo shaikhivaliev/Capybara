@@ -11,16 +11,18 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
+import com.petapp.capybara.common.App
 import com.petapp.capybara.extensions.argument
 import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.profiles.domain.Profile
 import kotlinx.android.synthetic.main.fragment_profile.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -41,10 +43,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val isNewProfile by argument(IS_NEW_PROFILE, false)
     private var currentPhotoUri: Uri? = null
 
-    private val viewModel: ProfileViewModel by viewModel()
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: ProfileViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        App.appComponent.inject(this)
+        activity?.let { viewModel = ViewModelProvider(it, factory).get(ProfileViewModel::class.java) }
+
         viewModel.getProfile(profileId)
         initObservers()
 
@@ -68,11 +75,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         done.setOnClickListener {
             if (isNameValid()) {
                 val id = UniqueId.id.toString()
-                val name = if (name_et.text.toString().isNotBlank()) name_et.text.toString() else profile_name.text.toString()
+                val name = if (name_et.text.toString()
+                        .isNotBlank()
+                ) name_et.text.toString() else profile_name.text.toString()
                 val color = getChipColor()
                 val newProfile = Profile(id, name, color, currentPhotoUri.toString())
                 val updateProfile = Profile(profileId, name, color, currentPhotoUri.toString())
-                if (isNewProfile) viewModel.insertProfile(newProfile) else viewModel.updateProfile(updateProfile)
+                if (isNewProfile) viewModel.insertProfile(newProfile) else viewModel.updateProfile(
+                    updateProfile
+                )
             }
         }
 
@@ -156,35 +167,37 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
     private fun startForResult() {
-        val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // camera
-                if (result.data == null) {
-                    Glide.with(this)
-                        .load(currentPhotoUri)
-                        .placeholder(R.drawable.ic_add_photo_black)
-                        .into(photo)
-
-                }
-                // gallery
-                try {
-                    val intent = result.data
-                    val uri = intent?.data
-                    if (intent != null && uri != null) {
-                        currentPhotoUri = uri
+        val startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    // camera
+                    if (result.data == null) {
                         Glide.with(this)
-                            .load(intent.data)
+                            .load(currentPhotoUri)
                             .placeholder(R.drawable.ic_add_photo_black)
                             .into(photo)
 
-                        val takeFlags = intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                        activity?.contentResolver?.takePersistableUriPermission(uri, takeFlags)
                     }
-                } catch (e: SecurityException) {
-                    e.printStackTrace()
+                    // gallery
+                    try {
+                        val intent = result.data
+                        val uri = intent?.data
+                        if (intent != null && uri != null) {
+                            currentPhotoUri = uri
+                            Glide.with(this)
+                                .load(intent.data)
+                                .placeholder(R.drawable.ic_add_photo_black)
+                                .into(photo)
+
+                            val takeFlags =
+                                intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                            activity?.contentResolver?.takePersistableUriPermission(uri, takeFlags)
+                        }
+                    } catch (e: SecurityException) {
+                        e.printStackTrace()
+                    }
                 }
             }
-        }
 
         val intentArray: Array<Intent?> = arrayOf(openCamera())
         val chooser = Intent(Intent.ACTION_CHOOSER)

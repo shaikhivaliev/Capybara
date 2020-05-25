@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.navigation.Screens
-import com.petapp.capybara.profiles.data.ProfileDataRepository
 import com.petapp.capybara.profiles.domain.Profile
 import com.petapp.capybara.profiles.domain.ProfileRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class ProfileViewModel(
+class ProfileViewModel @Inject constructor(
     private val repository: ProfileRepository,
     private val router: Router
 ) : BaseViewModel() {

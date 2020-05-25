@@ -4,6 +4,7 @@ import android.app.Application
 import com.facebook.stetho.Stetho
 import com.petapp.capybara.BuildConfig
 import com.petapp.capybara.di.AppComponent
+import com.petapp.capybara.di.DaggerAppComponent
 
 class App : Application() {
 

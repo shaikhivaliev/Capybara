@@ -4,24 +4,30 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
+import com.petapp.capybara.common.App
 import com.petapp.capybara.extensions.visible
 import com.petapp.capybara.navigation.Screens
 import com.petapp.capybara.profiles.domain.Profile
 import kotlinx.android.synthetic.main.fragment_profiles.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
 class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
-    private val viewModel: ProfilesViewModel by viewModel()
-
     private val adapter: ProfileAdapter by lazy { ProfileAdapter() }
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: ProfilesViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        App.appComponent.inject(this)
+        activity?.let { viewModel = ViewModelProvider(it, factory).get(ProfilesViewModel::class.java) }
+
         viewModel.getProfiles()
         initObservers()
 

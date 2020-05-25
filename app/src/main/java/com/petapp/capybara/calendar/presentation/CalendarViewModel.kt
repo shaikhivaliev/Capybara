@@ -8,8 +8,9 @@ import com.petapp.capybara.common.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class CalendarViewModel(
+class CalendarViewModel @Inject constructor(
     private val repository: CalendarRepository,
     private val router: Router
 ) : BaseViewModel() {

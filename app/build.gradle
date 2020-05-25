@@ -47,7 +47,7 @@ dependencies {
 
     //di
     implementation deps.dagger
-    implementation deps.daggerCompiler
+    kapt deps.daggerCompiler
 
     // fragment manager
     implementation deps.cicerone
@@ -64,16 +64,14 @@ dependencies {
     // database
     implementation deps.room
     implementation deps.roomRxjava
-    //kapt
-    implementation deps.roomCompiler
+    kapt deps.roomCompiler
 
     // database debug
     implementation deps.stetho
 
     // image
     implementation deps.glide
-    //annotationProcessor
-    implementation deps.glideCompiler
+    kapt deps.glideCompiler
 
     // material dialog
     implementation deps.materialDialogs
