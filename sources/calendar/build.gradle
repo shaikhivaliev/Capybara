@@ -10,6 +10,7 @@ dependencies {
 
     // ui
     implementation deps.constraintLayout
+    implementation deps.appCompat
     implementation deps.material
     implementation deps.lifecycleViewmodel
 
