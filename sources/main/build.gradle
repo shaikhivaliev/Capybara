@@ -8,22 +8,11 @@ dependencies {
     implementation project(':sources:core:core_api')
     api project(':sources:core:core')
 
-    // ui
     implementation deps.constraintLayout
     implementation deps.material
     implementation deps.lifecycleViewmodel
 
-    // di
     implementation deps.dagger
     kapt deps.daggerCompiler
-
-    // rx
-    implementation deps.rxandroid
-    implementation deps.rxjava
-
-    // database
-    implementation deps.room
-    implementation deps.roomRxjava
-    kapt deps.roomCompiler
-
 }
+

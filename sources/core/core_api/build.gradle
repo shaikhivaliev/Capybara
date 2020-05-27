@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+
+    implementation deps.dagger
+    kapt deps.daggerCompiler
+
+    implementation deps.room
+    implementation deps.roomRxjava
+    kapt deps.roomCompiler
+
+    implementation deps.rxandroid
+    implementation deps.rxjava
+
+}

@@ -35,45 +35,16 @@ androidExtensions {
 }
 
 dependencies {
-// main
-    implementation deps.kotlin
-    implementation deps.appCompat
-    implementation deps.ktx
 
-    // ui
-    implementation deps.constraintLayout
-    implementation deps.material
-    implementation deps.lifecycleViewmodel
+    implementation project(':sources:core:core')
+    implementation project(':sources:main')
+    implementation project(':sources:calendar')
+    implementation project(':sources:surveys')
+    implementation project(':sources:profiles')
 
-    //di
     implementation deps.dagger
     kapt deps.daggerCompiler
 
-    // fragment manager
-    implementation deps.cicerone
-    implementation deps.fragment
-
-    // rx
-    implementation deps.rxandroid
-    implementation deps.rxjava
-
-    // recycler adapter
-    implementation deps.adapterDelegates
-    implementation deps.kotlinReflect
-
-    // database
-    implementation deps.room
-    implementation deps.roomRxjava
-    kapt deps.roomCompiler
-
-    // database debug
     implementation deps.stetho
-
-    // image
-    implementation deps.glide
-    kapt deps.glideCompiler
-
-    // material dialog
-    implementation deps.materialDialogs
 
 }

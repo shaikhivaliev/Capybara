@@ -15,6 +15,10 @@ android {
 }
 
 dependencies {
+
+    implementation project(':sources:core:core_api')
+    api project(':sources:core:core')
+
     // ui
     implementation deps.constraintLayout
     implementation deps.material
@@ -38,7 +42,6 @@ dependencies {
     kapt deps.roomCompiler
 
     // fragment manager
-    implementation deps.cicerone
     implementation deps.fragment
 
     // image
