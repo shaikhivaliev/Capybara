@@ -1,4 +1,4 @@
-package com.petapp.capybara.profiles.data
+package com.petapp.core_api.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

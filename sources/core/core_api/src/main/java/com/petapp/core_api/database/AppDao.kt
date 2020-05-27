@@ -1,7 +1,7 @@
-package com.petapp.capybara.database
+package com.petapp.core_api.database
 
 import androidx.room.*
-import com.petapp.capybara.profiles.data.ProfileEntity
+import com.petapp.core_api.database.entity.ProfileEntity
 import io.reactivex.Single
 
 @Dao
