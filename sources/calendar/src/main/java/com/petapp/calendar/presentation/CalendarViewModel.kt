@@ -7,12 +7,10 @@ import com.petapp.capybara.calendar.domain.CalendarRepository
 import com.petapp.capybara.calendar.domain.Mark
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class CalendarViewModel @Inject constructor(
-    private val repository: CalendarRepository,
-    private val router: Router
+    private val repository: CalendarRepository
 ) : BaseViewModel() {
 
     val marks = MutableLiveData<List<Mark>>()

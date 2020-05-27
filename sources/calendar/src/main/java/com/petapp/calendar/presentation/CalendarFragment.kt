@@ -9,8 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.petapp.calendar.R
+import com.petapp.calendar.di.CalendarComponent
 import com.petapp.calendar.visible
 import com.petapp.capybara.calendar.domain.Mark
+import com.petapp.core_api.AppWithFacade
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import javax.inject.Inject
 
@@ -26,8 +28,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.appComponent.inject(this)
-        activity?.let { viewModel = ViewModelProvider(it, factory).get(CalendarViewModel::class.java) }
+        activity?.let {
+            CalendarComponent.create((it.application as AppWithFacade).getFacade()).inject(this)
+            viewModel = ViewModelProvider(it, factory).get(CalendarViewModel::class.java)
+        }
 
         viewModel.getMarks()
         initObservers()
