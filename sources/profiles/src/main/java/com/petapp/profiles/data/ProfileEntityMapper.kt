@@ -1,10 +1,11 @@
 package com.petapp.profiles.data
 
+import com.petapp.core_api.database.entity.ProfileEntity
 import com.petapp.profiles.domain.Profile
 
 class ProfileEntityMapper {
 
-    private fun transformToProfile(profileEntity: ProfileEntity): Profile {
+    fun transformToProfile(profileEntity: ProfileEntity): Profile {
         return Profile(id = profileEntity.id, name = profileEntity.name, color = profileEntity.color, photo = profileEntity.photo)
     }
 

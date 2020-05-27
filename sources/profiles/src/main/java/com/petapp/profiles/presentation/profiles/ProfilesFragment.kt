@@ -7,7 +7,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import com.petapp.core_api.AppWithFacade
 import com.petapp.profiles.R
+import com.petapp.profiles.di.ProfilesComponent
 import com.petapp.profiles.domain.Profile
 import com.petapp.profiles.visible
 import kotlinx.android.synthetic.main.fragment_profiles.*
@@ -23,8 +25,11 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.appComponent.inject(this)
-        activity?.let { viewModel = ViewModelProvider(it, factory).get(ProfilesViewModel::class.java) }
+
+        activity?.let {
+            ProfilesComponent.create((it.application as AppWithFacade).getFacade()).inject(this)
+            viewModel = ViewModelProvider(it, factory).get(ProfilesViewModel::class.java)
+        }
 
         viewModel.getProfiles()
         initObservers()
@@ -34,7 +39,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             adapter = this@ProfilesFragment.adapter
         }
         add_profile.setOnClickListener {
-            viewModel.navigateTo(Screens.Profile(null, true))
+            //viewModel.navigateTo(Screens.Profile(null, true))
         }
     }
 
@@ -54,7 +59,9 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             delegatesManager
                 .addDelegate(
                     ProfilesAdapterDelegate(
-                        itemClick = { viewModel.navigateTo(Screens.Profile(it.id, false)) })
+                        itemClick = {
+                            // viewModel.navigateTo(Screens.Profile(it.id, false))
+                        })
                 )
         }
 

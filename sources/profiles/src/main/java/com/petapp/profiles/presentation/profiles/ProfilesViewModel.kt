@@ -2,18 +2,15 @@ package com.petapp.profiles.presentation.profiles
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.petapp.profiles.BaseViewModel
 import com.petapp.profiles.domain.Profile
 import com.petapp.profiles.domain.ProfileRepository
-import com.petapp.profiles.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.terrakok.cicerone.Router
-import ru.terrakok.cicerone.Screen
 import javax.inject.Inject
 
 class ProfilesViewModel @Inject constructor(
-    private val repository: ProfileRepository,
-    private val router: Router
+    private val repository: ProfileRepository
 ) : BaseViewModel() {
 
     var profiles = MutableLiveData<List<Profile>>()
@@ -33,7 +30,6 @@ class ProfilesViewModel @Inject constructor(
             ).connect()
     }
 
-    fun navigateTo(profile: Screen) {
-        router.navigateTo(profile)
-    }
+
 }
+

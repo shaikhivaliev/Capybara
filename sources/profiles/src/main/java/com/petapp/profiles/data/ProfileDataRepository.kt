@@ -1,5 +1,6 @@
 package com.petapp.profiles.data
 
+import com.petapp.core_api.database.AppDao
 import com.petapp.profiles.domain.Profile
 import com.petapp.profiles.domain.ProfileRepository
 import io.reactivex.Completable
@@ -34,4 +35,5 @@ class ProfileDataRepository @Inject constructor(
     override fun getProfile(profileId: String): Single<Profile> {
         return appDao.getProfile(profileId).map(mapper::transformToProfile)
     }
+
 }

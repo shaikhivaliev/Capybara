@@ -7,12 +7,10 @@ import com.petapp.profiles.domain.Profile
 import com.petapp.profiles.domain.ProfileRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    private val repository: ProfileRepository,
-    private val router: Router
+    private val repository: ProfileRepository
 ) : BaseViewModel() {
 
     val profile = MutableLiveData<Profile>()
@@ -82,10 +80,5 @@ class ProfileViewModel @Inject constructor(
                 }
             ).connect()
     }
-
-    fun navigateBack() {
-        router.backTo(Screens.Profiles)
-    }
-
 
 }

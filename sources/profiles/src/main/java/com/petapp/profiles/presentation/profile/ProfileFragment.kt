@@ -14,9 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
+import com.petapp.core_api.AppWithFacade
 import com.petapp.profiles.R
 import com.petapp.profiles.argument
 import com.petapp.profiles.createImageFile
+import com.petapp.profiles.di.ProfilesComponent
 import com.petapp.profiles.domain.Profile
 import com.petapp.profiles.toast
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -44,12 +46,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        App.appComponent.inject(this)
-        activity?.let { viewModel = ViewModelProvider(it, factory).get(ProfileViewModel::class.java) }
+
+        activity?.let {
+            ProfilesComponent.create((it.application as AppWithFacade).getFacade()).inject(this)
+            viewModel = ViewModelProvider(it, factory).get(ProfileViewModel::class.java)
+        }
 
         viewModel.getProfile(profileId)
         initObservers()
@@ -116,7 +121,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             setProfileCard(profile)
         })
         viewModel.isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-            if (isDone) viewModel.navigateBack()
+            //if (isDone) viewModel.navigateBack()
         })
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             this.activity.toast(it)
@@ -156,8 +161,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     title(text = getString(R.string.cancel_explanation_empty))
                 }
                 positiveButton {
-                    if (!isNewProfile) viewModel.deleteProfile() else viewModel.navigateBack()
-                    cancel()
+                    if (!isNewProfile) viewModel.deleteProfile() else // viewModel.navigateBack()
+                        cancel()
                 }
                 negativeButton { cancel() }
             }
