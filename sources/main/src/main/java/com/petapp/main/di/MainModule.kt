@@ -1,21 +1,24 @@
 package com.petapp.main.di
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.petapp.main.presentation.MainViewModel
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import dagger.multibindings.IntoMap
 
 @Module
-class MainModule {
+abstract class MainModule {
 
-    @Provides
-    @Singleton
-    fun provideMainViewModel(
-        map: @JvmSuppressWildcards MutableMap<Class<out ViewModel>, ViewModel>
-    ): ViewModel = MainViewModel().also {
-        map[MainViewModel::class.java] = it
-    }
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    internal abstract fun bindFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
+
 
 }
 

@@ -2,6 +2,7 @@ package com.petapp.profiles.presentation.profile
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.petapp.core_api.navigation.FragmentProvider
 import com.petapp.profiles.BaseViewModel
 import com.petapp.profiles.domain.Profile
 import com.petapp.profiles.domain.ProfileRepository

@@ -6,9 +6,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.petapp.core_api.AppWithFacade
 import com.petapp.main.R
 import com.petapp.main.di.MainComponent
+import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_container) {
+
+    private val navigator: Navigator by lazy { object : SupportAppNavigator(this, supportFragmentManager, R.id.container) {} }
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -16,13 +23,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_container)
         MainComponent.create((this.application as AppWithFacade).getFacade()).inject(this)
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+        viewModel.openMainFragment()
+    }
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, MainFragment())
-            .commitNow()
+    override fun onResumeFragments() {
+        navigatorHolder.setNavigator(navigator)
+        super.onResumeFragments()
+    }
+
+    override fun onPause() {
+        navigatorHolder.removeNavigator()
+        super.onPause()
     }
 
 }

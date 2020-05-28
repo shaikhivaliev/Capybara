@@ -15,4 +15,6 @@ dependencies {
     implementation deps.rxandroid
     implementation deps.rxjava
 
+    implementation deps.cicerone
+
 }

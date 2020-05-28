@@ -3,7 +3,7 @@ package com.petapp.core_impl.database
 import android.content.Context
 import androidx.room.Room
 import com.petapp.core_api.database.AppDao
-import com.petapp.core_api.database.entity.DatabaseContract
+import com.petapp.core_api.database.DatabaseContract
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -21,7 +21,8 @@ class DatabaseModule {
     fun provideDatabase(context: Context): DatabaseContract {
         return Room.databaseBuilder(
             context,
-            AppDatabase::class.java, DATABASE_NAME
+            AppDatabase::class.java,
+            DATABASE_NAME
         ).build()
     }
 

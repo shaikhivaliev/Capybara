@@ -1,27 +1,28 @@
 package com.petapp.main.di
 
-import com.petapp.core.CoreProvidersFactory
 import com.petapp.core_api.ProvidersFacade
-import com.petapp.core_api.viewmodel.ViewModelsProvider
+import com.petapp.core_api.navigation.NavigationProvider
 import com.petapp.main.presentation.MainActivity
+import com.petapp.main.presentation.MainFragment
 import dagger.Component
 import javax.inject.Singleton
 
+@Singleton
 @Component(
     modules = [MainModule::class],
-    dependencies = [ProvidersFacade::class, ViewModelsProvider::class]
+    dependencies = [ProvidersFacade::class]
 )
-interface MainComponent : ViewModelsProvider {
+interface MainComponent {
 
     companion object {
         fun create(providersFacade: ProvidersFacade): MainComponent {
             return DaggerMainComponent
                 .builder()
-                .viewModelsProvider(CoreProvidersFactory.createViewModelBuilder())
                 .providersFacade(providersFacade)
                 .build()
         }
     }
 
-    fun inject(mainActivity: MainActivity)
+    fun inject(activity: MainActivity)
+    fun inject(fragment: MainFragment)
 }
