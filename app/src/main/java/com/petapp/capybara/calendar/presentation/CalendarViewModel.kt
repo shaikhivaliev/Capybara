@@ -2,16 +2,14 @@ package com.petapp.capybara.calendar.presentation
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.petapp.capybara.calendar.domain.CalendarRepository
-import com.petapp.capybara.calendar.domain.Mark
+import com.petapp.capybara.common.domain.CommonRepository
+import com.petapp.capybara.common.domain.dto.Mark
 import com.petapp.capybara.common.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.terrakok.cicerone.Router
 
 class CalendarViewModel(
-    private val repository: CalendarRepository,
-    private val router: Router
+    private val repository: CommonRepository
 ) : BaseViewModel() {
 
     val marks = MutableLiveData<List<Mark>>()

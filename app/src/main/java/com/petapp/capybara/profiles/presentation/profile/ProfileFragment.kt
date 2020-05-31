@@ -11,16 +11,17 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
+import com.petapp.capybara.common.UniqueId
 import com.petapp.capybara.extensions.argument
 import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.profiles.domain.Profile
+import com.petapp.capybara.profiles.domain.dto.Profile
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.atomic.AtomicInteger
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -28,14 +29,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         private const val PROFILE_ID = "PROFILE_ID"
         private const val IS_NEW_PROFILE = "IS_NEW"
 
-        fun create(country: String?, isNew: Boolean) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(PROFILE_ID, country)
-                    putBoolean(IS_NEW_PROFILE, isNew)
-                }
+        fun createBundle(profileId: String?, isNew: Boolean): Bundle {
+            return Bundle().apply {
+                putString(PROFILE_ID, profileId)
+                putBoolean(IS_NEW_PROFILE, isNew)
             }
+        }
     }
+
 
     private val profileId by argument(PROFILE_ID, "")
     private val isNewProfile by argument(IS_NEW_PROFILE, false)
@@ -45,7 +46,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getProfile(profileId)
+        if (!isNewProfile) viewModel.getProfile(profileId)
         initObservers()
 
         name_et.doAfterTextChanged { name_layout.error = null }
@@ -63,20 +64,32 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         edit_photo.setOnClickListener { startForResult() }
 
-        delete_profile.setOnClickListener { deleteItem() }
+        delete_profile.setOnClickListener { deleteProfile() }
 
         done.setOnClickListener {
-            if (isNameValid()) {
-                val id = UniqueId.id.toString()
-                val name = if (name_et.text.toString().isNotBlank()) name_et.text.toString() else profile_name.text.toString()
-                val color = getChipColor()
-                val newProfile = Profile(id, name, color, currentPhotoUri.toString())
-                val updateProfile = Profile(profileId, name, color, currentPhotoUri.toString())
-                if (isNewProfile) viewModel.insertProfile(newProfile) else viewModel.updateProfile(updateProfile)
-            }
+            if (isNewProfile) createSurvey() else updateSurvey()
         }
+    }
 
+    private fun createSurvey() {
+        if (isNameValid()) {
+            val id = UniqueId.id.toString()
+            val etName = name_et.text.toString()
+            val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
+            val color = getChipColor()
+            val newProfile = Profile(id, name, color, currentPhotoUri.toString())
+            viewModel.createProfile(newProfile)
+        }
+    }
 
+    private fun updateSurvey() {
+        if (isNameValid()) {
+            val etName = name_et.text.toString()
+            val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
+            val color = getChipColor()
+            val updateProfile = Profile(profileId, name, color, currentPhotoUri.toString())
+            viewModel.updateProfile(updateProfile)
+        }
     }
 
     private fun getChipColor(): Int {
@@ -92,8 +105,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun isNameValid(): Boolean {
         if (!isNewProfile) return true
-        val profileName = name_et.text.toString()
-        return if (profileName.isNotBlank()) true
+        val name = name_et.text.toString()
+        return if (name.isNotBlank()) true
         else {
             name_layout.error = "Пустое имя"
             false
@@ -102,16 +115,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun initObservers() {
         viewModel.profile.observe(viewLifecycleOwner, Observer { profile ->
-            if (profile == null) return@Observer
             setProfileCard(profile)
         })
         viewModel.isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-            if (isDone) viewModel.navigateBack()
+            if (isDone) navigateBack()
         })
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            this.activity.toast(it)
+            requireActivity().toast(it)
         })
     }
+
 
     private fun setProfileCard(profile: Profile) {
         Glide.with(this)
@@ -136,17 +149,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         currentPhotoUri = Uri.parse(profile.photo)
     }
 
-    private fun deleteItem() {
-        val profileName = profile_name.text
+    private fun deleteProfile() {
+        val name = profile_name.text
         activity?.let {
             MaterialDialog(it).show {
-                if (profileName.isNotBlank()) {
-                    title(text = getString(R.string.cancel_explanation, profileName))
+                if (name.isNotBlank()) {
+                    title(text = getString(R.string.cancel_explanation, name))
                 } else {
                     title(text = getString(R.string.cancel_explanation_empty))
                 }
                 positiveButton {
-                    if (!isNewProfile) viewModel.deleteProfile() else viewModel.navigateBack()
+                    if (!isNewProfile) viewModel.deleteProfile(profileId) else navigateBack()
                     cancel()
                 }
                 negativeButton { cancel() }
@@ -156,35 +169,37 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
     private fun startForResult() {
-        val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // camera
-                if (result.data == null) {
-                    Glide.with(this)
-                        .load(currentPhotoUri)
-                        .placeholder(R.drawable.ic_add_photo_black)
-                        .into(photo)
-
-                }
-                // gallery
-                try {
-                    val intent = result.data
-                    val uri = intent?.data
-                    if (intent != null && uri != null) {
-                        currentPhotoUri = uri
+        val startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    // camera
+                    if (result.data == null) {
                         Glide.with(this)
-                            .load(intent.data)
+                            .load(currentPhotoUri)
                             .placeholder(R.drawable.ic_add_photo_black)
                             .into(photo)
 
-                        val takeFlags = intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                        activity?.contentResolver?.takePersistableUriPermission(uri, takeFlags)
                     }
-                } catch (e: SecurityException) {
-                    e.printStackTrace()
+                    // gallery
+                    try {
+                        val intent = result.data
+                        val uri = intent?.data
+                        if (intent != null && uri != null) {
+                            currentPhotoUri = uri
+                            Glide.with(this)
+                                .load(intent.data)
+                                .placeholder(R.drawable.ic_add_photo_black)
+                                .into(photo)
+
+                            val takeFlags =
+                                intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                            activity?.contentResolver?.takePersistableUriPermission(uri, takeFlags)
+                        }
+                    } catch (e: SecurityException) {
+                        e.printStackTrace()
+                    }
                 }
             }
-        }
 
         val intentArray: Array<Intent?> = arrayOf(openCamera())
         val chooser = Intent(Intent.ACTION_CHOOSER)
@@ -216,12 +231,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         return galleryIntent
     }
 
-    class UniqueId {
-        companion object {
-            private val c = AtomicInteger(0)
-            val id: Int
-                get() = c.incrementAndGet()
-        }
+    private fun navigateBack() {
+        findNavController().navigate(R.id.tab_profiles)
     }
+
 
 }

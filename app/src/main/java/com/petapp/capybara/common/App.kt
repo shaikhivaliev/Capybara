@@ -4,7 +4,6 @@ import android.app.Application
 import com.facebook.stetho.Stetho
 import com.petapp.capybara.BuildConfig
 import com.petapp.capybara.di.appModule
-import com.petapp.capybara.di.navigationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -19,7 +18,7 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(listOf(appModule, navigationModule))
+            modules(listOf(appModule))
         }
 
     }

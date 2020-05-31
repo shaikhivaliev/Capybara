@@ -1,12 +1,16 @@
-package com.petapp.capybara.calendar.data
+package com.petapp.capybara.common.data
 
-import com.petapp.capybara.calendar.domain.Mark
-import com.petapp.capybara.profiles.data.ProfileEntity
+import com.petapp.capybara.common.domain.dto.Mark
+import com.petapp.capybara.database.entity.ProfileEntity
 
-class CalendarEntityMapper {
+class CommonEntityMapper {
 
     private fun transformToMark(profileEntity: ProfileEntity): Mark {
-        return Mark(id = profileEntity.id, name = profileEntity.name, color = profileEntity.color)
+        return Mark(
+            id = profileEntity.id,
+            name = profileEntity.name,
+            color = profileEntity.color
+        )
     }
 
     fun transformToMark(profileEntities: List<ProfileEntity>): List<Mark> {

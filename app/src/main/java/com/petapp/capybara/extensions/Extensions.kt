@@ -6,7 +6,12 @@ import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.chip.Chip
+import com.petapp.capybara.R
+import com.petapp.capybara.common.domain.dto.Mark
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +30,21 @@ fun Context.createImageFile(): File {
     val imageFileName = "capybara_${timeStamp}.jpg"
     val storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     return File(storageDir, imageFileName)
+}
+
+fun createChip(context: Context, mark: Mark): Chip {
+    val padding = 56F
+    val chip = Chip(context)
+    chip.apply {
+        chipEndPadding = padding
+        chipStartPadding = padding
+        text = mark.name
+        setTextColor(ContextCompat.getColor(context, android.R.color.black))
+        isCheckable = true
+        checkedIcon = ContextCompat.getDrawable(context, R.drawable.ic_done_black)
+        chipBackgroundColor = AppCompatResources.getColorStateList(context, mark.color)
+    }
+    return chip
 }
 
 

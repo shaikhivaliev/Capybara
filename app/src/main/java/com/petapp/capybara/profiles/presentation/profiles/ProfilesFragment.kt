@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.navigation.Screens
-import com.petapp.capybara.profiles.domain.Profile
+import com.petapp.capybara.profiles.domain.dto.Profile
+import com.petapp.capybara.profiles.presentation.profile.ProfileFragment
 import kotlinx.android.synthetic.main.fragment_profiles.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.atomic.AtomicInteger
 
 class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
@@ -30,7 +30,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             adapter = this@ProfilesFragment.adapter
         }
         add_profile.setOnClickListener {
-            viewModel.navigateTo(Screens.Profile(null, true))
+            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(null, true))
         }
     }
 
@@ -43,6 +43,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
         })
     }
 
+
     inner class ProfileAdapter : ListDelegationAdapter<MutableList<Any>>() {
 
         init {
@@ -50,7 +51,9 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             delegatesManager
                 .addDelegate(
                     ProfilesAdapterDelegate(
-                        itemClick = { viewModel.navigateTo(Screens.Profile(it.id, false)) })
+                        itemClick = {
+                            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(it.id, false))
+                        })
                 )
         }
 
@@ -60,5 +63,4 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             notifyDataSetChanged()
         }
     }
-
 }

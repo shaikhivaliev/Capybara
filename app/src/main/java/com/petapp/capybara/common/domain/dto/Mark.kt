@@ -1,4 +1,4 @@
-package com.petapp.capybara.calendar.domain
+package com.petapp.capybara.common.domain.dto
 
 data class Mark(
     val id: String,

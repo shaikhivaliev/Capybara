@@ -1,4 +1,4 @@
-package com.petapp.capybara.profiles.domain
+package com.petapp.capybara.profiles.domain.dto
 
 data class Profile(
     val id: String,

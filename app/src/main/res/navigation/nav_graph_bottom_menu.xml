@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_bottom_menu"
+    app:startDestination="@id/tab_types">
+
+    <fragment
+        android:id="@+id/tab_profiles"
+        android:name="com.petapp.capybara.profiles.presentation.profiles.ProfilesFragment"
+        android:label="profiles"
+        tools:layout="@layout/fragment_profiles">
+        <action
+            android:id="@+id/profile_dest"
+            app:destination="@id/profile"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tab_calendar"
+        android:name="com.petapp.capybara.calendar.presentation.CalendarFragment"
+        android:label="profiles"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/tab_types"
+        android:name="com.petapp.capybara.surveys.presentation.types.TypesFragment"
+        android:label="types"
+        tools:layout="@layout/fragment_types">
+        <action
+            android:id="@+id/type_dest"
+            app:destination="@id/type"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/surveys_dest"
+            app:destination="@id/surveys"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/surveys"
+        android:name="com.petapp.capybara.surveys.presentation.surveys.SurveysFragment"
+        android:label="surveys"
+        tools:layout="@layout/fragment_surveys">
+        <action
+            android:id="@+id/survey_dest"
+            app:destination="@id/survey"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.petapp.capybara.profiles.presentation.profile.ProfileFragment"
+        android:label="profile" />
+
+    <fragment
+        android:id="@+id/type"
+        android:name="com.petapp.capybara.surveys.presentation.type.TypeFragment"
+        android:label="type"
+        tools:layout="@layout/fragment_type" />
+
+    <fragment
+        android:id="@+id/survey"
+        android:name="com.petapp.capybara.surveys.presentation.survey.SurveyFragment"
+        android:label="survey"
+        tools:layout="@layout/fragment_survey" />
+
+</navigation>

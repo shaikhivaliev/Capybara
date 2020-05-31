@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/auth">
+    <fragment
+        android:id="@+id/auth"
+        android:name="com.petapp.capybara.auth.AuthFragment"
+        android:label="auth"
+        tools:layout="@layout/fragment_auth" />
+
+    <fragment
+        android:id="@+id/main"
+        android:name="com.petapp.capybara.main.MainFragment"
+        android:label="main"
+        tools:layout="@layout/fragment_main" />
+
+</navigation>

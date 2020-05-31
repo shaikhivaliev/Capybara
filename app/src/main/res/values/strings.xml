@@ -15,8 +15,9 @@
     <string name="name_hint">Изменить имя</string>
     <string name="cancel_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="cancel_explanation_empty">Вы действительно хотите удалить профиль?</string>
-    <string name="mock_profiles_explanation">Список профилей пуст</string>
+    <string name="mock_profiles_explanation">Список пуст</string>
     <string name="name">Имя</string>
+    <string name="surveys_amount">Исследований:</string>
 
 
 </resources>

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.petapp.capybara.R
-import com.petapp.capybara.profiles.domain.Profile
+import com.petapp.capybara.profiles.domain.dto.Profile
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_profile.view.*
 

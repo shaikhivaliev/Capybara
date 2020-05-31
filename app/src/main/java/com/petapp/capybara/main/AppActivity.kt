@@ -1,39 +1,21 @@
 package com.petapp.capybara.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.petapp.capybara.R
-import com.petapp.capybara.navigation.Screens
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.terrakok.cicerone.Navigator
-import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.android.support.SupportAppNavigator
-import ru.terrakok.cicerone.commands.Command
 
 class AppActivity : AppCompatActivity(R.layout.activity_container) {
 
-    private val navigator: Navigator by lazy { object : SupportAppNavigator(this, supportFragmentManager, R.id.container) {} }
-
-    private val navigatorHolder by inject<NavigatorHolder>()
-
-    private val viewModel: AppViewModel by viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.setRootScreen(Screens.Main)
-    }
 
-    override fun onResumeFragments() {
-        navigatorHolder.setNavigator(navigator)
-        super.onResumeFragments()
-    }
+        val host: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment? ?: return
+        val navController = host.findNavController()
 
-    override fun onPause() {
-        navigatorHolder.removeNavigator()
-        super.onPause()
+        // todo аутенфикация
+
     }
 
 }

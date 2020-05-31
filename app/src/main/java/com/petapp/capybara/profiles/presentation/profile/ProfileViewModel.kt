@@ -3,17 +3,13 @@ package com.petapp.capybara.profiles.presentation.profile
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.navigation.Screens
-import com.petapp.capybara.profiles.data.ProfileDataRepository
-import com.petapp.capybara.profiles.domain.Profile
 import com.petapp.capybara.profiles.domain.ProfileRepository
+import com.petapp.capybara.profiles.domain.dto.Profile
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.terrakok.cicerone.Router
 
 class ProfileViewModel(
-    private val repository: ProfileRepository,
-    private val router: Router
+    private val repository: ProfileRepository
 ) : BaseViewModel() {
 
     val profile = MutableLiveData<Profile>()
@@ -25,47 +21,44 @@ class ProfileViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("database", "${it.id} get success")
+                Log.d("database", "get profile ${it.id} success")
                 profile.value = it
             },
                 {
-                    Log.d("database", "get error")
+                    Log.d("database", "get profile error")
                 }
             ).connect()
     }
 
-    fun insertProfile(profile: Profile) {
-        repository.insertProfile(profile)
+    fun createProfile(profile: Profile) {
+        repository.createProfile(profile)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     isChangeDone.value = true
-                    Log.d("database", "${profile.id} insert success")
+                    Log.d("database", "create profile ${profile.id} success")
                 },
                 {
                     isChangeDone.value = false
                     errorMessage.value = "Insert error"
-                    Log.d("database", "${profile.id} insert error")
+                    Log.d("database", "creare profile ${profile.id} error")
                 }
             ).connect()
     }
 
-    fun deleteProfile() {
-        profile.value?.let {
-            repository.deleteProfile(it.id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        isChangeDone.value = true
-                        Log.d("database", "${it.name} delete success")
-                    },
-                    {
-                        isChangeDone.value = false
-                        errorMessage.value = "Delete error"
-                        Log.d("database", "delete error")
-                    }
-                ).connect()
-        }
+    fun deleteProfile(profileId: String) {
+        repository.deleteProfile(profileId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    isChangeDone.value = true
+                    Log.d("database", "delete profile $profileId success")
+                },
+                {
+                    errorMessage.value = "error"
+                    Log.d("database", "delete profile error")
+                }
+            ).connect()
     }
 
     fun updateProfile(profile: Profile) {
@@ -74,19 +67,14 @@ class ProfileViewModel(
             .subscribe(
                 {
                     isChangeDone.value = true
-                    Log.d("database", "${profile.id} update success")
+                    Log.d("database", "update profile ${profile.id} success")
                 },
                 {
                     isChangeDone.value = false
                     errorMessage.value = "Update error"
-                    Log.d("database", "${profile.id} update error")
+                    Log.d("database", "update profile ${profile.id} error")
                 }
             ).connect()
     }
-
-    fun navigateBack() {
-        router.backTo(Screens.Profiles)
-    }
-
 
 }
