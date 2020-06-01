@@ -1,4 +1,4 @@
-package com.petapp.core_impl.database
+package com.petapp.core_impl
 
 import com.petapp.core_api.context.AppProvider
 import com.petapp.core_api.database.DatabaseProvider

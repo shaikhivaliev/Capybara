@@ -1,4 +1,4 @@
-package com.petapp.core_impl.database
+package com.petapp.core_impl
 
 import android.content.Context
 import androidx.room.Room
@@ -21,7 +21,7 @@ class DatabaseModule {
     fun provideDatabase(context: Context): DatabaseContract {
         return Room.databaseBuilder(
             context,
-            AppDatabase::class.java,
+            com.petapp.core_impl.AppDatabase::class.java,
             DATABASE_NAME
         ).build()
     }

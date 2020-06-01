@@ -32,9 +32,6 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (!item.isChecked) {
             when (item.itemId) {
-                R.id.tab_profiles -> viewModel.openProfileTab()
-                R.id.tab_calendar -> viewModel.openCalendarTab()
-                R.id.tab_surveys -> viewModel.openSurveysTab()
             }
         }
         return true

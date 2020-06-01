@@ -17,9 +17,5 @@ dependencies {
     implementation deps.dagger
     kapt deps.daggerCompiler
 
-    //fragment manager
-    implementation deps.cicerone
-
-
 }
 

@@ -1,7 +1,6 @@
 package com.petapp.main.di
 
 import com.petapp.core_api.ProvidersFacade
-import com.petapp.core_api.navigation.NavigationProvider
 import com.petapp.main.presentation.MainActivity
 import com.petapp.main.presentation.MainFragment
 import dagger.Component

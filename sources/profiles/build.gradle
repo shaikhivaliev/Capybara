@@ -32,9 +32,6 @@ dependencies {
     implementation deps.rxandroid
     implementation deps.rxjava
 
-    //fragment manager
-    implementation deps.cicerone
-
     // recycler adapter
     implementation deps.adapterDelegates
     implementation deps.kotlinReflect

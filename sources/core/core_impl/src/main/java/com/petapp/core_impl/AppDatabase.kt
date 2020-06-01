@@ -1,4 +1,4 @@
-package com.petapp.core_impl.database
+package com.petapp.core_impl
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

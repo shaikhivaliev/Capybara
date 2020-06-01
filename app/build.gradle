@@ -36,9 +36,6 @@ androidExtensions {
 
 dependencies {
 
-    implementation deps.cicerone
-
-
     implementation project(':sources:core:core')
     implementation project(':sources:main')
     implementation project(':sources:calendar')
