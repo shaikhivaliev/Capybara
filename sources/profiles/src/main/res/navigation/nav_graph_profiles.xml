@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_profiles"
+    app:startDestination="@id/profiles">
+
+    <fragment
+        android:id="@+id/profiles"
+        android:name="com.petapp.profiles.presentation.profiles.ProfilesFragment"
+        android:label="profiles">
+        <action
+            android:id="@+id/profile_dest"
+            app:destination="@id/profile"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.petapp.profiles.presentation.profile.ProfileFragment"
+        android:label="profile" />
+</navigation>

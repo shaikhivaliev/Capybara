@@ -5,12 +5,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.core_api.AppWithFacade
 import com.petapp.profiles.R
 import com.petapp.profiles.di.ProfilesComponent
 import com.petapp.profiles.domain.Profile
+import com.petapp.profiles.presentation.profile.ProfileFragment
 import com.petapp.profiles.visible
 import kotlinx.android.synthetic.main.fragment_profiles.*
 import javax.inject.Inject
@@ -39,7 +41,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             adapter = this@ProfilesFragment.adapter
         }
         add_profile.setOnClickListener {
-            //viewModel.navigateTo(Screens.Profile(null, true))
+            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(null, true))
         }
     }
 
@@ -60,7 +62,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
                 .addDelegate(
                     ProfilesAdapterDelegate(
                         itemClick = {
-                            // viewModel.navigateTo(Screens.Profile(it.id, false))
+                            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(it.id, false))
                         })
                 )
         }

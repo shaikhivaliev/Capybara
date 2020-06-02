@@ -27,4 +27,8 @@ dependencies {
     implementation deps.roomRxjava
     kapt deps.roomCompiler
 
+    // navigation
+    implementation deps.navigationFragment
+    implementation deps.navigationUi
+
 }

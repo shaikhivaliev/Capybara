@@ -1,38 +1,34 @@
-package com.petapp.main.presentation
+package com.petapp.capybara.main
 
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.petapp.core_api.AppWithFacade
-import com.petapp.main.R
-import com.petapp.main.di.MainComponent
+import com.petapp.capybara.R
 import kotlinx.android.synthetic.main.fragment_main.*
-import javax.inject.Inject
 
 class MainFragment : Fragment(R.layout.fragment_main),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    private lateinit var viewModel: MainViewModel
+    lateinit var navController: NavController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.let {
-            MainComponent.create((it.application as AppWithFacade).getFacade()).inject(this)
-            viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        }
+        val host = childFragmentManager.findFragmentById(R.id.nav_host_bottom_menu) as NavHostFragment? ?: return
+        navController = host.findNavController()
         bottom_navigation.setOnNavigationItemSelectedListener(this)
         bottom_navigation.selectedItemId = R.id.tab_profiles
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (!item.isChecked) {
-            when (item.itemId) {
-            }
+        when (item.itemId) {
+            R.id.tab_profiles -> navController.navigate(R.id.nav_graph_profiles)
+            R.id.tab_calendar -> navController.navigate(R.id.nav_graph_calendar)
+            R.id.tab_surveys -> navController.navigate(R.id.nav_graph_surveys)
         }
         return true
     }

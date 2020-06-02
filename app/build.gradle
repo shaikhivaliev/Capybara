@@ -37,14 +37,26 @@ androidExtensions {
 dependencies {
 
     implementation project(':sources:core:core')
-    implementation project(':sources:main')
     implementation project(':sources:calendar')
     implementation project(':sources:surveys')
     implementation project(':sources:profiles')
 
+    // ui
+    implementation deps.constraintLayout
+    implementation deps.appCompat
+    implementation deps.material
+    implementation deps.fragment
+
+    // di
     implementation deps.dagger
     kapt deps.daggerCompiler
 
+    // database debug
     implementation deps.stetho
+
+    // navigation
+    implementation deps.navigationFragment
+    implementation deps.navigationUi
+
 
 }
