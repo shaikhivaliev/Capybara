@@ -13,7 +13,4 @@ dependencies {
     implementation deps.roomRxjava
     kapt deps.roomCompiler
 
-    implementation deps.rxandroid
-    implementation deps.rxjava
-
 }
