@@ -12,6 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.petapp.core_api.AppWithFacade
@@ -31,12 +32,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         private const val PROFILE_ID = "PROFILE_ID"
         private const val IS_NEW_PROFILE = "IS_NEW"
 
-        fun create(country: String?, isNew: Boolean) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(PROFILE_ID, country)
-                    putBoolean(IS_NEW_PROFILE, isNew)
-                }
+        fun createBundle(profileId: String?, isNew: Boolean): Bundle =
+            Bundle().apply {
+                putString(PROFILE_ID, profileId)
+                putBoolean(IS_NEW_PROFILE, isNew)
             }
     }
 
@@ -90,8 +89,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 )
             }
         }
-
-
     }
 
     private fun getChipColor(): Int {
@@ -121,7 +118,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             setProfileCard(profile)
         })
         viewModel.isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-            //if (isDone) viewModel.navigateBack()
+            if (isDone) {
+                findNavController().navigate(R.id.profiles)
+                viewModel.isChangeDone.postValue(false)
+            }
         })
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             this.activity.toast(it)

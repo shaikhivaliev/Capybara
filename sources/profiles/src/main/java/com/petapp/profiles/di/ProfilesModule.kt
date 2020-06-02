@@ -10,29 +10,12 @@ import com.petapp.profiles.presentation.profiles.ProfilesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.multibindings.IntoMap
 import javax.inject.Singleton
 
 @Module(includes = [ProfilesModule.RepositoryBinds::class, ProfilesModule.ViewModelsBinds::class])
 class ProfilesModule {
-
-    @Provides
-    @Singleton
-    fun provideProfileViewModel(
-        map: @JvmSuppressWildcards MutableMap<Class<out ViewModel>, ViewModel>,
-        repository: ProfileRepository
-    ): ViewModel = ProfileViewModel(repository).also {
-        map[ProfileViewModel::class.java] = it
-    }
-
-    @Provides
-    @Singleton
-    fun provideProfilesViewModel(
-        map: @JvmSuppressWildcards MutableMap<Class<out ViewModel>, ViewModel>,
-        repository: ProfileRepository
-    ): ViewModel = ProfilesViewModel(repository).also {
-        map[ProfilesViewModel::class.java] = it
-    }
 
     @Singleton
     @Provides
