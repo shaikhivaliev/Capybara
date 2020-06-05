@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"   >
+    android:background="@color/light_gray">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
@@ -18,31 +18,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <com.petapp.capybara.profiles.presentation.view.ProfileCustomView
                 android:id="@+id/photo"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="start"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_add_photo_black"
-                android:tintMode="multiply"
-                tools:ignore="ContentDescription" />
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/color_mark"
-                    android:layout_width="60dp"
-                    android:layout_height="0dp"
-                    android:layout_gravity="start"
-                    android:background="@android:color/white"
-                    android:scaleType="centerInside"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/profile_name"
