@@ -39,11 +39,11 @@ class ProfilesAdapterDelegate(
 
         fun bind(profile: Profile) {
             this.profile = profile
-            containerView.color_mark.setBackgroundResource(profile.color)
             containerView.profile_name.text = profile.name
+            containerView.photo.setColor(profile.color)
+            containerView.photo.setInitials(profile.name)
             Glide.with(containerView)
                 .load(profile.photo)
-                .placeholder(R.drawable.ic_add_photo_black)
                 .into(containerView.photo)
         }
     }

@@ -23,6 +23,7 @@ import com.petapp.capybara.profiles.domain.dto.Profile
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     companion object {
@@ -36,7 +37,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
     }
-
 
     private val profileId by argument(PROFILE_ID, "")
     private val isNewProfile by argument(IS_NEW_PROFILE, false)
@@ -53,12 +53,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         color_group.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.white -> color_mark.setBackgroundResource(android.R.color.white)
-                R.id.green -> color_mark.setBackgroundResource(R.color.green)
-                R.id.red -> color_mark.setBackgroundResource(R.color.red)
-                R.id.blue -> color_mark.setBackgroundResource(R.color.blue)
-                R.id.yellow -> color_mark.setBackgroundResource(R.color.yellow)
-                R.id.violet -> color_mark.setBackgroundResource(R.color.violet)
+                R.id.white -> photo.setColor(android.R.color.white)
+                R.id.green -> photo.setColor(R.color.green)
+                R.id.red -> photo.setColor(R.color.red)
+                R.id.blue -> photo.setColor(R.color.blue)
+                R.id.yellow -> photo.setColor(R.color.yellow)
+                R.id.violet -> photo.setColor(R.color.violet)
             }
         }
 
@@ -127,16 +127,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
     private fun setProfileCard(profile: Profile) {
-        Glide.with(this)
-            .load(profile.photo)
-            .placeholder(R.drawable.ic_add_photo_black)
-            .into(photo)
-
-        color_mark.setBackgroundResource(profile.color)
-
         profile_name.text = profile.name
-
         name_et.setText(profile.name)
+        photo.setInitials(profile.name)
+        profile.photo?.let {
+            Glide.with(this)
+                .load(profile.photo)
+                .into(photo)
+        }
 
         when (profile.color) {
             android.R.color.white -> white.isChecked = true
@@ -176,9 +174,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     if (result.data == null) {
                         Glide.with(this)
                             .load(currentPhotoUri)
-                            .placeholder(R.drawable.ic_add_photo_black)
                             .into(photo)
-
                     }
                     // gallery
                     try {
@@ -187,8 +183,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         if (intent != null && uri != null) {
                             currentPhotoUri = uri
                             Glide.with(this)
-                                .load(intent.data)
-                                .placeholder(R.drawable.ic_add_photo_black)
+                                .load(currentPhotoUri)
                                 .into(photo)
 
                             val takeFlags =

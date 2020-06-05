@@ -47,6 +47,9 @@ fun createChip(context: Context, mark: Mark): Chip {
     return chip
 }
 
+fun Context.dpTpPx(dp: Int): Float {
+    return dp.toFloat() * this.resources.displayMetrics.density
+}
 
 /**
  * Functions "argument", "extractFromBundle" and class "BundleExtractorDelegate"
