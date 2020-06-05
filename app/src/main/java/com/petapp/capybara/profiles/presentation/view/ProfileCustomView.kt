@@ -119,6 +119,7 @@ class ProfileCustomView @JvmOverloads constructor
 
     fun setInitials(name: String) {
         initials = name.first().toString()
+        invalidate()
     }
 
     override fun setImageBitmap(bm: Bitmap?) {
