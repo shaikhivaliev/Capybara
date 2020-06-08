@@ -9,7 +9,6 @@ import androidx.navigation.ui.NavigationUI
 import com.petapp.capybara.R
 import kotlinx.android.synthetic.main.fragment_main.*
 
-
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -17,5 +16,4 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         val host = childFragmentManager.findFragmentById(R.id.nav_host_bottom_menu) as NavHostFragment? ?: return
         NavigationUI.setupWithNavController(bottom_navigation, host.findNavController())
     }
-
 }

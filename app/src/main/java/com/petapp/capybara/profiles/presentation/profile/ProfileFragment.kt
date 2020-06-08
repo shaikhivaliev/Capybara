@@ -23,7 +23,6 @@ import com.petapp.capybara.profiles.domain.dto.Profile
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     companion object {
@@ -125,7 +124,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         })
     }
 
-
     private fun setProfileCard(profile: Profile) {
         profile_name.text = profile.name
         name_et.setText(profile.name)
@@ -164,7 +162,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
     }
-
 
     private fun startForResult() {
         val startForResult =
@@ -205,7 +202,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         startForResult.launch(chooser)
     }
 
-
     private fun openCamera(): Intent {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         activity?.let {
@@ -229,6 +225,4 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun navigateBack() {
         findNavController().navigate(R.id.tab_profiles)
     }
-
-
 }

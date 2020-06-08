@@ -15,5 +15,4 @@ interface SurveysRepository {
     fun updateSurvey(survey: Survey): Completable
 
     fun deleteSurvey(surveyId: String): Completable
-
 }

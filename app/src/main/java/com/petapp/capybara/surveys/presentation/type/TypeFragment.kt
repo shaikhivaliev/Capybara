@@ -106,5 +106,4 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     private fun navigateBack() {
         findNavController().navigate(R.id.tab_types)
     }
-
 }

@@ -109,5 +109,4 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     private fun navigateBack(typeId: String) {
         findNavController().navigate(R.id.surveys, SurveysFragment.createBundle(typeId))
     }
-
 }

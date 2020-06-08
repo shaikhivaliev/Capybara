@@ -1,7 +1,6 @@
 package com.petapp.capybara.surveys.data
 
 import com.petapp.capybara.database.AppDao
-import com.petapp.capybara.profiles.domain.dto.Profile
 import com.petapp.capybara.surveys.data.mappers.SurveyEntityMapper
 import com.petapp.capybara.surveys.domain.SurveysRepository
 import com.petapp.capybara.surveys.domain.dto.Survey
@@ -36,5 +35,4 @@ class SurveysDataRepository(
         return Completable.fromAction { appDao.deleteSurvey(surveyId) }
             .subscribeOn(Schedulers.io())
     }
-
 }

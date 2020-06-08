@@ -12,12 +12,11 @@ import androidx.core.graphics.toRectF
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.dpTpPx
 
-class ProfileCustomView @JvmOverloads constructor
-    (
-    context: Context,
-    attributeSet: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : AppCompatImageView(context, attributeSet, defStyleAttr) {
+class ProfileCustomView @JvmOverloads constructor(
+        context: Context,
+        attributeSet: AttributeSet? = null,
+        defStyleAttr: Int = 0
+    ) : AppCompatImageView(context, attributeSet, defStyleAttr) {
 
     companion object {
         private const val DEFAULT_SIZE = 56
@@ -44,7 +43,6 @@ class ProfileCustomView @JvmOverloads constructor
             style = Paint.Style.STROKE
         }
     }
-
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         when (MeasureSpec.getMode(widthMeasureSpec)) {
@@ -80,7 +78,6 @@ class ProfileCustomView @JvmOverloads constructor
         }
         prepareShader(w, h)
     }
-
 
     override fun onDraw(canvas: Canvas) {
         if (drawable != null && isAvatarMode) drawAvatar(canvas) else drawInitials(canvas)

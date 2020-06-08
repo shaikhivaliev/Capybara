@@ -6,5 +6,4 @@ import io.reactivex.Single
 interface CommonRepository {
 
     fun getMarks(): Single<List<Mark>>
-
 }

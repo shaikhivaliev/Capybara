@@ -27,7 +27,7 @@ fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_LONG) = this
 fun Context.createImageFile(): File {
     @SuppressLint("SimpleDateFormat")
     val timeStamp = SimpleDateFormat("yyyy.MM.dd_hh:mm:ss").format(Date())
-    val imageFileName = "capybara_${timeStamp}.jpg"
+    val imageFileName = "capybara_$timeStamp.jpg"
     val storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     return File(storageDir, imageFileName)
 }

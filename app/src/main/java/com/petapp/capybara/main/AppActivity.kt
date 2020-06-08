@@ -15,7 +15,5 @@ class AppActivity : AppCompatActivity(R.layout.activity_container) {
         val navController = host.findNavController()
 
         // todo аутенфикация
-
     }
-
 }

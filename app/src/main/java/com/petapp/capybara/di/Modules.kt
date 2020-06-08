@@ -58,4 +58,3 @@ val appModule = module {
 
     single { TypesEntityMapper() }
 }
-

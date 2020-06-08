@@ -25,7 +25,6 @@ interface AppDao {
     @Query("DELETE FROM profile WHERE id = :profileId")
     fun deleteProfile(profileId: String)
 
-
     // types
     @Query("SELECT * FROM type")
     fun getTypes(): Single<List<TypeEntity>>
@@ -42,7 +41,6 @@ interface AppDao {
     @Query("DELETE FROM type WHERE id = :typeId")
     fun deleteType(typeId: String)
 
-
     @Query("SELECT * FROM survey WHERE type_id = :typeId")
     fun getSurveys(typeId: String): Single<List<SurveyEntity>>
 
@@ -57,6 +55,4 @@ interface AppDao {
 
     @Query("DELETE FROM survey WHERE id = :surveyId")
     fun deleteSurvey(surveyId: String)
-
-
 }

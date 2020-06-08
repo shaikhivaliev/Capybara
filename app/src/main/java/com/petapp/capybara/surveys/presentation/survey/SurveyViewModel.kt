@@ -41,7 +41,6 @@ class SurveyViewModel(
             }, {
                 errorMessage.value = "error"
                 Log.d("database", "create survey error")
-
             }).connect()
     }
 
@@ -75,5 +74,4 @@ class SurveyViewModel(
                 }
             ).connect()
     }
-
 }

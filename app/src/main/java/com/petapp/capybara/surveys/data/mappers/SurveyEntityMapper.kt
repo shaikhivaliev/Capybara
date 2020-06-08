@@ -29,5 +29,4 @@ class SurveyEntityMapper {
         }
         return surveys
     }
-
 }

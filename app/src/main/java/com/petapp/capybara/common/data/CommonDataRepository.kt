@@ -7,7 +7,8 @@ import io.reactivex.Single
 
 class CommonDataRepository(
     private val appDao: AppDao,
-    private val mapper: CommonEntityMapper) :
+    private val mapper: CommonEntityMapper
+) :
     CommonRepository {
 
     override fun getMarks(): Single<List<Mark>> {

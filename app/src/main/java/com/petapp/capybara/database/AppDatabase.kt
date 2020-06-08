@@ -10,5 +10,4 @@ import com.petapp.capybara.database.entity.TypeEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun appDao(): AppDao
-
 }
