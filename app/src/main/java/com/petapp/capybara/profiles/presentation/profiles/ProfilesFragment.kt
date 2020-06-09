@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
@@ -31,7 +32,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             adapter = this@ProfilesFragment.adapter
         }
         add_profile.setOnClickListener {
-            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(null, true))
+            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(null, true, null))
         }
     }
 
@@ -52,10 +53,12 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             delegatesManager
                 .addDelegate(
                     ProfilesAdapterDelegate(
-                        itemClick = {
+                        itemClick = { profile, view ->
                             findNavController().navigate(
                                 R.id.profile,
-                                ProfileFragment.createBundle(it.id, false)
+                                ProfileFragment.createBundle(profile.id, false, profile.name),
+                                null,
+                                FragmentNavigatorExtras(view to profile.name)
                             )
                         })
                 )
