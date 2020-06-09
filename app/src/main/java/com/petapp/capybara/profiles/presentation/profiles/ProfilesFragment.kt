@@ -24,6 +24,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getProfiles()
         initObservers()
+        add_profile.showAdd()
 
         with(recycler_view) {
             this.layoutManager = LinearLayoutManager(context)
@@ -52,7 +53,10 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
                 .addDelegate(
                     ProfilesAdapterDelegate(
                         itemClick = {
-                            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(it.id, false))
+                            findNavController().navigate(
+                                R.id.profile,
+                                ProfileFragment.createBundle(it.id, false)
+                            )
                         })
                 )
         }

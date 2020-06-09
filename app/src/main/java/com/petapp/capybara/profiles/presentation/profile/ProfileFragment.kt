@@ -47,6 +47,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         if (!isNewProfile) viewModel.getProfile(profileId)
         initObservers()
+        done.showDone()
 
         name_et.doAfterTextChanged { name_layout.error = null }
 
