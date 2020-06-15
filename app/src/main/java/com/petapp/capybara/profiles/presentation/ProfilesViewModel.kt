@@ -1,9 +1,10 @@
 package com.petapp.capybara.profiles.presentation
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.petapp.capybara.common.BaseItem
 import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.common.RecyclerItems
 import com.petapp.capybara.extensions.notifyObserver
 import com.petapp.capybara.profiles.domain.Profile
 import com.petapp.capybara.profiles.domain.ProfilesRepository
@@ -13,8 +14,10 @@ import javax.inject.Inject
 
 class ProfilesViewModel @Inject constructor(private val repository: ProfilesRepository) : BaseViewModel() {
 
-    var profiles = MutableLiveData<MutableList<Profile>>()
-    var isShowMock = MutableLiveData<Boolean>()
+    private val _profiles = MutableLiveData<MutableList<Profile>>()
+    val profiles: LiveData<MutableList<Profile>> get() = _profiles
+    private val _isShowMock = MutableLiveData<Boolean>()
+    val isShowMock: LiveData<Boolean> get() = _isShowMock
 
     fun updateProfiles() {
         repository.getProfiles()
@@ -22,8 +25,8 @@ class ProfilesViewModel @Inject constructor(private val repository: ProfilesRepo
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    isShowMock.value = it.isEmpty()
-                    profiles.value = it
+                    _isShowMock.value = it.isEmpty()
+                    _profiles.value = it
                 },
                 { Log.d("database", "Get profiles error") }
             ).connect()
@@ -66,29 +69,34 @@ class ProfilesViewModel @Inject constructor(private val repository: ProfilesRepo
     }
 
 
-    fun setProfileState(profile: Profile) {
+    fun changeProfileItemState(profile: Profile) {
         profiles.value?.filter { it.id != profile.id }?.forEach {
             it.isShowEditItem = false
             it.profileEdit.isShowColorsItem = false
         }
-        if (!profile.isShowEditItem) updateProfile(profile) else profiles.notifyObserver()
+
+        if (profile.isShowEditItem) {
+            _profiles.notifyObserver()
+        } else {
+            updateProfile(profile)
+        }
 
     }
 
     fun showColorsItem() {
-        profiles.notifyObserver()
+        _profiles.notifyObserver()
     }
 
     fun setColor(parentId: Int, color: Int) {
-        profiles.value?.find { it.id == parentId }.apply {
-            this?.profileEdit?.profileColor?.chosenColor = color
-            this?.color = color
+        profiles.value?.find { it.id == parentId }?.apply {
+            this.profileEdit.profileColor.chosenColor = color
+            this.color = color
         }
-        profiles.notifyObserver()
+        _profiles.notifyObserver()
     }
 
-    fun flatten(items: List<Profile>): List<RecyclerItems> {
-        val result = mutableListOf<RecyclerItems>()
+    fun mapToBaseItem(items: List<Profile>): List<BaseItem> {
+        val result = mutableListOf<BaseItem>()
         items.forEach { profile ->
             result.add(profile)
             if (profile.isShowEditItem) result.add(profile.profileEdit)

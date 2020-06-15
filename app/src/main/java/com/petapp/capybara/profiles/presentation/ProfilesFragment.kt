@@ -10,10 +10,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.R
 import com.petapp.capybara.common.App
 import com.petapp.capybara.common.ItemsAdapter
-import com.petapp.capybara.di.componet.DaggerAppComponent
 import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.profiles.domain.ProfileEdit
 import com.petapp.capybara.profiles.domain.Profile
+import com.petapp.capybara.profiles.domain.ProfileEdit
 import kotlinx.android.synthetic.main.fragment_profiles.*
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
     private val adapter: ItemsAdapter by lazy {
         ItemsAdapter(
-            profileDelegate { viewModel.setProfileState(it) },
+            profileDelegate { viewModel.changeProfileItemState(it) },
             editProfileDelegate(
                 onEditColor = { viewModel.showColorsItem() },
                 onDeleteProfile = { deleteItem(it) }
@@ -52,7 +51,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
     private fun initObservers() {
         viewModel.profiles.observe(this, Observer {
-            adapter.items = viewModel.flatten(it)
+            adapter.items = viewModel.mapToBaseItem(it)
             recycler_view.post { adapter.notifyDataSetChanged() }
         })
         viewModel.isShowMock.observe(this, Observer { isShow ->
