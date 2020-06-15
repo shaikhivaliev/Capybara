@@ -13,6 +13,9 @@ fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
+/**
+https://stackoverflow.com/a/52075248
+ */
 fun <T> MutableLiveData<T>.notifyObserver() {
     this.value = this.value
 }
