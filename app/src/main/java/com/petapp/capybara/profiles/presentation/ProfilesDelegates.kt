@@ -3,7 +3,7 @@ package com.petapp.capybara.profiles.presentation
 import android.text.Editable
 import android.text.TextWatcher
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import com.petapp.capybara.common.RecyclerItems
+import com.petapp.capybara.common.BaseItem
 import com.petapp.capybara.R
 import com.petapp.capybara.profiles.domain.ProfileColor
 import com.petapp.capybara.profiles.domain.ProfileEdit
@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_color.*
 import kotlinx.android.synthetic.main.item_edit_profile.*
 import kotlinx.android.synthetic.main.item_new_profile.*
 
-fun profileDelegate(onEditProfile: (Profile) -> Unit) = adapterDelegateLayoutContainer<Profile, RecyclerItems>(R.layout.item_new_profile) {
+fun profileDelegate(onEditProfile: (Profile) -> Unit) = adapterDelegateLayoutContainer<Profile, BaseItem>(R.layout.item_new_profile) {
     bind {
         mark_title.setBackgroundResource(item.color)
         edit_title.setText(item.title)
@@ -45,7 +45,7 @@ fun profileDelegate(onEditProfile: (Profile) -> Unit) = adapterDelegateLayoutCon
 }
 
 fun editProfileDelegate(onEditColor: (ProfileEdit) -> Unit, onDeleteProfile: (ProfileEdit) -> Unit) =
-    adapterDelegateLayoutContainer<ProfileEdit, RecyclerItems>(R.layout.item_edit_profile) {
+    adapterDelegateLayoutContainer<ProfileEdit, BaseItem>(R.layout.item_edit_profile) {
         bind {
             edit_mark.setOnClickListener {
                 onEditColor(item.apply { isShowColorsItem = isShowColorsItem.not() })
@@ -54,7 +54,7 @@ fun editProfileDelegate(onEditColor: (ProfileEdit) -> Unit, onDeleteProfile: (Pr
         }
     }
 
-fun colorDelegate(onChooseColor: (Int, Int) -> Unit) = adapterDelegateLayoutContainer<ProfileColor, RecyclerItems>(R.layout.item_color) {
+fun colorDelegate(onChooseColor: (Int, Int) -> Unit) = adapterDelegateLayoutContainer<ProfileColor, BaseItem>(R.layout.item_color) {
     bind {
         // сетим уже выбранный цвет
         when (item.chosenColor) {

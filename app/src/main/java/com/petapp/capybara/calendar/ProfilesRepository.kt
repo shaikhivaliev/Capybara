@@ -1,6 +1,6 @@
 package com.petapp.capybara.calendar
 
-import com.petapp.capybara.Profile
+import com.petapp.capybara.profiles.domain.Profile
 import io.reactivex.Single
 
 interface ProfilesRepository {

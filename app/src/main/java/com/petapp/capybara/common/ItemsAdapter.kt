@@ -4,12 +4,12 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
-class ItemsAdapter(vararg delegates: AdapterDelegate<List<RecyclerItems>>) :
-    AsyncListDifferDelegationAdapter<RecyclerItems>(
-        object : DiffUtil.ItemCallback<RecyclerItems>() {
-            override fun areItemsTheSame(oldItem: RecyclerItems, newItem: RecyclerItems) = oldItem.isSame(newItem)
-            override fun areContentsTheSame(oldItem: RecyclerItems, newItem: RecyclerItems) = oldItem == newItem
-            override fun getChangePayload(oldItem: RecyclerItems, newItem: RecyclerItems) = Any()
+class ItemsAdapter(vararg delegates: AdapterDelegate<List<BaseItem>>) :
+    AsyncListDifferDelegationAdapter<BaseItem>(
+        object : DiffUtil.ItemCallback<BaseItem>() {
+            override fun areItemsTheSame(oldItem: BaseItem, newItem: BaseItem) = oldItem.isSame(newItem)
+            override fun areContentsTheSame(oldItem: BaseItem, newItem: BaseItem) = oldItem == newItem
+            override fun getChangePayload(oldItem: BaseItem, newItem: BaseItem) = Any()
         }
     ) {
 
