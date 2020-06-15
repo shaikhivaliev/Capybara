@@ -1,10 +1,10 @@
 package com.petapp.capybara.profiles.domain
 
-import com.petapp.capybara.common.RecyclerItems
+import com.petapp.capybara.common.BaseItem
 import com.petapp.capybara.common.UniqueId
 
 class Profile(
-    override var id: Int = UniqueId.id,
+    override var id: Int = UniqueId.generateId(),
     var title: String = "",
     var color: Int = android.R.color.white,
     var isShowEditItem: Boolean = false,
@@ -18,4 +18,4 @@ class Profile(
             chosenColor = color
         )
     )
-) : RecyclerItems()
+) : BaseItem()
