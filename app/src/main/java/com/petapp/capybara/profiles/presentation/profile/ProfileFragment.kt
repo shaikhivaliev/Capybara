@@ -12,6 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionInflater
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
@@ -28,25 +29,31 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     companion object {
         private const val PROFILE_ID = "PROFILE_ID"
         private const val IS_NEW_PROFILE = "IS_NEW"
+        private const val TRANSITION_NAME = "TRANSITION_NAME"
 
-        fun createBundle(profileId: String?, isNew: Boolean): Bundle {
+        fun createBundle(profileId: String?, isNew: Boolean, transitionName: String?): Bundle {
             return Bundle().apply {
                 putString(PROFILE_ID, profileId)
                 putBoolean(IS_NEW_PROFILE, isNew)
+                putString(TRANSITION_NAME, transitionName)
             }
         }
     }
 
     private val profileId by argument(PROFILE_ID, "")
     private val isNewProfile by argument(IS_NEW_PROFILE, false)
+    private val transitionName by argument(TRANSITION_NAME, "")
     private var currentPhotoUri: Uri? = null
 
     private val viewModel: ProfileViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        photo.transitionName = transitionName
         if (!isNewProfile) viewModel.getProfile(profileId)
         initObservers()
+        done.showDone()
 
         name_et.doAfterTextChanged { name_layout.error = null }
 

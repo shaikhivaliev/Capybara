@@ -3,6 +3,7 @@ package com.petapp.capybara.profiles.presentation.profiles
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
@@ -12,7 +13,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_profile.view.*
 
 class ProfilesAdapterDelegate(
-    private val itemClick: (Profile) -> Unit
+    private val itemClick: (Profile, ImageView) -> Unit
 ) : AdapterDelegate<MutableList<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -34,7 +35,7 @@ class ProfilesAdapterDelegate(
         private lateinit var profile: Profile
 
         init {
-            containerView.setOnClickListener { itemClick(profile) }
+            containerView.setOnClickListener { itemClick(profile, containerView.photo) }
         }
 
         fun bind(profile: Profile) {
@@ -42,6 +43,7 @@ class ProfilesAdapterDelegate(
             containerView.profile_name.text = profile.name
             containerView.photo.setColor(profile.color)
             containerView.photo.setInitials(profile.name)
+            containerView.photo.transitionName = profile.name
             Glide.with(containerView)
                 .load(profile.photo)
                 .into(containerView.photo)
