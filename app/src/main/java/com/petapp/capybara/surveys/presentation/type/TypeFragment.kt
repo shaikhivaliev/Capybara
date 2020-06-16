@@ -11,7 +11,6 @@ import com.petapp.capybara.common.UniqueId
 import com.petapp.capybara.extensions.argument
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.surveys.domain.dto.Type
-import kotlinx.android.synthetic.main.fragment_survey.done
 import kotlinx.android.synthetic.main.fragment_type.*
 import org.koin.android.ext.android.inject
 
@@ -36,6 +35,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        done.showDone()
         if (!isNewType) viewModel.getType(typeId)
         initObservers()
         delete_type.setOnClickListener { deleteType() }

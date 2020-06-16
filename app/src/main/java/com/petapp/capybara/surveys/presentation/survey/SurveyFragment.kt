@@ -22,7 +22,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         private const val TYPE_ID = "TYPE_ID"
         private const val IS_NEW_SURVEY = "IS_NEW_SURVEY"
 
-        fun create(surveyId: String?, typeId: String, isNew: Boolean): Bundle {
+        fun create(surveyId: String?, typeId: String?, isNew: Boolean): Bundle {
             return Bundle().apply {
                 putString(SURVEY_ID, surveyId)
                 putString(TYPE_ID, typeId)
@@ -39,6 +39,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        done.showDone()
         if (isNewSurvey) viewModel.getSurvey(surveyId)
         initObservers()
         delete_survey.setOnClickListener { deleteSurvey() }
