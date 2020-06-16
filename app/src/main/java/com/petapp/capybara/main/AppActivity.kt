@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.R
 
 class AppActivity : AppCompatActivity(R.layout.activity_container) {
@@ -14,6 +15,11 @@ class AppActivity : AppCompatActivity(R.layout.activity_container) {
         val host: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment? ?: return
         val navController = host.findNavController()
 
-        // todo аутенфикация
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            navController.navigate(R.id.auth)
+        } else {
+            navController.navigate(R.id.main)
+        }
     }
 }
