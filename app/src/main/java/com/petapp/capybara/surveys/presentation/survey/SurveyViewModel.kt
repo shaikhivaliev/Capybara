@@ -25,7 +25,6 @@ class SurveyViewModel(
                 Log.d("database", "get survey ${it.id} success")
             },
                 {
-                    errorMessage.value = "error"
                     Log.d("database", "get survey error")
                 }
             ).connect()

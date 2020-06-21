@@ -1,4 +1,4 @@
-package com.petapp.capybara.calendar.presentation
+package com.petapp.capybara.calendar
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

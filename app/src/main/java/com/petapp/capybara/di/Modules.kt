@@ -1,6 +1,6 @@
 package com.petapp.capybara.di
 
-import com.petapp.capybara.calendar.presentation.CalendarViewModel
+import com.petapp.capybara.calendar.CalendarViewModel
 import com.petapp.capybara.common.data.CommonDataRepository
 import com.petapp.capybara.common.data.CommonEntityMapper
 import com.petapp.capybara.common.domain.CommonRepository

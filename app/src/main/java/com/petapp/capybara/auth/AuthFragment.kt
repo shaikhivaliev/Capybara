@@ -51,7 +51,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-                findNavController().navigate(R.id.main)
+                findNavController().navigate(R.id.auth_to_main)
             } else {
                 auth_error.visible(true)
             }

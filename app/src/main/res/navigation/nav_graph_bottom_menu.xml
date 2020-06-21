@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/tab_calendar"
-        android:name="com.petapp.capybara.calendar.presentation.CalendarFragment"
+        android:name="com.petapp.capybara.calendar.CalendarFragment"
         android:label="profiles"
         tools:layout="@layout/fragment_calendar" />
 

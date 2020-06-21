@@ -1,4 +1,4 @@
-package com.petapp.capybara.calendar.presentation
+package com.petapp.capybara.calendar
 
 import android.os.Bundle
 import android.view.View
@@ -9,10 +9,8 @@ import com.petapp.capybara.R
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.visible
 import com.petapp.capybara.surveys.presentation.survey.SurveyFragment
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_calendar.add_survey
 import kotlinx.android.synthetic.main.fragment_calendar.mark_group
-import kotlinx.android.synthetic.main.fragment_surveys.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {

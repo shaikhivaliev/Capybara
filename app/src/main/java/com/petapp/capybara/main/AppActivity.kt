@@ -2,6 +2,7 @@ package com.petapp.capybara.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +20,8 @@ class AppActivity : AppCompatActivity(R.layout.activity_container) {
         if (user == null) {
             navController.navigate(R.id.auth)
         } else {
-            navController.navigate(R.id.main)
+            val navOptions = NavOptions.Builder().setPopUpTo(R.id.nav_graph_main, true).build()
+            navController.navigate(R.id.main, null, navOptions)
         }
     }
 }
