@@ -5,13 +5,17 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.common.domain.dto.Mark
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.temporal.WeekFields
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,6 +53,21 @@ fun createChip(context: Context, mark: Mark): Chip {
 
 fun Context.dpTpPx(dp: Int): Float {
     return dp.toFloat() * this.resources.displayMetrics.density
+}
+
+fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
+
+fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
+
+fun daysOfWeekFromLocale(): Array<DayOfWeek> {
+    val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+    var daysOfWeek = DayOfWeek.values()
+    if (firstDayOfWeek != DayOfWeek.MONDAY) {
+        val rhs = daysOfWeek.sliceArray(firstDayOfWeek.ordinal..daysOfWeek.indices.last)
+        val lhs = daysOfWeek.sliceArray(0 until firstDayOfWeek.ordinal)
+        daysOfWeek = rhs + lhs
+    }
+    return daysOfWeek
 }
 
 /**
