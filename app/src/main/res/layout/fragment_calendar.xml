@@ -28,10 +28,10 @@
         android:id="@+id/iv_previous_month"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginEnd="22dp"
+        android:layout_marginStart="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_group"
+        app:layout_constraintBottom_toBottomOf="@id/tv_month"
         app:srcCompat="@drawable/ic_arrow_left" />
 
     <TextView
@@ -39,20 +39,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toStartOf="@id/iv_next_month"
+        android:textSize="38sp"
         app:layout_constraintStart_toEndOf="@id/iv_previous_month"
         app:layout_constraintTop_toBottomOf="@id/chip_group"
-        tools:text="April 2018" />
+        tools:text="April" />
 
     <ImageView
         android:id="@+id/iv_next_month"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_group"
+        app:layout_constraintBottom_toBottomOf="@id/tv_month"
+
         app:srcCompat="@drawable/ic_arrow_right" />
+
 
 
     <com.kizitonwose.calendarview.CalendarView
@@ -64,6 +66,7 @@
         app:cv_orientation="horizontal"
         app:cv_outDateStyle="endOfGrid"
         app:cv_scrollMode="paged"
+        app:cv_monthHeaderResource="@layout/view_calendar_day_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_previous_month" />
