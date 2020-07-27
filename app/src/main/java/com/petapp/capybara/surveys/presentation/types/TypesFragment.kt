@@ -34,7 +34,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
         }
 
         add_type.setOnClickListener {
-            navigateToType(null, true, R.drawable.ic_vaccination)
+            navigateToType(null, true)
         }
     }
 
@@ -55,7 +55,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
                 .addDelegate(
                     TypesAdapterDelegate(
                         itemClick = { navigateToSurveys(it.id) },
-                        editClick = { navigateToType(it.id, false, it.icon) }
+                        editClick = { navigateToType(it.id, false) }
                     )
                 )
         }
@@ -71,7 +71,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
         findNavController().navigate(R.id.surveys, SurveysFragment.createBundle(typeId))
     }
 
-    private fun navigateToType(typeId: String?, isNewType: Boolean, iconRes: Int) {
-        findNavController().navigate(R.id.type, TypeFragment.create(typeId, isNewType, iconRes))
+    private fun navigateToType(typeId: String?, isNewType: Boolean) {
+        findNavController().navigate(R.id.type, TypeFragment.create(typeId, isNewType))
     }
 }

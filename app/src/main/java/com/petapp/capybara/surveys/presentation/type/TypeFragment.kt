@@ -13,10 +13,7 @@ import com.petapp.capybara.common.UniqueId
 import com.petapp.capybara.extensions.argument
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.surveys.domain.dto.Type
-import com.petapp.capybara.surveys.presentation.types.TypesAdapterDelegate
-import com.petapp.capybara.surveys.presentation.types.TypesFragment
 import kotlinx.android.synthetic.main.fragment_type.*
-import kotlinx.android.synthetic.main.fragment_types.*
 import org.koin.android.ext.android.inject
 
 class TypeFragment : Fragment(R.layout.fragment_type) {
@@ -24,13 +21,11 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     companion object {
         private const val TYPE_ID = "TYPE_ID"
         private const val IS_NEW_TYPE = "IS_NEW_TYPE"
-        private const val ICON_RES = "ICON_RES"
 
-        fun create(typeId: String?, isNew: Boolean, iconRes: Int): Bundle {
+        fun create(typeId: String?, isNew: Boolean): Bundle {
             return Bundle().apply {
                 putString(TYPE_ID, typeId)
                 putBoolean(IS_NEW_TYPE, isNew)
-                putInt(ICON_RES, iconRes)
             }
         }
     }
@@ -41,7 +36,6 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     private val typeId by argument(TYPE_ID, "")
     private val isNewType by argument(IS_NEW_TYPE, false)
-    private val iconRes by argument(ICON_RES, R.drawable.ic_vaccination)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,14 +57,13 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
             R.drawable.ic_vision
         )
         adapter.setDataSet(iconResList)
-        icon.setImageResource(iconRes)
     }
 
     private fun createType() {
         if (isNameValid()) {
             val id = UniqueId.id.toString()
             val name = name_et.text.toString()
-            val type = Type(id, name, null, R.drawable.ic_vaccination)
+            val type = Type(id, name, 0, R.drawable.ic_vaccination)
             viewModel.createType(type)
         }
     }
@@ -78,7 +71,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     private fun updateType() {
         if (isNameValid()) {
             val name = name_et.text.toString()
-            val type = Type(typeId, name, null, icon.tag as Int)
+            val type = Type(typeId, name, surveys_amount.text.toString().toIntOrNull(), icon.tag as Int)
             viewModel.updateType(type)
         }
     }
@@ -115,6 +108,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     private fun setType(type: Type) {
         name_et.setText(type.name)
+        icon.setImageResource(type.icon)
+        surveys_amount.text = type.amount.toString()
     }
 
     private fun isNameValid(): Boolean {

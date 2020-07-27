@@ -14,11 +14,11 @@ class DatabaseProvider(context: Context) {
     private val setInitialData: RoomDatabase.Callback = object : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             Executors.newSingleThreadExecutor().execute {
-                val typeBlood = TypeEntity(UniqueId.id.toString(), "Анализы крови", "0", R.drawable.ic_blood)
+                val typeBlood = TypeEntity(UniqueId.id.toString(), "Анализы крови", 0, R.drawable.ic_blood)
                 database.appDao().insertType(typeBlood)
-                val typeHeart = TypeEntity(UniqueId.id.toString(), "Сердце", "0", R.drawable.ic_heart)
+                val typeHeart = TypeEntity(UniqueId.id.toString(), "Сердце", 0, R.drawable.ic_heart)
                 database.appDao().insertType(typeHeart)
-                val typeTeeth = TypeEntity(UniqueId.id.toString(), "Стоматолог", "0", R.drawable.ic_teeth)
+                val typeTeeth = TypeEntity(UniqueId.id.toString(), "Стоматолог", 0, R.drawable.ic_teeth)
                 database.appDao().insertType(typeTeeth)
             }
         }

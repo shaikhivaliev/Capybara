@@ -12,7 +12,7 @@ data class TypeEntity(
     @ColumnInfo(name = "title")
     val name: String,
     @ColumnInfo(name = "amount")
-    val amount: String?,
+    val amount: Int?,
     @ColumnInfo(name = "icon")
     val icon: Int
 )
