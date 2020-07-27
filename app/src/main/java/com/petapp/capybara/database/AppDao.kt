@@ -41,6 +41,10 @@ interface AppDao {
     @Query("DELETE FROM type WHERE id = :typeId")
     fun deleteType(typeId: String)
 
+    @Query("SELECT COUNT(*) FROM type")
+    fun count(): Int
+
+    // surveys
     @Query("SELECT * FROM survey WHERE type_id = :typeId")
     fun getSurveys(typeId: String): Single<List<SurveyEntity>>
 

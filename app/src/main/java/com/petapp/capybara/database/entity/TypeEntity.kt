@@ -14,5 +14,5 @@ data class TypeEntity(
     @ColumnInfo(name = "amount")
     val amount: String?,
     @ColumnInfo(name = "icon")
-    val icon: String?
+    val icon: Int
 )

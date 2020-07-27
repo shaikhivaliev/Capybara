@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
@@ -28,12 +29,12 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
         initObservers()
 
         with(recycler_view) {
-            this.layoutManager = LinearLayoutManager(context)
+            this.layoutManager = GridLayoutManager(context, 2)
             adapter = this@TypesFragment.adapter
         }
 
         add_type.setOnClickListener {
-            navigateToType(null, true)
+            navigateToType(null, true, R.drawable.ic_vaccination)
         }
     }
 
@@ -54,7 +55,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
                 .addDelegate(
                     TypesAdapterDelegate(
                         itemClick = { navigateToSurveys(it.id) },
-                        editClick = { navigateToType(it.id, false) }
+                        editClick = { navigateToType(it.id, false, it.icon) }
                     )
                 )
         }
@@ -70,7 +71,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
         findNavController().navigate(R.id.surveys, SurveysFragment.createBundle(typeId))
     }
 
-    private fun navigateToType(typeId: String?, isNewType: Boolean) {
-        findNavController().navigate(R.id.type, TypeFragment.create(typeId, isNewType))
+    private fun navigateToType(typeId: String?, isNewType: Boolean, iconRes: Int) {
+        findNavController().navigate(R.id.type, TypeFragment.create(typeId, isNewType, iconRes))
     }
 }

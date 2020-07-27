@@ -4,5 +4,5 @@ data class Type(
     val id: String,
     val name: String,
     val amount: String?,
-    val icon: String?
+    val icon: Int
 )

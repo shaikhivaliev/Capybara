@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray">
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
         android:layout_width="match_parent"
@@ -16,7 +26,7 @@
         android:background="@color/light_gray"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/icon">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_et"
@@ -31,6 +41,17 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_layout"
+        tools:listitem="@layout/item_type_icon" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/delete_type"
@@ -43,7 +64,7 @@
         app:icon="@drawable/ic_delete"
         app:iconGravity="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_layout"
+        app:layout_constraintTop_toBottomOf="@id/recycler"
         tools:ignore="RtlSymmetry" />
 
     <com.petapp.capybara.profiles.presentation.view.AddToDoneMorphView

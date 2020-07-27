@@ -12,10 +12,7 @@
         tools:layout="@layout/fragment_profiles">
         <action
             android:id="@+id/profile_dest"
-            app:destination="@id/profile"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/profile"/>
     </fragment>
 
     <fragment
@@ -31,16 +28,10 @@
         tools:layout="@layout/fragment_types">
         <action
             android:id="@+id/type_dest"
-            app:destination="@id/type"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/type"/>
         <action
             android:id="@+id/surveys_dest"
-            app:destination="@id/surveys"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/surveys"/>
     </fragment>
 
     <fragment
@@ -50,10 +41,7 @@
         tools:layout="@layout/fragment_surveys">
         <action
             android:id="@+id/survey_dest"
-            app:destination="@id/survey"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/survey" />
     </fragment>
 
     <fragment
