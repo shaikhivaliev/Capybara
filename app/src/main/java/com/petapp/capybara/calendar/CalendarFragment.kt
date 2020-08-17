@@ -15,11 +15,8 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.previous
 import com.petapp.capybara.R
-import com.petapp.capybara.extensions.createChip
-import com.petapp.capybara.extensions.daysOfWeekFromLocale
-import com.petapp.capybara.extensions.setTextColorRes
-import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.surveys.presentation.survey.SurveyFragment
+import com.petapp.capybara.extensions.*
+import com.petapp.capybara.survey.SurveyFragment
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.view_calendar_day.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,7 +36,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         super.onViewCreated(view, savedInstanceState)
         setupCalendar()
         add_survey.showAdd()
-        viewModel.getMarks()
         initObservers()
         add_survey.setOnClickListener {
             navigateToSurvey(null, null, true)
@@ -48,13 +44,18 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
 
     private fun initObservers() {
-        viewModel.marks.observe(viewLifecycleOwner, Observer { marks ->
-            mark_group.visible(marks.isNotEmpty())
-            mark_group.removeAllViews()
-            for (mark in marks) {
-                mark_group.addView(createChip(requireContext(), mark))
-            }
-        })
+        with(viewModel) {
+            marks.observe(viewLifecycleOwner, Observer { marks ->
+                mark_group.visible(marks.isNotEmpty())
+                mark_group.removeAllViews()
+                for (mark in marks) {
+                    mark_group.addView(createChip(requireContext(), mark))
+                }
+            })
+            errorMessage.observe(viewLifecycleOwner, Observer {error ->
+                requireActivity().toast(error)
+            })
+        }
     }
 
     private fun navigateToSurvey(surveyId: String?, typeId: String?, isNewSurvey: Boolean) {

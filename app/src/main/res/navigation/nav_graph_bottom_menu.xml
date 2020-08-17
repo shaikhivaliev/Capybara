@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/tab_profiles"
-        android:name="com.petapp.capybara.profiles.presentation.profiles.ProfilesFragment"
+        android:name="com.petapp.capybara.profiles.ProfilesFragment"
         android:label="profiles"
         tools:layout="@layout/fragment_profiles">
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/tab_types"
-        android:name="com.petapp.capybara.surveys.presentation.types.TypesFragment"
+        android:name="com.petapp.capybara.types.TypesFragment"
         android:label="types"
         tools:layout="@layout/fragment_types">
         <action
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/surveys"
-        android:name="com.petapp.capybara.surveys.presentation.surveys.SurveysFragment"
+        android:name="com.petapp.capybara.surveys.SurveysFragment"
         android:label="surveys"
         tools:layout="@layout/fragment_surveys">
         <action
@@ -46,18 +46,18 @@
 
     <fragment
         android:id="@+id/profile"
-        android:name="com.petapp.capybara.profiles.presentation.profile.ProfileFragment"
+        android:name="com.petapp.capybara.profile.ProfileFragment"
         android:label="profile" />
 
     <fragment
         android:id="@+id/type"
-        android:name="com.petapp.capybara.surveys.presentation.type.TypeFragment"
+        android:name="com.petapp.capybara.type.TypeFragment"
         android:label="type"
         tools:layout="@layout/fragment_type" />
 
     <fragment
         android:id="@+id/survey"
-        android:name="com.petapp.capybara.surveys.presentation.survey.SurveyFragment"
+        android:name="com.petapp.capybara.survey.SurveyFragment"
         android:label="survey"
         tools:layout="@layout/fragment_survey" />
 

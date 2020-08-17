@@ -19,5 +19,22 @@
     <string name="name">Имя</string>
     <string name="surveys_amount">Исследований:</string>
 
+    <!-- errors-->
+    <string name="error_create_profile">Произошла ошибка при создание профиля</string>
+    <string name="error_delete_profile">Произошла ошибка при удаление профиля</string>
+    <string name="error_update_profile">Произошла ошибка при обновление профиля</string>
+    <string name="error_get_profile">Не удалось получить профиль</string>
+    <string name="error_get_profiles">Не удалось получить профили</string>
+    <string name="error_get_marks">Не удалось получить профили</string>
+    <string name="error_create_survey">Произошла ошибка при создание исследования</string>
+    <string name="error_delete_survey">Произошла ошибка при удаление исследования</string>
+    <string name="error_update_survey">Произошла ошибка при обновление исследования</string>
+    <string name="error_get_survey">Не удалось получить исследование</string>
+    <string name="error_get_surveys">Не удалось получить исследования</string>
+    <string name="error_create_type">Произошла ошибка при создание типа исследования</string>
+    <string name="error_delete_type">Произошла ошибка при удаление типа исследования</string>
+    <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
+    <string name="error_get_type">Не удалось получить тип исследования</string>
+    <string name="error_get_types">Не удалось получить тип исследований</string>
 
 </resources>

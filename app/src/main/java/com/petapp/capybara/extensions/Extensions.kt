@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
-import com.petapp.capybara.common.domain.dto.Mark
+import com.petapp.capybara.data.model.Mark
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.temporal.WeekFields
 import java.io.File
@@ -26,7 +26,7 @@ fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_LONG) = this?.let { Toast.makeText(it, text, duration).show() }
+fun Context?.toast(stringRes: Int, duration: Int = Toast.LENGTH_LONG) = this?.let { Toast.makeText(it, getString(stringRes), duration).show() }
 
 fun Context.createImageFile(): File {
     @SuppressLint("SimpleDateFormat")
