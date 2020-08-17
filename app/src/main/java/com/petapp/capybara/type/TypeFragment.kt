@@ -63,7 +63,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         if (isNameValid()) {
             val id = UniqueId.id.toString()
             val name = name_et.text.toString()
-            val type = Type(id, name, 0, R.drawable.ic_vaccination)
+            val type = Type(id = id, name = name, icon = R.drawable.ic_vaccination)
             viewModel.createType(type)
         }
     }
@@ -72,7 +72,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         if (isNameValid()) {
             val name = name_et.text.toString()
             val type =
-                Type(typeId, name, surveys_amount.text.toString().toIntOrNull(), icon.tag as Int)
+                Type(id = typeId, name = name, icon = icon.tag as Int)
             viewModel.updateType(type)
         }
     }
@@ -112,7 +112,6 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     private fun setType(type: Type) {
         name_et.setText(type.name)
         icon.setImageResource(type.icon)
-        surveys_amount.text = type.amount.toString()
     }
 
     private fun isNameValid(): Boolean {

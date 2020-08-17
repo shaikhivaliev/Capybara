@@ -13,7 +13,7 @@ class ProfileRepositoryImpl(private val appDao: AppDao) : ProfileRepository {
     }
 
     override fun getProfile(profileId: String): Single<Profile> {
-        return appDao.getProfile(profileId).map { it.toProfiles() }
+        return appDao.getProfile(profileId).map { it.toProfile() }
     }
 
     override fun createProfile(profile: Profile): Completable {

@@ -13,7 +13,7 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
     }
 
     override fun getSurvey(surveyId: String): Single<Survey> {
-        return appDao.getSurvey(surveyId).map { it.toSurveys() }
+        return appDao.getSurvey(surveyId).map { it.toSurvey() }
     }
 
     override fun createSurvey(survey: Survey): Completable {

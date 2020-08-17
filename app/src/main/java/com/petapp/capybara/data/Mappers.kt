@@ -7,6 +7,7 @@ import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.database.entity.ProfileEntity
 import com.petapp.capybara.database.entity.SurveyEntity
 import com.petapp.capybara.database.entity.TypeEntity
+import com.petapp.capybara.database.entity.TypeWithSurveys
 
 fun ProfileEntity.toMark(): Mark {
     return Mark(
@@ -25,7 +26,7 @@ fun List<ProfileEntity>.toMarks(): List<Mark> {
     return marks
 }
 
-fun ProfileEntity.toProfiles(): Profile {
+fun ProfileEntity.toProfile(): Profile {
     return Profile(
         id = this.id,
         name = this.name,
@@ -46,13 +47,13 @@ fun Profile.toProfileEntity(): ProfileEntity {
 fun List<ProfileEntity>.toProfiles(): List<Profile> {
     val profiles = arrayListOf<Profile>()
     for (profileEntity in this) {
-        val profile = profileEntity.toProfiles()
+        val profile = profileEntity.toProfile()
         profiles.add(profile)
     }
     return profiles
 }
 
-fun SurveyEntity.toSurveys(): Survey {
+fun SurveyEntity.toSurvey(): Survey {
     return Survey(
         id = this.id,
         typeId = this.typeId,
@@ -71,18 +72,26 @@ fun Survey.toSurveyEntity(): SurveyEntity {
 fun List<SurveyEntity>.toSurveys(): List<Survey> {
     val surveys = arrayListOf<Survey>()
     for (surveyEntity in this) {
-        val survey = surveyEntity.toSurveys()
+        val survey = surveyEntity.toSurvey()
         surveys.add(survey)
     }
     return surveys
 }
 
-fun TypeEntity.toTypes(): Type {
+fun TypeEntity.toType(): Type {
     return Type(
         id = this.id,
         name = this.name,
-        amount = this.amount,
         icon = this.icon
+    )
+}
+
+fun TypeWithSurveys.toType(): Type {
+    return Type(
+        id = this.type.id,
+        name = this.type.name,
+        icon = this.type.icon,
+        surveys = this.surveys.toSurveys()
     )
 }
 
@@ -90,15 +99,14 @@ fun Type.toTypeEntity(): TypeEntity {
     return TypeEntity(
         id = this.id,
         name = this.name,
-        amount = this.amount,
         icon = this.icon
     )
 }
 
-fun List<TypeEntity>.toTypes(): List<Type> {
+fun List<TypeWithSurveys>.toTypes(): List<Type> {
     val types = arrayListOf<Type>()
     for (typeEntity in this) {
-        val profile = typeEntity.toTypes()
+        val profile = typeEntity.toType()
         types.add(profile)
     }
     return types

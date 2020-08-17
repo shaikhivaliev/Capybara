@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray">
 
+    <include
+        android:id="@+id/mock"
+        layout="@layout/view_mock"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"

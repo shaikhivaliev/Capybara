@@ -9,11 +9,11 @@ import io.reactivex.schedulers.Schedulers
 class TypesRepositoryImpl(private val appDao: AppDao) : TypesRepository {
 
     override fun getTypes(): Single<List<Type>> {
-        return appDao.getTypes().map { it.toTypes() }
+        return appDao.getTypesWithSurveys().map { it.toTypes() }
     }
 
     override fun getType(typeId: String): Single<Type> {
-        return appDao.getType(typeId).map { it.toTypes() }
+        return appDao.getType(typeId).map { it.toType() }
     }
 
     override fun createType(type: Type): Completable {

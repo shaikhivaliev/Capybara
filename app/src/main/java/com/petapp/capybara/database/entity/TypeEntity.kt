@@ -11,8 +11,6 @@ data class TypeEntity(
     val id: String,
     @ColumnInfo(name = "title")
     val name: String,
-    @ColumnInfo(name = "amount")
-    val amount: Int?,
     @ColumnInfo(name = "icon")
     val icon: Int
 )

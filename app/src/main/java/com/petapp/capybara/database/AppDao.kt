@@ -4,6 +4,7 @@ import androidx.room.*
 import com.petapp.capybara.database.entity.ProfileEntity
 import com.petapp.capybara.database.entity.SurveyEntity
 import com.petapp.capybara.database.entity.TypeEntity
+import com.petapp.capybara.database.entity.TypeWithSurveys
 import io.reactivex.Single
 
 @Dao
@@ -26,8 +27,9 @@ interface AppDao {
     fun deleteProfile(profileId: String)
 
     // types
+    @Transaction
     @Query("SELECT * FROM type")
-    fun getTypes(): Single<List<TypeEntity>>
+    fun getTypesWithSurveys(): Single<List<TypeWithSurveys>>
 
     @Query("SELECT * FROM type WHERE id = :typeId")
     fun getType(typeId: String): Single<TypeEntity>

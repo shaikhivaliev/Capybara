@@ -49,7 +49,7 @@ class TypesAdapterDelegate(
         fun bind(type: Type) {
             this.type = type
             containerView.title.text = type.name
-            containerView.surveys_amount.text = type.amount.toString()
+            containerView.surveys_amount.text = type.surveys.size.toString()
             Glide.with(containerView)
                 .load(type.icon)
                 .into(containerView.icon)
