@@ -26,7 +26,6 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         add_type.showAdd()
-        viewModel.getTypes()
         initObservers()
 
         with(recycler_view) {

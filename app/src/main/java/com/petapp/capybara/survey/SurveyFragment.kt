@@ -1,7 +1,12 @@
 package com.petapp.capybara.survey
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -14,22 +19,10 @@ import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.surveys.SurveysFragment
 import kotlinx.android.synthetic.main.fragment_survey.*
 import org.koin.android.ext.android.inject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SurveyFragment : Fragment(R.layout.fragment_survey) {
-
-    companion object {
-        private const val SURVEY_ID = "SURVEY_ID"
-        private const val TYPE_ID = "TYPE_ID"
-        private const val IS_NEW_SURVEY = "IS_NEW_SURVEY"
-
-        fun create(surveyId: String?, typeId: String?, isNew: Boolean): Bundle {
-            return Bundle().apply {
-                putString(SURVEY_ID, surveyId)
-                putString(TYPE_ID, typeId)
-                putBoolean(IS_NEW_SURVEY, isNew)
-            }
-        }
-    }
 
     private val viewModel: SurveyViewModel by inject()
 
@@ -40,25 +33,28 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         done.showDone()
-        if (isNewSurvey) viewModel.getSurvey(surveyId)
+        if (!isNewSurvey) viewModel.getSurvey(surveyId)
         initObservers()
+        initWorkWithDate()
         delete_survey.setOnClickListener { deleteSurvey() }
         done.setOnClickListener { if (isNewSurvey) createSurvey() else updateSurvey() }
     }
 
     private fun createSurvey() {
-        if (isNameValid()) {
+        if (isFieldsValid()) {
             val id = UniqueId.id.toString()
             val name = name_et.text.toString()
-            val survey = Survey(id, typeId, name)
+            val date = survey_date_et.text.toString()
+            val survey = Survey(id, typeId, name, date)
             viewModel.createSurvey(survey)
         }
     }
 
     private fun updateSurvey() {
-        if (isNameValid()) {
+        if (isFieldsValid()) {
             val name = name_et.text.toString()
-            val survey = Survey(surveyId, typeId, name)
+            val date = survey_date_et.text.toString()
+            val survey = Survey(surveyId, typeId, name, date)
             viewModel.updateSurvey(survey)
         }
     }
@@ -92,17 +88,24 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
+            types.observe(viewLifecycleOwner, Observer { types ->
+                for (type in types) {
+                    radio_group.addView(creteRadioButton(type.name))
+                }
+            })
         }
     }
 
     private fun setSurvey(survey: Survey) {
         name_et.setText(survey.name)
+        survey_date_et.setText(survey.date)
     }
 
-    private fun isNameValid(): Boolean {
+    private fun isFieldsValid(): Boolean {
         if (!isNewSurvey) return true
         val name = name_et.text.toString()
-        return if (name.isNotBlank()) true
+        val date = survey_date_et.text.toString()
+        return if (name.isNotBlank() && date.isNotBlank()) true
         else {
             name_layout.error = "Пустое имя"
             false
@@ -111,5 +114,60 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private fun navigateBack(typeId: String) {
         findNavController().navigate(R.id.surveys, SurveysFragment.createBundle(typeId))
+    }
+
+    private fun creteRadioButton(type: String): RadioButton {
+        val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.setMargins(
+            MARGIN_START_END,
+            MARGIN_TOP_BOTTOM,
+            MARGIN_START_END,
+            MARGIN_TOP_BOTTOM
+        )
+
+        return RadioButton(requireActivity()).apply {
+            text = type
+            layoutParams = params
+            setPadding(PADDING_START, 0, 0, 0)
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun initWorkWithDate() {
+
+        survey_date_et.setOnClickListener {
+            val date = Calendar.getInstance()
+
+            val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                date.set(year, month, dayOfMonth)
+                survey_date_et.setText(SimpleDateFormat("dd.MM.yyyy").format(date.time))
+            }
+
+            DatePickerDialog(
+                requireActivity(),
+                listener,
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+    }
+
+    companion object {
+        private const val SURVEY_ID = "SURVEY_ID"
+        private const val TYPE_ID = "TYPE_ID"
+        private const val IS_NEW_SURVEY = "IS_NEW_SURVEY"
+        const val MARGIN_TOP_BOTTOM = 14
+        const val MARGIN_START_END = 24
+        const val PADDING_START = 24
+
+
+        fun create(surveyId: String?, typeId: String?, isNew: Boolean): Bundle {
+            return Bundle().apply {
+                putString(SURVEY_ID, surveyId)
+                putString(TYPE_ID, typeId)
+                putBoolean(IS_NEW_SURVEY, isNew)
+            }
+        }
     }
 }

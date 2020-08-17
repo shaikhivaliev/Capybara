@@ -29,7 +29,7 @@ val appModule = module {
 
     viewModel { SurveysViewModel(get(), get()) }
 
-    viewModel { SurveyViewModel(get()) }
+    viewModel { SurveyViewModel(get(), get()) }
 
     single<MarksRepository> { MarksRepositoryImpl(get()) }
 

@@ -24,7 +24,11 @@ class TypesViewModel(
     private val _isShowMock = MutableLiveData<Boolean>()
     val isShowMock: LiveData<Boolean> get() = _isShowMock
 
-    fun getTypes() {
+    init {
+        getTypes()
+    }
+
+    private fun getTypes() {
         repositoryType.getTypes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

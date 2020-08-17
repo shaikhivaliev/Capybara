@@ -6,13 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.SurveysRepository
+import com.petapp.capybara.data.TypesRepository
 import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.data.model.Type
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SurveyViewModel(
-    private val repository: SurveysRepository
+    private val surveyRepo: SurveysRepository,
+    private val typesRepo: TypesRepository
 ) : BaseViewModel() {
+
+    private val _types = MutableLiveData<List<Type>>()
+    val types: LiveData<List<Type>> get() = _types
 
     private val _survey = MutableLiveData<Survey>()
     val survey: LiveData<Survey> get() = _survey
@@ -23,8 +29,27 @@ class SurveyViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
+    init {
+        getTypes()
+    }
+
+    private fun getTypes() {
+        typesRepo.getTypes()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _types.value = it
+                Log.d(TAG, "get types success")
+            },
+                {
+                    _errorMessage.value = R.string.error_get_types
+                    Log.d(TAG, "get types error")
+                }
+            ).connect()
+    }
+
     fun getSurvey(surveyId: String) {
-        repository.getSurvey(surveyId)
+        surveyRepo.getSurvey(surveyId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -39,7 +64,7 @@ class SurveyViewModel(
     }
 
     fun createSurvey(survey: Survey) {
-        repository.createSurvey(survey)
+        surveyRepo.createSurvey(survey)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -52,7 +77,7 @@ class SurveyViewModel(
     }
 
     fun updateSurvey(survey: Survey) {
-        repository.updateSurvey(survey)
+        surveyRepo.updateSurvey(survey)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -68,7 +93,7 @@ class SurveyViewModel(
     }
 
     fun deleteSurvey(surveyId: String) {
-        repository.deleteSurvey(surveyId)
+        surveyRepo.deleteSurvey(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {

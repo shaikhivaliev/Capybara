@@ -12,5 +12,7 @@ data class SurveyEntity(
     @ColumnInfo(name = "type_id")
     val typeId: String,
     @ColumnInfo(name = "title")
-    val name: String
+    val name: String,
+    @ColumnInfo(name = "date")
+    var date: String
 )

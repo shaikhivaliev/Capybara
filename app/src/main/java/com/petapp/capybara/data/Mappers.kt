@@ -57,7 +57,8 @@ fun SurveyEntity.toSurvey(): Survey {
     return Survey(
         id = this.id,
         typeId = this.typeId,
-        name = this.name
+        name = this.name,
+        date = this.date
     )
 }
 
@@ -65,7 +66,8 @@ fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
         id = this.id,
         typeId = this.typeId,
-        name = this.name
+        name = this.name,
+        date = this.date
     )
 }
 

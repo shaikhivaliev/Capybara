@@ -36,5 +36,6 @@
     <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
     <string name="error_get_type">Не удалось получить тип исследования</string>
     <string name="error_get_types">Не удалось получить тип исследований</string>
+    <string name="date">Дата</string>
 
 </resources>
