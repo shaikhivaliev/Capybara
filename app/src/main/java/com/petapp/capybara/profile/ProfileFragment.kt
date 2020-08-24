@@ -159,9 +159,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         activity?.let {
             MaterialDialog(it).show {
                 if (name.isNotBlank()) {
-                    title(text = getString(R.string.cancel_explanation, name))
+                    title(text = getString(R.string.profile_delete_explanation, name))
                 } else {
-                    title(text = getString(R.string.cancel_explanation_empty))
+                    title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
                     if (!isNewProfile) viewModel.deleteProfile(profileId) else navigateBack()

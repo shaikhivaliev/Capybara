@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_bottom_menu"
-    app:startDestination="@id/tab_types">
+    android:id="@+id/nav_graph_home"
+    app:startDestination="@id/tab_profiles">
 
     <fragment
         android:id="@+id/tab_profiles"
@@ -11,15 +11,18 @@
         android:label="profiles"
         tools:layout="@layout/fragment_profiles">
         <action
-            android:id="@+id/profile_dest"
-            app:destination="@id/profile"/>
+            android:id="@+id/to_profile"
+            app:destination="@id/profile" />
     </fragment>
 
     <fragment
         android:id="@+id/tab_calendar"
         android:name="com.petapp.capybara.calendar.CalendarFragment"
-        android:label="profiles"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/to_survey"
+            app:destination="@id/nav_graph_survey" />
+    </fragment>
 
     <fragment
         android:id="@+id/tab_types"
@@ -27,11 +30,11 @@
         android:label="types"
         tools:layout="@layout/fragment_types">
         <action
-            android:id="@+id/type_dest"
-            app:destination="@id/type"/>
+            android:id="@+id/to_type"
+            app:destination="@id/type" />
         <action
-            android:id="@+id/surveys_dest"
-            app:destination="@id/surveys"/>
+            android:id="@+id/to_surveys"
+            app:destination="@id/surveys" />
     </fragment>
 
     <fragment
@@ -40,8 +43,8 @@
         android:label="surveys"
         tools:layout="@layout/fragment_surveys">
         <action
-            android:id="@+id/survey_dest"
-            app:destination="@id/survey" />
+            android:id="@+id/to_survey"
+            app:destination="@id/nav_graph_survey" />
     </fragment>
 
     <fragment
@@ -55,10 +58,7 @@
         android:label="type"
         tools:layout="@layout/fragment_type" />
 
-    <fragment
-        android:id="@+id/survey"
-        android:name="com.petapp.capybara.survey.SurveyFragment"
-        android:label="survey"
-        tools:layout="@layout/fragment_survey" />
+    <include app:graph="@navigation/nav_graph_survey" />
+
 
 </navigation>

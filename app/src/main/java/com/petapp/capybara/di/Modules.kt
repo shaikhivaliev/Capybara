@@ -1,5 +1,7 @@
 package com.petapp.capybara.di
 
+import androidx.navigation.NavController
+import com.petapp.capybara.auth.AuthViewModel
 import com.petapp.capybara.calendar.CalendarViewModel
 import com.petapp.capybara.data.*
 import com.petapp.capybara.database.DatabaseProvider
@@ -17,19 +19,35 @@ val appModule = module {
 
     single { DatabaseProvider(androidContext()).appDao() }
 
-    viewModel { ProfilesViewModel(get()) }
+    viewModel { (navController: NavController) ->
+        AuthViewModel(
+            navController = navController
+        )
+    }
 
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfilesViewModel(repository = get()) }
 
-    viewModel { CalendarViewModel(get()) }
+    viewModel { ProfileViewModel(repository = get()) }
 
-    viewModel { TypesViewModel(get()) }
+    viewModel { CalendarViewModel(repository = get()) }
 
-    viewModel { TypeViewModel(get()) }
+    viewModel { TypesViewModel(repository = get()) }
 
-    viewModel { SurveysViewModel(get(), get()) }
+    viewModel { TypeViewModel(repository = get()) }
 
-    viewModel { SurveyViewModel(get(), get()) }
+    viewModel {
+        SurveysViewModel(
+            repositoryMarks = get(),
+            repositorySurveys = get()
+        )
+    }
+
+    viewModel {
+        SurveyViewModel(
+            repositorySurveys = get(),
+            repositoryTypes = get()
+        )
+    }
 
     single<MarksRepository> { MarksRepositoryImpl(get()) }
 

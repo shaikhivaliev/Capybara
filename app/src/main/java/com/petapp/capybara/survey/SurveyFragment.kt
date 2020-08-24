@@ -64,9 +64,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         activity?.let {
             MaterialDialog(it).show {
                 if (name.isNotBlank()) {
-                    title(text = getString(R.string.cancel_explanation, name))
+                    title(text = getString(R.string.profile_delete_explanation, name))
                 } else {
-                    title(text = getString(R.string.cancel_explanation_empty))
+                    title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
                     if (!isNewSurvey) viewModel.deleteSurvey(surveyId) else navigateBack(typeId)

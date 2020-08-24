@@ -82,9 +82,9 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         activity?.let {
             MaterialDialog(it).show {
                 if (name.isNotBlank()) {
-                    title(text = getString(R.string.cancel_explanation, name))
+                    title(text = getString(R.string.profile_delete_explanation, name))
                 } else {
-                    title(text = getString(R.string.cancel_explanation_empty))
+                    title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
                     if (!isNewType) viewModel.deleteType(typeId) else navigateBack()

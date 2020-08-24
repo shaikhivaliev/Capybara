@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SurveysViewModel(
-    private val repository: SurveysRepository,
+    private val repositorySurveys: SurveysRepository,
     private val repositoryMarks: MarksRepository
 ) : BaseViewModel() {
 
@@ -51,7 +51,7 @@ class SurveysViewModel(
 
 
     fun getSurveys(typeId: String) {
-        repository.getSurveys(typeId)
+        repositorySurveys.getSurveys(typeId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (it.isNotEmpty()) getMarks() }

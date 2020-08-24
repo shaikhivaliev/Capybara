@@ -2,8 +2,8 @@ package com.petapp.capybara.main
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -14,7 +14,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val host = childFragmentManager.findFragmentById(R.id.nav_host_bottom_menu) as NavHostFragment? ?: return
+        val host = childFragmentManager.findFragmentById(R.id.nav_host_home) as NavHostFragment? ?: return
         NavigationUI.setupWithNavController(bottom_navigation, host.findNavController())
     }
 }

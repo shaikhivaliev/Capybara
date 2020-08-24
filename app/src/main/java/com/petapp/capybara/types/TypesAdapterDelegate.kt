@@ -48,11 +48,13 @@ class TypesAdapterDelegate(
 
         fun bind(type: Type) {
             this.type = type
-            containerView.title.text = type.name
-            containerView.surveys_amount.text = type.surveys.size.toString()
-            Glide.with(containerView)
-                .load(type.icon)
-                .into(containerView.icon)
+            with(containerView) {
+                title.text = type.name
+                surveys_amount.text = type.surveys.size.toString()
+                Glide.with(this)
+                    .load(type.icon)
+                    .into(icon)
+            }
         }
     }
 }

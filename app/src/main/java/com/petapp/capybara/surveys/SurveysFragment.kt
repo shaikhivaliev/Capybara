@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
@@ -19,21 +20,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
-    companion object {
-        private const val TYPE_ID = "TYPE_ID"
-
-        fun createBundle(typeId: String?): Bundle {
-            return Bundle().apply {
-                putString(TYPE_ID, typeId)
-            }
-        }
-    }
-
-    private val typeId by argument(TYPE_ID, "")
-
     private val viewModel: SurveysViewModel by viewModel()
 
     private val adapter: SurveysAdapter by lazy { SurveysAdapter() }
+
+    private val typeId by argument(TYPE_ID, "")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,7 +80,18 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
     }
 
     private fun navigateToSurvey(surveyId: String?, typeId: String, isNewSurvey: Boolean) {
-        findNavController().navigate(R.id.survey, SurveyFragment.create(surveyId, typeId, isNewSurvey))
+        val host: NavHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment? ?: return
+        val navController = host.findNavController()
+        navController.navigate(R.id.to_survey, SurveyFragment.create(surveyId, typeId, isNewSurvey))
     }
 
+    companion object {
+        private const val TYPE_ID = "TYPE_ID"
+
+        fun createBundle(typeId: String?): Bundle {
+            return Bundle().apply {
+                putString(TYPE_ID, typeId)
+            }
+        }
+    }
 }

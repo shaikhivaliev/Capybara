@@ -40,13 +40,15 @@ class ProfilesAdapterDelegate(
 
         fun bind(profile: Profile) {
             this.profile = profile
-            containerView.profile_name.text = profile.name
-            containerView.photo.setColor(profile.color)
-            containerView.photo.setInitials(profile.name)
-            containerView.photo.transitionName = profile.name
-            Glide.with(containerView)
-                .load(profile.photo)
-                .into(containerView.photo)
+            with(containerView) {
+                profile_name.text = profile.name
+                photo.setColor(profile.color)
+                photo.setInitials(profile.name)
+                photo.transitionName = profile.name
+                Glide.with(this)
+                    .load(profile.photo)
+                    .into(photo)
+            }
         }
     }
 }

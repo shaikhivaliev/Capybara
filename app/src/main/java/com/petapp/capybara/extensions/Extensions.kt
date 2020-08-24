@@ -11,6 +11,9 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Mark
@@ -21,6 +24,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun NavDirections.navigateWith(navController: NavController, navOptions: NavOptions? = null) {
+    if (navController.currentDestination?.getAction(actionId) != null) {
+        navController.navigate(this, navOptions)
+    }
+}
 
 fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE

@@ -51,7 +51,7 @@
             android:paddingStart="0dp"
             android:clickable="true"
             android:focusable="false"
-            android:hint="@string/date"
+            android:hint="@string/survey_date"
             android:inputType="text"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

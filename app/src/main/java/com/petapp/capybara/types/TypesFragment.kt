@@ -1,6 +1,7 @@
 package com.petapp.capybara.types
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -8,13 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
 import com.petapp.capybara.surveys.SurveysFragment
 import com.petapp.capybara.type.TypeFragment
 import kotlinx.android.synthetic.main.fragment_types.*
-import kotlinx.android.synthetic.main.fragment_types.recycler_view
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TypesFragment : Fragment(R.layout.fragment_types) {

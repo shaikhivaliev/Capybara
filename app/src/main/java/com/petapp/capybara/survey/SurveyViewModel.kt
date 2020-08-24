@@ -13,8 +13,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SurveyViewModel(
-    private val surveyRepo: SurveysRepository,
-    private val typesRepo: TypesRepository
+    private val repositorySurveys: SurveysRepository,
+    private val repositoryTypes: TypesRepository
 ) : BaseViewModel() {
 
     private val _types = MutableLiveData<List<Type>>()
@@ -34,7 +34,7 @@ class SurveyViewModel(
     }
 
     private fun getTypes() {
-        typesRepo.getTypes()
+        repositoryTypes.getTypes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -49,7 +49,7 @@ class SurveyViewModel(
     }
 
     fun getSurvey(surveyId: String) {
-        surveyRepo.getSurvey(surveyId)
+        repositorySurveys.getSurvey(surveyId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -64,7 +64,7 @@ class SurveyViewModel(
     }
 
     fun createSurvey(survey: Survey) {
-        surveyRepo.createSurvey(survey)
+        repositorySurveys.createSurvey(survey)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -77,7 +77,7 @@ class SurveyViewModel(
     }
 
     fun updateSurvey(survey: Survey) {
-        surveyRepo.updateSurvey(survey)
+        repositorySurveys.updateSurvey(survey)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -93,7 +93,7 @@ class SurveyViewModel(
     }
 
     fun deleteSurvey(surveyId: String) {
-        surveyRepo.deleteSurvey(surveyId)
+        repositorySurveys.deleteSurvey(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {

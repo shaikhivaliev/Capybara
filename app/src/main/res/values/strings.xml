@@ -1,8 +1,11 @@
 <resources>
-    <!-- commom-->
+    <!-- common-->
     <string name="app_name">Capybara</string>
+    <string name="database_name">database</string>
     <string name="delete">Удалить</string>
     <string name="done">Готово</string>
+    <string name="name">Имя</string>
+    <string name="surveys_amount">Исследований:</string>
 
     <!-- tabs-->
     <string name="tab_types">По типам</string>
@@ -10,14 +13,20 @@
     <string name="tab_calendar">Календарь</string>
     <string name="tab_new_profile">Профили</string>
 
-    <!-- new profile-->
-    <string name="mark">Метка</string>
-    <string name="name_hint">Изменить имя</string>
-    <string name="cancel_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
-    <string name="cancel_explanation_empty">Вы действительно хотите удалить профиль?</string>
-    <string name="mock_profiles_explanation">Список пуст</string>
-    <string name="name">Имя</string>
-    <string name="surveys_amount">Исследований:</string>
+    <!-- profile-->
+    <string name="profile_mark">Метка</string>
+    <string name="profile_name_hint">Изменить имя</string>
+    <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
+    <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
+    <string name="profile_mock">Список пуст</string>
+
+    <!-- survey-->
+    <string name="survey_date">Дата</string>
+
+    <!-- type-->
+    <string name="type_default_blood">Кровь</string>
+    <string name="type_default_heart">Сердце</string>
+    <string name="type_default_teeth">Стоматолог</string>
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>
@@ -36,6 +45,4 @@
     <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
     <string name="error_get_type">Не удалось получить тип исследования</string>
     <string name="error_get_types">Не удалось получить тип исследований</string>
-    <string name="date">Дата</string>
-
 </resources>

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -59,9 +60,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun navigateToSurvey(surveyId: String?, typeId: String?, isNewSurvey: Boolean) {
-        findNavController().navigate(R.id.survey, SurveyFragment.create(surveyId, typeId, isNewSurvey))
+        val host: NavHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment? ?: return
+        val navController = host.findNavController()
+        navController.navigate(R.id.to_survey, SurveyFragment.create(surveyId, typeId, isNewSurvey))
     }
-
 
     private fun setupCalendar() {
 
@@ -118,7 +120,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             tv_month.text = title
 
             selectedDate?.let {
-                // Clear selection if we scroll to a new month.
                 selectedDate = null
                 calendar.notifyDateChanged(it)
             }
