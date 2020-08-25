@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -17,10 +16,10 @@ import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.previous
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.*
-import com.petapp.capybara.survey.SurveyFragment
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.view_calendar_day.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth
 import java.text.SimpleDateFormat
@@ -28,7 +27,9 @@ import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
-    private val viewModel: CalendarViewModel by viewModel()
+    private val viewModel: CalendarViewModel by viewModel {
+        parametersOf(findNavController())
+    }
 
     private var selectedDate: LocalDate? = null
     private val monthTitleFormatter = SimpleDateFormat("LLLL", Locale.getDefault())
@@ -38,9 +39,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         setupCalendar()
         add_survey.showAdd()
         initObservers()
-        add_survey.setOnClickListener {
-            navigateToSurvey(null, null, true)
-        }
+        add_survey.setOnClickListener { viewModel.openSurveyScreen(null, true, null) }
     }
 
 
@@ -53,18 +52,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     mark_group.addView(createChip(requireContext(), mark))
                 }
             })
-            errorMessage.observe(viewLifecycleOwner, Observer {error ->
+            errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
         }
     }
 
-    private fun navigateToSurvey(surveyId: String?, typeId: String?, isNewSurvey: Boolean) {
-        val host: NavHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment? ?: return
-        val navController = host.findNavController()
-        navController.navigate(R.id.to_survey, SurveyFragment.create(surveyId, typeId, isNewSurvey))
-    }
-
+    @OptIn(ExperimentalStdlibApi::class)
     private fun setupCalendar() {
 
         val daysOfWeek = daysOfWeekFromLocale()
@@ -116,7 +110,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
 
         calendar.monthScrollListener = { month ->
-            val title = monthTitleFormatter.format(Date(month.year, month.month, 0)).capitalize()
+            val title = monthTitleFormatter.format(Date(month.year, month.month, 0)).capitalize(Locale.ROOT)
             tv_month.text = title
 
             selectedDate?.let {

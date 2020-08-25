@@ -1,7 +1,6 @@
 package com.petapp.capybara.types
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,14 +11,15 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.surveys.SurveysFragment
-import com.petapp.capybara.type.TypeFragment
 import kotlinx.android.synthetic.main.fragment_types.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class TypesFragment : Fragment(R.layout.fragment_types) {
 
-    private val viewModel: TypesViewModel by viewModel()
+    private val viewModel: TypesViewModel by viewModel {
+        parametersOf(findNavController())
+    }
 
     private val adapter: TypesAdapter by lazy { TypesAdapter() }
 
@@ -33,9 +33,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             adapter = this@TypesFragment.adapter
         }
 
-        add_type.setOnClickListener {
-            navigateToType(null, true)
-        }
+        add_type.setOnClickListener { viewModel.openTypeScreen(null, true) }
     }
 
     private fun initObservers() {
@@ -59,8 +57,8 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             delegatesManager
                 .addDelegate(
                     TypesAdapterDelegate(
-                        itemClick = { navigateToSurveys(it.id) },
-                        editClick = { navigateToType(it.id, false) }
+                        itemClick = { viewModel.openSurveysScreen(it.id) },
+                        editClick = { viewModel.openTypeScreen(it.id, false) }
                     )
                 )
         }
@@ -70,13 +68,5 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             items.addAll(types)
             notifyDataSetChanged()
         }
-    }
-
-    private fun navigateToSurveys(typeId: String) {
-        findNavController().navigate(R.id.surveys, SurveysFragment.createBundle(typeId))
-    }
-
-    private fun navigateToType(typeId: String?, isNewType: Boolean) {
-        findNavController().navigate(R.id.type, TypeFragment.create(typeId, isNewType))
     }
 }

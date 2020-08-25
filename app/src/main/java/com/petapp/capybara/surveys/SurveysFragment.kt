@@ -4,31 +4,32 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.extensions.argument
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.survey.SurveyFragment
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
-    private val viewModel: SurveysViewModel by viewModel()
+    private val viewModel: SurveysViewModel by viewModel {
+        parametersOf(findNavController())
+    }
 
     private val adapter: SurveysAdapter by lazy { SurveysAdapter() }
 
-    private val typeId by argument(TYPE_ID, "")
+    private val args: SurveysFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getSurveys(typeId)
+        viewModel.getSurveys(args.typeId)
         initObservers()
 
         with(recycler_view) {
@@ -36,9 +37,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             adapter = this@SurveysFragment.adapter
         }
 
-        add_survey.setOnClickListener {
-            navigateToSurvey(null, typeId, true)
-        }
+        add_survey.setOnClickListener { viewModel.openSurveyScreen(null, true, args.typeId) }
     }
 
     private fun initObservers() {
@@ -68,7 +67,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             delegatesManager
                 .addDelegate(
                     SurveysAdapterDelegate(
-                        itemClick = { navigateToSurvey(it.id, typeId, false) }
+                        itemClick = { viewModel.openSurveyScreen(it.id, false, args.typeId) }
                     )
                 )
         }
@@ -76,22 +75,6 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         fun setDataSet(surveys: List<Survey>) {
             items.addAll(surveys)
             notifyDataSetChanged()
-        }
-    }
-
-    private fun navigateToSurvey(surveyId: String?, typeId: String, isNewSurvey: Boolean) {
-        val host: NavHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment? ?: return
-        val navController = host.findNavController()
-        navController.navigate(R.id.to_survey, SurveyFragment.create(surveyId, typeId, isNewSurvey))
-    }
-
-    companion object {
-        private const val TYPE_ID = "TYPE_ID"
-
-        fun createBundle(typeId: String?): Bundle {
-            return Bundle().apply {
-                putString(TYPE_ID, typeId)
-            }
         }
     }
 }

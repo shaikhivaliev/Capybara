@@ -3,6 +3,7 @@ package com.petapp.capybara.type
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.TypesRepository
@@ -11,7 +12,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class TypeViewModel(
-    private val repository: TypesRepository
+    private val repository: TypesRepository,
+    private val navController: NavController
 ) : BaseViewModel() {
 
     private val _type = MutableLiveData<Type>()
@@ -81,6 +83,10 @@ class TypeViewModel(
                     Log.d(TAG, "delete type error")
                 }
             ).connect()
+    }
+
+    fun back() {
+        navController.popBackStack()
     }
 
     companion object {

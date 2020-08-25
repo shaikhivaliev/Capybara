@@ -12,46 +12,34 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
 import com.petapp.capybara.UniqueId
 import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.extensions.argument
 import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
-    companion object {
-        private const val PROFILE_ID = "PROFILE_ID"
-        private const val IS_NEW_PROFILE = "IS_NEW"
-        private const val TRANSITION_NAME = "TRANSITION_NAME"
-
-        fun createBundle(profileId: String?, isNew: Boolean, transitionName: String?): Bundle {
-            return Bundle().apply {
-                putString(PROFILE_ID, profileId)
-                putBoolean(IS_NEW_PROFILE, isNew)
-                putString(TRANSITION_NAME, transitionName)
-            }
-        }
+    private val viewModel: ProfileViewModel by viewModel {
+        parametersOf(findNavController())
     }
 
-    private val profileId by argument(PROFILE_ID, "")
-    private val isNewProfile by argument(IS_NEW_PROFILE, false)
-    private val transitionName by argument(TRANSITION_NAME, "")
-    private var currentPhotoUri: Uri? = null
+    private val args: ProfileFragmentArgs by navArgs()
 
-    private val viewModel: ProfileViewModel by viewModel()
+    private var currentPhotoUri: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-        photo.transitionName = transitionName
-        if (!isNewProfile) viewModel.getProfile(profileId)
+        photo.transitionName = args.transitionName
+        args.profileId?.apply { viewModel.getProfile(this) }
         initObservers()
         done.showDone()
 
@@ -73,7 +61,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         delete_profile.setOnClickListener { deleteProfile() }
 
         done.setOnClickListener {
-            if (isNewProfile) createSurvey() else updateSurvey()
+            if (args.isNewProfile) createSurvey() else updateSurvey()
         }
     }
 
@@ -93,8 +81,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             val etName = name_et.text.toString()
             val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
             val color = getChipColor()
-            val updateProfile = Profile(profileId, name, color, currentPhotoUri.toString())
-            viewModel.updateProfile(updateProfile)
+            args.profileId?.apply {
+                val updateProfile = Profile(this, name, color, currentPhotoUri.toString())
+                viewModel.updateProfile(updateProfile)
+            }
         }
     }
 
@@ -110,7 +100,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun isNameValid(): Boolean {
-        if (!isNewProfile) return true
+        if (!args.isNewProfile) return true
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {
@@ -125,7 +115,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 setProfileCard(profile)
             })
             isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-                if (isDone) navigateBack()
+                if (isDone) viewModel.back()
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
@@ -164,7 +154,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (!isNewProfile) viewModel.deleteProfile(profileId) else navigateBack()
+                    if (!args.isNewProfile) args.profileId?.apply { viewModel.deleteProfile(this) } else viewModel.back()
                     cancel()
                 }
                 negativeButton { cancel() }
@@ -229,9 +219,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         galleryIntent.action = Intent.ACTION_OPEN_DOCUMENT
         return galleryIntent
-    }
-
-    private fun navigateBack() {
-        findNavController().navigate(R.id.tab_profiles)
     }
 }

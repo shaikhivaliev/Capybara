@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
@@ -12,13 +11,15 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
-import com.petapp.capybara.profile.ProfileFragment
 import kotlinx.android.synthetic.main.fragment_profiles.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
 
-    private val viewModel: ProfilesViewModel by viewModel()
+    private val viewModel: ProfilesViewModel by viewModel {
+        parametersOf(findNavController())
+    }
 
     private val adapter: ProfileAdapter by lazy { ProfileAdapter() }
 
@@ -32,9 +33,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@ProfilesFragment.adapter
         }
-        add_profile.setOnClickListener {
-            findNavController().navigate(R.id.profile, ProfileFragment.createBundle(null, true, null))
-        }
+        add_profile.setOnClickListener { viewModel.openProfileScreen(null, true, null) }
     }
 
     private fun initObservers() {
@@ -45,7 +44,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
                 mock.visible(isShow)
             })
-            errorMessage.observe(viewLifecycleOwner, Observer {error ->
+            errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
         }
@@ -60,12 +59,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
                 .addDelegate(
                     ProfilesAdapterDelegate(
                         itemClick = { profile, view ->
-                            findNavController().navigate(
-                                R.id.profile,
-                                ProfileFragment.createBundle(profile.id, false, profile.name),
-                                null,
-                                FragmentNavigatorExtras(view to profile.name)
-                            )
+                            viewModel.openProfileScreen(profile.id, true, profile.name)
                         })
                 )
         }

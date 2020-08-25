@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.extensions.navigateWith
 
 class AuthViewModel(
-    val navController: NavController
+    private val navController: NavController
 ) : ViewModel() {
 
     enum class AuthState {

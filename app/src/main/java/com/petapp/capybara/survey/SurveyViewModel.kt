@@ -3,18 +3,21 @@ package com.petapp.capybara.survey
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.data.TypesRepository
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SurveyViewModel(
     private val repositorySurveys: SurveysRepository,
-    private val repositoryTypes: TypesRepository
+    private val repositoryTypes: TypesRepository,
+    private val navController: NavController
 ) : BaseViewModel() {
 
     private val _types = MutableLiveData<List<Type>>()
@@ -105,6 +108,10 @@ class SurveyViewModel(
                     Log.d(TAG, "delete survey error")
                 }
             ).connect()
+    }
+
+    fun openSurveysScreen(typeId: String) {
+        SurveyFragmentDirections.toSurveys(typeId).navigateWith(navController)
     }
 
     companion object {

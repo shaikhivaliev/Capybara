@@ -25,25 +25,52 @@ val appModule = module {
         )
     }
 
-    viewModel { ProfilesViewModel(repository = get()) }
+    viewModel { (navController: NavController) ->
+        ProfilesViewModel(
+            navController = navController,
+            repository = get()
+        )
+    }
 
-    viewModel { ProfileViewModel(repository = get()) }
+    viewModel { (navController: NavController) ->
+        ProfileViewModel(
+            navController = navController,
+            repository = get()
+        )
+    }
 
-    viewModel { CalendarViewModel(repository = get()) }
+    viewModel { (navController: NavController) ->
+        CalendarViewModel(
+            navController = navController,
+            repository = get()
+        )
+    }
 
-    viewModel { TypesViewModel(repository = get()) }
+    viewModel { (navController: NavController) ->
+        TypesViewModel(
+            navController = navController,
+            repository = get()
+        )
+    }
 
-    viewModel { TypeViewModel(repository = get()) }
+    viewModel { (navController: NavController) ->
+        TypeViewModel(
+            navController = navController,
+            repository = get()
+        )
+    }
 
-    viewModel {
+    viewModel { (navController: NavController) ->
         SurveysViewModel(
+            navController = navController,
             repositoryMarks = get(),
             repositorySurveys = get()
         )
     }
 
-    viewModel {
+    viewModel { (navController: NavController) ->
         SurveyViewModel(
+            navController = navController,
             repositorySurveys = get(),
             repositoryTypes = get()
         )

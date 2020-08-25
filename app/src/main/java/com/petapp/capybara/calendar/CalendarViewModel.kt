@@ -3,15 +3,18 @@ package com.petapp.capybara.calendar
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class CalendarViewModel(
-    private val repository: MarksRepository
+    private val repository: MarksRepository,
+    private val navController: NavController
 ) : BaseViewModel() {
 
     private val _marks = MutableLiveData<List<Mark>>()
@@ -38,6 +41,10 @@ class CalendarViewModel(
                     Log.d(TAG, "Get marks error")
                 }
             ).connect()
+    }
+
+    fun openSurveyScreen(surveyId: String?, isNewSurvey: Boolean, typeId: String?) {
+        CalendarFragmentDirections.toSurvey(surveyId, isNewSurvey, typeId).navigateWith(navController)
     }
 
     companion object {

@@ -3,6 +3,7 @@ package com.petapp.capybara.profile
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.ProfileRepository
@@ -11,7 +12,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class ProfileViewModel(
-    private val repository: ProfileRepository
+    private val repository: ProfileRepository,
+    private val navController: NavController
 ) : BaseViewModel() {
 
     private val _profile = MutableLiveData<Profile>()
@@ -83,6 +85,10 @@ class ProfileViewModel(
                     Log.d(TAG, "update profile ${profile.id} error")
                 }
             ).connect()
+    }
+
+   fun back() {
+        navController.popBackStack()
     }
 
     companion object {

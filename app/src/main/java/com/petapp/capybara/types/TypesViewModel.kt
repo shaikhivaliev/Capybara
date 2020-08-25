@@ -3,15 +3,18 @@ package com.petapp.capybara.types
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.TypesRepository
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class TypesViewModel(
-    private val repository: TypesRepository
+    private val repository: TypesRepository,
+    private val navController: NavController
 ) : BaseViewModel() {
 
     private val _types = MutableLiveData<List<Type>>()
@@ -42,6 +45,14 @@ class TypesViewModel(
                     Log.d(TAG, "get types error")
                 }
             ).connect()
+    }
+
+    fun openSurveysScreen(typeId: String) {
+        TypesFragmentDirections.toSurveys(typeId).navigateWith(navController)
+    }
+
+    fun openTypeScreen(typeId: String?, isNewType: Boolean) {
+        TypesFragmentDirections.toType(typeId, isNewType).navigateWith(navController)
     }
 
     companion object {
