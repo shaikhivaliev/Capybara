@@ -13,11 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.transition.TransitionInflater
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
-import com.petapp.capybara.UniqueId
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.toast
@@ -37,11 +35,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-        photo.transitionName = args.transitionName
-        args.profileId?.apply { viewModel.getProfile(this) }
         initObservers()
         done.showDone()
+        args.profileId?.apply { viewModel.getProfile(this) }
 
         name_et.doAfterTextChanged { name_layout.error = null }
 
@@ -61,17 +57,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         delete_profile.setOnClickListener { deleteProfile() }
 
         done.setOnClickListener {
-            if (args.isNewProfile) createSurvey() else updateSurvey()
+            if (args.profileId != null) {
+                createSurvey()
+            } else {
+                updateSurvey()
+            }
         }
     }
 
     private fun createSurvey() {
         if (isNameValid()) {
-            val id = UniqueId.id.toString()
             val etName = name_et.text.toString()
             val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
             val color = getChipColor()
-            val newProfile = Profile(id, name, color, currentPhotoUri.toString())
+            val newProfile = Profile(null, name, color, currentPhotoUri.toString())
             viewModel.createProfile(newProfile)
         }
     }
@@ -82,7 +81,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
             val color = getChipColor()
             args.profileId?.apply {
-                val updateProfile = Profile(this, name, color, currentPhotoUri.toString())
+                val updateProfile = Profile(this.toLong(), name, color, currentPhotoUri.toString())
                 viewModel.updateProfile(updateProfile)
             }
         }
@@ -100,7 +99,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun isNameValid(): Boolean {
-        if (!args.isNewProfile) return true
+        if (args.profileId != null) return true
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {
@@ -154,7 +153,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (!args.isNewProfile) args.profileId?.apply { viewModel.deleteProfile(this) } else viewModel.back()
+                    if (args.profileId != null) {
+                        viewModel.deleteProfile(args.profileId!!)
+                    } else {
+                        viewModel.back()
+                    }
                     cancel()
                 }
                 negativeButton { cancel() }

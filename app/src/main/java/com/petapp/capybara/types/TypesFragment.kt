@@ -33,7 +33,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             adapter = this@TypesFragment.adapter
         }
 
-        add_type.setOnClickListener { viewModel.openTypeScreen(null, true) }
+        add_type.setOnClickListener { viewModel.openTypeScreen(null) }
     }
 
     private fun initObservers() {
@@ -57,8 +57,8 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             delegatesManager
                 .addDelegate(
                     TypesAdapterDelegate(
-                        itemClick = { viewModel.openSurveysScreen(it.id) },
-                        editClick = { viewModel.openTypeScreen(it.id, false) }
+                        itemClick = { viewModel.openSurveysScreen(it.id.toString()) },
+                        editClick = { viewModel.openTypeScreen(it.id.toString()) }
                     )
                 )
         }

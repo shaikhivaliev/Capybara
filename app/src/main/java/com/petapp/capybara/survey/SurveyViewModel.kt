@@ -26,9 +26,6 @@ class SurveyViewModel(
     private val _survey = MutableLiveData<Survey>()
     val survey: LiveData<Survey> get() = _survey
 
-    private val _isChangeDone = MutableLiveData<Boolean>()
-    val isChangeDone: LiveData<Boolean> get() = _isChangeDone
-
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
@@ -67,11 +64,12 @@ class SurveyViewModel(
     }
 
     fun createSurvey(survey: Survey) {
+        Log.d(TAG, "start create")
         repositorySurveys.createSurvey(survey)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _isChangeDone.value = true
+                openSurveysScreen(survey.typeId.toString())
                 Log.d(TAG, "create survey success")
             }, {
                 _errorMessage.value = R.string.error_create_survey
@@ -84,23 +82,22 @@ class SurveyViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _isChangeDone.value = true
+                    openSurveysScreen(survey.typeId.toString())
                     Log.d(TAG, "update survey ${survey.id} success")
                 },
                 {
-                    _isChangeDone.value = false
                     _errorMessage.value = R.string.error_update_survey
                     Log.d(TAG, "update survey ${survey.id} error")
                 }
             ).connect()
     }
 
-    fun deleteSurvey(surveyId: String) {
+    fun deleteSurvey(surveyId: String, typeId: String) {
         repositorySurveys.deleteSurvey(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _isChangeDone.value = true
+                    openSurveysScreen(typeId)
                     Log.d(TAG, "delete survey $surveyId success")
                 },
                 {
@@ -110,8 +107,12 @@ class SurveyViewModel(
             ).connect()
     }
 
-    fun openSurveysScreen(typeId: String) {
+    private fun openSurveysScreen(typeId: String) {
         SurveyFragmentDirections.toSurveys(typeId).navigateWith(navController)
+    }
+
+    fun back(){
+        navController.popBackStack()
     }
 
     companion object {

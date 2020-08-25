@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.R
-import com.petapp.capybara.UniqueId
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_survey.*
@@ -30,25 +29,31 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private val args: SurveyFragmentArgs by navArgs()
 
+    private var typesMap = hashMapOf<String, Long>()
+    private var type = ""
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         done.showDone()
-        args.surveyId?.apply { viewModel.getSurvey(this) }
         initObservers()
         initWorkWithDate()
+        args.surveyId?.apply { viewModel.getSurvey(this) }
         delete_survey.setOnClickListener { deleteSurvey() }
-        done.setOnClickListener { if (args.isNewSurvey) createSurvey() else updateSurvey() }
+        done.setOnClickListener { if (args.surveyId != null) updateSurvey() else createSurvey() }
+        radio_group.setOnCheckedChangeListener { _, checkedId ->
+            val radioButton = view.findViewById<RadioButton>(checkedId)
+            if (radioButton != null) {
+                type = radioButton.text.toString()
+            }
+        }
     }
 
     private fun createSurvey() {
         if (isFieldsValid()) {
-            val id = UniqueId.id.toString()
             val name = name_et.text.toString()
             val date = survey_date_et.text.toString()
-            args.typeId?.apply {
-                val survey = Survey(id, this, name, date)
-                viewModel.createSurvey(survey)
-            }
+            val survey = Survey(null, typesMap[type], name, date)
+            viewModel.createSurvey(survey)
         }
     }
 
@@ -57,7 +62,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val name = name_et.text.toString()
             val date = survey_date_et.text.toString()
             if (args.surveyId != null && args.typeId != null) {
-                val survey = Survey(args.surveyId!!, args.typeId!!, name, date)
+                val survey = Survey(args.surveyId!!.toLong(), args.typeId!!.toLong(), name, date)
                 viewModel.updateSurvey(survey)
             }
         }
@@ -73,10 +78,10 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (!args.isNewSurvey) {
-                        args.surveyId?.apply { viewModel.deleteSurvey(this) }
+                    if (args.surveyId != null && args.typeId != null) {
+                        viewModel.deleteSurvey(args.surveyId!!, args.typeId!!)
                     } else {
-                        args.typeId?.apply { viewModel.openSurveysScreen(this) }
+                        viewModel.back()
                     }
                     cancel()
                 }
@@ -90,15 +95,16 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             survey.observe(viewLifecycleOwner, Observer { survey ->
                 setSurvey(survey)
             })
-            isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-                if (isDone) args.typeId?.apply { viewModel.openSurveysScreen(this) }
-            })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
             types.observe(viewLifecycleOwner, Observer { types ->
                 for (type in types) {
                     radio_group.addView(creteRadioButton(type.name))
+                    type.id?.apply { typesMap[type.name] = this }
+                }
+                args.typeId?.apply {
+                    // radio_group.findViewWithTag<RadioButton>(typesMap.containsKey(this)).isChecked = true
                 }
             })
         }
@@ -110,7 +116,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun isFieldsValid(): Boolean {
-        if (!args.isNewSurvey) return true
+        if (args.surveyId != null) return true
         val name = name_et.text.toString()
         val date = survey_date_et.text.toString()
         return if (name.isNotBlank() && date.isNotBlank()) true
@@ -131,6 +137,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
         return RadioButton(requireActivity()).apply {
             text = type
+            tag = type
             layoutParams = params
             setPadding(PADDING_START, 0, 0, 0)
         }

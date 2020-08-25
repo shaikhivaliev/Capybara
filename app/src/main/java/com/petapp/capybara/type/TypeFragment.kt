@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.UniqueId
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_type.*
@@ -33,12 +32,12 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         args.typeId?.apply { viewModel.getType(this) }
         initObservers()
         delete_type.setOnClickListener { deleteType() }
-        done.setOnClickListener { if (args.isNewType) createType() else updateType() }
+        done.setOnClickListener { if (args.typeId != null) updateType() else createType() }
         with(recycler) {
             this.layoutManager = GridLayoutManager(context, 3)
             adapter = this@TypeFragment.adapter
         }
-        val iconResList = arrayListOf<Int>(
+        val iconResList = arrayListOf(
             R.drawable.ic_blood,
             R.drawable.ic_digistion,
             R.drawable.ic_heart,
@@ -51,9 +50,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     private fun createType() {
         if (isNameValid()) {
-            val id = UniqueId.id.toString()
             val name = name_et.text.toString()
-            val type = Type(id = id, name = name, icon = R.drawable.ic_vaccination)
+            val type = Type(id = null, name = name, icon = R.drawable.ic_vaccination)
             viewModel.createType(type)
         }
     }
@@ -62,7 +60,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         if (isNameValid()) {
             val name = name_et.text.toString()
             args.typeId?.apply {
-                val type = Type(id = this, name = name, icon = icon.tag as Int)
+                val type = Type(id = this.toLong(), name = name, icon = icon.tag as Int)
                 viewModel.updateType(type)
             }
         }
@@ -78,7 +76,11 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (!args.isNewType) args.typeId?.apply { viewModel.deleteType(this) } else viewModel.back()
+                    if (args.typeId != null) {
+                        args.typeId?.apply { viewModel.deleteType(this) }
+                    } else {
+                        viewModel.back()
+                    }
                     cancel()
                 }
                 negativeButton { cancel() }
@@ -106,7 +108,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     }
 
     private fun isNameValid(): Boolean {
-        if (!args.isNewType) return true
+        if (args.typeId != null) return true
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {

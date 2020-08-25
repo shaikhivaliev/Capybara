@@ -20,11 +20,6 @@
                 app:nullable="true" />
 
             <argument
-                android:name="isNewProfile"
-                app:argType="boolean"
-                app:nullable="false" />
-
-            <argument
                 android:name="transitionName"
                 app:argType="string"
                 app:nullable="true" />
@@ -43,11 +38,6 @@
                 android:name="surveyId"
                 app:argType="string"
                 app:nullable="true" />
-
-            <argument
-                android:name="isNewSurvey"
-                app:argType="boolean"
-                app:nullable="false" />
 
             <argument
                 android:name="typeId"
@@ -72,10 +62,6 @@
                 app:argType="string"
                 app:nullable="true" />
 
-            <argument
-                android:name="isNewType"
-                app:argType="boolean"
-                app:nullable="false" />
         </action>
 
         <action
@@ -110,11 +96,6 @@
                 app:nullable="true" />
 
             <argument
-                android:name="isNewSurvey"
-                app:argType="boolean"
-                app:nullable="false" />
-
-            <argument
                 android:name="typeId"
                 app:argType="string"
                 app:nullable="true" />
@@ -133,11 +114,6 @@
             app:nullable="true" />
 
         <argument
-            android:name="isNewProfile"
-            app:argType="boolean"
-            app:nullable="false" />
-
-        <argument
             android:name="transitionName"
             app:argType="string"
             app:nullable="true" />
@@ -153,11 +129,6 @@
             android:name="typeId"
             app:argType="string"
             app:nullable="true" />
-
-        <argument
-            android:name="isNewType"
-            app:argType="boolean"
-            app:nullable="false" />
     </fragment>
 
     <include app:graph="@navigation/nav_graph_survey" />

@@ -17,11 +17,6 @@
             app:nullable="true" />
 
         <argument
-            android:name="isNewSurvey"
-            app:argType="boolean"
-            app:nullable="false" />
-
-        <argument
             android:name="typeId"
             app:argType="string"
             app:nullable="true" />

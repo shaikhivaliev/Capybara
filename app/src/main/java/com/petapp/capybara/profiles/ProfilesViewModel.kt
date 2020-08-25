@@ -46,9 +46,8 @@ class ProfilesViewModel(
             ).connect()
     }
 
-    fun openProfileScreen(profileId: String?, isNewProfile: Boolean, transitionName: String?){
-        ProfilesFragmentDirections.toProfile(profileId, isNewProfile, transitionName).navigateWith(navController)
-        //FragmentNavigatorExtras(view to profile.name)
+    fun openProfileScreen(profileId: String?, transitionName: String?){
+        ProfilesFragmentDirections.toProfile(profileId, transitionName).navigateWith(navController)
     }
 
     companion object {
