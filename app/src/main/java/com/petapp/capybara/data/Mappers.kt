@@ -11,7 +11,7 @@ import com.petapp.capybara.database.entity.TypeWithSurveys
 
 fun ProfileEntity.toMark(): Mark {
     return Mark(
-        id = this.id,
+        id = this.id.toString(),
         name = this.name,
         color = this.color
     )
@@ -28,7 +28,7 @@ fun List<ProfileEntity>.toMarks(): List<Mark> {
 
 fun ProfileEntity.toProfile(): Profile {
     return Profile(
-        id = this.id,
+        id = this.id.toString(),
         name = this.name,
         color = this.color,
         photo = this.photo
@@ -37,7 +37,7 @@ fun ProfileEntity.toProfile(): Profile {
 
 fun Profile.toProfileEntity(): ProfileEntity {
     return ProfileEntity(
-        id = this.id,
+        id = this.id?.toLong(),
         name = this.name,
         color = this.color,
         photo = this.photo
@@ -55,8 +55,8 @@ fun List<ProfileEntity>.toProfiles(): List<Profile> {
 
 fun SurveyEntity.toSurvey(): Survey {
     return Survey(
-        id = this.id,
-        typeId = this.typeId,
+        id = this.id.toString(),
+        typeId = this.typeId.toString(),
         name = this.name,
         date = this.date
     )
@@ -64,8 +64,8 @@ fun SurveyEntity.toSurvey(): Survey {
 
 fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
-        id = this.id,
-        typeId = this.typeId,
+        id = this.id?.toLong(),
+        typeId = this.typeId.toLong(),
         name = this.name,
         date = this.date
     )
@@ -82,7 +82,7 @@ fun List<SurveyEntity>.toSurveys(): List<Survey> {
 
 fun TypeEntity.toType(): Type {
     return Type(
-        id = this.id,
+        id = this.id.toString(),
         name = this.name,
         icon = this.icon
     )
@@ -90,7 +90,7 @@ fun TypeEntity.toType(): Type {
 
 fun TypeWithSurveys.toType(): Type {
     return Type(
-        id = this.type.id,
+        id = this.type.id.toString(),
         name = this.type.name,
         icon = this.type.icon,
         surveys = this.surveys.toSurveys()
@@ -99,7 +99,7 @@ fun TypeWithSurveys.toType(): Type {
 
 fun Type.toTypeEntity(): TypeEntity {
     return TypeEntity(
-        id = this.id,
+        id = this.id?.toLong(),
         name = this.name,
         icon = this.icon
     )

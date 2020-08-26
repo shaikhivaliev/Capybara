@@ -12,13 +12,8 @@
         tools:layout="@layout/fragment_survey">
 
         <argument
-            android:name="surveyId"
-            app:argType="string"
-            app:nullable="true" />
-
-        <argument
-            android:name="typeId"
-            app:argType="string"
+            android:name="survey"
+            app:argType="com.petapp.capybara.data.model.Survey"
             app:nullable="true" />
 
         <action

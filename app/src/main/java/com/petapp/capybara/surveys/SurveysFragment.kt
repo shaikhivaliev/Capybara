@@ -37,7 +37,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             adapter = this@SurveysFragment.adapter
         }
 
-        add_survey.setOnClickListener { viewModel.openSurveyScreen(null, args.typeId) }
+        add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
 
     private fun initObservers() {
@@ -67,7 +67,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             delegatesManager
                 .addDelegate(
                     SurveysAdapterDelegate(
-                        itemClick = { viewModel.openSurveyScreen(it.id.toString(), args.typeId) }
+                        itemClick = { viewModel.openSurveyScreen(it) }
                     )
                 )
         }

@@ -33,11 +33,40 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private var currentPhotoUri: Uri? = null
 
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // camera
+                if (result.data == null) {
+                    Glide.with(this)
+                        .load(currentPhotoUri)
+                        .into(photo)
+                }
+                // gallery
+                try {
+                    val intent = result.data
+                    val uri = intent?.data
+                    if (intent != null && uri != null) {
+                        currentPhotoUri = uri
+                        Glide.with(this)
+                            .load(currentPhotoUri)
+                            .into(photo)
+
+                        val takeFlags =
+                            intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        activity?.contentResolver?.takePersistableUriPermission(uri, takeFlags)
+                    }
+                } catch (e: SecurityException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         done.showDone()
-        args.profileId?.apply { viewModel.getProfile(this) }
+        args.profile?.id?.apply { viewModel.getProfile(this) }
 
         name_et.doAfterTextChanged { name_layout.error = null }
 
@@ -57,15 +86,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         delete_profile.setOnClickListener { deleteProfile() }
 
         done.setOnClickListener {
-            if (args.profileId != null) {
-                createSurvey()
+            if (args.profile != null) {
+                updateProfile()
             } else {
-                updateSurvey()
+                createProfile()
             }
         }
     }
 
-    private fun createSurvey() {
+    private fun createProfile() {
         if (isNameValid()) {
             val etName = name_et.text.toString()
             val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
@@ -75,13 +104,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun updateSurvey() {
+    private fun updateProfile() {
         if (isNameValid()) {
             val etName = name_et.text.toString()
             val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
             val color = getChipColor()
-            args.profileId?.apply {
-                val updateProfile = Profile(this.toLong(), name, color, currentPhotoUri.toString())
+            val photoUri = if (currentPhotoUri.toString().isEmpty()) args.profile?.photo else currentPhotoUri.toString()
+            args.profile?.id?.apply {
+                val updateProfile = Profile(this, name, color, photoUri)
                 viewModel.updateProfile(updateProfile)
             }
         }
@@ -99,7 +129,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun isNameValid(): Boolean {
-        if (args.profileId != null) return true
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {
@@ -153,8 +182,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (args.profileId != null) {
-                        viewModel.deleteProfile(args.profileId!!)
+                    if (args.profile?.id != null) {
+                        viewModel.deleteProfile(args.profile!!.id!!)
                     } else {
                         viewModel.back()
                     }
@@ -166,35 +195,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun startForResult() {
-        val startForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    // camera
-                    if (result.data == null) {
-                        Glide.with(this)
-                            .load(currentPhotoUri)
-                            .into(photo)
-                    }
-                    // gallery
-                    try {
-                        val intent = result.data
-                        val uri = intent?.data
-                        if (intent != null && uri != null) {
-                            currentPhotoUri = uri
-                            Glide.with(this)
-                                .load(currentPhotoUri)
-                                .into(photo)
-
-                            val takeFlags =
-                                intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                            activity?.contentResolver?.takePersistableUriPermission(uri, takeFlags)
-                        }
-                    } catch (e: SecurityException) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
         val intentArray: Array<Intent?> = arrayOf(openCamera())
         val chooser = Intent(Intent.ACTION_CHOOSER)
         chooser.putExtra(Intent.EXTRA_INTENT, openGallery())

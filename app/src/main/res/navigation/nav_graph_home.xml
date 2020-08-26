@@ -15,14 +15,10 @@
             app:destination="@id/profile">
 
             <argument
-                android:name="profileId"
-                app:argType="string"
+                android:name="profile"
+                app:argType="com.petapp.capybara.data.model.Profile"
                 app:nullable="true" />
 
-            <argument
-                android:name="transitionName"
-                app:argType="string"
-                app:nullable="true" />
         </action>
     </fragment>
 
@@ -35,13 +31,8 @@
             app:destination="@id/nav_graph_survey">
 
             <argument
-                android:name="surveyId"
-                app:argType="string"
-                app:nullable="true" />
-
-            <argument
-                android:name="typeId"
-                app:argType="string"
+                android:name="survey"
+                app:argType="com.petapp.capybara.data.model.Survey"
                 app:nullable="true" />
 
         </action>
@@ -58,8 +49,8 @@
             app:destination="@id/type">
 
             <argument
-                android:name="typeId"
-                app:argType="string"
+                android:name="type"
+                app:argType="com.petapp.capybara.data.model.Type"
                 app:nullable="true" />
 
         </action>
@@ -91,13 +82,8 @@
             app:destination="@id/nav_graph_survey">
 
             <argument
-                android:name="surveyId"
-                app:argType="string"
-                app:nullable="true" />
-
-            <argument
-                android:name="typeId"
-                app:argType="string"
+                android:name="survey"
+                app:argType="com.petapp.capybara.data.model.Survey"
                 app:nullable="true" />
 
         </action>
@@ -109,13 +95,8 @@
         android:label="profile">
 
         <argument
-            android:name="profileId"
-            app:argType="string"
-            app:nullable="true" />
-
-        <argument
-            android:name="transitionName"
-            app:argType="string"
+            android:name="profile"
+            app:argType="com.petapp.capybara.data.model.Profile"
             app:nullable="true" />
     </fragment>
 
@@ -126,8 +107,8 @@
         tools:layout="@layout/fragment_type">
 
         <argument
-            android:name="typeId"
-            app:argType="string"
+            android:name="type"
+            app:argType="com.petapp.capybara.data.model.Type"
             app:nullable="true" />
     </fragment>
 

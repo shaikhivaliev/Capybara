@@ -39,7 +39,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         setupCalendar()
         add_survey.showAdd()
         initObservers()
-        add_survey.setOnClickListener { viewModel.openSurveyScreen(null,  null) }
+        add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
 
 

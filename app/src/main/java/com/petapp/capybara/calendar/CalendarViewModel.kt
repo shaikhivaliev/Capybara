@@ -8,6 +8,7 @@ import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -43,8 +44,8 @@ class CalendarViewModel(
             ).connect()
     }
 
-    fun openSurveyScreen(surveyId: String?, typeId: String?) {
-        CalendarFragmentDirections.toSurvey(surveyId, typeId).navigateWith(navController)
+    fun openSurveyScreen(survey: Survey?) {
+        CalendarFragmentDirections.toSurvey(survey).navigateWith(navController)
     }
 
     companion object {

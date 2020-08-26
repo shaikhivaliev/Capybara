@@ -2,7 +2,6 @@ package com.petapp.capybara.extensions
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import android.widget.TextView
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
@@ -20,10 +18,9 @@ import com.petapp.capybara.data.model.Mark
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.temporal.WeekFields
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun NavDirections.navigateWith(navController: NavController, navOptions: NavOptions? = null) {

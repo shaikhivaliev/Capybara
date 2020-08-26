@@ -33,7 +33,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@ProfilesFragment.adapter
         }
-        add_profile.setOnClickListener { viewModel.openProfileScreen(null,  null) }
+        add_profile.setOnClickListener { viewModel.openProfileScreen(null) }
     }
 
     private fun initObservers() {
@@ -59,7 +59,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
                 .addDelegate(
                     ProfilesAdapterDelegate(
                         itemClick = { profile, _ ->
-                            viewModel.openProfileScreen(profile.id.toString(), profile.name)
+                            viewModel.openProfileScreen(profile)
                         })
                 )
         }

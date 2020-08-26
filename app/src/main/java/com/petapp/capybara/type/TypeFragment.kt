@@ -29,10 +29,10 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         done.showDone()
-        args.typeId?.apply { viewModel.getType(this) }
+        args.type?.id?.apply { viewModel.getType(this) }
         initObservers()
         delete_type.setOnClickListener { deleteType() }
-        done.setOnClickListener { if (args.typeId != null) updateType() else createType() }
+        done.setOnClickListener { if (args.type != null) updateType() else createType() }
         with(recycler) {
             this.layoutManager = GridLayoutManager(context, 3)
             adapter = this@TypeFragment.adapter
@@ -59,8 +59,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     private fun updateType() {
         if (isNameValid()) {
             val name = name_et.text.toString()
-            args.typeId?.apply {
-                val type = Type(id = this.toLong(), name = name, icon = icon.tag as Int)
+            args.type?.id.apply {
+                val type = Type(id = this, name = name, icon = icon.tag as Int)
                 viewModel.updateType(type)
             }
         }
@@ -76,8 +76,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (args.typeId != null) {
-                        args.typeId?.apply { viewModel.deleteType(this) }
+                    if (args.type != null) {
+                        args.type?.apply { viewModel.deleteType(this.id!!) }
                     } else {
                         viewModel.back()
                     }
@@ -108,7 +108,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     }
 
     private fun isNameValid(): Boolean {
-        if (args.typeId != null) return true
+        if (args.type != null) return true
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {

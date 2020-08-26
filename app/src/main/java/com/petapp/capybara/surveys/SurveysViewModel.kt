@@ -73,8 +73,8 @@ class SurveysViewModel(
             ).connect()
     }
 
-    fun openSurveyScreen(surveyId: String?, typeId: String?) {
-        CalendarFragmentDirections.toSurvey(surveyId, typeId).navigateWith(navController)
+    fun openSurveyScreen(survey: Survey?) {
+        CalendarFragmentDirections.toSurvey(survey).navigateWith(navController)
     }
 
     companion object {

@@ -51,8 +51,8 @@ class TypesViewModel(
         TypesFragmentDirections.toSurveys(typeId).navigateWith(navController)
     }
 
-    fun openTypeScreen(typeId: String?) {
-        TypesFragmentDirections.toType(typeId).navigateWith(navController)
+    fun openTypeScreen(type: Type?) {
+        TypesFragmentDirections.toType(type).navigateWith(navController)
     }
 
     companion object {

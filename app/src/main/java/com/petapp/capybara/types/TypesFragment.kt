@@ -58,7 +58,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
                 .addDelegate(
                     TypesAdapterDelegate(
                         itemClick = { viewModel.openSurveysScreen(it.id.toString()) },
-                        editClick = { viewModel.openTypeScreen(it.id.toString()) }
+                        editClick = { type -> viewModel.openTypeScreen(type) }
                     )
                 )
         }

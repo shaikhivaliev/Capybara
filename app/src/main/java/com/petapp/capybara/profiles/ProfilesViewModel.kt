@@ -46,8 +46,8 @@ class ProfilesViewModel(
             ).connect()
     }
 
-    fun openProfileScreen(profileId: String?, transitionName: String?){
-        ProfilesFragmentDirections.toProfile(profileId, transitionName).navigateWith(navController)
+    fun openProfileScreen(profile: Profile?){
+        ProfilesFragmentDirections.toProfile(profile).navigateWith(navController)
     }
 
     companion object {
