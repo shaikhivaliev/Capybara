@@ -14,8 +14,11 @@ import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
+import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_survey.*
+import kotlinx.android.synthetic.main.fragment_survey.mark_group
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -97,14 +100,21 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             survey.observe(viewLifecycleOwner, Observer { survey ->
                 setSurvey(survey)
             })
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
-                requireActivity().toast(error)
-            })
             types.observe(viewLifecycleOwner, Observer { types ->
                 for (type in types) {
                     radio_group.addView(creteRadioButton(type.name))
                     type.id?.apply { typesMap[type.name] = this }
                 }
+            })
+            marks.observe(viewLifecycleOwner, Observer { marks ->
+                mark_group.visible(marks.isNotEmpty())
+                mark_group.removeAllViews()
+                for (mark in marks) {
+                    mark_group.addView(createChip(requireContext(), mark))
+                }
+            })
+            errorMessage.observe(viewLifecycleOwner, Observer { error ->
+                requireActivity().toast(error)
             })
         }
     }

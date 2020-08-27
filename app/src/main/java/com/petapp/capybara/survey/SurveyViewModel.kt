@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
+import com.petapp.capybara.calendar.CalendarViewModel
+import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.data.TypesRepository
+import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.navigateWith
@@ -17,6 +20,7 @@ import io.reactivex.schedulers.Schedulers
 class SurveyViewModel(
     private val repositorySurveys: SurveysRepository,
     private val repositoryTypes: TypesRepository,
+    private val repositoryMarks: MarksRepository,
     private val navController: NavController
 ) : BaseViewModel() {
 
@@ -26,11 +30,15 @@ class SurveyViewModel(
     private val _survey = MutableLiveData<Survey>()
     val survey: LiveData<Survey> get() = _survey
 
+    private val _marks = MutableLiveData<List<Mark>>()
+    val marks: LiveData<List<Mark>> get() = _marks
+
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
     init {
         getTypes()
+        getMarks()
     }
 
     private fun getTypes() {
@@ -59,6 +67,22 @@ class SurveyViewModel(
                 {
                     _errorMessage.value = R.string.error_get_survey
                     Log.d(TAG, "get survey error")
+                }
+            ).connect()
+    }
+
+    private fun getMarks() {
+        repositoryMarks.getMarks()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _marks.value = it
+                    Log.d(TAG, "get marks success")
+                },
+                {
+                    _errorMessage.value = R.string.error_get_marks
+                    Log.d(TAG, "get marks error")
                 }
             ).connect()
     }

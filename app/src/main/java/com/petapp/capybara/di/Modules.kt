@@ -73,7 +73,8 @@ val appModule = module {
         SurveyViewModel(
             navController = navController,
             repositorySurveys = get(),
-            repositoryTypes = get()
+            repositoryTypes = get(),
+            repositoryMarks = get()
         )
     }
 

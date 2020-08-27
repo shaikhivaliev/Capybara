@@ -67,6 +67,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_date_layout" />
 
+    <HorizontalScrollView
+        android:id="@+id/chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radio_group"
+        >
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/mark_group"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:chipSpacingHorizontal="8dp"
+            app:singleLine="true" />
+    </HorizontalScrollView>
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/delete_survey"
         android:layout_width="wrap_content"
@@ -78,7 +97,7 @@
         app:icon="@drawable/ic_delete"
         app:iconGravity="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radio_group"
+        app:layout_constraintTop_toBottomOf="@id/chip_group"
         tools:ignore="RtlSymmetry" />
 
     <com.petapp.capybara.view.AddToDoneMorphView
