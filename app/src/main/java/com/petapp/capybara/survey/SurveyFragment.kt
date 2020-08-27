@@ -52,8 +52,10 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         if (isFieldsValid()) {
             val name = name_et.text.toString()
             val date = survey_date_et.text.toString()
-            val survey = Survey(null, typesMap[type]!!, name, date)
-            viewModel.createSurvey(survey)
+            if (!type.isBlank() && typesMap.containsKey(type)){
+                val survey = Survey(null, typesMap[type]!!, name, date)
+                viewModel.createSurvey(survey)
+            }
         }
     }
 
@@ -79,7 +81,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 }
                 positiveButton {
                     if (args.survey != null) {
-                        viewModel.deleteSurvey(args.survey?.id!!, args.survey?.typeId!!)
+                        viewModel.deleteSurvey(args.survey?.id!!)
                     } else {
                         viewModel.back()
                     }
@@ -102,9 +104,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 for (type in types) {
                     radio_group.addView(creteRadioButton(type.name))
                     type.id?.apply { typesMap[type.name] = this }
-                }
-                args.survey?.apply {
-                    // radio_group.findViewWithTag<RadioButton>(typesMap.containsKey(this)).isChecked = true
                 }
             })
         }

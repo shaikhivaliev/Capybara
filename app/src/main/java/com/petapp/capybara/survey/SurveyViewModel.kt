@@ -69,7 +69,7 @@ class SurveyViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                openSurveysScreen(survey.typeId.toString())
+                openTypesScreen()
                 Log.d(TAG, "create survey success")
             }, {
                 _errorMessage.value = R.string.error_create_survey
@@ -82,7 +82,7 @@ class SurveyViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    openSurveysScreen(survey.typeId.toString())
+                    openTypesScreen()
                     Log.d(TAG, "update survey ${survey.id} success")
                 },
                 {
@@ -92,12 +92,12 @@ class SurveyViewModel(
             ).connect()
     }
 
-    fun deleteSurvey(surveyId: String, typeId: String) {
+    fun deleteSurvey(surveyId: String) {
         repositorySurveys.deleteSurvey(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    openSurveysScreen(typeId)
+                    openTypesScreen()
                     Log.d(TAG, "delete survey $surveyId success")
                 },
                 {
@@ -107,8 +107,8 @@ class SurveyViewModel(
             ).connect()
     }
 
-    private fun openSurveysScreen(typeId: String) {
-        SurveyFragmentDirections.toSurveys(typeId).navigateWith(navController)
+    private fun openTypesScreen() {
+        SurveyFragmentDirections.toTypes().navigateWith(navController)
     }
 
     fun back(){

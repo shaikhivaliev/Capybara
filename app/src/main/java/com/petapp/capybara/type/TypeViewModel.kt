@@ -8,6 +8,7 @@ import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.TypesRepository
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -18,9 +19,6 @@ class TypeViewModel(
 
     private val _type = MutableLiveData<Type>()
     val type : LiveData<Type> get() = _type
-
-    private val _isChangeDone = MutableLiveData<Boolean>()
-    val isChangeDone : LiveData<Boolean> get() = _isChangeDone
 
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage : LiveData<Int> get() = _errorMessage
@@ -45,7 +43,7 @@ class TypeViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _isChangeDone.value = true
+                openTypesScreen()
                 Log.d(TAG, "create survey success")
             }, {
                 _errorMessage.value = R.string.error_create_type
@@ -59,11 +57,10 @@ class TypeViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _isChangeDone.value = true
+                    openTypesScreen()
                     Log.d(TAG, "update type ${type.id} success")
                 },
                 {
-                    _isChangeDone.value = false
                     _errorMessage.value = R.string.error_update_type
                     Log.d(TAG, "update type ${type.id} error")
                 }
@@ -75,7 +72,7 @@ class TypeViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _isChangeDone.value = true
+                    openTypesScreen()
                     Log.d(TAG, "delete type $typeId success")
                 },
                 {
@@ -85,8 +82,8 @@ class TypeViewModel(
             ).connect()
     }
 
-    fun back() {
-        navController.popBackStack()
+    fun openTypesScreen() {
+        TypeFragmentDirections.toTypes().navigateWith(navController)
     }
 
     companion object {

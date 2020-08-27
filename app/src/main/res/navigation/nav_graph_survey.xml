@@ -17,14 +17,8 @@
             app:nullable="true" />
 
         <action
-            android:id="@+id/to_surveys"
-            app:destination="@id/surveys">
-
-            <argument
-                android:name="typeId"
-                app:argType="string"
-                app:nullable="false" />
-        </action>
+            android:id="@+id/to_types"
+            app:destination="@id/tab_types"/>
 
     </fragment>
 

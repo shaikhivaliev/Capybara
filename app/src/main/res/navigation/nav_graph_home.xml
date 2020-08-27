@@ -133,6 +133,11 @@
             android:name="type"
             app:argType="com.petapp.capybara.data.model.Type"
             app:nullable="true" />
+
+        <action
+            android:id="@+id/to_types"
+            app:destination="@id/tab_types"/>
+
     </fragment>
 
     <fragment

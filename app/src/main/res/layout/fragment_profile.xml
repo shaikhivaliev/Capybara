@@ -74,6 +74,7 @@
             android:background="@color/light_gray"
             android:hint="@string/profile_name_hint"
             android:inputType="text"
+            android:imeOptions="actionDone"
             android:paddingStart="0dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:ignore="RtlSymmetry" />

@@ -79,7 +79,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                     if (args.type != null) {
                         args.type?.apply { viewModel.deleteType(this.id!!) }
                     } else {
-                        viewModel.back()
+                        viewModel.openTypesScreen()
                     }
                     cancel()
                 }
@@ -93,9 +93,6 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
             type.observe(viewLifecycleOwner, Observer { type ->
                 setType(type)
             })
-            isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-                if (isDone) viewModel.back()
-            })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
@@ -105,10 +102,10 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     private fun setType(type: Type) {
         name_et.setText(type.name)
         icon.setImageResource(type.icon)
+        icon.tag = type.icon
     }
 
     private fun isNameValid(): Boolean {
-        if (args.type != null) return true
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {
