@@ -18,7 +18,6 @@
                 android:name="profile"
                 app:argType="com.petapp.capybara.data.model.Profile"
                 app:nullable="true" />
-
         </action>
     </fragment>
 
