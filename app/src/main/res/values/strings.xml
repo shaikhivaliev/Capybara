@@ -12,6 +12,7 @@
     <string name="tab_list">Исследования</string>
     <string name="tab_calendar">Календарь</string>
     <string name="tab_new_profile">Профили</string>
+    <string name="tab_settings">Настройки</string>
 
     <!-- profile-->
     <string name="profile_mark">Метка</string>
@@ -22,6 +23,13 @@
 
     <!-- survey-->
     <string name="survey_date">Дата</string>
+
+    <!-- settings-->
+    <string name="settings_feedback">Обратная связь</string>
+    <string name="settings_about_app">О приложении</string>
+    <string name="settings_rules">Правила</string>
+    <string name="settings_exit">Выход</string>
+
 
     <!-- type-->
     <string name="type_default_blood">Кровь</string>

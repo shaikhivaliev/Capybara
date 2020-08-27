@@ -7,6 +7,7 @@ import com.petapp.capybara.data.*
 import com.petapp.capybara.database.DatabaseProvider
 import com.petapp.capybara.profile.ProfileViewModel
 import com.petapp.capybara.profiles.ProfilesViewModel
+import com.petapp.capybara.settings.SettingsViewModel
 import com.petapp.capybara.survey.SurveyViewModel
 import com.petapp.capybara.surveys.SurveysViewModel
 import com.petapp.capybara.type.TypeViewModel
@@ -73,6 +74,12 @@ val appModule = module {
             navController = navController,
             repositorySurveys = get(),
             repositoryTypes = get()
+        )
+    }
+
+    viewModel { (navController: NavController) ->
+        SettingsViewModel(
+            navController = navController
         )
     }
 

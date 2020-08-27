@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
     <item
         android:id="@+id/tab_types"
         android:icon="@drawable/ic_surveys"
@@ -17,4 +19,9 @@
         android:title="@string/tab_new_profile"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/tab_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/tab_settings"
+        app:showAsAction="always" />
 </menu>
