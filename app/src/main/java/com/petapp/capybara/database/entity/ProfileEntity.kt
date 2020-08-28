@@ -15,5 +15,4 @@ data class ProfileEntity(
     var color: Int,
     @ColumnInfo(name = "photo")
     var photo: String
-
 )

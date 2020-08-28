@@ -24,7 +24,7 @@ interface AppDao {
     fun deleteProfile(profileId: String)
 
     @Transaction
-    @Query("SELECT * FROM type")
+    @Query("SELECT * FROM profile")
     fun getProfilesWithSurveys(): Single<List<ProfileWithSurveys>>
 
     // type
