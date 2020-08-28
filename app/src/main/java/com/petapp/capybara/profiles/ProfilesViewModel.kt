@@ -4,14 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.ProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.extensions.navigateWith
-import com.petapp.capybara.profile.ProfileFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -46,7 +43,7 @@ class ProfilesViewModel(
             ).connect()
     }
 
-    fun openProfileScreen(profile: Profile?){
+    fun openProfileScreen(profile: Profile?) {
         ProfilesFragmentDirections.toProfile(profile).navigateWith(navController)
     }
 

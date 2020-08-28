@@ -56,6 +56,6 @@ class TypesViewModel(
     }
 
     companion object {
-        private const val TAG = "database"
+        private const val TAG = "database_types"
     }
 }

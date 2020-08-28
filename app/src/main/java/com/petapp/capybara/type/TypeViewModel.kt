@@ -18,10 +18,10 @@ class TypeViewModel(
 ) : BaseViewModel() {
 
     private val _type = MutableLiveData<Type>()
-    val type : LiveData<Type> get() = _type
+    val type: LiveData<Type> get() = _type
 
     private val _errorMessage = MutableLiveData<Int>()
-    val errorMessage : LiveData<Int> get() = _errorMessage
+    val errorMessage: LiveData<Int> get() = _errorMessage
 
     fun getType(typeId: String) {
         repository.getType(typeId)
@@ -38,33 +38,37 @@ class TypeViewModel(
             ).connect()
     }
 
-    fun createType(type: Type) {
-        repository.createType(type)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                openTypesScreen()
-                Log.d(TAG, "create survey success")
-            }, {
-                _errorMessage.value = R.string.error_create_type
-                Log.d(TAG, "create survey error")
-            })
-            .connect()
+    fun createType(type: Type?) {
+        if (type != null) {
+            repository.createType(type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    openTypesScreen()
+                    Log.d(TAG, "create survey success")
+                }, {
+                    _errorMessage.value = R.string.error_create_type
+                    Log.d(TAG, "create survey error")
+                })
+                .connect()
+        }
     }
 
-    fun updateType(type: Type) {
-        repository.updateType(type)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    openTypesScreen()
-                    Log.d(TAG, "update type ${type.id} success")
-                },
-                {
-                    _errorMessage.value = R.string.error_update_type
-                    Log.d(TAG, "update type ${type.id} error")
-                }
-            ).connect()
+    fun updateType(type: Type?) {
+        if (type != null) {
+            repository.updateType(type)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        openTypesScreen()
+                        Log.d(TAG, "update type ${type.id} success")
+                    },
+                    {
+                        _errorMessage.value = R.string.error_update_type
+                        Log.d(TAG, "update type ${type.id} error")
+                    }
+                ).connect()
+        }
     }
 
     fun deleteType(typeId: String) {
@@ -87,6 +91,6 @@ class TypeViewModel(
     }
 
     companion object {
-        private const val TAG = "database"
+        private const val TAG = "database_type"
     }
 }

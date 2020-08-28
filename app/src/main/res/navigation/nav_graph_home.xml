@@ -121,6 +121,11 @@
             android:name="profile"
             app:argType="com.petapp.capybara.data.model.Profile"
             app:nullable="true" />
+
+        <action
+            android:id="@+id/to_profiles"
+            app:destination="@id/tab_profiles"/>
+
     </fragment>
 
     <fragment

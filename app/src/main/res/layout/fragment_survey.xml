@@ -41,7 +41,7 @@
         app:boxBackgroundColor="@android:color/transparent"
         app:errorEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/name_layout"
-        app:layout_constraintBottom_toTopOf="@id/radio_group">
+        app:layout_constraintBottom_toTopOf="@id/types_group">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/survey_date_et"
@@ -60,7 +60,7 @@
 
 
     <RadioGroup
-        android:id="@+id/radio_group"
+        android:id="@+id/types_group"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,11 +73,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radio_group"
+        app:layout_constraintTop_toBottomOf="@id/types_group"
         >
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/mark_group"
+            android:id="@+id/profiles_group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:visibility="gone"

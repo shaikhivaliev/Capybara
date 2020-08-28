@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Environment
 import android.view.View
+import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -15,10 +18,10 @@ import androidx.navigation.NavOptions
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.survey.SurveyFragment
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.temporal.WeekFields
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,4 +78,21 @@ fun daysOfWeekFromLocale(): Array<DayOfWeek> {
         daysOfWeek = rhs + lhs
     }
     return daysOfWeek
+}
+
+fun Context.createRadioButton(type: String): RadioButton {
+    val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    params.setMargins(
+        SurveyFragment.MARGIN_START_END,
+        SurveyFragment.MARGIN_TOP_BOTTOM,
+        SurveyFragment.MARGIN_START_END,
+        SurveyFragment.MARGIN_TOP_BOTTOM
+    )
+
+    return RadioButton(this).apply {
+        text = type
+        tag = type
+        layoutParams = params
+        setPadding(SurveyFragment.PADDING_START, 0, 0, 0)
+    }
 }

@@ -8,6 +8,7 @@ import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.ProfileRepository
 import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -18,9 +19,6 @@ class ProfileViewModel(
 
     private val _profile = MutableLiveData<Profile>()
     val profile: LiveData<Profile> get() = _profile
-
-    private val _isChangeDone = MutableLiveData<Boolean>()
-    val isChangeDone: LiveData<Boolean> get() = _isChangeDone
 
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
@@ -40,20 +38,38 @@ class ProfileViewModel(
             ).connect()
     }
 
-    fun createProfile(profile: Profile) {
-        repository.createProfile(profile)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    _isChangeDone.value = true
-                    Log.d("database", "create profile ${profile.id} success")
-                },
-                {
-                    _isChangeDone.value = false
-                    _errorMessage.value = R.string.error_create_profile
-                    Log.d("database", "create profile ${profile.id} error")
-                }
-            ).connect()
+    fun createProfile(profile: Profile?) {
+        if (profile != null) {
+            repository.createProfile(profile)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        openProfilesScreen()
+                        Log.d("database", "create profile ${profile.id} success")
+                    },
+                    {
+                        _errorMessage.value = R.string.error_create_profile
+                        Log.d("database", "create profile ${profile.id} error")
+                    }
+                ).connect()
+        }
+    }
+
+    fun updateProfile(profile: Profile?) {
+        if (profile != null) {
+            repository.updateProfile(profile)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        openProfilesScreen()
+                        Log.d(TAG, "update profile ${profile.id} success")
+                    },
+                    {
+                        _errorMessage.value = R.string.error_update_profile
+                        Log.d(TAG, "update profile ${profile.id} error")
+                    }
+                ).connect()
+        }
     }
 
     fun deleteProfile(profileId: String) {
@@ -61,7 +77,7 @@ class ProfileViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _isChangeDone.value = true
+                    openProfilesScreen()
                     Log.d("database", "delete profile $profileId success")
                 },
                 {
@@ -71,27 +87,15 @@ class ProfileViewModel(
             ).connect()
     }
 
-    fun updateProfile(profile: Profile) {
-        repository.updateProfile(profile)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    _isChangeDone.value = true
-                    Log.d(TAG, "update profile ${profile.id} success")
-                },
-                {
-                    _isChangeDone.value = false
-                    _errorMessage.value = R.string.error_update_profile
-                    Log.d(TAG, "update profile ${profile.id} error")
-                }
-            ).connect()
+    private fun openProfilesScreen() {
+        ProfileFragmentDirections.toProfiles().navigateWith(navController)
     }
 
-   fun back() {
+    fun back() {
         navController.popBackStack()
     }
 
     companion object {
-        private const val TAG = "database"
+        private const val TAG = "database_profile"
     }
 }

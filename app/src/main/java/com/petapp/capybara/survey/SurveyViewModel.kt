@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
-import com.petapp.capybara.calendar.CalendarViewModel
 import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.data.TypesRepository
@@ -87,33 +86,36 @@ class SurveyViewModel(
             ).connect()
     }
 
-    fun createSurvey(survey: Survey) {
-        Log.d(TAG, "start create")
-        repositorySurveys.createSurvey(survey)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                openTypesScreen()
-                Log.d(TAG, "create survey success")
-            }, {
-                _errorMessage.value = R.string.error_create_survey
-                Log.d(TAG, "create survey error")
-            }).connect()
+    fun createSurvey(survey: Survey?) {
+        if (survey != null) {
+            repositorySurveys.createSurvey(survey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    openTypesScreen()
+                    Log.d(TAG, "create survey success")
+                }, {
+                    _errorMessage.value = R.string.error_create_survey
+                    Log.d(TAG, "create survey error")
+                }).connect()
+        }
     }
 
-    fun updateSurvey(survey: Survey) {
-        repositorySurveys.updateSurvey(survey)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    openTypesScreen()
-                    Log.d(TAG, "update survey ${survey.id} success")
-                },
-                {
-                    _errorMessage.value = R.string.error_update_survey
-                    Log.d(TAG, "update survey ${survey.id} error")
-                }
-            ).connect()
+    fun updateSurvey(survey: Survey?) {
+        if (survey != null) {
+            repositorySurveys.updateSurvey(survey)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        openTypesScreen()
+                        Log.d(TAG, "update survey ${survey.id} success")
+                    },
+                    {
+                        _errorMessage.value = R.string.error_update_survey
+                        Log.d(TAG, "update survey ${survey.id} error")
+                    }
+                ).connect()
+        }
     }
 
     fun deleteSurvey(surveyId: String) {
@@ -135,11 +137,11 @@ class SurveyViewModel(
         SurveyFragmentDirections.toTypes().navigateWith(navController)
     }
 
-    fun back(){
+    fun back() {
         navController.popBackStack()
     }
 
     companion object {
-        private const val TAG = "database"
+        private const val TAG = "database_survey"
     }
 }

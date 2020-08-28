@@ -32,11 +32,19 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         args.type?.id?.apply { viewModel.getType(this) }
         initObservers()
         delete_type.setOnClickListener { deleteType() }
-        done.setOnClickListener { if (args.type != null) updateType() else createType() }
+        done.setOnClickListener {
+            if (args.type != null) {
+                viewModel.updateType(typeFactory())
+            } else {
+                viewModel.createType(typeFactory())
+            }
+        }
+
         with(recycler) {
             this.layoutManager = GridLayoutManager(context, 3)
             adapter = this@TypeFragment.adapter
         }
+
         val iconResList = arrayListOf(
             R.drawable.ic_blood,
             R.drawable.ic_digistion,
@@ -48,21 +56,14 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         adapter.setDataSet(iconResList)
     }
 
-    private fun createType() {
-        if (isNameValid()) {
+    private fun typeFactory(): Type? {
+        return if (isNameValid()) {
+            val id = args.type?.id ?: ""
             val name = name_et.text.toString()
-            val type = Type(id = null, name = name, icon = R.drawable.ic_vaccination)
-            viewModel.createType(type)
-        }
-    }
-
-    private fun updateType() {
-        if (isNameValid()) {
-            val name = name_et.text.toString()
-            args.type?.id.apply {
-                val type = Type(id = this, name = name, icon = icon.tag as Int)
-                viewModel.updateType(type)
-            }
+            val icon = icon.tag as Int
+            Type(id = id, name = name, icon = icon)
+        } else {
+            null
         }
     }
 
@@ -76,8 +77,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                     title(text = getString(R.string.profile_delete_explanation_empty))
                 }
                 positiveButton {
-                    if (args.type != null) {
-                        args.type?.apply { viewModel.deleteType(this.id!!) }
+                    if (args.type?.id != null) {
+                         viewModel.deleteType(args.type?.id!!)
                     } else {
                         viewModel.openTypesScreen()
                     }

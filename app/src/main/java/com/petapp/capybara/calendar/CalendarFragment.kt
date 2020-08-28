@@ -46,10 +46,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                mark_group.visible(marks.isNotEmpty())
-                mark_group.removeAllViews()
+                profiles_group.visible(marks.isNotEmpty())
+                profiles_group.removeAllViews()
                 for (mark in marks) {
-                    mark_group.addView(createChip(requireContext(), mark))
+                    profiles_group.addView(createChip(requireContext(), mark))
                 }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->

@@ -4,10 +4,7 @@ import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.database.entity.ProfileEntity
-import com.petapp.capybara.database.entity.SurveyEntity
-import com.petapp.capybara.database.entity.TypeEntity
-import com.petapp.capybara.database.entity.TypeWithSurveys
+import com.petapp.capybara.database.entity.*
 
 fun ProfileEntity.toMark(): Mark {
     return Mark(
@@ -35,16 +32,25 @@ fun ProfileEntity.toProfile(): Profile {
     )
 }
 
+fun ProfileWithSurveys.toProfile(): Profile {
+    return Profile(
+        id = this.profile.id.toString(),
+        name = this.profile.name,
+        color = this.profile.color,
+        photo = this.profile.photo
+    )
+}
+
 fun Profile.toProfileEntity(): ProfileEntity {
     return ProfileEntity(
-        id = this.id?.toLong(),
+        id = this.id.toLong(),
         name = this.name,
         color = this.color,
         photo = this.photo
     )
 }
 
-fun List<ProfileEntity>.toProfiles(): List<Profile> {
+fun List<ProfileWithSurveys>.toProfiles(): List<Profile> {
     val profiles = arrayListOf<Profile>()
     for (profileEntity in this) {
         val profile = profileEntity.toProfile()
@@ -57,6 +63,7 @@ fun SurveyEntity.toSurvey(): Survey {
     return Survey(
         id = this.id.toString(),
         typeId = this.typeId.toString(),
+        profileId = this.profileId.toString(),
         name = this.name,
         date = this.date
     )
@@ -64,8 +71,9 @@ fun SurveyEntity.toSurvey(): Survey {
 
 fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
-        id = this.id?.toLong(),
+        id = this.id.toLong(),
         typeId = this.typeId.toLong(),
+        profileId = this.profileId.toLong(),
         name = this.name,
         date = this.date
     )
@@ -99,7 +107,7 @@ fun TypeWithSurveys.toType(): Type {
 
 fun Type.toTypeEntity(): TypeEntity {
     return TypeEntity(
-        id = this.id?.toLong(),
+        id = this.id.toLong(),
         name = this.name,
         icon = this.icon
     )

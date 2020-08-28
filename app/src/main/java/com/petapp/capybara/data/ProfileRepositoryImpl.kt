@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 class ProfileRepositoryImpl(private val appDao: AppDao) : ProfileRepository {
 
     override fun getProfiles(): Single<List<Profile>> {
-        return appDao.getProfiles().map { it.toProfiles() }
+        return appDao.getProfilesWithSurveys().map { it.toProfiles() }
     }
 
     override fun getProfile(profileId: String): Single<Profile> {

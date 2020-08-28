@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class TypeEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long?,
+    val id: Long,
     @ColumnInfo(name = "title")
     val name: String,
     @ColumnInfo(name = "icon")

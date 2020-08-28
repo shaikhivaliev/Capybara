@@ -2,7 +2,6 @@ package com.petapp.capybara.profile
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -31,9 +30,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val args: ProfileFragmentArgs by navArgs()
 
-    private var currentPhotoUri: Uri? = null
+    private var currentPhotoUri: String = ""
 
-    private val startForResult =
+    private val pickImagesResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 // camera
@@ -47,9 +46,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     val intent = result.data
                     val uri = intent?.data
                     if (intent != null && uri != null) {
-                        currentPhotoUri = uri
+                        currentPhotoUri = uri.toString()
                         Glide.with(this)
-                            .load(currentPhotoUri)
+                            .load(uri)
                             .into(photo)
 
                         val takeFlags =
@@ -68,8 +67,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         done.showDone()
         args.profile?.id?.apply { viewModel.getProfile(this) }
 
-        name_et.doAfterTextChanged { name_layout.error = null }
-
         color_group.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.white -> photo.setColor(android.R.color.white)
@@ -81,39 +78,31 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        edit_photo.setOnClickListener { startForResult() }
+        edit_photo.setOnClickListener { pickImages() }
 
         delete_profile.setOnClickListener { deleteProfile() }
 
+        name_et.doAfterTextChanged { name_layout.error = null }
+
         done.setOnClickListener {
             if (args.profile != null) {
-                updateProfile()
+                viewModel.updateProfile(profileFactory())
             } else {
-                createProfile()
+                viewModel.createProfile(profileFactory())
             }
         }
     }
 
-    private fun createProfile() {
-        if (isNameValid()) {
+    private fun profileFactory(): Profile? {
+        return if (isNameValid()) {
+            val id = args.profile?.id ?: ""
             val etName = name_et.text.toString()
-            val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
+            val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
             val color = getChipColor()
-            val newProfile = Profile(null, name, color, currentPhotoUri.toString())
-            viewModel.createProfile(newProfile)
-        }
-    }
-
-    private fun updateProfile() {
-        if (isNameValid()) {
-            val etName = name_et.text.toString()
-            val name = if (etName.isNotBlank()) etName else profile_name.text.toString()
-            val color = getChipColor()
-            val photoUri = if (currentPhotoUri.toString().isEmpty()) args.profile?.photo else currentPhotoUri.toString()
-            args.profile?.id?.apply {
-                val updateProfile = Profile(this, name, color, photoUri)
-                viewModel.updateProfile(updateProfile)
-            }
+            val photoUri = if (currentPhotoUri.isNotEmpty()) currentPhotoUri else args.profile?.photo ?: ""
+            Profile(id = id, name = name, color = color, photo = photoUri)
+        } else {
+            null
         }
     }
 
@@ -142,9 +131,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             profile.observe(viewLifecycleOwner, Observer { profile ->
                 setProfileCard(profile)
             })
-            isChangeDone.observe(viewLifecycleOwner, Observer { isDone ->
-                if (isDone) viewModel.back()
-            })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
@@ -155,10 +141,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         profile_name.text = profile.name
         name_et.setText(profile.name)
         photo.setInitials(profile.name)
-        profile.photo?.let {
+        if (profile.photo.isNotEmpty()) {
             Glide.with(this)
                 .load(profile.photo)
                 .into(photo)
+
         }
 
         when (profile.color) {
@@ -169,7 +156,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             R.color.yellow -> yellow.isChecked = true
             R.color.violet -> violet.isChecked = true
         }
-        currentPhotoUri = Uri.parse(profile.photo)
+        currentPhotoUri = profile.photo
     }
 
     private fun deleteProfile() {
@@ -183,7 +170,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 positiveButton {
                     if (args.profile?.id != null) {
-                        viewModel.deleteProfile(args.profile!!.id!!)
+                        viewModel.deleteProfile(args.profile?.id!!)
                     } else {
                         viewModel.back()
                     }
@@ -194,14 +181,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun startForResult() {
+    private fun pickImages() {
         val intentArray: Array<Intent?> = arrayOf(openCamera())
         val chooser = Intent(Intent.ACTION_CHOOSER)
         chooser.putExtra(Intent.EXTRA_INTENT, openGallery())
         chooser.putExtra(Intent.EXTRA_TITLE, "Выберите изображение")
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray)
 
-        startForResult.launch(chooser)
+        pickImagesResult.launch(chooser)
     }
 
     private fun openCamera(): Intent {
@@ -209,7 +196,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         activity?.let {
             if (cameraIntent.resolveActivity(it.packageManager) != null) {
                 val photoFile = it.createImageFile()
-                currentPhotoUri = FileProvider.getUriForFile(it, "com.petapp.capybara", photoFile)
+                currentPhotoUri = FileProvider.getUriForFile(it, "com.petapp.capybara", photoFile).toString()
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri)
             }
         }

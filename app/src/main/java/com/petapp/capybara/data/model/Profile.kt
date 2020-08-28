@@ -5,8 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Profile(
-    val id: String?,
+    val id: String,
     val name: String,
     val color: Int,
-    val photo: String?
+    val photo: String,
+    val surveys: List<Survey> = emptyList()
 ) : Parcelable
