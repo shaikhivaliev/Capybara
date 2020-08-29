@@ -65,6 +65,7 @@ fun SurveyEntity.toSurvey(): Survey {
         id = this.id.toString(),
         typeId = this.typeId,
         profileId = this.profileId,
+        color = this.color,
         name = this.name,
         date = this.date
     )
@@ -75,6 +76,7 @@ fun Survey.toSurveyEntity(): SurveyEntity {
         id = this.id.toLong(),
         typeId = this.typeId,
         profileId = this.profileId,
+        color = this.color,
         name = this.name,
         date = this.date
     )

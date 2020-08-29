@@ -3,12 +3,13 @@ package com.petapp.capybara.surveys
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_survey.*
+import kotlinx.android.synthetic.main.item_survey.view.*
 
 class SurveysAdapterDelegate(
     private val itemClick: (Survey) -> Unit
@@ -48,7 +49,7 @@ class SurveysAdapterDelegate(
             with(containerView) {
                 title.text = survey.name
                 date.text = survey.date
-                mark.setBackgroundColor(survey.profile.color)
+                mark.setBackgroundColor(ContextCompat.getColor(context, survey.color))
             }
         }
     }

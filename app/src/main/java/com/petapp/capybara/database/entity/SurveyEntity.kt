@@ -3,7 +3,6 @@ package com.petapp.capybara.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.petapp.capybara.data.model.Profile
 
 @Entity(tableName = "survey")
 data class SurveyEntity(
@@ -14,6 +13,8 @@ data class SurveyEntity(
     val typeId: String,
     @ColumnInfo(name = "profile_id")
     val profileId: String,
+    @ColumnInfo(name = "color")
+    val color: Int,
     @ColumnInfo(name = "title")
     val name: String,
     @ColumnInfo(name = "date")

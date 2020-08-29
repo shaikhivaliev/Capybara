@@ -33,7 +33,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private var typesMap = hashMapOf<String, String>()
     private var typeName = ""
-    private var marksMap = hashMapOf<String, String>()
     private var marksName = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,7 +91,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 if (marks.isEmpty()) showAlertCreateProfile()
                 for (mark in marks) {
                     marks_group.addView(createChip(requireContext(), mark))
-                    marksMap[mark.name] = mark.id
                 }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -131,10 +129,11 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         return if (isFieldsValid()) {
             val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
             val typeId = typesMap[typeName] ?: ""
-            val profileId = marksMap[marksName] ?: ""
+            val profileId = viewModel.marks.value?.find { it.name == marksName }?.id ?: ""
+            val color = viewModel.marks.value?.find { it.name == marksName }?.color ?: 0
             val name = name_et.text.toString()
             val date = date_et.text.toString()
-            return Survey(id = id, typeId = typeId, profileId = profileId, name = name, date = date)
+            return Survey(id = id, typeId = typeId, profileId = profileId, color = color, name = name, date = date)
         } else {
             null
         }
