@@ -3,20 +3,17 @@
     <string name="app_name">Capybara</string>
     <string name="autority">com.petapp.capybara</string>
     <string name="database_name">database</string>
-    <string name="delete">Удалить</string>
-    <string name="done">Готово</string>
     <string name="name">Имя</string>
     <string name="surveys_amount">Исследований:</string>
+    <string name="repeat">Повторить</string>
 
     <!-- tabs-->
-    <string name="tab_types">По типам</string>
     <string name="tab_list">Исследования</string>
     <string name="tab_calendar">Календарь</string>
     <string name="tab_new_profile">Профили</string>
     <string name="tab_settings">Настройки</string>
 
     <!-- profile-->
-    <string name="profile_mark">Метка</string>
     <string name="profile_name_hint">Изменить имя</string>
     <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
@@ -58,4 +55,5 @@
     <string name="error_empty_date">Пустая дата</string>
     <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
     <string name="error_empty_profile">Выберите хотя бы один профиль</string>
+    <string name="error_auth">Что-то пошло не так</string>
 </resources>

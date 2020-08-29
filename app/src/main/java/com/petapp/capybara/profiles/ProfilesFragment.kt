@@ -50,7 +50,6 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
         }
     }
 
-
     inner class ProfileAdapter : ListDelegationAdapter<MutableList<Any>>() {
 
         init {

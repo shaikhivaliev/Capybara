@@ -32,7 +32,7 @@ interface AppDao {
     fun getType(typeId: String): Single<TypeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertType(type: TypeEntity)
+    fun createType(type: TypeEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateType(profile: TypeEntity)

@@ -45,6 +45,7 @@ class ProfilesAdapterDelegate(
                 photo.setColor(profile.color)
                 photo.setInitials(profile.name)
                 photo.transitionName = profile.name
+                surveys_amount.text = profile.surveys.size.toString()
                 Glide.with(this)
                     .load(profile.photo)
                     .into(photo)

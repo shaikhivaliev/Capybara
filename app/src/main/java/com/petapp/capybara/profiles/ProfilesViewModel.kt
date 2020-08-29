@@ -37,7 +37,7 @@ class ProfilesViewModel(
                     Log.d(TAG, "get profiles success")
                 },
                 {
-                    _errorMessage.value = R.string.error_get_profile
+                    _errorMessage.value = R.string.error_get_profiles
                     Log.d(TAG, "get profiles error")
                 }
             ).connect()

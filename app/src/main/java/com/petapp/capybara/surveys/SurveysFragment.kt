@@ -14,7 +14,6 @@ import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import kotlinx.android.synthetic.main.fragment_surveys.add_survey
 import kotlinx.android.synthetic.main.fragment_surveys.marks_group

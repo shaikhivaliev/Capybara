@@ -17,7 +17,7 @@ class TypesRepositoryImpl(private val appDao: AppDao) : TypesRepository {
     }
 
     override fun createType(type: Type): Completable {
-        return Completable.fromAction { appDao.insertType(type.toTypeEntity()) }
+        return Completable.fromAction { appDao.createType(type.toTypeEntity()) }
             .subscribeOn(Schedulers.io())
     }
 

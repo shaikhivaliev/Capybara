@@ -8,7 +8,7 @@ import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_survey.view.*
+import kotlinx.android.synthetic.main.item_survey.*
 
 class SurveysAdapterDelegate(
     private val itemClick: (Survey) -> Unit
@@ -45,7 +45,11 @@ class SurveysAdapterDelegate(
 
         fun bind(survey: Survey) {
             this.survey = survey
-            containerView.survey_name.text = survey.name
+            with(containerView) {
+                title.text = survey.name
+                date.text = survey.date
+                mark.setBackgroundColor(survey.profile.color)
+            }
         }
     }
 }

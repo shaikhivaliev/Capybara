@@ -54,11 +54,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:gravity="center"
-            android:text="0"
             android:textSize="12sp"
             app:layout_constraintBaseline_toBaselineOf="@id/surveys_amount_title"
             app:layout_constraintStart_toEndOf="@id/surveys_amount_title"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

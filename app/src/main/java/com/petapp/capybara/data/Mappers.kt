@@ -37,7 +37,8 @@ fun ProfileWithSurveys.toProfile(): Profile {
         id = this.profile.id.toString(),
         name = this.profile.name,
         color = this.profile.color,
-        photo = this.profile.photo
+        photo = this.profile.photo,
+        surveys = this.surveys.toSurveys()
     )
 }
 

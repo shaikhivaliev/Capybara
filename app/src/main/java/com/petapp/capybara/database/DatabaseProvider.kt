@@ -18,19 +18,19 @@ class DatabaseProvider(context: Context) {
                     context.getString(R.string.type_default_blood),
                     R.drawable.ic_blood
                 )
-                database.appDao().insertType(typeBlood)
+                database.appDao().createType(typeBlood)
                 val typeHeart = TypeEntity(
                     0L,
                     context.getString(R.string.type_default_heart),
                     R.drawable.ic_heart
                 )
-                database.appDao().insertType(typeHeart)
+                database.appDao().createType(typeHeart)
                 val typeTeeth = TypeEntity(
                     0L,
                     context.getString(R.string.type_default_teeth),
                     R.drawable.ic_teeth
                 )
-                database.appDao().insertType(typeTeeth)
+                database.appDao().createType(typeTeeth)
             }
         }
     }

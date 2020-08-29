@@ -32,8 +32,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     private val args: SurveyFragmentArgs by navArgs()
 
     private var typesMap = hashMapOf<String, String>()
-    private var type = ""
-    private var profile = ""
+    private var typeName = ""
+    private var marksMap = hashMapOf<String, String>()
+    private var marksName = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,14 +64,14 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         types_group.setOnCheckedChangeListener { _, checkedId ->
             val typeButton = view.findViewById<RadioButton>(checkedId)
             if (typeButton != null) {
-                type = typeButton.text.toString()
+                typeName = typeButton.text.toString()
             }
         }
 
         marks_group.setOnCheckedChangeListener { _, checkedId ->
             val marksButton = view.findViewById<Chip>(checkedId)
             if (marksButton != null) {
-                profile = marksButton.text.toString()
+                marksName = marksButton.text.toString()
             }
         }
     }
@@ -91,6 +92,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 if (marks.isEmpty()) showAlertCreateProfile()
                 for (mark in marks) {
                     marks_group.addView(createChip(requireContext(), mark))
+                    marksMap[mark.name] = mark.id
                 }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -128,8 +130,8 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     private fun surveyFactory(): Survey? {
         return if (isFieldsValid()) {
             val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
-            val typeId = args.survey?.typeId ?: typesMap[type] ?: ""
-            val profileId = args.survey?.profileId ?: profile
+            val typeId = typesMap[typeName] ?: ""
+            val profileId = marksMap[marksName] ?: ""
             val name = name_et.text.toString()
             val date = date_et.text.toString()
             return Survey(id = id, typeId = typeId, profileId = profileId, name = name, date = date)
@@ -181,7 +183,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun isTypeSelected(): Boolean {
-        return if (type.isNotBlank()) true
+        return if (typeName.isNotBlank()) true
         else {
             requireActivity().toast(R.string.error_empty_type)
             false
@@ -189,7 +191,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun isProfileSelected(): Boolean {
-        return if (profile.isNotBlank()) true
+        return if (marksName.isNotBlank()) true
         else {
             requireActivity().toast(R.string.error_empty_profile)
             false
