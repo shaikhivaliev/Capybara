@@ -55,4 +55,7 @@
     <string name="error_get_type">Не удалось получить тип исследования</string>
     <string name="error_get_types">Не удалось получить тип исследований</string>
     <string name="error_empty_name">Пустое имя</string>
+    <string name="error_empty_date">Пустая дата</string>
+    <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
+    <string name="error_empty_profile">Выберите хотя бы один профиль</string>
 </resources>

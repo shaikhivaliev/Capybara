@@ -32,28 +32,27 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/survey_date_layout"
+        android:id="@+id/date_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/light_gray"
-        app:boxBackgroundColor="@android:color/transparent"
         app:errorEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/name_layout"
-        app:layout_constraintBottom_toTopOf="@id/types_group">
+        app:errorIconDrawable="@null"
+        app:layout_constraintBottom_toTopOf="@id/types_group"
+        app:layout_constraintTop_toBottomOf="@id/name_layout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/survey_date_et"
+            android:id="@+id/date_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/light_gray"
-            android:paddingStart="0dp"
             android:clickable="true"
             android:focusable="false"
             android:hint="@string/survey_date"
             android:inputType="text"
-            android:maxLines="1"
+            android:paddingStart="0dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:ignore="RtlSymmetry" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -65,7 +64,7 @@
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/survey_date_layout" />
+        app:layout_constraintTop_toBottomOf="@id/date_layout" />
 
     <HorizontalScrollView
         android:id="@+id/chip_group"
@@ -73,15 +72,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/types_group"
-        >
+        app:layout_constraintTop_toBottomOf="@id/types_group">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/profiles_group"
+            android:id="@+id/marks_group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="gone"
             app:chipSpacingHorizontal="8dp"
+            app:singleSelection="true"
             app:singleLine="true" />
     </HorizontalScrollView>
 

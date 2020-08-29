@@ -7,13 +7,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_surveys.*
+import kotlinx.android.synthetic.main.fragment_surveys.add_survey
+import kotlinx.android.synthetic.main.fragment_surveys.marks_group
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,24 +33,33 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.getSurveys(args.typeId)
+
+        initViews(view)
         initObservers()
 
+        add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
+    }
+
+    private fun initViews(view: View) {
         with(recycler_view) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@SurveysFragment.adapter
         }
 
-        add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
+        marks_group.setOnCheckedChangeListener { _, checkedId ->
+            val marksButton = view.findViewById<Chip>(checkedId)
+        }
     }
 
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                profiles_group.visible(marks.isNotEmpty())
-                profiles_group.removeAllViews()
+                marks_group.visible(marks.isNotEmpty())
+                marks_group.removeAllViews()
                 for (mark in marks) {
-                    profiles_group.addView(createChip(requireContext(), mark))
+                    marks_group.addView(createChip(requireContext(), mark))
                 }
             })
             surveys.observe(viewLifecycleOwner, Observer {

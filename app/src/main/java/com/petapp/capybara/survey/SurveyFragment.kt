@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -16,7 +17,6 @@ import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.createRadioButton
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_survey.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -39,11 +39,19 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         super.onViewCreated(view, savedInstanceState)
         done.showDone()
 
+        initViews(view)
         initObservers()
         initWorkWithDate()
 
         args.survey?.id?.apply { viewModel.getSurvey(this) }
+    }
+
+    private fun initViews(view: View) {
+        name_et.doAfterTextChanged { name_layout.error = null }
+        date_et.doAfterTextChanged { date_layout.error = null }
+
         delete_survey.setOnClickListener { deleteSurvey() }
+
         done.setOnClickListener {
             if (args.survey != null) {
                 viewModel.updateSurvey(surveyFactory())
@@ -59,10 +67,10 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             }
         }
 
-        profiles_group.setOnCheckedChangeListener { _, checkedId ->
-            val profileButton = view.findViewById<Chip>(checkedId)
-            if (profileButton != null) {
-                profile = profileButton.text.toString()
+        marks_group.setOnCheckedChangeListener { _, checkedId ->
+            val marksButton = view.findViewById<Chip>(checkedId)
+            if (marksButton != null) {
+                profile = marksButton.text.toString()
             }
         }
     }
@@ -73,16 +81,16 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 setSurvey(survey)
             })
             types.observe(viewLifecycleOwner, Observer { types ->
+                if (types.isEmpty()) showAlertCreateType()
                 for (type in types) {
                     types_group.addView(requireContext().createRadioButton(type.name))
                     typesMap[type.name] = type.id
                 }
             })
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                profiles_group.visible(marks.isNotEmpty())
-                profiles_group.removeAllViews()
+                if (marks.isEmpty()) showAlertCreateProfile()
                 for (mark in marks) {
-                    profiles_group.addView(createChip(requireContext(), mark))
+                    marks_group.addView(createChip(requireContext(), mark))
                 }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -94,12 +102,12 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     @SuppressLint("SimpleDateFormat")
     private fun initWorkWithDate() {
 
-        survey_date_et.setOnClickListener {
+        date_et.setOnClickListener {
             val date = Calendar.getInstance()
 
             val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 date.set(year, month, dayOfMonth)
-                survey_date_et.setText(SimpleDateFormat("dd.MM.yyyy").format(date.time))
+                date_et.setText(SimpleDateFormat("dd.MM.yyyy").format(date.time))
             }
 
             DatePickerDialog(
@@ -114,7 +122,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private fun setSurvey(survey: Survey) {
         name_et.setText(survey.name)
-        survey_date_et.setText(survey.date)
+        date_et.setText(survey.date)
     }
 
     private fun surveyFactory(): Survey? {
@@ -123,7 +131,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val typeId = args.survey?.typeId ?: typesMap[type] ?: ""
             val profileId = args.survey?.profileId ?: profile
             val name = name_et.text.toString()
-            val date = survey_date_et.text.toString()
+            val date = date_et.text.toString()
             return Survey(id = id, typeId = typeId, profileId = profileId, name = name, date = date)
         } else {
             null
@@ -153,13 +161,45 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun isFieldsValid(): Boolean {
-        val name = name_et.text.toString()
-        val date = survey_date_et.text.toString()
-        return if (name.isNotBlank() && date.isNotBlank()) true
+        return isNameValid() && isDateValid() && isTypeSelected() && isProfileSelected()
+    }
+
+    private fun isNameValid(): Boolean {
+        return if (name_et.text.toString().isNotBlank()) true
         else {
-            name_layout.error = requireActivity().getString(R.string.error_get_types)
+            name_layout.error = requireActivity().getString(R.string.error_empty_name)
             false
         }
+    }
+
+    private fun isDateValid(): Boolean {
+        return if (date_et.text.toString().isNotBlank()) true
+        else {
+            date_layout.error = requireActivity().getString(R.string.error_empty_date)
+            false
+        }
+    }
+
+    private fun isTypeSelected(): Boolean {
+        return if (type.isNotBlank()) true
+        else {
+            requireActivity().toast(R.string.error_empty_type)
+            false
+        }
+    }
+
+    private fun isProfileSelected(): Boolean {
+        return if (profile.isNotBlank()) true
+        else {
+            requireActivity().toast(R.string.error_empty_profile)
+            false
+        }
+    }
+
+    private fun showAlertCreateProfile() {
+    }
+
+    private fun showAlertCreateType() {
     }
 
     companion object {

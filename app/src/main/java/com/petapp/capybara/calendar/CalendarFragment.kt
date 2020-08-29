@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -17,6 +18,7 @@ import com.kizitonwose.calendarview.utils.previous
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.fragment_calendar.marks_group
 import kotlinx.android.synthetic.main.view_calendar_day.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -36,20 +38,27 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupCalendar()
         add_survey.showAdd()
+
+        initViews(view)
         initObservers()
+        setupCalendar()
+
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
+
     }
 
+    private fun initViews(view: View) {
+        marks_group.setOnCheckedChangeListener { _, checkedId ->
+            val marksButton = view.findViewById<Chip>(checkedId)
+        }
+    }
 
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                profiles_group.visible(marks.isNotEmpty())
-                profiles_group.removeAllViews()
                 for (mark in marks) {
-                    profiles_group.addView(createChip(requireContext(), mark))
+                    marks_group.addView(createChip(requireContext(), mark))
                 }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->

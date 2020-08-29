@@ -33,16 +33,6 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         initObservers()
 
         args.type?.id?.apply { viewModel.getType(this) }
-
-        delete_type.setOnClickListener { deleteType() }
-
-        done.setOnClickListener {
-            if (args.type != null) {
-                viewModel.updateType(typeFactory())
-            } else {
-                viewModel.createType(typeFactory())
-            }
-        }
     }
 
     private fun initViews(){
@@ -61,6 +51,16 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         adapter.setDataSet(iconResList)
         icon.setImageResource(DEFAULT_TYPE_IMAGE)
         icon.tag = DEFAULT_TYPE_IMAGE
+
+        delete_type.setOnClickListener { deleteType() }
+
+        done.setOnClickListener {
+            if (args.type != null) {
+                viewModel.updateType(typeFactory())
+            } else {
+                viewModel.createType(typeFactory())
+            }
+        }
     }
 
     private fun initObservers() {

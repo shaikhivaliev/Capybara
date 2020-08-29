@@ -50,10 +50,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
         done.showDone()
-        args.profile?.id?.apply { viewModel.getProfile(this) }
 
+        initViews()
+        initObservers()
+
+        args.profile?.id?.apply { viewModel.getProfile(this) }
+    }
+
+    private fun initViews() {
         color_group.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.white -> photo.setColor(android.R.color.white)
@@ -77,39 +82,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             } else {
                 viewModel.createProfile(profileFactory())
             }
-        }
-    }
-
-    private fun profileFactory(): Profile? {
-        return if (isNameValid()) {
-            val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
-            val etName = name_et.text.toString()
-            val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
-            val color = getChipColor()
-            val photoUri = if (!currentPhotoUri.isNullOrEmpty()) currentPhotoUri else args.profile?.photo
-            Profile(id = id, name = name, color = color, photo = photoUri)
-        } else {
-            null
-        }
-    }
-
-    private fun getChipColor(): Int {
-        return when (color_group.checkedChipId) {
-            R.id.green -> R.color.green
-            R.id.red -> R.color.red
-            R.id.blue -> R.color.blue
-            R.id.yellow -> R.color.yellow
-            R.id.violet -> R.color.violet
-            else -> android.R.color.white
-        }
-    }
-
-    private fun isNameValid(): Boolean {
-        val name = name_et.text.toString()
-        return if (name.isNotBlank()) true
-        else {
-            name_layout.error = requireActivity().getString(R.string.error_empty_name)
-            false
         }
     }
 
@@ -155,6 +127,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
+    private fun profileFactory(): Profile? {
+        return if (isNameValid()) {
+            val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
+            val etName = name_et.text.toString()
+            val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
+            val color = getChipColor()
+            val photoUri = if (!currentPhotoUri.isNullOrEmpty()) currentPhotoUri else args.profile?.photo
+            Profile(id = id, name = name, color = color, photo = photoUri)
+        } else {
+            null
+        }
+    }
+
     private fun deleteProfile() {
         val name = profile_name.text
         activity?.let {
@@ -174,6 +159,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 negativeButton { cancel() }
             }
+        }
+    }
+
+    private fun getChipColor(): Int {
+        return when (color_group.checkedChipId) {
+            R.id.green -> R.color.green
+            R.id.red -> R.color.red
+            R.id.blue -> R.color.blue
+            R.id.yellow -> R.color.yellow
+            R.id.violet -> R.color.violet
+            else -> android.R.color.white
+        }
+    }
+
+    private fun isNameValid(): Boolean {
+        val name = name_et.text.toString()
+        return if (name.isNotBlank()) true
+        else {
+            name_layout.error = requireActivity().getString(R.string.error_empty_name)
+            false
         }
     }
 
