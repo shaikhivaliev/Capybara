@@ -45,9 +45,11 @@ class TypeIconAdapterDelegate(
 
         fun bind(iconRes: Int) {
             this.iconRes = iconRes
-            Glide.with(containerView)
-                .load(iconRes)
-                .into(containerView.type_icon)
+            with(containerView) {
+                Glide.with(this)
+                    .load(iconRes)
+                    .into(type_icon)
+            }
         }
     }
 }

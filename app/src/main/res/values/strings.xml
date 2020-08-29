@@ -1,6 +1,7 @@
 <resources>
     <!-- common-->
     <string name="app_name">Capybara</string>
+    <string name="autority">com.petapp.capybara</string>
     <string name="database_name">database</string>
     <string name="delete">Удалить</string>
     <string name="done">Готово</string>

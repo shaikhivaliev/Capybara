@@ -25,7 +25,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Suppress("NOTHING_TO_INLINE")
 inline fun NavDirections.navigateWith(navController: NavController, navOptions: NavOptions? = null) {
     if (navController.currentDestination?.getAction(actionId) != null) {
         navController.navigate(this, navOptions)

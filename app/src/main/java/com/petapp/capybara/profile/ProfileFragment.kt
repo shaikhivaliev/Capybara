@@ -108,7 +108,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {
-            name_layout.error = "Пустое имя"
+            name_layout.error = requireActivity().getString(R.string.error_empty_name)
             false
         }
     }
@@ -120,7 +120,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             })
 
             imageFile.observe(viewLifecycleOwner, Observer { file ->
-                currentPhotoUri = FileProvider.getUriForFile(requireActivity(), "com.petapp.capybara", file).toString()
+                currentPhotoUri = FileProvider.getUriForFile(
+                    requireActivity(),
+                    requireActivity().getString(R.string.autority),
+                    file
+                ).toString()
                 imageFromCamera.launch(Uri.parse(currentPhotoUri))
             })
 

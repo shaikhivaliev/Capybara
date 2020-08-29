@@ -29,9 +29,13 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         done.showDone()
-        args.type?.id?.apply { viewModel.getType(this) }
+        initViews()
         initObservers()
+
+        args.type?.id?.apply { viewModel.getType(this) }
+
         delete_type.setOnClickListener { deleteType() }
+
         done.setOnClickListener {
             if (args.type != null) {
                 viewModel.updateType(typeFactory())
@@ -39,12 +43,13 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                 viewModel.createType(typeFactory())
             }
         }
+    }
 
+    private fun initViews(){
         with(recycler) {
             this.layoutManager = GridLayoutManager(context, 3)
             adapter = this@TypeFragment.adapter
         }
-
         val iconResList = arrayListOf(
             R.drawable.ic_blood,
             R.drawable.ic_digistion,
@@ -54,6 +59,25 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
             R.drawable.ic_vision
         )
         adapter.setDataSet(iconResList)
+        icon.setImageResource(DEFAULT_TYPE_IMAGE)
+        icon.tag = DEFAULT_TYPE_IMAGE
+    }
+
+    private fun initObservers() {
+        with(viewModel) {
+            type.observe(viewLifecycleOwner, Observer { type ->
+                setType(type)
+            })
+            errorMessage.observe(viewLifecycleOwner, Observer { error ->
+                requireActivity().toast(error)
+            })
+        }
+    }
+
+    private fun setType(type: Type) {
+        name_et.setText(type.name)
+        icon.setImageResource(type.icon)
+        icon.tag = type.icon
     }
 
     private fun typeFactory(): Type? {
@@ -89,28 +113,11 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         }
     }
 
-    private fun initObservers() {
-        with(viewModel) {
-            type.observe(viewLifecycleOwner, Observer { type ->
-                setType(type)
-            })
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
-                requireActivity().toast(error)
-            })
-        }
-    }
-
-    private fun setType(type: Type) {
-        name_et.setText(type.name)
-        icon.setImageResource(type.icon)
-        icon.tag = type.icon
-    }
-
     private fun isNameValid(): Boolean {
         val name = name_et.text.toString()
         return if (name.isNotBlank()) true
         else {
-            name_layout.error = "Пустое имя"
+            name_layout.error = requireActivity().getString(R.string.error_empty_name)
             false
         }
     }
@@ -136,7 +143,9 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
             notifyDataSetChanged()
         }
     }
+
     companion object {
         private const val DEFAULT_ID_FOR_ENTITY = "0"
+        private const val DEFAULT_TYPE_IMAGE = R.drawable.ic_digistion
     }
 }
