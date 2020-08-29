@@ -8,6 +8,6 @@ data class Profile(
     val id: String,
     val name: String,
     val color: Int,
-    val photo: String,
+    val photo: String? = null,
     val surveys: List<Survey> = emptyList()
 ) : Parcelable

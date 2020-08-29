@@ -62,8 +62,8 @@ fun List<ProfileWithSurveys>.toProfiles(): List<Profile> {
 fun SurveyEntity.toSurvey(): Survey {
     return Survey(
         id = this.id.toString(),
-        typeId = this.typeId.toString(),
-        profileId = this.profileId.toString(),
+        typeId = this.typeId,
+        profileId = this.profileId,
         name = this.name,
         date = this.date
     )
@@ -72,8 +72,8 @@ fun SurveyEntity.toSurvey(): Survey {
 fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
         id = this.id.toLong(),
-        typeId = this.typeId.toLong(),
-        profileId = this.profileId.toLong(),
+        typeId = this.typeId,
+        profileId = this.profileId,
         name = this.name,
         date = this.date
     )

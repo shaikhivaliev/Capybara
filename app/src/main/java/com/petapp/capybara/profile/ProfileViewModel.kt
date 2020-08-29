@@ -1,5 +1,6 @@
 package com.petapp.capybara.profile
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +9,12 @@ import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.ProfileRepository
 import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.navigateWith
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class ProfileViewModel(
     private val repository: ProfileRepository,
@@ -19,6 +23,10 @@ class ProfileViewModel(
 
     private val _profile = MutableLiveData<Profile>()
     val profile: LiveData<Profile> get() = _profile
+
+    private val _imageFile = MutableLiveData<File>()
+    val imageFile: LiveData<File> get() = _imageFile
+
 
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
@@ -45,11 +53,11 @@ class ProfileViewModel(
                 .subscribe(
                     {
                         openProfilesScreen()
-                        Log.d("database", "create profile ${profile.id} success")
+                        Log.d(TAG, "create profile ${profile.id} success")
                     },
                     {
                         _errorMessage.value = R.string.error_create_profile
-                        Log.d("database", "create profile ${profile.id} error")
+                        Log.d(TAG, "create profile ${profile.id} error")
                     }
                 ).connect()
         }
@@ -78,11 +86,25 @@ class ProfileViewModel(
             .subscribe(
                 {
                     openProfilesScreen()
-                    Log.d("database", "delete profile $profileId success")
+                    Log.d(TAG, "delete profile $profileId success")
                 },
                 {
                     _errorMessage.value = R.string.error_delete_profile
-                    Log.d("database", "delete profile error")
+                    Log.d(TAG, "delete profile error")
+                }
+            ).connect()
+    }
+
+    fun createImageFile(context: Context) {
+        Single.just(context.createImageFile())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _imageFile.value = it
+                    Log.d(TAG, "create file success")
+                },
+                {
+                    Log.d(TAG, "create file error")
                 }
             ).connect()
     }

@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 data class SurveyEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo(name = "type_id")
-    val typeId: Long,
+    val typeId: String,
     @ColumnInfo(name = "profile_id")
-    val profileId: Long,
+    val profileId: String,
     @ColumnInfo(name = "title")
     val name: String,
     @ColumnInfo(name = "date")

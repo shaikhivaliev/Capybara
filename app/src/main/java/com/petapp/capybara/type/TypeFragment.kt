@@ -58,7 +58,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     private fun typeFactory(): Type? {
         return if (isNameValid()) {
-            val id = args.type?.id ?: ""
+            val id = args.type?.id ?: DEFAULT_ID_FOR_ENTITY
             val name = name_et.text.toString()
             val icon = icon.tag as Int
             Type(id = id, name = name, icon = icon)
@@ -135,5 +135,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
             items.addAll(iconRes)
             notifyDataSetChanged()
         }
+    }
+    companion object {
+        private const val DEFAULT_ID_FOR_ENTITY = "0"
     }
 }

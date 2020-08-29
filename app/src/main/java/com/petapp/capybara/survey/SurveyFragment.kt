@@ -119,7 +119,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private fun surveyFactory(): Survey? {
         return if (isFieldsValid()) {
-            val id = args.survey?.id ?: ""
+            val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
             val typeId = args.survey?.typeId ?: typesMap[type] ?: ""
             val profileId = args.survey?.profileId ?: profile
             val name = name_et.text.toString()
@@ -166,5 +166,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         const val MARGIN_TOP_BOTTOM = 14
         const val MARGIN_START_END = 24
         const val PADDING_START = 24
+        private const val DEFAULT_ID_FOR_ENTITY = "0"
     }
 }

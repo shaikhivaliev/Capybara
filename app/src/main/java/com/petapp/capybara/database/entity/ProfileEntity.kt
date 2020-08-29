@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 data class ProfileEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo(name = "title")
     val name: String,
     @ColumnInfo(name = "color")
     var color: Int,
     @ColumnInfo(name = "photo")
-    var photo: String
+    var photo: String?
 )
