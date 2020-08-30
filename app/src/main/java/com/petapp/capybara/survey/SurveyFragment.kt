@@ -80,13 +80,13 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 setSurvey(survey)
             })
             types.observe(viewLifecycleOwner, Observer { types ->
-                if (types.isEmpty()) showAlertCreateSurvey(getString(R.string.profile))
+                if (types.isEmpty()) showAlertCreateSurvey(getString(R.string.type))
                 for (type in types) {
                     types_group.addView(requireContext().createRadioButton(type.name))
                 }
             })
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                if (marks.isEmpty()) showAlertCreateSurvey(getString(R.string.type))
+                if (marks.isEmpty()) showAlertCreateSurvey(getString(R.string.profile))
                 for (mark in marks) {
                     marks_group.addView(createChip(requireContext(), mark))
                 }

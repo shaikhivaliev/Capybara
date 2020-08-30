@@ -4,6 +4,7 @@ import androidx.room.*
 import com.petapp.capybara.database.entity.*
 import io.reactivex.Single
 
+// home task #7 - persistent storage
 @Dao
 interface AppDao {
 

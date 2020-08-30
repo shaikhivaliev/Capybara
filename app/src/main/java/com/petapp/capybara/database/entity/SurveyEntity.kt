@@ -2,9 +2,29 @@ package com.petapp.capybara.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "survey")
+// home task #7 - persistent storage
+@Entity(
+    tableName = "survey",
+    foreignKeys = [
+    ForeignKey(
+        entity = TypeEntity::class,
+        parentColumns = ["id"],
+        childColumns = ["type_id"],
+        onUpdate = ForeignKey.CASCADE,
+        onDelete = ForeignKey.CASCADE
+    ),
+        ForeignKey(
+            entity = ProfileEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["profile_id"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class SurveyEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

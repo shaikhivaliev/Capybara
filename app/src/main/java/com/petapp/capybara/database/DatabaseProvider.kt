@@ -8,6 +8,7 @@ import com.petapp.capybara.R
 import com.petapp.capybara.database.entity.TypeEntity
 import java.util.concurrent.Executors
 
+// home task #7 - persistent storage
 class DatabaseProvider(context: Context) {
 
     private val setInitialData: RoomDatabase.Callback = object : RoomDatabase.Callback() {
