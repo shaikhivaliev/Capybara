@@ -1,20 +1,65 @@
 <resources>
-    <!-- commom-->
+    <!-- common-->
     <string name="app_name">Capybara</string>
-    <string name="delete">Удалить</string>
-    <string name="done">Готово</string>
+    <string name="autority">com.petapp.capybara</string>
+    <string name="database_name">database</string>
+    <string name="name">Имя</string>
+    <string name="surveys_amount">Исследований:</string>
+    <string name="repeat">Повторить</string>
 
     <!-- tabs-->
-    <string name="tab_types">Типы</string>
-    <string name="tab_list">Список</string>
+    <string name="tab_list">Исследования</string>
     <string name="tab_calendar">Календарь</string>
-    <string name="tab_new_profile">Профиль</string>
+    <string name="tab_new_profile">Профили</string>
+    <string name="tab_settings">Настройки</string>
 
-    <!-- new profile-->
-    <string name="mark">Метка</string>
-    <string name="change_mark">Изменить метку</string>
-    <string name="title_hint">Введите имя</string>
+    <!-- profile-->
+    <string name="profile_name_hint">Изменить имя</string>
+    <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
+    <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
+    <string name="profile_mock">Список пуст</string>
+    <string name="profile">профиль</string>
 
+    <!-- survey-->
+    <string name="survey_date">Дата</string>
+    <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
+    <string name="survey_delete_explanation_empty">Вы действительно хотите удалить исследование?</string>
+    <string name="survey_incomplete_data">Создайте хотя бы один %1$s, чтобы затем создать запись исследования</string>
 
+    <!-- settings-->
+    <string name="settings_feedback">Обратная связь</string>
+    <string name="settings_about_app">О приложении</string>
+    <string name="settings_rules">Правила</string>
+    <string name="settings_exit">Выход</string>
 
+    <!-- type-->
+    <string name="type_default_blood">Кровь</string>
+    <string name="type_default_heart">Сердце</string>
+    <string name="type_default_teeth">Стоматолог</string>
+    <string name="type">тип исследования</string>
+    <string name="type_delete_explanation">Вы действительно хотите удалить тип исследования %1$s?\nБудут потеряны все исследования связанные с этим типом</string>
+    <string name="type_delete_explanation_empty">Вы действительно хотите удалить тип исследования?</string>
+
+    <!-- errors-->
+    <string name="error_create_profile">Произошла ошибка при создание профиля</string>
+    <string name="error_delete_profile">Произошла ошибка при удаление профиля</string>
+    <string name="error_update_profile">Произошла ошибка при обновление профиля</string>
+    <string name="error_get_profile">Не удалось получить профиль</string>
+    <string name="error_get_profiles">Не удалось получить профили</string>
+    <string name="error_get_marks">Не удалось получить профили</string>
+    <string name="error_create_survey">Произошла ошибка при создание исследования</string>
+    <string name="error_delete_survey">Произошла ошибка при удаление исследования</string>
+    <string name="error_update_survey">Произошла ошибка при обновление исследования</string>
+    <string name="error_get_survey">Не удалось получить исследование</string>
+    <string name="error_get_surveys">Не удалось получить исследования</string>
+    <string name="error_create_type">Произошла ошибка при создание типа исследования</string>
+    <string name="error_delete_type">Произошла ошибка при удаление типа исследования</string>
+    <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
+    <string name="error_get_type">Не удалось получить тип исследования</string>
+    <string name="error_get_types">Не удалось получить тип исследований</string>
+    <string name="error_empty_name">Пустое имя</string>
+    <string name="error_empty_date">Пустая дата</string>
+    <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
+    <string name="error_empty_profile">Выберите хотя бы один профиль</string>
+    <string name="error_auth">Что-то пошло не так</string>
 </resources>

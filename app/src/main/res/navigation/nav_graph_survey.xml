@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_survey"
+    app:startDestination="@id/survey">
+
+    <fragment
+        android:id="@+id/survey"
+        android:name="com.petapp.capybara.survey.SurveyFragment"
+        android:label="survey"
+        tools:layout="@layout/fragment_survey">
+
+        <argument
+            android:name="survey"
+            app:argType="com.petapp.capybara.data.model.Survey"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/to_types"
+            app:destination="@id/tab_types"/>
+
+    </fragment>
+
+</navigation>
