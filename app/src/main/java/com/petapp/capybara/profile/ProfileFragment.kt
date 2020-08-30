@@ -142,8 +142,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun deleteProfile() {
         val name = profile_name.text
-        activity?.let {
-            MaterialDialog(it).show {
+            MaterialDialog(requireActivity()).show {
                 if (name.isNotBlank()) {
                     title(text = getString(R.string.profile_delete_explanation, name))
                 } else {
@@ -159,7 +158,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 negativeButton { cancel() }
             }
-        }
     }
 
     private fun getChipColor(): Int {

@@ -93,12 +93,11 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     private fun deleteType() {
         val name = name_et.text.toString()
-        activity?.let {
-            MaterialDialog(it).show {
+            MaterialDialog(requireActivity()).show {
                 if (name.isNotBlank()) {
-                    title(text = getString(R.string.profile_delete_explanation, name))
+                    title(text = getString(R.string.type_delete_explanation, name))
                 } else {
-                    title(text = getString(R.string.profile_delete_explanation_empty))
+                    title(text = getString(R.string.type_delete_explanation_empty))
                 }
                 positiveButton {
                     if (args.type?.id != null) {
@@ -109,7 +108,6 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                     cancel()
                 }
                 negativeButton { cancel() }
-            }
         }
     }
 

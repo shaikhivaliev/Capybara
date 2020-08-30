@@ -18,9 +18,13 @@
     <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
     <string name="profile_mock">Список пуст</string>
+    <string name="profile">профиль</string>
 
     <!-- survey-->
     <string name="survey_date">Дата</string>
+    <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
+    <string name="survey_delete_explanation_empty">Вы действительно хотите удалить исследование?</string>
+    <string name="survey_incomplete_data">Создайте хотя бы один %1$s, чтобы затем создать запись исследования</string>
 
     <!-- settings-->
     <string name="settings_feedback">Обратная связь</string>
@@ -28,11 +32,13 @@
     <string name="settings_rules">Правила</string>
     <string name="settings_exit">Выход</string>
 
-
     <!-- type-->
     <string name="type_default_blood">Кровь</string>
     <string name="type_default_heart">Сердце</string>
     <string name="type_default_teeth">Стоматолог</string>
+    <string name="type">тип исследования</string>
+    <string name="type_delete_explanation">Вы действительно хотите удалить тип исследования %1$s?\nБудут потеряны все исследования связанные с этим типом</string>
+    <string name="type_delete_explanation_empty">Вы действительно хотите удалить тип исследования?</string>
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>
