@@ -53,7 +53,6 @@ class SurveysViewModel(
             ).connect()
     }
 
-
     fun getSurveys(typeId: String) {
         repositorySurveys.getSurveys(typeId)
             .subscribeOn(Schedulers.io())

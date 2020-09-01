@@ -11,4 +11,4 @@ data class Survey(
     val color: Int,
     val name: String,
     val date: String
-): Parcelable
+) : Parcelable

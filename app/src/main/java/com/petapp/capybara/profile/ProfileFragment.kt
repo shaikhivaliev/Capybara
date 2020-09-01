@@ -29,7 +29,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private var currentPhotoUri: String? = null
 
-    private val imageFromCamera = registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+    private val imageFromCamera =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
         if (success) {
             Glide.with(this)
                 .load(currentPhotoUri)
@@ -142,22 +143,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun deleteProfile() {
         val name = profile_name.text
-            MaterialDialog(requireActivity()).show {
-                if (name.isNotBlank()) {
-                    title(text = getString(R.string.profile_delete_explanation, name))
-                } else {
-                    title(text = getString(R.string.profile_delete_explanation_empty))
-                }
-                positiveButton {
-                    if (args.profile?.id != null) {
-                        viewModel.deleteProfile(args.profile?.id!!)
-                    } else {
-                        viewModel.back()
-                    }
-                    cancel()
-                }
-                negativeButton { cancel() }
+        MaterialDialog(requireActivity()).show {
+            if (name.isNotBlank()) {
+                title(text = getString(R.string.profile_delete_explanation, name))
+            } else {
+                title(text = getString(R.string.profile_delete_explanation_empty))
             }
+            positiveButton {
+                if (args.profile?.id != null) {
+                    viewModel.deleteProfile(args.profile?.id!!)
+                } else {
+                    viewModel.back()
+                }
+                cancel()
+            }
+            negativeButton { cancel() }
+        }
     }
 
     private fun getChipColor(): Int {
@@ -182,7 +183,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun pickImages() {
         viewModel.createImageFile(requireActivity())
-        //imageFromGallery.launch("image/*")
+        // imageFromGallery.launch("image/*")
     }
 
     companion object {

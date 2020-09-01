@@ -18,19 +18,16 @@ class ProfileCustomView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attributeSet, defStyleAttr) {
 
-    companion object {
-        private const val DEFAULT_SIZE_DP = 56
-        private const val DEFAULT_BORDER_WIDTH_DP = 6
-        private const val TAG = "custom_view"
-    }
-
     private val avatarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val initialsPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
     // главная область рисования
     private val viewRect = Rect()
+
     // для рисования каемки
     private var borderRect = Rect()
+
     // рисуем либо инициалы, либо изображение (isAvatarMode = true)
     private var isAvatarMode = true
     private var initials = ""
@@ -110,7 +107,7 @@ class ProfileCustomView @JvmOverloads constructor(
         with(initialsPaint) {
             color = ContextCompat.getColor(context, R.color.light_black)
             textAlign = Paint.Align.CENTER
-            textSize = height * 0.33F
+            textSize = height * REDUCE_TEXT_SIZE
         }
         val offsetY = (initialsPaint.descent() + initialsPaint.ascent()) / 2
         canvas.drawText(initials, viewRect.exactCenterX(), viewRect.exactCenterY() - offsetY, initialsPaint)
@@ -143,5 +140,12 @@ class ProfileCustomView @JvmOverloads constructor(
         super.setImageResource(resId)
         if (isAvatarMode) prepareShader(width, height)
         Log.d(TAG, "setImageResource")
+    }
+
+    companion object {
+        private const val DEFAULT_SIZE_DP = 56
+        private const val DEFAULT_BORDER_WIDTH_DP = 6
+        private const val TAG = "custom_view"
+        const val REDUCE_TEXT_SIZE = 0.33F
     }
 }

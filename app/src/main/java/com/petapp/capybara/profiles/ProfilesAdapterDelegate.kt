@@ -24,7 +24,12 @@ class ProfilesAdapterDelegate(
         return items[position] is Profile
     }
 
-    override fun onBindViewHolder(items: MutableList<Any>, position: Int, holder: RecyclerView.ViewHolder, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        items: MutableList<Any>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: MutableList<Any>
+    ) {
         (holder as ViewHolder).bind(items[position] as Profile)
     }
 

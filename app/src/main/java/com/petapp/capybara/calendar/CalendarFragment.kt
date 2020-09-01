@@ -4,21 +4,20 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
-import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.previous
 import com.petapp.capybara.R
-import com.petapp.capybara.extensions.*
+import com.petapp.capybara.extensions.createChip
+import com.petapp.capybara.extensions.daysOfWeekFromLocale
+import com.petapp.capybara.extensions.setTextColorRes
+import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.android.synthetic.main.fragment_calendar.marks_group
 import kotlinx.android.synthetic.main.view_calendar_day.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -45,7 +44,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         setupCalendar()
 
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
-
     }
 
     private fun initViews(view: View) {
@@ -56,14 +54,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private fun initObservers() {
         with(viewModel) {
-            marks.observe(viewLifecycleOwner, Observer { marks ->
+            marks.observe(viewLifecycleOwner) { marks ->
                 for (mark in marks) {
-                    marks_group.addView(createChip(requireContext(), mark))
+                    marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
-            })
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
+            }
+            errorMessage.observe(viewLifecycleOwner) { error ->
                 requireActivity().toast(error)
-            })
+            }
         }
     }
 
@@ -72,7 +70,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         val daysOfWeek = daysOfWeekFromLocale()
         val currentMonth = YearMonth.now()
-        calendar.setup(currentMonth.minusMonths(10), currentMonth.plusMonths(10), daysOfWeek.first())
+        calendar.setup(
+            currentMonth.minusMonths(MONTH_TO_SUBSTRACT),
+            currentMonth.plusMonths(MONTH_TO_SUBSTRACT),
+            daysOfWeek.first()
+        )
         calendar.scrollToMonth(currentMonth)
 
         class DayViewContainer(view: View) : ViewContainer(view) {
@@ -110,14 +112,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             }
         }
 
-        class MonthViewContainer(view: View) : ViewContainer(view) {
-            val legendLayout = layoutInflater.inflate(R.layout.view_calendar_day_header, view as ViewGroup, true)
-        }
-        calendar.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer> {
-            override fun create(view: View) = MonthViewContainer(view)
-            override fun bind(container: MonthViewContainer, month: CalendarMonth) {}
-        }
-
         calendar.monthScrollListener = { month ->
             val title = monthTitleFormatter.format(Date(month.year, month.month, 0)).capitalize(Locale.ROOT)
             tv_month.text = title
@@ -140,6 +134,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             }
         }
     }
+
+    companion object {
+        const val MONTH_TO_SUBSTRACT = 10L
+        const val CHIP_PADDING = 56F
+    }
 }
-
-

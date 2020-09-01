@@ -25,7 +25,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-inline fun NavDirections.navigateWith(navController: NavController, navOptions: NavOptions? = null) {
+fun NavDirections.navigateWith(navController: NavController, navOptions: NavOptions? = null) {
     if (navController.currentDestination?.getAction(actionId) != null) {
         navController.navigate(this, navOptions)
     }
@@ -35,7 +35,8 @@ fun View.visible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-fun Context?.toast(stringRes: Int, duration: Int = Toast.LENGTH_LONG) = this?.let { Toast.makeText(it, getString(stringRes), duration).show() }
+fun Context?.toast(stringRes: Int, duration: Int = Toast.LENGTH_LONG) =
+    this?.let { Toast.makeText(it, getString(stringRes), duration).show() }
 
 fun Context.createImageFile(): File {
     @SuppressLint("SimpleDateFormat")
@@ -45,8 +46,7 @@ fun Context.createImageFile(): File {
     return File(storageDir, imageFileName)
 }
 
-fun createChip(context: Context, mark: Mark): Chip {
-    val padding = 56F
+fun createChip(context: Context, mark: Mark, padding: Float): Chip {
     val chip = Chip(context)
     chip.apply {
         chipEndPadding = padding

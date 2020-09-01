@@ -35,9 +35,9 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         args.type?.id?.apply { viewModel.getType(this) }
     }
 
-    private fun initViews(){
+    private fun initViews() {
         with(recycler) {
-            this.layoutManager = GridLayoutManager(context, 3)
+            this.layoutManager = GridLayoutManager(context, SPAN_COUNT)
             adapter = this@TypeFragment.adapter
         }
         val iconResList = arrayListOf(
@@ -93,21 +93,21 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     private fun deleteType() {
         val name = name_et.text.toString()
-            MaterialDialog(requireActivity()).show {
-                if (name.isNotBlank()) {
-                    title(text = getString(R.string.type_delete_explanation, name))
+        MaterialDialog(requireActivity()).show {
+            if (name.isNotBlank()) {
+                title(text = getString(R.string.type_delete_explanation, name))
+            } else {
+                title(text = getString(R.string.type_delete_explanation_empty))
+            }
+            positiveButton {
+                if (args.type?.id != null) {
+                    viewModel.deleteType(args.type?.id!!)
                 } else {
-                    title(text = getString(R.string.type_delete_explanation_empty))
+                    viewModel.openTypesScreen()
                 }
-                positiveButton {
-                    if (args.type?.id != null) {
-                         viewModel.deleteType(args.type?.id!!)
-                    } else {
-                        viewModel.openTypesScreen()
-                    }
-                    cancel()
-                }
-                negativeButton { cancel() }
+                cancel()
+            }
+            negativeButton { cancel() }
         }
     }
 
@@ -143,7 +143,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     }
 
     companion object {
-        private const val DEFAULT_ID_FOR_ENTITY = "0"
-        private const val DEFAULT_TYPE_IMAGE = R.drawable.ic_digistion
+        const val DEFAULT_ID_FOR_ENTITY = "0"
+        const val DEFAULT_TYPE_IMAGE = R.drawable.ic_digistion
+        const val SPAN_COUNT = 3
     }
 }

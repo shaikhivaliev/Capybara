@@ -88,7 +88,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
                 if (marks.isEmpty()) showAlertCreateSurvey(getString(R.string.profile))
                 for (mark in marks) {
-                    marks_group.addView(createChip(requireContext(), mark))
+                    marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -206,6 +206,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         const val MARGIN_TOP_BOTTOM = 14
         const val MARGIN_START_END = 24
         const val PADDING_START = 24
-        private const val DEFAULT_ID_FOR_ENTITY = "0"
+        const val DEFAULT_ID_FOR_ENTITY = "0"
+        const val CHIP_PADDING = 56F
     }
 }

@@ -9,4 +9,4 @@ data class Type(
     val name: String,
     val icon: Int,
     val surveys: List<Survey> = emptyList()
-): Parcelable
+) : Parcelable
