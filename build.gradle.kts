@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-
 buildscript {
     repositories {
         google()
@@ -15,6 +13,10 @@ buildscript {
     }
 }
 
+plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.12.0")
+}
+
 allprojects {
     repositories {
         google()
@@ -23,14 +25,53 @@ allprojects {
     }
 }
 
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
+}
+
+val detektExcludes = listOf(
+    "**/resources/**",
+    "**/res/**",
+    ".gradle/**",
+    ".git/**",
+    ".idea/**",
+    ".githooks/**",
+    "scripts/**",
+    "config/**",
+    "gradle/**"
+)
+val detektIncludes = listOf("**/*.kt")
+val detektConfig = file("config/detekt/detekt-config.yml")
+
+tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
+    parallel = true
+    ignoreFailures = false
+    setSource(files(projectDir))
+    include(detektIncludes)
+
+    exclude(detektExcludes)
+    exclude(allprojects.map { it.buildDir.toRelativeString(projectDir) + "/**" })
+
+    config.setFrom(detektConfig)
+
+    buildUponDefaultConfig = false
+    reports {
+        xml.enabled = false
+        txt.enabled = false
+
+        html {
+            enabled = true
+            destination = File(project.buildDir, "reports/detekt.html")
+        }
+    }
+
+    debug = true
+}
+
 val ktLintConfig = configurations.create("ktlint")
 
 dependencies {
     "ktlint"("com.pinterest:ktlint:0.36.0")
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
 }
 
 tasks.register<JavaExec>("ktlintCheck") {
