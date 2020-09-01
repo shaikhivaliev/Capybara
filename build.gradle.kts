@@ -41,6 +41,6 @@ tasks.register<JavaExec>("ktlintCheck") {
         "--android",
         "--editorconfig=" + file(".editorconfig").path,
         "--reporter=plain?group_by_file",
-        "--disabled_rules=import-ordering"
+        "--disabled_rules=final-newline,import-ordering,no-wildcard-imports"
     ) + allprojects.map { it.file("src").path + "/**/*.kt" }
 }
