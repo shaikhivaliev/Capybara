@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-// home task #7 - persistent storage
 @Entity(
     tableName = "survey",
     foreignKeys = [

@@ -2,22 +2,16 @@ package com.petapp.capybara
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
-import com.petapp.capybara.EntityTestHelper.Companion.PROFILE
-import com.petapp.capybara.EntityTestHelper.Companion.SURVEY
-import com.petapp.capybara.EntityTestHelper.Companion.TYPE
 import com.petapp.capybara.database.AppDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4ClassRunner::class)
 class EntityReadWriteTest {
 
-    @Rule
+    @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var database: AppDatabase
@@ -26,7 +20,7 @@ class EntityReadWriteTest {
     fun createDb() {
         database = Room.inMemoryDatabaseBuilder(
             InstrumentationRegistry.getInstrumentation().context,
-            AppDatabase::class.java,
+            AppDatabase::class.java
         )
             .allowMainThreadQueries()
             .build()
@@ -39,37 +33,44 @@ class EntityReadWriteTest {
 
     @Test
     fun insertAndGetTypeById() {
-        database.appDao().createType(TYPE)
+        val type = Stubs.TYPE_ENTITY
+        database.appDao().createType(type)
 
         database.appDao()
-            .getType(TYPE.id.toString())
+            .getType(type.id.toString())
             .test()
-            .assertValue { type ->
-                type.id == TYPE.id && type.name == TYPE.name
+            .assertValue {
+                it.id == type.id && it.name == type.name
             }
     }
 
     @Test
     fun insertAndGetSurveyById() {
-        database.appDao().createSurvey(SURVEY)
+        val type = Stubs.TYPE_ENTITY
+        database.appDao().createType(type)
+        val profile = Stubs.PROFILE_ENTITY
+        database.appDao().createProfile(profile)
+        val survey = Stubs.SURVEY_ENTITY
+        database.appDao().createSurvey(survey)
 
         database.appDao()
-            .getSurvey(SURVEY.id.toString())
+            .getSurvey(survey.id.toString())
             .test()
-            .assertValue { survey ->
-                survey.id == SURVEY.id && survey.name == SURVEY.name
+            .assertValue {
+                it.id == survey.id && it.name == survey.name
             }
     }
 
     @Test
     fun insertAndGetProfileById() {
-        database.appDao().createProfile(PROFILE)
+        val profile = Stubs.PROFILE_ENTITY
+        database.appDao().createProfile(profile)
 
         database.appDao()
-            .getProfile(PROFILE.id.toString())
+            .getProfile(profile.id.toString())
             .test()
-            .assertValue { profile ->
-                profile.id == PROFILE.id && profile.name == PROFILE.name
+            .assertValue {
+                it.id == profile.id && it.name == profile.name
             }
     }
 }

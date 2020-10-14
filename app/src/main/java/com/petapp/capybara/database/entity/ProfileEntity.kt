@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// home task #7 - persistent storage
 @Entity(tableName = "profile")
 data class ProfileEntity(
     @PrimaryKey(autoGenerate = true)

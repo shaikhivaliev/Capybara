@@ -49,13 +49,13 @@ tasks.named("check").dependsOn("ktlintCheck")
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.core:core-ktx:1.3.1")
+    implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.2.0")
 
     // ui
-    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
-    implementation("com.google.android.material:material:1.2.0")
-    implementation("androidx.fragment:fragment:1.3.0-alpha08")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
+    implementation("com.google.android.material:material:1.2.1")
+    implementation("androidx.fragment:fragment:1.3.0-beta01")
 
     // navigation
     val navigation = "2.3.0"
@@ -74,7 +74,7 @@ dependencies {
 
     // recycler adapter
     implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
 
     // database
     val room = "2.2.5"
@@ -94,14 +94,14 @@ dependencies {
     implementation("com.afollestad.material-dialogs:core:3.1.1")
 
     // firebase core
-    implementation("com.google.firebase:firebase-core:17.5.0")
+    implementation("com.google.firebase:firebase-core:17.5.1")
 
     // firebase auth
     implementation("com.firebaseui:firebase-ui-auth:4.3.1")
-    implementation("com.google.firebase:firebase-auth:19.3.2")
+    implementation("com.google.firebase:firebase-auth:19.4.0")
 
     // firebase analytics
-    implementation("com.google.firebase:firebase-analytics:17.5.0")
+    implementation("com.google.firebase:firebase-analytics:17.6.0")
 
     // calendar
     implementation("com.github.kizitonwose:CalendarView:0.3.5")
@@ -109,5 +109,6 @@ dependencies {
     // test
     testImplementation("junit:junit:4.13")
     testImplementation("org.mockito:mockito-core:3.5.10")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }
