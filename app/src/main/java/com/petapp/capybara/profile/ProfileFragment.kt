@@ -63,11 +63,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         color_group.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.white -> photo.setColor(android.R.color.white)
-                R.id.green -> photo.setColor(R.color.green)
-                R.id.red -> photo.setColor(R.color.red)
-                R.id.blue -> photo.setColor(R.color.blue)
-                R.id.yellow -> photo.setColor(R.color.yellow)
-                R.id.violet -> photo.setColor(R.color.violet)
+                R.id.green -> photo.setColor(R.color.green_200)
+                R.id.red -> photo.setColor(R.color.red_400)
+                R.id.blue -> photo.setColor(R.color.light_blue_400)
+                R.id.yellow -> photo.setColor(R.color.amber_300)
+                R.id.violet -> photo.setColor(R.color.deep_purple_a100)
             }
         }
 
@@ -120,11 +120,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         when (profile.color) {
             android.R.color.white -> white.isChecked = true
-            R.color.green -> green.isChecked = true
-            R.color.red -> red.isChecked = true
-            R.color.blue -> blue.isChecked = true
-            R.color.yellow -> yellow.isChecked = true
-            R.color.violet -> violet.isChecked = true
+            R.color.green_200 -> green.isChecked = true
+            R.color.red_400 -> red.isChecked = true
+            R.color.light_blue_400 -> blue.isChecked = true
+            R.color.amber_300 -> yellow.isChecked = true
+            R.color.deep_purple_a100 -> violet.isChecked = true
         }
     }
 
@@ -163,11 +163,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun getChipColor(): Int {
         return when (color_group.checkedChipId) {
-            R.id.green -> R.color.green
-            R.id.red -> R.color.red
-            R.id.blue -> R.color.blue
-            R.id.yellow -> R.color.yellow
-            R.id.violet -> R.color.violet
+            R.id.green -> R.color.green_200
+            R.id.red -> R.color.red_400
+            R.id.blue -> R.color.light_blue_400
+            R.id.yellow -> R.color.amber_300
+            R.id.violet -> R.color.deep_purple_a100
             else -> android.R.color.white
         }
     }

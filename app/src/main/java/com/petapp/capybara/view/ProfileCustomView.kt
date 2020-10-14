@@ -102,10 +102,10 @@ class ProfileCustomView @JvmOverloads constructor(
     }
 
     private fun drawInitials(canvas: Canvas) {
-        initialsPaint.color = ContextCompat.getColor(context, R.color.light_gray)
+        initialsPaint.color = ContextCompat.getColor(context, R.color.teal_50)
         canvas.drawOval(viewRect.toRectF(), initialsPaint)
         with(initialsPaint) {
-            color = ContextCompat.getColor(context, R.color.light_black)
+            color = ContextCompat.getColor(context, R.color.grey_800)
             textAlign = Paint.Align.CENTER
             textSize = height * REDUCE_TEXT_SIZE
         }

@@ -106,7 +106,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     textView.setTextColorRes(android.R.color.black)
                     layout.setBackgroundResource(if (selectedDate == day.date) R.drawable.selected_calendar_day else 0)
                 } else {
-                    textView.setTextColorRes(R.color.light_gray)
+                    textView.setTextColorRes(R.color.teal_50)
                     layout.background = null
                 }
             }

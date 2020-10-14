@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:background="@color/teal_50">
 
     <com.petapp.capybara.view.ProfileCustomView
         android:id="@+id/photo"
@@ -62,7 +62,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/light_gray"
+        android:background="@color/teal_50"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
         app:layout_constraintTop_toBottomOf="@id/edit_photo">
@@ -71,7 +71,7 @@
             android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/light_gray"
+            android:background="@color/teal_50"
             android:hint="@string/profile_name_hint"
             android:inputType="text"
             android:imeOptions="actionDone"
@@ -109,7 +109,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/green"
+            app:chipBackgroundColor="@color/green_200"
             app:chipIcon="@drawable/ic_done" />
 
         <com.google.android.material.chip.Chip
@@ -117,7 +117,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/red"
+            app:chipBackgroundColor="@color/red_400"
             app:chipIcon="@drawable/ic_done" />
 
         <com.google.android.material.chip.Chip
@@ -125,7 +125,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/blue"
+            app:chipBackgroundColor="@color/light_blue_400"
             app:chipIcon="@drawable/ic_done" />
 
         <com.google.android.material.chip.Chip
@@ -133,7 +133,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/yellow"
+            app:chipBackgroundColor="@color/amber_300"
             app:chipIcon="@drawable/ic_done" />
 
         <com.google.android.material.chip.Chip
@@ -141,7 +141,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/violet"
+            app:chipBackgroundColor="@color/deep_purple_a100"
             app:chipIcon="@drawable/ic_done" />
 
     </com.google.android.material.chip.ChipGroup>
