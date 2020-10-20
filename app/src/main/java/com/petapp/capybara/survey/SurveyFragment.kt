@@ -131,7 +131,19 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val color = viewModel.marks.value?.find { it.name == marksName }?.color ?: 0
             val name = name_et.text.toString()
             val date = date_et.text.toString()
-            return Survey(id = id, typeId = typeId, profileId = profileId, color = color, name = name, date = date)
+            val time = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date)
+            val calendar = Calendar.getInstance()
+            calendar.time = time!!
+            val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(calendar.time)
+            return Survey(
+                id = id,
+                typeId = typeId,
+                profileId = profileId,
+                color = color,
+                name = name,
+                date = date,
+                month = month
+            )
         } else {
             null
         }

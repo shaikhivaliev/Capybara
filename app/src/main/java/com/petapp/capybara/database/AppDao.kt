@@ -59,5 +59,8 @@ interface AppDao {
     fun deleteSurvey(surveyId: String)
 
     @Query("SELECT * FROM survey WHERE type_id = :typeId")
-    fun getSurveys(typeId: String): Single<List<SurveyEntity>>
+    fun getSurveysByType(typeId: String): Single<List<SurveyEntity>>
+
+    @Query("SELECT * FROM survey WHERE month = :month")
+    fun getSurveysByMonth(month: String): Single<List<SurveyEntity>>
 }

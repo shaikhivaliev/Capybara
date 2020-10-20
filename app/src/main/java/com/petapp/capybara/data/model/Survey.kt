@@ -10,5 +10,6 @@ data class Survey(
     val profileId: String,
     val color: Int,
     val name: String,
-    val date: String
+    val date: String,
+    val month: String
 ) : Parcelable

@@ -49,9 +49,9 @@ class SurveysRepositoryImplTest {
             Stubs.SURVEY_ENTITY,
             Stubs.SURVEY_ENTITY
         )
-        `when`(appDao.getSurveys(Mockito.anyString())).thenReturn(Single.just(expected))
+        `when`(appDao.getSurveysByType(Mockito.anyString())).thenReturn(Single.just(expected))
 
-        repository.getSurveys("ID")
+        repository.getSurveysByType("ID")
             .test()
             .assertResult(expected.toSurveys())
             .assertNoErrors()

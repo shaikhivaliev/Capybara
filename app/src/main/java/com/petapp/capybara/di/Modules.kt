@@ -43,7 +43,8 @@ val appModule = module {
     viewModel { (navController: NavController) ->
         CalendarViewModel(
             navController = navController,
-            repository = get()
+            repositoryMark = get(),
+            repositorySurveys = get()
         )
     }
 

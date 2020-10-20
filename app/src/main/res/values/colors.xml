@@ -12,4 +12,7 @@
     <color name="amber_300">#F4CD58</color>
     <color name="deep_purple_a100">#A57EEC</color>
 
+    <color name="colorEmptyIndicators">#FF7C7A7A</color>
+
+
 </resources>

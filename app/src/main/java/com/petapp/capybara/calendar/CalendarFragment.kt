@@ -12,6 +12,9 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.lifecycle.Observer
+import com.petapp.capybara.view.CalendarView
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
@@ -25,7 +28,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         initViews(view)
         initObservers()
-        setupCalendar()
+        val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(Calendar.getInstance().time)
+        viewModel.getSurveysByMonth(month)
 
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
@@ -33,6 +37,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun initViews(view: View) {
         marks_group.setOnCheckedChangeListener { _, checkedId ->
             val marksButton = view.findViewById<Chip>(checkedId)
+        }
+        calendar.onChangeMonthListener = object : CalendarView.OnChangeMonthListener {
+            override fun onChangeMonth(month: String) {
+                return viewModel.getSurveysByMonth(month)
+            }
         }
     }
 
@@ -43,13 +52,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
             })
+            surveys.observe(viewLifecycleOwner, Observer {
+                calendar.setupCalendar(it)
+            })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
         }
-    }
-
-    private fun setupCalendar() {
     }
 
     companion object {

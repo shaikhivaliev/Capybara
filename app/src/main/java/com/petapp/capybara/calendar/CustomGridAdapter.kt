@@ -1,19 +1,23 @@
-package com.petapp.capybara.view
+package com.petapp.capybara.calendar
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import com.petapp.capybara.R
+import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.view.CalendarDayView
+import com.petapp.capybara.view.CalendarView
 import org.jetbrains.annotations.NotNull
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CustomGridAdapter @JvmOverloads constructor(
     @NotNull context: Context,
     private val dates: List<Date>,
-    private val currentDate: Calendar
+    private val currentDate: Calendar,
+    private val surveys: List<Survey>
 ) : ArrayAdapter<Date>(context, R.layout.view_calendar_day) {
 
     private var inflater: LayoutInflater = LayoutInflater.from(context)
@@ -23,9 +27,9 @@ class CustomGridAdapter @JvmOverloads constructor(
         val calendar = Calendar.getInstance()
         calendar.time = monthDate
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val displayMonth = calendar.get(Calendar.MONTH) + CustomCalendarView.ONE_MONTH
+        val displayMonth = calendar.get(Calendar.MONTH) + CalendarView.ONE_MONTH
         val displayYear = calendar.get(Calendar.YEAR)
-        val currentMonth = currentDate.get(Calendar.MONTH) + CustomCalendarView.ONE_MONTH
+        val currentMonth = currentDate.get(Calendar.MONTH) + CalendarView.ONE_MONTH
         val currentYear = currentDate.get(Calendar.YEAR)
 
         var view = convertView
@@ -33,10 +37,15 @@ class CustomGridAdapter @JvmOverloads constructor(
             view = inflater.inflate(R.layout.view_calendar_day, parent, false)
         }
 
-        val dayView = view?.findViewById<TextView>(R.id.calendar_day)
+        val dayView = view?.findViewById<CalendarDayView>(R.id.calendar_day)
 
         if (displayMonth == currentMonth && displayYear == currentYear) {
-            dayView?.text = day.toString()
+            dayView?.setDayName(day.toString())
+            val currentSurveys = surveys.filter {
+                it.date == SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(calendar.time)
+            }
+            val colors = currentSurveys.map { it.color }
+            dayView?.createIndicators(colors)
         }
 
         return view ?: super.getView(position, convertView, parent)

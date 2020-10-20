@@ -67,7 +67,8 @@ fun SurveyEntity.toSurvey(): Survey {
         profileId = this.profileId,
         color = this.color,
         name = this.name,
-        date = this.date
+        date = this.date,
+        month = this.month
     )
 }
 
@@ -78,7 +79,8 @@ fun Survey.toSurveyEntity(): SurveyEntity {
         profileId = this.profileId,
         color = this.color,
         name = this.name,
-        date = this.date
+        date = this.date,
+        month = this.month
     )
 }
 

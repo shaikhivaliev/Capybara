@@ -2,16 +2,16 @@ package com.petapp.capybara.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.GridView
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.petapp.capybara.R
+import com.petapp.capybara.calendar.CustomGridAdapter
+import com.petapp.capybara.data.model.Survey
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("ForbiddenComment")
-class CustomCalendarView @JvmOverloads constructor(
+class CalendarView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null
 ) : LinearLayout(context, attributeSet) {
@@ -25,6 +25,8 @@ class CustomCalendarView @JvmOverloads constructor(
     private var days: GridView
     private var listOfDays: ArrayList<Date> = arrayListOf()
 
+    var onChangeMonthListener: OnChangeMonthListener? = null
+
     init {
         inflate(context, R.layout.view_calendar, this)
         previousMonth = findViewById(R.id.previous_month)
@@ -34,20 +36,20 @@ class CustomCalendarView @JvmOverloads constructor(
 
         previousMonth.setOnClickListener {
             calendar.add(Calendar.MONTH, -ONE_MONTH)
-            setupCalendar()
+            val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(calendar.time)
+            onChangeMonthListener?.onChangeMonth(month)
         }
 
         nextMonth.setOnClickListener {
             calendar.add(Calendar.MONTH, ONE_MONTH)
-            setupCalendar()
+            val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(calendar.time)
+            onChangeMonthListener?.onChangeMonth(month)
         }
 
         // days.setOnItemClickListener { parent, view, position, id -> }
-
-        setupCalendar()
     }
 
-    private fun setupCalendar() {
+    fun setupCalendar(surveys: List<Survey>) {
         val currentDate = dateFormat.format(calendar.time)
         month.text = currentDate
         listOfDays.clear()
@@ -69,7 +71,8 @@ class CustomCalendarView @JvmOverloads constructor(
         val adapter = CustomGridAdapter(
             context,
             dates = listOfDays,
-            currentDate = calendar
+            currentDate = calendar,
+            surveys = surveys
         )
         days.adapter = adapter
     }
@@ -81,5 +84,9 @@ class CustomCalendarView @JvmOverloads constructor(
         const val FIRST_DAY_OF_THE_MONTH = 1
         const val ONE_DAY = 1
         const val ONE_MONTH = 1
+    }
+
+    interface OnChangeMonthListener {
+        fun onChangeMonth(month: String)
     }
 }
