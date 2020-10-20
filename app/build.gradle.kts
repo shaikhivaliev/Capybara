@@ -103,9 +103,6 @@ dependencies {
     // firebase analytics
     implementation("com.google.firebase:firebase-analytics:17.6.0")
 
-    // calendar
-    implementation("com.github.kizitonwose:CalendarView:0.3.5")
-
     // test
     testImplementation("junit:junit:4.13")
     testImplementation("org.mockito:mockito-core:3.5.10")

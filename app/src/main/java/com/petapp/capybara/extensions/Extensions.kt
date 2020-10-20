@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -19,8 +18,6 @@ import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.survey.SurveyFragment
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.temporal.WeekFields
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -65,19 +62,6 @@ fun Context.dpTpPx(dp: Int): Float {
 }
 
 fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
-
-fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
-
-fun daysOfWeekFromLocale(): Array<DayOfWeek> {
-    val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
-    var daysOfWeek = DayOfWeek.values()
-    if (firstDayOfWeek != DayOfWeek.MONDAY) {
-        val rhs = daysOfWeek.sliceArray(firstDayOfWeek.ordinal..daysOfWeek.indices.last)
-        val lhs = daysOfWeek.sliceArray(0 until firstDayOfWeek.ordinal)
-        daysOfWeek = rhs + lhs
-    }
-    return daysOfWeek
-}
 
 fun Context.createRadioButton(type: String): RadioButton {
     val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
