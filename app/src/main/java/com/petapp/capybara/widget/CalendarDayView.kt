@@ -1,4 +1,4 @@
-package com.petapp.capybara.view
+package com.petapp.capybara.widget
 
 import android.content.Context
 import android.content.res.TypedArray

@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.lifecycle.Observer
-import com.petapp.capybara.view.CalendarView
-import java.text.SimpleDateFormat
+import com.petapp.capybara.extensions.currentMonth
+import com.petapp.capybara.widget.CalendarView
 import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
@@ -28,7 +28,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         initViews(view)
         initObservers()
-        val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(Calendar.getInstance().time)
+        val month = currentMonth(Date())
         viewModel.getSurveysByMonth(month)
 
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }

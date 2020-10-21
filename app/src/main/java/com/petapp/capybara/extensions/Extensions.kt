@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -43,6 +42,18 @@ fun Context.createImageFile(): File {
     return File(storageDir, imageFileName)
 }
 
+fun currentDateFull(date: Date): String {
+    return SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(date)
+}
+
+fun currentMonth(date: Date): String {
+    return SimpleDateFormat("MMMM", Locale.ENGLISH).format(date)
+}
+
+fun currentDateMonthYear(date: Date): String {
+    return SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(date)
+}
+
 fun createChip(context: Context, mark: Mark, padding: Float): Chip {
     val chip = Chip(context)
     chip.apply {
@@ -60,8 +71,6 @@ fun createChip(context: Context, mark: Mark, padding: Float): Chip {
 fun Context.dpTpPx(dp: Int): Float {
     return dp.toFloat() * this.resources.displayMetrics.density
 }
-
-fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
 fun Context.createRadioButton(type: String): RadioButton {
     val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)

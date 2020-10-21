@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.view.CalendarDayView
-import com.petapp.capybara.view.CalendarView
+import com.petapp.capybara.extensions.currentDateFull
+import com.petapp.capybara.widget.CalendarDayView
+import com.petapp.capybara.widget.CalendarView
 import org.jetbrains.annotations.NotNull
-import java.text.SimpleDateFormat
 import java.util.*
 
-class CustomGridAdapter @JvmOverloads constructor(
+class CalendarArrayAdapter @JvmOverloads constructor(
     @NotNull context: Context,
     private val dates: List<Date>,
     private val currentDate: Calendar,
@@ -42,7 +42,7 @@ class CustomGridAdapter @JvmOverloads constructor(
         if (displayMonth == currentMonth && displayYear == currentYear) {
             dayView?.setDayName(day.toString())
             val currentSurveys = surveys.filter {
-                it.date == SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(calendar.time)
+                it.date == currentDateFull(calendar.time)
             }
             val colors = currentSurveys.map { it.color }
             dayView?.createIndicators(colors)

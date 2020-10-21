@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.petapp.capybara.view.ProfileCustomView
+        <com.petapp.capybara.widget.ProfileView
             android:id="@+id/photo"
             android:layout_width="100dp"
             android:layout_height="100dp"

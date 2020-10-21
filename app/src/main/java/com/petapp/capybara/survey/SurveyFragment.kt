@@ -16,6 +16,7 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.createRadioButton
+import com.petapp.capybara.extensions.currentMonth
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_survey.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -134,7 +135,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val time = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date)
             val calendar = Calendar.getInstance()
             calendar.time = time!!
-            val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(calendar.time)
+            val month = currentMonth(calendar.time)
             return Survey(
                 id = id,
                 typeId = typeId,

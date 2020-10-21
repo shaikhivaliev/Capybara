@@ -1,4 +1,4 @@
-package com.petapp.capybara.view
+package com.petapp.capybara.widget
 
 import android.content.Context
 import android.graphics.*
@@ -12,7 +12,7 @@ import androidx.core.graphics.toRectF
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.dpTpPx
 
-class ProfileCustomView @JvmOverloads constructor(
+class ProfileView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0

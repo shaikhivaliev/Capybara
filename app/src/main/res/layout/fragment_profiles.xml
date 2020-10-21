@@ -18,7 +18,7 @@
         android:layout_marginBottom="8dp"
         tools:listitem="@layout/item_profile" />
 
-    <com.petapp.capybara.view.DoneToAddMorphView
+    <com.petapp.capybara.widget.DoneToAddMorphView
         android:id="@+id/add_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

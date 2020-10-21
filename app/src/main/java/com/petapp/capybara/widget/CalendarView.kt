@@ -1,14 +1,22 @@
-package com.petapp.capybara.view
+package com.petapp.capybara.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.*
+import android.widget.GridView
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.customListAdapter
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.calendar.CustomGridAdapter
+import com.petapp.capybara.calendar.CalendarArrayAdapter
 import com.petapp.capybara.data.model.Survey
-import java.text.SimpleDateFormat
+import com.petapp.capybara.extensions.currentDateFull
+import com.petapp.capybara.extensions.currentDateMonthYear
+import com.petapp.capybara.extensions.currentMonth
+import com.petapp.capybara.surveys.SurveysAdapterDelegate
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Suppress("ForbiddenComment")
 class CalendarView @JvmOverloads constructor(
@@ -17,13 +25,15 @@ class CalendarView @JvmOverloads constructor(
 ) : LinearLayout(context, attributeSet) {
 
     private val calendar: Calendar = Calendar.getInstance()
-    private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
 
     private var nextMonth: ImageView
     private var previousMonth: ImageView
     private var month: TextView
     private var days: GridView
     private var listOfDays: ArrayList<Date> = arrayListOf()
+    private var listOfSurveyByMonth: ArrayList<Survey> = arrayListOf()
+
+    private val adapter: CalendarSurveysAdapter by lazy { CalendarSurveysAdapter() }
 
     var onChangeMonthListener: OnChangeMonthListener? = null
 
@@ -36,22 +46,37 @@ class CalendarView @JvmOverloads constructor(
 
         previousMonth.setOnClickListener {
             calendar.add(Calendar.MONTH, -ONE_MONTH)
-            val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(calendar.time)
+            val month = currentMonth(calendar.time)
             onChangeMonthListener?.onChangeMonth(month)
         }
 
         nextMonth.setOnClickListener {
             calendar.add(Calendar.MONTH, ONE_MONTH)
-            val month = SimpleDateFormat("MMMM", Locale.ENGLISH).format(calendar.time)
+            val month = currentMonth(calendar.time)
             onChangeMonthListener?.onChangeMonth(month)
         }
 
-        // days.setOnItemClickListener { parent, view, position, id -> }
+        days.setOnItemClickListener { _, _, position, _ ->
+            val currentDate = days.adapter.getItem(position) as Date
+            val currentSurveys = listOfSurveyByMonth.filter {
+                it.date == currentDateFull(currentDate)
+            }
+            if (currentSurveys.isNotEmpty()) {
+                adapter.setDataSet(currentSurveys)
+
+                MaterialDialog(context).show {
+                    title(text = currentDateFull(calendar.time))
+                    positiveButton(android.R.string.ok) { this.cancel() }
+                    customListAdapter(adapter)
+                }
+            }
+        }
     }
 
     fun setupCalendar(surveys: List<Survey>) {
-        val currentDate = dateFormat.format(calendar.time)
-        month.text = currentDate
+        listOfSurveyByMonth.clear()
+        listOfSurveyByMonth.addAll(surveys)
+        month.text = currentDateMonthYear(calendar.time)
         listOfDays.clear()
 
         val monthCalendar = calendar.clone() as Calendar
@@ -68,13 +93,31 @@ class CalendarView @JvmOverloads constructor(
             monthCalendar.add(Calendar.DAY_OF_MONTH, ONE_DAY)
         }
 
-        val adapter = CustomGridAdapter(
+        val adapter = CalendarArrayAdapter(
             context,
             dates = listOfDays,
             currentDate = calendar,
             surveys = surveys
         )
         days.adapter = adapter
+    }
+
+    inner class CalendarSurveysAdapter : ListDelegationAdapter<MutableList<Any>>() {
+        init {
+            items = mutableListOf()
+            delegatesManager
+                .addDelegate(
+                    SurveysAdapterDelegate(
+                        itemClick = {}
+                    )
+                )
+        }
+
+        fun setDataSet(surveys: List<Survey>) {
+            items.clear()
+            items.addAll(surveys)
+            notifyDataSetChanged()
+        }
     }
 
     companion object {

@@ -98,7 +98,7 @@
         app:layout_constraintTop_toBottomOf="@id/chip_group"
         tools:ignore="RtlSymmetry" />
 
-    <com.petapp.capybara.view.AddToDoneMorphView
+    <com.petapp.capybara.widget.AddToDoneMorphView
         android:id="@+id/done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

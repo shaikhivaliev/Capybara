@@ -7,7 +7,7 @@
     android:gravity="center"
     >
 
-    <com.petapp.capybara.view.CalendarDayView
+    <com.petapp.capybara.widget.CalendarDayView
         android:id="@+id/calendar_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
