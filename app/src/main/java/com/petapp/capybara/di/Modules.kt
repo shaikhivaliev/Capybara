@@ -20,11 +20,7 @@ val appModule = module {
 
     single { DatabaseProvider(androidContext()).appDao() }
 
-    viewModel { (navController: NavController) ->
-        AuthViewModel(
-            navController = navController
-        )
-    }
+    viewModel { AuthViewModel() }
 
     viewModel { (navController: NavController) ->
         ProfilesViewModel(

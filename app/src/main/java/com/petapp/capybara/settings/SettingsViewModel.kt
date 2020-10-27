@@ -2,7 +2,6 @@ package com.petapp.capybara.settings
 
 import androidx.annotation.StringRes
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.navigateWith
@@ -17,11 +16,6 @@ class SettingsViewModel(
             Settings.ABOUT_APP.value -> SettingFragmentDirections.toAboutApp().navigateWith(navController)
             Settings.RULES.value -> SettingFragmentDirections.toRules().navigateWith(navController)
         }
-    }
-
-    fun exit() {
-        FirebaseAuth.getInstance().signOut()
-        SettingFragmentDirections.exit().navigateWith(navController)
     }
 
     enum class Settings(@StringRes val value: Int) {

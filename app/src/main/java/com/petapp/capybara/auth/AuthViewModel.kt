@@ -3,13 +3,9 @@ package com.petapp.capybara.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
-import com.petapp.capybara.extensions.navigateWith
 
-class AuthViewModel(
-    private val navController: NavController
-) : ViewModel() {
+class AuthViewModel : ViewModel() {
 
     enum class AuthState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
@@ -28,10 +24,6 @@ class AuthViewModel(
 
     init {
         FirebaseAuth.getInstance().addAuthStateListener(authStateListener)
-    }
-
-    fun openMainScreen() {
-        AuthFragmentDirections.toMain().navigateWith(navController)
     }
 
     override fun onCleared() {
