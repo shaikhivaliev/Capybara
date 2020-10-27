@@ -68,10 +68,16 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SIGN_IN) {
-            if (resultCode == Activity.RESULT_OK) {
-                viewModel.openMainScreen()
-            } else {
-                auth_error.visible(true)
+            when {
+                resultCode == Activity.RESULT_OK -> {
+                    viewModel.openMainScreen()
+                }
+                data == null -> {
+                    requireActivity().finish()
+                }
+                else -> {
+                    auth_error.visible(true)
+                }
             }
         }
     }

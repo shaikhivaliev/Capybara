@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Settings
@@ -36,7 +35,6 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
             )
         )
         exit.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
             viewModel.exit()
         }
     }
