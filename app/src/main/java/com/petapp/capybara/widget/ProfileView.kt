@@ -102,10 +102,10 @@ class ProfileView @JvmOverloads constructor(
     }
 
     private fun drawInitials(canvas: Canvas) {
-        initialsPaint.color = ContextCompat.getColor(context, R.color.teal_50)
+        initialsPaint.color = ContextCompat.getColor(context, R.color.neutral_n20)
         canvas.drawOval(viewRect.toRectF(), initialsPaint)
         with(initialsPaint) {
-            color = ContextCompat.getColor(context, R.color.grey_800)
+            color = ContextCompat.getColor(context, R.color.neutral_n20)
             textAlign = Paint.Align.CENTER
             textSize = height * REDUCE_TEXT_SIZE
         }
@@ -115,7 +115,7 @@ class ProfileView @JvmOverloads constructor(
     }
 
     fun setColor(color: Int) {
-        borderPaint.color = ContextCompat.getColor(context, color)
+        borderPaint.color = color
         invalidate()
     }
 
@@ -144,7 +144,7 @@ class ProfileView @JvmOverloads constructor(
 
     companion object {
         private const val DEFAULT_SIZE_DP = 56
-        private const val DEFAULT_BORDER_WIDTH_DP = 6
+        private const val DEFAULT_BORDER_WIDTH_DP = 4
         private const val TAG = "custom_view"
         const val REDUCE_TEXT_SIZE = 0.33F
     }

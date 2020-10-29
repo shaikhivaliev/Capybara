@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/teal_50">
+    android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
@@ -13,7 +12,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/teal_50"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,7 +20,6 @@
             android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/teal_50"
             android:hint="@string/name"
             android:inputType="text"
             android:paddingStart="0dp"
@@ -37,7 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/teal_50"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
         app:layout_constraintBottom_toTopOf="@id/types_group"
@@ -47,7 +43,6 @@
             android:id="@+id/date_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/teal_50"
             android:clickable="true"
             android:focusable="false"
             android:hint="@string/survey_date"

@@ -92,16 +92,17 @@ dependencies {
 
     // material dialog
     implementation("com.afollestad.material-dialogs:core:3.1.1")
+    implementation("com.afollestad.material-dialogs:color:3.2.1")
 
     // firebase core
-    implementation("com.google.firebase:firebase-core:17.5.1")
+    implementation("com.google.firebase:firebase-core:18.0.0")
 
     // firebase auth
     implementation("com.firebaseui:firebase-ui-auth:4.3.1")
-    implementation("com.google.firebase:firebase-auth:19.4.0")
+    implementation("com.google.firebase:firebase-auth:20.0.0")
 
     // firebase analytics
-    implementation("com.google.firebase:firebase-analytics:17.6.0")
+    implementation("com.google.firebase:firebase-analytics:18.0.0")
 
     // test
     testImplementation("junit:junit:4.13")

@@ -19,6 +19,10 @@
     <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
     <string name="profile_mock">Список пуст</string>
     <string name="profile">профиль</string>
+    <string name="profile_choose_color">Выберете цвет</string>
+    <string name="profile_change_photo">Изменить фотографию</string>
+    <string name="profile_delete_photo">Удалить фотографию</string>
+    <string name="profile_delete">Удалить профиль</string>
 
     <!-- survey-->
     <string name="survey_date">Дата</string>

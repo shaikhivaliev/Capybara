@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_xs">4dp</dimen>
+    <dimen name="margin_s">8dp</dimen>
+    <dimen name="margin_m">16dp</dimen>
+
+    <dimen name="button_corner_radius">4dp</dimen>
+    <dimen name="min_clickable_size">48dp</dimen>
+
+    <dimen name="profile_photo_size">320dp</dimen>
+    <dimen name="profile_marker_size">16dp</dimen>
+    <dimen name="profile_name_margin_top">295dp</dimen>
+</resources>
