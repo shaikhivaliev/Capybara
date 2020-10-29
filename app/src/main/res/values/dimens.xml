@@ -3,8 +3,10 @@
     <dimen name="margin_xs">4dp</dimen>
     <dimen name="margin_s">8dp</dimen>
     <dimen name="margin_m">16dp</dimen>
+    <dimen name="margin_l">32dp</dimen>
 
     <dimen name="button_corner_radius">4dp</dimen>
+    <dimen name="widget_corner_radius">8dp</dimen>
     <dimen name="min_clickable_size">48dp</dimen>
 
     <dimen name="profile_photo_size">320dp</dimen>

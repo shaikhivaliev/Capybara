@@ -105,7 +105,7 @@ class ProfileView @JvmOverloads constructor(
         initialsPaint.color = ContextCompat.getColor(context, R.color.neutral_n20)
         canvas.drawOval(viewRect.toRectF(), initialsPaint)
         with(initialsPaint) {
-            color = ContextCompat.getColor(context, R.color.neutral_n20)
+            color = ContextCompat.getColor(context, R.color.neutral_n60)
             textAlign = Paint.Align.CENTER
             textSize = height * REDUCE_TEXT_SIZE
         }

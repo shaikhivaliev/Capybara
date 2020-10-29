@@ -4,11 +4,32 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
-    <style name="Main.Text" parent="">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/top_corners_top_bgr</item>
+    </style>
+
+    <style name="Main.Text.Small" parent="">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/neutral_n60</item>
+    </style>
+
+    <style name="Main.Text.Medium" parent="">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/neutral_n60</item>
+    </style>
+
+    <style name="Main.Text.Large" parent="">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/neutral_n60</item>
     </style>
 

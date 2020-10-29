@@ -11,8 +11,22 @@
         android:id="@+id/photo"
         android:layout_width="0dp"
         android:layout_height="@dimen/profile_photo_size"
+        android:background="@color/neutral_n20"
         android:contentDescription="@null"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/initials"
+        style="@style/Main.Text.Large"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/profile_photo_size"
+        android:background="@color/neutral_n20"
+        android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,14 +34,14 @@
 
     <ImageView
         android:id="@+id/edit"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/min_clickable_size"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_s"
         android:layout_marginEnd="@dimen/margin_s"
         android:background="@drawable/green_border_bgr"
         android:contentDescription="@null"
-        android:paddingHorizontal="@dimen/margin_m"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,14 +49,14 @@
 
     <ImageView
         android:id="@+id/done"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/min_clickable_size"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_s"
         android:layout_marginEnd="@dimen/margin_s"
         android:background="@drawable/green_border_bgr"
         android:contentDescription="@null"
-        android:paddingHorizontal="@dimen/margin_m"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_done"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,17 +74,31 @@
 
     <TextView
         android:id="@+id/profile_name"
+        style="@style/Main.Text.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/profile_name_margin_top"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
         android:background="@drawable/gray_border_bgr"
         android:gravity="center"
         android:paddingHorizontal="@dimen/margin_m"
-        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@id/color_marker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Name"
+        tools:text="Name Name"
+        />
+
+    <TextView
+        android:id="@+id/content_mock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        style="@style/Main.Text.Large"
+        app:layout_constraintTop_toBottomOf="@id/color_marker"
+        android:text="Statistics fragment"
         />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -90,10 +118,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_et"
-            style="@style/Main.Text"
+            style="@style/Main.Text.Medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
+            android:hint="@string/name"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:paddingStart="0dp"
@@ -104,7 +133,7 @@
 
     <TextView
         android:id="@+id/change_color"
-        style="@style/Main.Text"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="16dp"
@@ -120,7 +149,7 @@
 
     <TextView
         android:id="@+id/change_photo"
-        style="@style/Main.Text"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
@@ -136,7 +165,7 @@
 
     <TextView
         android:id="@+id/delete_profile"
-        style="@style/Main.Text"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
@@ -155,7 +184,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="profile_name, edit"
+        app:constraint_referenced_ids="profile_name, edit, content_mock"
         />
 
     <androidx.constraintlayout.widget.Group

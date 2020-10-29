@@ -66,4 +66,5 @@
     <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
     <string name="error_empty_profile">Выберите хотя бы один профиль</string>
     <string name="error_auth">Что-то пошло не так</string>
+    <string name="cancel">ОТМЕНА</string>
 </resources>

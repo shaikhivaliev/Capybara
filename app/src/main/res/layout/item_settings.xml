@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/text"
-        style="@style/Main.Text"
+        style="@style/Main.Text.Small"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginStart="24dp"

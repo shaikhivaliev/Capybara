@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Environment
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -87,4 +88,9 @@ fun Context.createRadioButton(type: String): RadioButton {
         layoutParams = params
         setPadding(SurveyFragment.PADDING_START, 0, 0, 0)
     }
+}
+
+fun View.showKeyboard() {
+    val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(this, InputMethodManager.SHOW_FORCED)
 }
