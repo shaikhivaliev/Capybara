@@ -2,6 +2,7 @@ package com.petapp.capybara.extensions
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Environment
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -64,7 +64,7 @@ fun createChip(context: Context, mark: Mark, padding: Float): Chip {
         setTextColor(ContextCompat.getColor(context, android.R.color.black))
         isCheckable = true
         checkedIcon = ContextCompat.getDrawable(context, R.drawable.ic_done_black)
-        chipBackgroundColor = AppCompatResources.getColorStateList(context, mark.color)
+        chipBackgroundColor = ColorStateList.valueOf(mark.color)
     }
     return chip
 }

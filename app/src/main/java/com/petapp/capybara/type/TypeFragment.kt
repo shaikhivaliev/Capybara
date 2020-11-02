@@ -6,13 +6,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
+import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_type.*
+import kotlinx.android.synthetic.main.fragment_type.done
+import kotlinx.android.synthetic.main.fragment_type.name_et
+import kotlinx.android.synthetic.main.fragment_type.name_layout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -28,18 +32,19 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        done.showDone()
         initViews()
         initObservers()
 
         args.type?.id?.apply { viewModel.getType(this) }
+
+        if (args.type?.id == null) {
+            delete_surveys_type.visible(false)
+            name_et.requestFocus()
+            name_et.showKeyboard()
+        }
     }
 
     private fun initViews() {
-        with(recycler) {
-            this.layoutManager = GridLayoutManager(context, SPAN_COUNT)
-            adapter = this@TypeFragment.adapter
-        }
         val iconResList = arrayListOf(
             R.drawable.ic_blood,
             R.drawable.ic_digistion,
@@ -52,7 +57,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         icon.setImageResource(DEFAULT_TYPE_IMAGE)
         icon.tag = DEFAULT_TYPE_IMAGE
 
-        delete_type.setOnClickListener { deleteType() }
+        delete_surveys_type.setOnClickListener { deleteType() }
 
         done.setOnClickListener {
             if (args.type != null) {
@@ -145,6 +150,5 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     companion object {
         const val DEFAULT_ID_FOR_ENTITY = "0"
         const val DEFAULT_TYPE_IMAGE = R.drawable.ic_digistion
-        const val SPAN_COUNT = 3
     }
 }

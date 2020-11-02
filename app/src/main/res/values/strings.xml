@@ -43,6 +43,8 @@
     <string name="type">тип исследования</string>
     <string name="type_delete_explanation">Вы действительно хотите удалить тип исследования %1$s?\nБудут потеряны все исследования связанные с этим типом</string>
     <string name="type_delete_explanation_empty">Вы действительно хотите удалить тип исследования?</string>
+    <string name="type_change_icon">Изменить иконку</string>
+    <string name="type_delete_surveys_type">Удалить тип исследования</string>
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>
@@ -67,4 +69,6 @@
     <string name="error_empty_profile">Выберите хотя бы один профиль</string>
     <string name="error_auth">Что-то пошло не так</string>
     <string name="cancel">ОТМЕНА</string>
+    <string name="error_profile_choose_color">Выберете хотя бы один цвет</string>
+
 </resources>

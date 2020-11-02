@@ -7,71 +7,91 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/profile_photo_size"
+        android:background="@color/neutral_n20"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@null"/>
+        />
+
+    <ImageView
+        android:id="@+id/done"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginEnd="@dimen/margin_s"
+        android:background="@drawable/green_border_bgr"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@color/transparent"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintTop_toBottomOf="@id/icon">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_et"
+            style="@style/Main.Text.Medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/transparent"
             android:hint="@string/name"
-            android:paddingStart="0dp"
-            android:inputType="text"
             android:imeOptions="actionDone"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:ignore="RtlSymmetry" />
+            android:inputType="text"
+            android:paddingStart="0dp"
+            tools:ignore="RtlSymmetry"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <TextView
+        android:id="@+id/change_icon"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/type_change_icon"
+        app:drawableEndCompat="@drawable/ic_palette"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_layout"
-        tools:listitem="@layout/item_type_icon" />
+        />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:paddingEnd="20dp"
-        app:icon="@drawable/ic_delete"
-        app:iconGravity="textEnd"
+    <TextView
+        android:id="@+id/delete_surveys_type"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/type_delete_surveys_type"
+        app:drawableEndCompat="@drawable/ic_delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler"
-        tools:ignore="RtlSymmetry" />
-
-    <com.petapp.capybara.widget.AddToDoneMorphView
-        android:id="@+id/done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/change_icon"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

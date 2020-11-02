@@ -236,7 +236,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun isColorChosen(): Boolean {
         return if (currentColor.value != null) true
         else {
-            Toast.makeText(requireActivity(), "Выберете хотя бы один цвет", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireActivity(),
+                resources.getString(R.string.error_profile_choose_color), Toast.LENGTH_LONG
+            ).show()
             false
         }
     }

@@ -3,6 +3,7 @@ package com.petapp.capybara.surveys
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,22 +52,25 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
     private fun initObservers() {
         with(viewModel) {
-            marks.observe(viewLifecycleOwner) { marks ->
+            marks.observe(viewLifecycleOwner, Observer { marks ->
                 marks_group.visible(marks.isNotEmpty())
                 marks_group.removeAllViews()
                 for (mark in marks) {
                     marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
-            }
-            surveys.observe(viewLifecycleOwner) {
+            })
+
+            surveys.observe(viewLifecycleOwner, Observer {
                 adapter.setDataSet(it)
-            }
-            isShowMock.observe(viewLifecycleOwner) { isShow ->
+            })
+
+            isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
                 mock.visible(isShow)
-            }
-            errorMessage.observe(viewLifecycleOwner) { error ->
+            })
+
+            errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
-            }
+            })
         }
     }
 

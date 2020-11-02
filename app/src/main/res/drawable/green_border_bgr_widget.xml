@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <solid android:color="@color/transparent" />
+    <solid android:color="@color/neutral_n20" />
 
-    <corners android:radius="@dimen/button_corner_radius" />
+    <corners android:radius="@dimen/widget_corner_radius" />
 
     <stroke
         android:color="@color/colorAccent"

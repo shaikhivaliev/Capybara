@@ -1,11 +1,14 @@
 package com.petapp.capybara.types
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Type
@@ -25,12 +28,22 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        add_type.showAdd()
         initObservers()
 
         with(recycler_view) {
-            this.layoutManager = GridLayoutManager(context, 2)
+            this.layoutManager = LinearLayoutManager(context)
             adapter = this@TypesFragment.adapter
+            val swipeController = SwipeController(requireContext()) { viewHolder ->
+                val type = (viewHolder as TypesAdapterDelegate.ViewHolder).type
+                viewModel.openTypeScreen(type)
+            }
+            val itemTouchHelper = ItemTouchHelper(swipeController)
+            itemTouchHelper.attachToRecyclerView(this)
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun onDraw(canvas: Canvas, parent: RecyclerView) {
+                    swipeController.onDraw(canvas)
+                }
+            })
         }
 
         add_type.setOnClickListener { viewModel.openTypeScreen(null) }
@@ -57,8 +70,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             delegatesManager
                 .addDelegate(
                     TypesAdapterDelegate(
-                        itemClick = { viewModel.openSurveysScreen(it.id) },
-                        editClick = { type -> viewModel.openTypeScreen(type) }
+                        itemClick = { viewModel.openSurveysScreen(it.id) }
                     )
                 )
         }
