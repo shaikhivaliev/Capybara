@@ -32,7 +32,7 @@
         android:layout_marginBottom="@dimen/margin_m"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat = "@drawable/avd_done_to_add"
+        app:srcCompat = "@drawable/avd_add_to_done"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

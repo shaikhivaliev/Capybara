@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_m"
     android:layout_marginTop="@dimen/margin_m"
-    android:elevation="4dp"
+    android:elevation="@dimen/widget_elevation"
     app:cardCornerRadius="@dimen/widget_corner_radius"
     >
 
