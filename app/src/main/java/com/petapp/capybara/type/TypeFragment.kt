@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.customListAdapter
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Type
@@ -14,9 +16,6 @@ import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_type.*
-import kotlinx.android.synthetic.main.fragment_type.done
-import kotlinx.android.synthetic.main.fragment_type.name_et
-import kotlinx.android.synthetic.main.fragment_type.name_layout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +28,8 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     private val adapter: TypeIconAdapter by lazy { (TypeIconAdapter()) }
 
     private val args: TypeFragmentArgs by navArgs()
+
+    private var iconDialog: MaterialDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,9 +54,17 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
             R.drawable.ic_vaccination,
             R.drawable.ic_vision
         )
-        adapter.setDataSet(iconResList)
         icon.setImageResource(DEFAULT_TYPE_IMAGE)
         icon.tag = DEFAULT_TYPE_IMAGE
+
+        change_icon.setOnClickListener {
+            adapter.setDataSet(iconResList)
+            iconDialog = MaterialDialog(requireActivity()).show {
+                title(R.string.type_title)
+                positiveButton(android.R.string.ok) { this.cancel() }
+                customListAdapter(adapter, GridLayoutManager(requireActivity(), SPAN_COUNT))
+            }
+        }
 
         delete_surveys_type.setOnClickListener { deleteType() }
 
@@ -135,6 +144,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
                         iconClick = {
                             icon.setImageResource(it)
                             icon.tag = it
+                            iconDialog?.cancel()
                         }
                     )
                 )
@@ -150,5 +160,6 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     companion object {
         const val DEFAULT_ID_FOR_ENTITY = "0"
         const val DEFAULT_TYPE_IMAGE = R.drawable.ic_digistion
+        const val SPAN_COUNT = 3
     }
 }

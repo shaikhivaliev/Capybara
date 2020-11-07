@@ -65,7 +65,7 @@ class CalendarView @JvmOverloads constructor(
                 adapter.setDataSet(currentSurveys)
 
                 MaterialDialog(context).show {
-                    title(text = currentDateFull(calendar.time))
+                    title(text = currentDateFull(currentDate))
                     positiveButton(android.R.string.ok) { this.cancel() }
                     customListAdapter(adapter)
                 }

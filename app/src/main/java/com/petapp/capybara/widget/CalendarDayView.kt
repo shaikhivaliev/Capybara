@@ -5,7 +5,6 @@ import android.content.res.TypedArray
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.petapp.capybara.R
 
 class CalendarDayView(
@@ -69,7 +68,7 @@ class CalendarDayView(
             var startAngle = (WHOLE_CIRCLE / indicatorsCount).toFloat()
             for (i in 0 until indicatorsCount) {
                 with(indicatorPaint) {
-                    color = ContextCompat.getColor(context, sectors[i].color)
+                    color = sectors[i].color
                 }
                 startAngle = sectors[i].draw(canvas, mainBounds, startAngle, indicatorPaint)
             }

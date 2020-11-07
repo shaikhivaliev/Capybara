@@ -8,6 +8,32 @@
     >
 
     <ImageView
+        android:id="@+id/type_icon"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginStart="@dimen/margin_s"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/profile_mark"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginStart="@dimen/margin_l"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toEndOf="@id/type_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
         android:id="@+id/edit"
         android:layout_width="@dimen/min_clickable_size"
         android:layout_height="@dimen/min_clickable_size"

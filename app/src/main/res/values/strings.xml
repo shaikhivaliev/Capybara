@@ -19,6 +19,7 @@
     <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
     <string name="profile_mock">Список пуст</string>
     <string name="profile">профиль</string>
+    <string name="profile_caps">Профиль</string>
     <string name="profile_choose_color">Изменить цвет</string>
     <string name="profile_change_photo">Изменить фотографию</string>
     <string name="profile_delete_photo">Удалить фотографию</string>
@@ -45,6 +46,8 @@
     <string name="type_default_heart">Сердце</string>
     <string name="type_default_teeth">Стоматолог</string>
     <string name="type">тип исследования</string>
+    <string name="type_caps">Тип исследования</string>
+    <string name="type_title">Тип</string>
     <string name="type_delete_explanation">Вы действительно хотите удалить тип исследования %1$s?\nБудут потеряны все исследования связанные с этим типом</string>
     <string name="type_delete_explanation_empty">Вы действительно хотите удалить тип исследования?</string>
     <string name="type_change_icon">Изменить иконку</string>

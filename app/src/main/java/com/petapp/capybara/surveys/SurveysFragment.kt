@@ -86,6 +86,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         }
 
         fun setDataSet(surveys: List<Survey>) {
+            items.clear()
             items.addAll(surveys)
             notifyDataSetChanged()
         }
