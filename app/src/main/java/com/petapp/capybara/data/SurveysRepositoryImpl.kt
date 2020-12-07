@@ -8,8 +8,12 @@ import io.reactivex.schedulers.Schedulers
 
 class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
 
-    override fun getSurveys(typeId: String): Single<List<Survey>> {
-        return appDao.getSurveys(typeId).map { it.toSurveys() }
+    override fun getSurveysByType(typeId: String): Single<List<Survey>> {
+        return appDao.getSurveysByType(typeId).map { it.toSurveys() }
+    }
+
+    override fun getSurveysByMonth(month: String): Single<List<Survey>> {
+        return appDao.getSurveysByMonth(month).map { it.toSurveys() }
     }
 
     override fun getSurvey(surveyId: String): Single<Survey> {

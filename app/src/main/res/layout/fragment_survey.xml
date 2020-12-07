@@ -1,110 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    >
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/light_gray"
-        app:errorEnabled="true"
-        app:errorIconDrawable="@null"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name_et"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/light_gray"
-            android:hint="@string/name"
-            android:inputType="text"
-            android:paddingStart="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:ignore="RtlSymmetry" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/light_gray"
-        app:errorEnabled="true"
-        app:errorIconDrawable="@null"
-        app:layout_constraintBottom_toTopOf="@id/types_group"
-        app:layout_constraintTop_toBottomOf="@id/name_layout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/date_et"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/light_gray"
-            android:clickable="true"
-            android:focusable="false"
-            android:hint="@string/survey_date"
-            android:inputType="text"
-            android:paddingStart="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:ignore="RtlSymmetry" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <RadioGroup
-        android:id="@+id/types_group"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/type_icon"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginStart="@dimen/margin_s"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_layout" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-    <HorizontalScrollView
-        android:id="@+id/chip_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/types_group">
+    <ImageView
+        android:id="@+id/profile_mark"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginStart="@dimen/margin_l"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toEndOf="@id/type_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/marks_group"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:chipSpacingHorizontal="8dp"
-            app:singleSelection="true"
-            app:singleLine="true" />
-    </HorizontalScrollView>
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete_survey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:paddingEnd="20dp"
-        app:icon="@drawable/ic_delete"
-        app:iconGravity="textEnd"
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginEnd="@dimen/margin_s"
+        android:background="@drawable/green_border_bgr"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chip_group"
-        tools:ignore="RtlSymmetry" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-    <com.petapp.capybara.view.AddToDoneMorphView
+
+    <ImageView
         android:id="@+id/done"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginEnd="@dimen/margin_s"
+        android:background="@drawable/green_border_bgr"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/survey_name"
+        style="@style/Main.Text.Large"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@drawable/gray_border_bgr"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/survey_date"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Name Name"
+        />
+
+    <TextView
+        android:id="@+id/survey_date"
+        style="@style/Main.Text.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@drawable/gray_border_bgr"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/survey_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="01.01.2020"
+        />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/survey_name_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@color/transparent"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:layout_constraintBottom_toTopOf="@id/survey_date_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/survey_name_et"
+            style="@style/Main.Text.Small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:hint="@string/survey_name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingStart="0dp"
+            tools:ignore="RtlSymmetry"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/survey_date_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@color/transparent"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:layout_constraintBottom_toTopOf="@id/change_survey_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/survey_name_layout"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/survey_date_et"
+            style="@style/Main.Text.Small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:hint="@string/survey_date"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingStart="0dp"
+            tools:ignore="RtlSymmetry"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/change_survey_type"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/survey_change_survey_type"
+        app:drawableEndCompat="@drawable/ic_types"
+        app:layout_constraintBottom_toTopOf="@id/change_survey_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/survey_date_layout"
+        />
+
+    <TextView
+        android:id="@+id/change_survey_profile"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/survey_change_survey_profile"
+        app:drawableEndCompat="@drawable/ic_person"
+        app:layout_constraintBottom_toTopOf="@id/delete_survey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/change_survey_type"
+        />
+
+    <TextView
+        android:id="@+id/delete_survey"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/survey_delete"
+        app:drawableEndCompat="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/change_survey_profile"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/current_survey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="visible"
+        app:constraint_referenced_ids="edit, survey_name, survey_date"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/edit_survey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="survey_name_layout, survey_date_layout, change_survey_type, change_survey_profile, delete_survey, done"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_home"
@@ -9,23 +10,22 @@
         android:id="@+id/tab_settings"
         android:name="com.petapp.capybara.settings.SettingFragment"
         android:label="settings"
-        tools:layout="@layout/fragment_settings">
-
+        tools:layout="@layout/fragment_settings"
+        >
         <action
             android:id="@+id/to_feedback"
-            app:destination="@id/feedback" />
+            app:destination="@id/feedback"
+            />
 
         <action
             android:id="@+id/to_about_app"
-            app:destination="@id/about_app" />
+            app:destination="@id/about_app"
+            />
 
         <action
             android:id="@+id/to_rules"
-            app:destination="@id/rules" />
-
-        <action
-            android:id="@+id/exit"
-            app:destination="@id/nav_graph_start" />
+            app:destination="@id/rules"
+            />
 
     </fragment>
 
@@ -33,30 +33,36 @@
         android:id="@+id/tab_profiles"
         android:name="com.petapp.capybara.profiles.ProfilesFragment"
         android:label="profiles"
-        tools:layout="@layout/fragment_profiles">
+        tools:layout="@layout/fragment_profiles"
+        >
         <action
             android:id="@+id/to_profile"
-            app:destination="@id/profile">
+            app:destination="@id/profile"
+            >
 
             <argument
                 android:name="profile"
                 app:argType="com.petapp.capybara.data.model.Profile"
-                app:nullable="true" />
+                app:nullable="true"
+                />
         </action>
     </fragment>
 
     <fragment
         android:id="@+id/tab_calendar"
         android:name="com.petapp.capybara.calendar.CalendarFragment"
-        tools:layout="@layout/fragment_calendar">
+        tools:layout="@layout/fragment_calendar"
+        >
         <action
             android:id="@+id/to_survey"
-            app:destination="@id/nav_graph_survey">
+            app:destination="@id/nav_graph_survey"
+            >
 
             <argument
                 android:name="survey"
                 app:argType="com.petapp.capybara.data.model.Survey"
-                app:nullable="true" />
+                app:nullable="true"
+                />
 
         </action>
     </fragment>
@@ -65,27 +71,32 @@
         android:id="@+id/tab_types"
         android:name="com.petapp.capybara.types.TypesFragment"
         android:label="types"
-        tools:layout="@layout/fragment_types">
+        tools:layout="@layout/fragment_types"
+        >
 
         <action
             android:id="@+id/to_type"
-            app:destination="@id/type">
+            app:destination="@id/type"
+            >
 
             <argument
                 android:name="type"
                 app:argType="com.petapp.capybara.data.model.Type"
-                app:nullable="true" />
+                app:nullable="true"
+                />
 
         </action>
 
         <action
             android:id="@+id/to_surveys"
-            app:destination="@id/surveys">
+            app:destination="@id/surveys"
+            >
 
             <argument
                 android:name="typeId"
                 app:argType="string"
-                app:nullable="false" />
+                app:nullable="false"
+                />
         </action>
     </fragment>
 
@@ -93,21 +104,25 @@
         android:id="@+id/surveys"
         android:name="com.petapp.capybara.surveys.SurveysFragment"
         android:label="surveys"
-        tools:layout="@layout/fragment_surveys">
+        tools:layout="@layout/fragment_surveys"
+        >
 
         <argument
             android:name="typeId"
             app:argType="string"
-            app:nullable="false" />
+            app:nullable="false"
+            />
 
         <action
             android:id="@+id/to_survey"
-            app:destination="@id/nav_graph_survey">
+            app:destination="@id/nav_graph_survey"
+            >
 
             <argument
                 android:name="survey"
                 app:argType="com.petapp.capybara.data.model.Survey"
-                app:nullable="true" />
+                app:nullable="true"
+                />
 
         </action>
     </fragment>
@@ -115,16 +130,19 @@
     <fragment
         android:id="@+id/profile"
         android:name="com.petapp.capybara.profile.ProfileFragment"
-        android:label="profile">
+        android:label="profile"
+        >
 
         <argument
             android:name="profile"
             app:argType="com.petapp.capybara.data.model.Profile"
-            app:nullable="true" />
+            app:nullable="true"
+            />
 
         <action
             android:id="@+id/to_profiles"
-            app:destination="@id/tab_profiles"/>
+            app:destination="@id/tab_profiles"
+            />
 
     </fragment>
 
@@ -132,16 +150,19 @@
         android:id="@+id/type"
         android:name="com.petapp.capybara.type.TypeFragment"
         android:label="type"
-        tools:layout="@layout/fragment_type">
+        tools:layout="@layout/fragment_type"
+        >
 
         <argument
             android:name="type"
             app:argType="com.petapp.capybara.data.model.Type"
-            app:nullable="true" />
+            app:nullable="true"
+            />
 
         <action
             android:id="@+id/to_types"
-            app:destination="@id/tab_types"/>
+            app:destination="@id/tab_types"
+            />
 
     </fragment>
 
@@ -149,22 +170,23 @@
         android:id="@+id/feedback"
         android:name="com.petapp.capybara.settings.FeedbackFragment"
         android:label="feedback"
-        tools:layout="@layout/fragment_feedback" />
+        tools:layout="@layout/fragment_feedback"
+        />
 
     <fragment
         android:id="@+id/about_app"
         android:name="com.petapp.capybara.settings.AboutAppFragment"
         android:label="about_app"
-        tools:layout="@layout/fragment_about_app" />
+        tools:layout="@layout/fragment_about_app"
+        />
 
     <fragment
         android:id="@+id/rules"
         android:name="com.petapp.capybara.settings.RulesFragment"
         android:label="rules"
-        tools:layout="@layout/fragment_rules" />
+        tools:layout="@layout/fragment_rules"
+        />
 
     <include app:graph="@navigation/nav_graph_survey" />
-
-    <include app:graph="@navigation/nav_graph_start" />
 
 </navigation>

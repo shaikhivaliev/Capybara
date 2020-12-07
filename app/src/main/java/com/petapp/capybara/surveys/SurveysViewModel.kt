@@ -53,9 +53,8 @@ class SurveysViewModel(
             ).connect()
     }
 
-
     fun getSurveys(typeId: String) {
-        repositorySurveys.getSurveys(typeId)
+        repositorySurveys.getSurveysByType(typeId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { if (it.isNotEmpty()) getMarks() }

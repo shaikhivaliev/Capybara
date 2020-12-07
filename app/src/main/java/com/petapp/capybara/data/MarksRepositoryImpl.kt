@@ -7,6 +7,6 @@ import io.reactivex.Single
 class MarksRepositoryImpl(private val appDao: AppDao) : MarksRepository {
 
     override fun getMarks(): Single<List<Mark>> {
-        return appDao.getProfiles().map {it.toMarks()}
+        return appDao.getProfiles().map { it.toMarks() }
     }
 }

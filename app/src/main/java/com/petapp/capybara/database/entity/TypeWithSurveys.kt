@@ -3,7 +3,6 @@ package com.petapp.capybara.database.entity
 import androidx.room.Embedded
 import androidx.room.Relation
 
-// home task #7 - persistent storage
 data class TypeWithSurveys(
     @Embedded val type: TypeEntity,
     @Relation(

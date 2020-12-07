@@ -15,5 +15,4 @@ interface ProfileRepository {
     fun updateProfile(profile: Profile): Completable
 
     fun deleteProfile(profileId: String): Completable
-
 }

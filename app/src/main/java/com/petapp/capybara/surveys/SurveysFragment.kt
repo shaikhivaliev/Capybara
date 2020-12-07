@@ -15,8 +15,6 @@ import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_surveys.*
-import kotlinx.android.synthetic.main.fragment_surveys.add_survey
-import kotlinx.android.synthetic.main.fragment_surveys.marks_group
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -58,15 +56,18 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
                 marks_group.visible(marks.isNotEmpty())
                 marks_group.removeAllViews()
                 for (mark in marks) {
-                    marks_group.addView(createChip(requireContext(), mark))
+                    marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
             })
+
             surveys.observe(viewLifecycleOwner, Observer {
                 adapter.setDataSet(it)
             })
+
             isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
                 mock.visible(isShow)
             })
+
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
@@ -85,8 +86,13 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         }
 
         fun setDataSet(surveys: List<Survey>) {
+            items.clear()
             items.addAll(surveys)
             notifyDataSetChanged()
         }
+    }
+
+    companion object {
+        const val CHIP_PADDING = 56F
     }
 }

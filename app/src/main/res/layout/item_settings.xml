@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:paddingTop="@dimen/margin_m"
+    android:paddingBottom="@dimen/margin_m">
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginStart="@dimen/margin_m"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,19 +20,21 @@
 
     <TextView
         android:id="@+id/text"
+        style="@style/Main.Text.Small"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_height="@dimen/min_clickable_size"
         android:layout_marginStart="24dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Обратная связь" />
 
     <ImageView
+        android:id="@+id/arrow"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginEnd="@dimen/margin_m"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

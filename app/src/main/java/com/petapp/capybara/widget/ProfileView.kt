@@ -1,4 +1,4 @@
-package com.petapp.capybara.view
+package com.petapp.capybara.widget
 
 import android.content.Context
 import android.graphics.*
@@ -12,25 +12,22 @@ import androidx.core.graphics.toRectF
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.dpTpPx
 
-class ProfileCustomView @JvmOverloads constructor(
+class ProfileView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attributeSet, defStyleAttr) {
 
-    companion object {
-        private const val DEFAULT_SIZE_DP = 56
-        private const val DEFAULT_BORDER_WIDTH_DP = 6
-        private const val TAG = "custom_view"
-    }
-
     private val avatarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val initialsPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
     // главная область рисования
     private val viewRect = Rect()
+
     // для рисования каемки
     private var borderRect = Rect()
+
     // рисуем либо инициалы, либо изображение (isAvatarMode = true)
     private var isAvatarMode = true
     private var initials = ""
@@ -105,12 +102,12 @@ class ProfileCustomView @JvmOverloads constructor(
     }
 
     private fun drawInitials(canvas: Canvas) {
-        initialsPaint.color = ContextCompat.getColor(context, R.color.light_gray)
+        initialsPaint.color = ContextCompat.getColor(context, R.color.neutral_n20)
         canvas.drawOval(viewRect.toRectF(), initialsPaint)
         with(initialsPaint) {
-            color = ContextCompat.getColor(context, R.color.light_black)
+            color = ContextCompat.getColor(context, R.color.neutral_n60)
             textAlign = Paint.Align.CENTER
-            textSize = height * 0.33F
+            textSize = height * REDUCE_TEXT_SIZE
         }
         val offsetY = (initialsPaint.descent() + initialsPaint.ascent()) / 2
         canvas.drawText(initials, viewRect.exactCenterX(), viewRect.exactCenterY() - offsetY, initialsPaint)
@@ -118,7 +115,7 @@ class ProfileCustomView @JvmOverloads constructor(
     }
 
     fun setColor(color: Int) {
-        borderPaint.color = ContextCompat.getColor(context, color)
+        borderPaint.color = color
         invalidate()
     }
 
@@ -143,5 +140,12 @@ class ProfileCustomView @JvmOverloads constructor(
         super.setImageResource(resId)
         if (isAvatarMode) prepareShader(width, height)
         Log.d(TAG, "setImageResource")
+    }
+
+    companion object {
+        private const val DEFAULT_SIZE_DP = 56
+        private const val DEFAULT_BORDER_WIDTH_DP = 4
+        private const val TAG = "custom_view"
+        const val REDUCE_TEXT_SIZE = 0.33F
     }
 }

@@ -6,7 +6,9 @@ import io.reactivex.Single
 
 interface SurveysRepository {
 
-    fun getSurveys(typeId: String): Single<List<Survey>>
+    fun getSurveysByType(typeId: String): Single<List<Survey>>
+
+    fun getSurveysByMonth(month: String): Single<List<Survey>>
 
     fun getSurvey(surveyId: String): Single<Survey>
 

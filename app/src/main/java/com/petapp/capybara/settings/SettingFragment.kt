@@ -1,5 +1,6 @@
 package com.petapp.capybara.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
+import com.petapp.capybara.auth.AuthActivity
 import com.petapp.capybara.data.model.Settings
 import kotlinx.android.synthetic.main.fragment_profiles.recycler_view
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -37,7 +39,9 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
         )
         exit.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            viewModel.exit()
+            val intent = Intent(requireActivity(), AuthActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 

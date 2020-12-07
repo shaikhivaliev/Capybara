@@ -22,7 +22,12 @@ class SettingsAdapterDelegate(
         return items[position] is Settings
     }
 
-    override fun onBindViewHolder(items: MutableList<Any>, position: Int, holder: RecyclerView.ViewHolder, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        items: MutableList<Any>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: MutableList<Any>
+    ) {
         (holder as ViewHolder).bind(items[position] as Settings)
     }
 

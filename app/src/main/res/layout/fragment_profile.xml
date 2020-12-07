@@ -1,158 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    >
 
-    <com.petapp.capybara.view.ProfileCustomView
+    <ImageView
         android:id="@+id/photo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/profile_photo_size"
+        android:background="@color/neutral_n20"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/initials"
+        style="@style/Main.Text.Large"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/profile_photo_size"
+        android:background="@color/neutral_n20"
         android:gravity="center"
-        android:textSize="48sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginEnd="@dimen/margin_s"
+        android:background="@drawable/green_border_bgr"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/done"
+        android:layout_width="@dimen/min_clickable_size"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginEnd="@dimen/margin_s"
+        android:background="@drawable/green_border_bgr"
+        android:contentDescription="@null"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_done"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <View
+        android:id="@+id/color_marker"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/profile_marker_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/photo"
-        tools:text="Name" />
+        />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/edit_photo"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/profile_name"
+        style="@style/Main.Text.Large"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:icon="@drawable/ic_add_photo"
-        app:iconGravity="textEnd"
-        app:layout_constraintEnd_toStartOf="@id/delete_profile"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_name" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete_profile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:icon="@drawable/ic_delete"
-        app:iconGravity="textEnd"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@drawable/gray_border_bgr"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintBottom_toBottomOf="@id/color_marker"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/edit_photo"
-        app:layout_constraintTop_toBottomOf="@id/profile_name" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Name Name"
+        />
+
+    <TextView
+        android:id="@+id/content_mock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        style="@style/Main.Text.Large"
+        app:layout_constraintTop_toBottomOf="@id/color_marker"
+        android:text="Statistics fragment"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/light_gray"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:background="@color/transparent"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintTop_toBottomOf="@id/edit_photo">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_et"
+            style="@style/Main.Text.Medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/light_gray"
-            android:hint="@string/profile_name_hint"
-            android:inputType="text"
+            android:background="@color/transparent"
+            android:hint="@string/name"
             android:imeOptions="actionDone"
+            android:inputType="text"
             android:paddingStart="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/color_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:chipSpacingHorizontal="8dp"
+    <TextView
+        android:id="@+id/change_color"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/profile_choose_color"
+        app:drawableEndCompat="@drawable/ic_palette"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_layout"
-        app:singleSelection="true">
+        />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/white"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            app:chipBackgroundColor="@android:color/white"
-            app:chipIcon="@drawable/ic_done" />
+    <TextView
+        android:id="@+id/change_photo"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/profile_change_photo"
+        app:drawableEndCompat="@drawable/ic_add_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/change_color"
+        />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/green"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/green"
-            app:chipIcon="@drawable/ic_done" />
+    <TextView
+        android:id="@+id/delete_profile"
+        style="@style/Main.Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/min_clickable_size"
+        android:layout_marginHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:text="@string/profile_delete"
+        app:drawableEndCompat="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/change_photo"
+        />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/red"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/red"
-            app:chipIcon="@drawable/ic_done" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/blue"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/blue"
-            app:chipIcon="@drawable/ic_done" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/yellow"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/yellow"
-            app:chipIcon="@drawable/ic_done" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/violet"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@color/violet"
-            app:chipIcon="@drawable/ic_done" />
-
-    </com.google.android.material.chip.ChipGroup>
-
-    <com.petapp.capybara.view.AddToDoneMorphView
-        android:id="@+id/done"
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/current_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="visible"
+        app:constraint_referenced_ids="profile_name, edit, content_mock"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/edit_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="name_layout, change_color, change_photo, delete_profile, done"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

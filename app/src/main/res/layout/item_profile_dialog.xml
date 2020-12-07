@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_m"
+    android:layout_marginTop="@dimen/margin_m"
+    android:elevation="@dimen/widget_elevation"
+    app:cardCornerRadius="@dimen/widget_corner_radius"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        >
+
+        <ImageView
+            android:id="@+id/mark_bgr"
+            android:layout_width="@dimen/min_clickable_size"
+            android:layout_height="@dimen/min_clickable_size"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Main.Text.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_l"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/mark_bgr"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

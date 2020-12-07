@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/mock"
@@ -15,16 +14,17 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/margin_s"
         tools:listitem="@layout/item_profile" />
 
-    <com.petapp.capybara.view.DoneToAddMorphView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:layout_marginBottom="@dimen/margin_m"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat = "@drawable/avd_add_to_done"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

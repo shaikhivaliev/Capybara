@@ -12,8 +12,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_type.view.*
 
 class TypesAdapterDelegate(
-    private val itemClick: (Type) -> Unit,
-    private val editClick: (Type) -> Unit
+    private val itemClick: (Type) -> Unit
 ) : AdapterDelegate<MutableList<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -35,15 +34,14 @@ class TypesAdapterDelegate(
         (holder as ViewHolder).bind(items[position] as Type)
     }
 
-    private inner class ViewHolder(override val containerView: View) :
+    inner class ViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
 
-        private lateinit var type: Type
+        lateinit var type: Type
 
         init {
             containerView.setOnClickListener { itemClick(type) }
-            containerView.edit.setOnClickListener { editClick(type) }
         }
 
         fun bind(type: Type) {

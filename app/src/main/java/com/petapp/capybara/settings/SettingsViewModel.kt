@@ -18,10 +18,6 @@ class SettingsViewModel(
         }
     }
 
-    fun exit() {
-        SettingFragmentDirections.exit().navigateWith(navController)
-    }
-
     enum class Settings(@StringRes val value: Int) {
         FEEDBACK(value = R.string.settings_feedback),
         ABOUT_APP(value = R.string.settings_about_app),

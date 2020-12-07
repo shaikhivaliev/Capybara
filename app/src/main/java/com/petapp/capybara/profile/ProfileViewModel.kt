@@ -27,7 +27,6 @@ class ProfileViewModel(
     private val _imageFile = MutableLiveData<File>()
     val imageFile: LiveData<File> get() = _imageFile
 
-
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 

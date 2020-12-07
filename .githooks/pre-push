@@ -1,0 +1,11 @@
+#!/bin/sh
+echo "Run pre push check"
+
+sh ./scripts/pre-push-checks.sh
+
+RESULT=$?
+
+stash=$(git stash list | grep "$stashName_$1" | cut -d: -f1)
+[[ ! -z "$stash" ]] && git stash pop "$stash"
+
+exit $RESULT

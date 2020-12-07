@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-// home task #7 - persistent storage
 @Entity(
     tableName = "survey",
     foreignKeys = [
@@ -38,5 +37,7 @@ data class SurveyEntity(
     @ColumnInfo(name = "title")
     val name: String,
     @ColumnInfo(name = "date")
-    var date: String
+    var date: String,
+    @ColumnInfo(name = "month")
+    var month: String
 )
