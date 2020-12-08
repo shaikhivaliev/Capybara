@@ -20,6 +20,7 @@ object Stubs {
     private const val PROFILE_ID = "some_profile_id"
     private const val DATE = "some_date"
     private const val ICON = 303
+    private const val MONTH = "June"
     const val PROFILES_ERROR = R.string.error_get_profiles
     const val SURVEYS_ERROR = R.string.error_get_surveys
     const val TYPES_ERROR = R.string.error_get_types
@@ -42,7 +43,8 @@ object Stubs {
         profileId = PROFILE_ID,
         color = COLOR,
         name = NAME,
-        date = DATE
+        date = DATE,
+        month = MONTH
     )
 
     val SURVEY = Survey(
@@ -51,7 +53,8 @@ object Stubs {
         profileId = PROFILE_ID,
         color = COLOR,
         name = NAME,
-        date = DATE
+        date = DATE,
+        month = MONTH
     )
 
     val TYPE_ENTITY = TypeEntity(
