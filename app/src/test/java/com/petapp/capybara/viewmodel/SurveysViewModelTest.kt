@@ -52,7 +52,7 @@ class SurveysViewModelTest {
         )
         `when`(repositoryMarks.getMarks())
             .thenReturn(Single.just(expectedMarks))
-        `when`(repositorySurveys.getSurveys(Mockito.anyString()))
+        `when`(repositorySurveys.getSurveysByType(Mockito.anyString()))
             .thenReturn(Single.just(expectedSurveys))
         val viewModel = SurveysViewModel(repositorySurveys, repositoryMarks, navController)
 
@@ -75,7 +75,7 @@ class SurveysViewModelTest {
         val expected = Stubs.SURVEYS_ERROR
         `when`(repositoryMarks.getMarks())
             .thenReturn(Single.just(expectedMarks))
-        `when`(repositorySurveys.getSurveys(Mockito.anyString()))
+        `when`(repositorySurveys.getSurveysByType(Mockito.anyString()))
             .thenReturn(Single.error(RuntimeException("Timeout exception")))
         val viewModel = SurveysViewModel(repositorySurveys, repositoryMarks, navController)
 
