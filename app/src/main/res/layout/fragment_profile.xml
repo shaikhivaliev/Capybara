@@ -78,27 +78,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginEnd="@dimen/margin_m"
-        android:background="@drawable/gray_border_bgr"
         android:gravity="center"
         android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintBottom_toBottomOf="@id/color_marker"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/color_marker"
+        android:layout_marginTop="@dimen/margin_l"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Name Name"
-        />
-
-    <TextView
-        android:id="@+id/content_mock"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"
-        style="@style/Main.Text.Large"
-        app:layout_constraintTop_toBottomOf="@id/color_marker"
-        android:text="Statistics fragment"
         />
 
     <com.google.android.material.textfield.TextInputLayout
