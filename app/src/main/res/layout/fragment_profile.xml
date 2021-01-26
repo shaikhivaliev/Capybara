@@ -78,12 +78,147 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_l"
         android:gravity="center"
         android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintTop_toBottomOf="@id/color_marker"
-        android:layout_marginTop="@dimen/margin_l"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/color_marker"
         tools:text="Name Name"
+        />
+
+    <TextView
+        android:id="@+id/blood_pressure_title"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center"
+        android:text="@string/profile_blood_pressure_title"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_name"
+        />
+
+    <TextView
+        android:id="@+id/blood_pressure_value"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="start"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toEndOf="@id/blood_pressure_title"
+        app:layout_constraintTop_toBottomOf="@id/profile_name"
+        tools:text="120/70 мм. рт. ст."
+        />
+
+    <TextView
+        android:id="@+id/pulse_title"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center"
+        android:text="@string/profile_pulse_title"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/blood_pressure_title"
+        />
+
+    <TextView
+        android:id="@+id/pulse_value"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="start"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+        app:layout_constraintTop_toBottomOf="@id/blood_pressure_value"
+        tools:text="76 уд./мин."
+        />
+
+    <TextView
+        android:id="@+id/blood_glucose_title"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center"
+        android:text="@string/profile_blood_glucose_title"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pulse_title"
+        />
+
+    <TextView
+        android:id="@+id/blood_glucose_value"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="start"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+        app:layout_constraintTop_toBottomOf="@id/pulse_title"
+        tools:text="3 ммоль/л"
+        />
+
+    <TextView
+        android:id="@+id/height_title"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center"
+        android:text="@string/profile_height_title"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/blood_glucose_title"
+        />
+
+    <TextView
+        android:id="@+id/height_value"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="start"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+        app:layout_constraintTop_toBottomOf="@id/blood_glucose_title"
+        tools:text="172 см"
+        />
+
+    <TextView
+        android:id="@+id/weight_title"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="center"
+        android:text="@string/profile_weight_title"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/height_title"
+        />
+
+    <TextView
+        android:id="@+id/weight_value"
+        style="@style/Main.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_s"
+        android:gravity="start"
+        android:paddingHorizontal="@dimen/margin_m"
+        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+        app:layout_constraintTop_toBottomOf="@id/height_title"
+        tools:text="70 кг"
         />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -169,7 +304,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="profile_name, edit, content_mock"
+        app:constraint_referenced_ids="profile_name, edit, content_mock, blood_pressure_title, blood_pressure_value, blood_glucose_title, blood_glucose_value, pulse_title, pulse_value, height_title, height_value, weight_title, weight_value
+"
         />
 
     <androidx.constraintlayout.widget.Group

@@ -24,6 +24,16 @@
     <string name="profile_change_photo">Изменить фотографию</string>
     <string name="profile_delete_photo">Удалить фотографию</string>
     <string name="profile_delete">Удалить профиль</string>
+    <string name="profile_blood_pressure_title">Артериальное давление:</string>
+    <string name="profile_blood_pressure_value">1$s/2$s мм рт. ст.</string>
+    <string name="profile_pulse_title">Пульс:</string>
+    <string name="profile_pulse_value">1$s уд./мин.</string>
+    <string name="profile_blood_glucose_title">Глюкоза в крови:</string>
+    <string name="profile_blood_glucose_value">1$s ммоль/л</string>
+    <string name="profile_height_title">Рост:</string>
+    <string name="profile_height_value">1$s см</string>
+    <string name="profile_weight_title">Вес:</string>
+    <string name="profile_weight_value">1$s кг</string>
 
     <!-- survey-->
     <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
