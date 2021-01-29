@@ -1,10 +1,8 @@
 package com.petapp.capybara.data
 
-import com.petapp.capybara.data.model.Mark
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.data.model.*
 import com.petapp.capybara.database.entity.*
+import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 
 fun ProfileEntity.toMark(): Mark {
     return Mark(
@@ -125,4 +123,20 @@ fun List<TypeWithSurveys>.toTypes(): List<Type> {
         types.add(profile)
     }
     return types
+}
+
+fun List<ItemHealthDiaryWithSurveys>.toHealthDiaryItems(): List<ItemHealthDiary> {
+    val items = arrayListOf<ItemHealthDiary>()
+    for (itemEntity in this) {
+        val survey = itemEntity.toHealthDiaryItem()
+        items.add(survey)
+    }
+    return items
+}
+
+fun ItemHealthDiaryWithSurveys.toHealthDiaryItem(): ItemHealthDiary {
+    return ItemHealthDiary(
+        id = this.item.id,
+        type = this.item.type
+    )
 }

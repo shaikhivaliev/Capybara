@@ -86,140 +86,148 @@
         tools:text="Name Name"
         />
 
-    <TextView
-        android:id="@+id/blood_pressure_title"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/health_diary"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/widget_elevation"
         android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center"
-        android:text="@string/profile_blood_pressure_title"
-        android:paddingHorizontal="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_s"
+        app:cardCornerRadius="@dimen/button_corner_radius"
         app:layout_constraintTop_toBottomOf="@id/profile_name"
-        />
 
-    <TextView
-        android:id="@+id/blood_pressure_value"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="start"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toEndOf="@id/blood_pressure_title"
-        app:layout_constraintTop_toBottomOf="@id/profile_name"
-        tools:text="120/70 мм. рт. ст."
-        />
+        >
 
-    <TextView
-        android:id="@+id/pulse_title"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center"
-        android:text="@string/profile_pulse_title"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/blood_pressure_title"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_s">
 
-    <TextView
-        android:id="@+id/pulse_value"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="start"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
-        app:layout_constraintTop_toBottomOf="@id/blood_pressure_value"
-        tools:text="76 уд./мин."
-        />
+            <TextView
+                android:id="@+id/blood_pressure_title"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/health_diary_blood_pressure_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <TextView
-        android:id="@+id/blood_glucose_title"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center"
-        android:text="@string/profile_blood_glucose_title"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pulse_title"
-        />
+            <TextView
+                android:id="@+id/blood_pressure_value"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginStart="@dimen/margin_l"
+                app:layout_constraintStart_toEndOf="@id/blood_pressure_title"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="120/70 мм. рт. ст."
+                />
 
-    <TextView
-        android:id="@+id/blood_glucose_value"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="start"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
-        app:layout_constraintTop_toBottomOf="@id/pulse_title"
-        tools:text="3 ммоль/л"
-        />
+            <TextView
+                android:id="@+id/pulse_title"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="center"
+                android:text="@string/health_diary_pulse_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/blood_pressure_title"
+                />
 
-    <TextView
-        android:id="@+id/height_title"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center"
-        android:text="@string/profile_height_title"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/blood_glucose_title"
-        />
+            <TextView
+                android:id="@+id/pulse_value"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="start"
+                app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+                app:layout_constraintTop_toBottomOf="@id/blood_pressure_value"
+                tools:text="76 уд./мин."
+                />
 
-    <TextView
-        android:id="@+id/height_value"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="start"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
-        app:layout_constraintTop_toBottomOf="@id/blood_glucose_title"
-        tools:text="172 см"
-        />
+            <TextView
+                android:id="@+id/blood_glucose_title"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="center"
+                android:text="@string/health_diary_blood_glucose_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pulse_title"
+                />
 
-    <TextView
-        android:id="@+id/weight_title"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center"
-        android:text="@string/profile_weight_title"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/height_title"
-        />
+            <TextView
+                android:id="@+id/blood_glucose_value"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="start"
+                app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+                app:layout_constraintTop_toBottomOf="@id/pulse_title"
+                tools:text="3 ммоль/л"
+                />
 
-    <TextView
-        android:id="@+id/weight_value"
-        style="@style/Main.Text.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="start"
-        android:paddingHorizontal="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
-        app:layout_constraintTop_toBottomOf="@id/height_title"
-        tools:text="70 кг"
-        />
+            <TextView
+                android:id="@+id/height_title"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="center"
+                android:text="@string/health_diary_height_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/blood_glucose_title"
+                />
+
+            <TextView
+                android:id="@+id/height_value"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="start"
+                app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+                app:layout_constraintTop_toBottomOf="@id/blood_glucose_title"
+                tools:text="172 см"
+                />
+
+            <TextView
+                android:id="@+id/weight_title"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="center"
+                android:text="@string/health_diary_weight_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/height_title"
+                />
+
+            <TextView
+                android:id="@+id/weight_value"
+                style="@style/Main.Text.Small16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_s"
+                android:gravity="start"
+                app:layout_constraintStart_toStartOf="@id/blood_pressure_value"
+                app:layout_constraintTop_toBottomOf="@id/height_title"
+                tools:text="70 кг"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
@@ -253,11 +261,10 @@
 
     <TextView
         android:id="@+id/change_color"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.Small16"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="@dimen/margin_s"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:text="@string/profile_choose_color"
@@ -269,11 +276,10 @@
 
     <TextView
         android:id="@+id/change_photo"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.Small16"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:text="@string/profile_change_photo"
@@ -285,11 +291,10 @@
 
     <TextView
         android:id="@+id/delete_profile"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.Small16"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:text="@string/profile_delete"
@@ -304,8 +309,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="profile_name, edit, content_mock, blood_pressure_title, blood_pressure_value, blood_glucose_title, blood_glucose_value, pulse_title, pulse_value, height_title, height_value, weight_title, weight_value
-"
+        app:constraint_referenced_ids="profile_name, edit, content_mock, health_diary"
         />
 
     <androidx.constraintlayout.widget.Group

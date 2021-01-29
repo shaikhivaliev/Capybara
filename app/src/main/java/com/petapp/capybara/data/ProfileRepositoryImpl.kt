@@ -1,6 +1,5 @@
 package com.petapp.capybara.data
 
-import android.util.Log
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.database.AppDao
 import io.reactivex.Completable
@@ -18,7 +17,6 @@ class ProfileRepositoryImpl(private val appDao: AppDao) : ProfileRepository {
     }
 
     override fun createProfile(profile: Profile): Completable {
-        Log.d("database", "${profile.id}, ${profile.name}, ${profile.color}, ${profile.photo}")
         return Completable.fromAction { appDao.createProfile(profile.toProfileEntity()) }
             .subscribeOn(Schedulers.io())
     }

@@ -2,9 +2,10 @@ package com.petapp.capybara.database
 
 import androidx.room.*
 import com.petapp.capybara.database.entity.*
+import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
+import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import io.reactivex.Single
 
-// home task #7 - persistent storage
 @Dao
 interface AppDao {
 
@@ -63,4 +64,12 @@ interface AppDao {
 
     @Query("SELECT * FROM survey WHERE month = :month")
     fun getSurveysByMonth(month: String): Single<List<SurveyEntity>>
+
+    // health_diary
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun createHealthDiaryItem(item: ItemHealthDiaryEntity)
+
+    @Transaction
+    @Query("SELECT * FROM health_diary")
+    fun getItemHealthDiaryWithSurveys(): Single<List<ItemHealthDiaryWithSurveys>>
 }

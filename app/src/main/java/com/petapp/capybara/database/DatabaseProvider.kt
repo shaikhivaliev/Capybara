@@ -5,34 +5,83 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.petapp.capybara.R
+import com.petapp.capybara.data.model.HealthDiaryType
 import com.petapp.capybara.database.entity.TypeEntity
+import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
 import java.util.concurrent.Executors
 
-// home task #7 - persistent storage
-class DatabaseProvider(context: Context) {
+class DatabaseProvider(private val context: Context) {
 
     private val setInitialData: RoomDatabase.Callback = object : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
-            Executors.newSingleThreadExecutor().execute {
-                val typeBlood = TypeEntity(
-                    0L,
-                    context.getString(R.string.type_default_blood),
-                    R.drawable.ic_blood
-                )
-                database.appDao().createType(typeBlood)
-                val typeHeart = TypeEntity(
-                    0L,
-                    context.getString(R.string.type_default_heart),
-                    R.drawable.ic_heart
-                )
-                database.appDao().createType(typeHeart)
-                val typeTeeth = TypeEntity(
-                    0L,
-                    context.getString(R.string.type_default_teeth),
-                    R.drawable.ic_teeth
-                )
-                database.appDao().createType(typeTeeth)
-            }
+            createTypes()
+            createHealthDiaryItems()
+        }
+    }
+
+    private fun createHealthDiaryItems() {
+        Executors.newSingleThreadExecutor().execute {
+            val itemBloodPressure = ItemHealthDiaryEntity(
+                HealthDiaryType.BLOOD_PRESSURE.ordinal,
+                HealthDiaryType.BLOOD_PRESSURE
+            )
+            database.appDao().createHealthDiaryItem(itemBloodPressure)
+
+            val itemPulse = ItemHealthDiaryEntity(
+                HealthDiaryType.PULSE.ordinal,
+                HealthDiaryType.PULSE
+            )
+            database.appDao().createHealthDiaryItem(itemPulse)
+
+            val itemBloodGlucose = ItemHealthDiaryEntity(
+                HealthDiaryType.BLOOD_GLUCOSE.ordinal,
+                HealthDiaryType.BLOOD_GLUCOSE
+            )
+            database.appDao().createHealthDiaryItem(itemBloodGlucose)
+
+            val itemHeight = ItemHealthDiaryEntity(
+                HealthDiaryType.HEIGHT.ordinal,
+                HealthDiaryType.HEIGHT
+            )
+            database.appDao().createHealthDiaryItem(itemHeight)
+
+            val itemWeight = ItemHealthDiaryEntity(
+                HealthDiaryType.WEIGHT.ordinal,
+                HealthDiaryType.WEIGHT
+            )
+            database.appDao().createHealthDiaryItem(itemWeight)
+        }
+    }
+
+    private fun createTypes() {
+        Executors.newSingleThreadExecutor().execute {
+            val typeVaccinations = TypeEntity(
+                0L,
+                context.getString(R.string.type_default_vaccinations),
+                R.drawable.ic_vaccination
+            )
+            database.appDao().createType(typeVaccinations)
+
+            val typeAnalyzes = TypeEntity(
+                0L,
+                context.getString(R.string.type_default_analyzes),
+                R.drawable.ic_analyzes
+            )
+            database.appDao().createType(typeAnalyzes)
+
+            val typeRecipes = TypeEntity(
+                0L,
+                context.getString(R.string.type_default_recipes),
+                R.drawable.ic_recipes
+            )
+            database.appDao().createType(typeRecipes)
+
+            val typeSurveys = TypeEntity(
+                0L,
+                context.getString(R.string.type_default_surveys),
+                R.drawable.ic_type_surveys
+            )
+            database.appDao().createType(typeSurveys)
         }
     }
 

@@ -24,16 +24,6 @@
     <string name="profile_change_photo">Изменить фотографию</string>
     <string name="profile_delete_photo">Удалить фотографию</string>
     <string name="profile_delete">Удалить профиль</string>
-    <string name="profile_blood_pressure_title">Артериальное давление:</string>
-    <string name="profile_blood_pressure_value">1$s/2$s мм рт. ст.</string>
-    <string name="profile_pulse_title">Пульс:</string>
-    <string name="profile_pulse_value">1$s уд./мин.</string>
-    <string name="profile_blood_glucose_title">Глюкоза в крови:</string>
-    <string name="profile_blood_glucose_value">1$s ммоль/л</string>
-    <string name="profile_height_title">Рост:</string>
-    <string name="profile_height_value">1$s см</string>
-    <string name="profile_weight_title">Вес:</string>
-    <string name="profile_weight_value">1$s кг</string>
 
     <!-- survey-->
     <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
@@ -52,9 +42,11 @@
     <string name="settings_exit">Выход</string>
 
     <!-- type-->
-    <string name="type_default_blood">Кровь</string>
-    <string name="type_default_heart">Сердце</string>
-    <string name="type_default_teeth">Стоматолог</string>
+    <string name="type_default_health_diary">Дневник здоровья</string>
+    <string name="type_default_vaccinations">Прививки</string>
+    <string name="type_default_analyzes">Анализы</string>
+    <string name="type_default_recipes">Рецепты</string>
+    <string name="type_default_surveys">Исследования</string>
     <string name="type">тип исследования</string>
     <string name="type_caps">Тип исследования</string>
     <string name="type_title">Тип</string>
@@ -63,6 +55,20 @@
     <string name="type_change_icon">Изменить иконку</string>
     <string name="type_delete_surveys_type">Удалить тип исследования</string>
     <string name="type_name">Название типа</string>
+
+    <!-- health diary-->
+    <string name="health_diary_blood_pressure_title">Артериальное давление</string>
+    <string name="health_diary_blood_pressure_value">1$s/2$s мм рт. ст.</string>
+    <string name="health_diary_pulse_title">Пульс</string>
+    <string name="health_diary_pulse_value">1$s уд./мин.</string>
+    <string name="health_diary_blood_glucose_title">Глюкоза в крови</string>
+    <string name="health_diary_blood_glucose_value">1$s ммоль/л</string>
+    <string name="health_diary_height_title">Рост</string>
+    <string name="health_diary_height_value">1$s см</string>
+    <string name="health_diary_weight_title">Вес</string>
+    <string name="health_diary_weight_value">1$s кг</string>
+    <string name="health_diary_health_diary">Дневник здоровья</string>
+    <string name="health_diary_empty_survey">У вас пока нет записей</string>
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>
@@ -81,6 +87,7 @@
     <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
     <string name="error_get_type">Не удалось получить тип исследования</string>
     <string name="error_get_types">Не удалось получить тип исследований</string>
+    <string name="error_get_health_diary_items">Не удалось получить информацию о дневнике здоровья</string>
     <string name="error_empty_name">Пустое имя</string>
     <string name="error_empty_date">Пустая дата</string>
     <string name="error_empty_type">Выберите хотя бы один тип исследования</string>

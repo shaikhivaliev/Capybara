@@ -63,24 +63,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/change_icon"
-        style="@style/Main.Text.Small"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/min_clickable_size"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:text="@string/type_change_icon"
-        app:drawableEndCompat="@drawable/ic_palette"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_layout"
-        />
-
-    <TextView
         android:id="@+id/delete_surveys_type"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.Small16"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
@@ -91,7 +75,7 @@
         app:drawableEndCompat="@drawable/ic_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/change_icon"
+        app:layout_constraintTop_toBottomOf="@id/name_layout"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

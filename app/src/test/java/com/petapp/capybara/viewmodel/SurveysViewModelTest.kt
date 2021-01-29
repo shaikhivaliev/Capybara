@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
 import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.SurveysRepository
-import com.petapp.capybara.surveys.SurveysViewModel
+import com.petapp.capybara.presentation.surveys.SurveysViewModel
 import com.petapp.capybara.utils.RxRule
 import com.petapp.capybara.utils.Stubs
 import com.petapp.capybara.utils.getOrAwaitValue

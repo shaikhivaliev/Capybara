@@ -4,11 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_home"
-    app:startDestination="@id/tab_profiles">
+    app:startDestination="@id/tab_profiles"
+    >
 
     <fragment
         android:id="@+id/tab_settings"
-        android:name="com.petapp.capybara.settings.SettingFragment"
+        android:name="com.petapp.capybara.presentation.settings.SettingFragment"
         android:label="settings"
         tools:layout="@layout/fragment_settings"
         >
@@ -31,7 +32,7 @@
 
     <fragment
         android:id="@+id/tab_profiles"
-        android:name="com.petapp.capybara.profiles.ProfilesFragment"
+        android:name="com.petapp.capybara.presentation.profiles.ProfilesFragment"
         android:label="profiles"
         tools:layout="@layout/fragment_profiles"
         >
@@ -50,7 +51,7 @@
 
     <fragment
         android:id="@+id/tab_calendar"
-        android:name="com.petapp.capybara.calendar.CalendarFragment"
+        android:name="com.petapp.capybara.presentation.calendar.CalendarFragment"
         tools:layout="@layout/fragment_calendar"
         >
         <action
@@ -69,7 +70,7 @@
 
     <fragment
         android:id="@+id/tab_types"
-        android:name="com.petapp.capybara.types.TypesFragment"
+        android:name="com.petapp.capybara.presentation.types.TypesFragment"
         android:label="types"
         tools:layout="@layout/fragment_types"
         >
@@ -98,11 +99,17 @@
                 app:nullable="false"
                 />
         </action>
+
+        <action
+            android:id="@+id/to_health_diary"
+            app:destination="@id/health_diary"
+            />
+
     </fragment>
 
     <fragment
         android:id="@+id/surveys"
-        android:name="com.petapp.capybara.surveys.SurveysFragment"
+        android:name="com.petapp.capybara.presentation.surveys.SurveysFragment"
         android:label="surveys"
         tools:layout="@layout/fragment_surveys"
         >
@@ -129,7 +136,7 @@
 
     <fragment
         android:id="@+id/profile"
-        android:name="com.petapp.capybara.profile.ProfileFragment"
+        android:name="com.petapp.capybara.presentation.profile.ProfileFragment"
         android:label="profile"
         >
 
@@ -148,7 +155,7 @@
 
     <fragment
         android:id="@+id/type"
-        android:name="com.petapp.capybara.type.TypeFragment"
+        android:name="com.petapp.capybara.presentation.type.TypeFragment"
         android:label="type"
         tools:layout="@layout/fragment_type"
         >
@@ -167,22 +174,29 @@
     </fragment>
 
     <fragment
+        android:id="@+id/health_diary"
+        android:name="com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment"
+        android:label="healthDiary"
+        tools:layout="@layout/fragment_health_diary"
+        />
+
+    <fragment
         android:id="@+id/feedback"
-        android:name="com.petapp.capybara.settings.FeedbackFragment"
+        android:name="com.petapp.capybara.presentation.settings.FeedbackFragment"
         android:label="feedback"
         tools:layout="@layout/fragment_feedback"
         />
 
     <fragment
         android:id="@+id/about_app"
-        android:name="com.petapp.capybara.settings.AboutAppFragment"
+        android:name="com.petapp.capybara.presentation.settings.AboutAppFragment"
         android:label="about_app"
         tools:layout="@layout/fragment_about_app"
         />
 
     <fragment
         android:id="@+id/rules"
-        android:name="com.petapp.capybara.settings.RulesFragment"
+        android:name="com.petapp.capybara.presentation.settings.RulesFragment"
         android:label="rules"
         tools:layout="@layout/fragment_rules"
         />

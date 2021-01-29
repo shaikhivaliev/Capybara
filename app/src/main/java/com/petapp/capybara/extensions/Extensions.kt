@@ -17,7 +17,7 @@ import androidx.navigation.NavOptions
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Mark
-import com.petapp.capybara.survey.SurveyFragment
+import com.petapp.capybara.presentation.survey.SurveyFragment
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*

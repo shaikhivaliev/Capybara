@@ -13,6 +13,18 @@
         android:visibility="gone"
         />
 
+    <include
+        android:id="@+id/health_diary"
+        layout="@layout/item_health_diary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_m"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
@@ -20,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/health_diary"
         tools:listitem="@layout/item_type"
         />
 
@@ -32,7 +44,7 @@
         android:layout_marginBottom="@dimen/margin_m"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat = "@drawable/avd_add_to_done"
+        app:srcCompat="@drawable/avd_add_to_done"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
