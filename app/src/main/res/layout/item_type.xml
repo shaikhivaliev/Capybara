@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/surveys_amount_title"
-            style="@style/Main.Text.Small16"
+            style="@style/Main.Text.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_l"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/surveys_amount"
-            style="@style/Main.Text.Small16"
+            style="@style/Main.Text.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

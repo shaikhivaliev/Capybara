@@ -1,13 +1,36 @@
 package com.petapp.capybara.adapter
 
+import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.*
 import kotlinx.android.synthetic.main.item_step_health_diary.view.*
 
-fun itemHealthDiaryDelegate(onClick: (ItemHealthDiary) -> Unit) =
+private const val ROTATION_ANGLE = 180L
+private const val ROTATION_DURATION = 400L
+
+fun itemHealthDiaryDelegate(
+    expandItem: (ItemHealthDiary) -> Unit,
+    addSurvey: (ItemHealthDiary) -> Unit
+) =
     adapterDelegateLayoutContainer<ItemHealthDiary, HealthDiary>(R.layout.item_step_health_diary) {
-        itemView.setOnClickListener { onClick(item.apply { isExpanded = isExpanded.not() }) }
+        with(itemView) {
+            arrow_down.setOnClickListener {
+                expandItem(item.apply {
+                    isExpanded = isExpanded.not()
+                    add_health_diary_survey.isVisible = item.isExpanded
+                    val rotationAngle = if (isExpanded) ROTATION_ANGLE else 0
+                    arrow_down.animate()
+                        .rotation(rotationAngle.toFloat())
+                        .setDuration(ROTATION_DURATION)
+                        .start()
+                })
+            }
+            add_health_diary_survey.setOnClickListener {
+                addSurvey(item)
+            }
+        }
+
         bind {
             itemView.title.text = getString(
                 when (item.type) {

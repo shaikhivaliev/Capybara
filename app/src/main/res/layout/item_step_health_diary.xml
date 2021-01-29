@@ -20,6 +20,7 @@
         tools:text = "Артериальное давление"/>
 
     <ImageView
+        android:id="@+id/add_health_diary_survey"
         android:layout_width="@dimen/min_clickable_size"
         android:layout_height="@dimen/min_clickable_size"
         app:layout_constraintTop_toTopOf="parent"

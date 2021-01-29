@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_l"
+        android:layout_marginTop="@dimen/margin_m"
         android:gravity="center"
         android:paddingHorizontal="@dimen/margin_m"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,18 +108,18 @@
 
             <TextView
                 android:id="@+id/blood_pressure_title"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/health_diary_blood_pressure_title"
+                android:text="@string/health_diary_blood_pressure_title_one_line"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
             <TextView
                 android:id="@+id/blood_pressure_value"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -131,7 +131,7 @@
 
             <TextView
                 android:id="@+id/pulse_title"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -143,7 +143,7 @@
 
             <TextView
                 android:id="@+id/pulse_value"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -155,7 +155,7 @@
 
             <TextView
                 android:id="@+id/blood_glucose_title"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -167,7 +167,7 @@
 
             <TextView
                 android:id="@+id/blood_glucose_value"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -179,7 +179,7 @@
 
             <TextView
                 android:id="@+id/height_title"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -191,7 +191,7 @@
 
             <TextView
                 android:id="@+id/height_value"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -203,7 +203,7 @@
 
             <TextView
                 android:id="@+id/weight_title"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -215,7 +215,7 @@
 
             <TextView
                 android:id="@+id/weight_value"
-                style="@style/Main.Text.Small16"
+                style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_s"
@@ -261,7 +261,7 @@
 
     <TextView
         android:id="@+id/change_color"
-        style="@style/Main.Text.Small16"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="16dp"
@@ -276,7 +276,7 @@
 
     <TextView
         android:id="@+id/change_photo"
-        style="@style/Main.Text.Small16"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
@@ -291,7 +291,7 @@
 
     <TextView
         android:id="@+id/delete_profile"
-        style="@style/Main.Text.Small16"
+        style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"

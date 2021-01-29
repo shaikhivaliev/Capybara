@@ -6,6 +6,8 @@
     <string name="name">Имя</string>
     <string name="surveys_amount">Исследований:</string>
     <string name="repeat">Повторить</string>
+    <string name="save">СОХРАНИТЬ</string>
+    <string name="cancel">ОТМЕНА</string>
 
     <!-- tabs-->
     <string name="tab_list">Исследования</string>
@@ -57,7 +59,8 @@
     <string name="type_name">Название типа</string>
 
     <!-- health diary-->
-    <string name="health_diary_blood_pressure_title">Артериальное давление</string>
+    <string name="health_diary_blood_pressure_title">Артериальное\nдавление</string>
+    <string name="health_diary_blood_pressure_title_one_line">Артериальное давление</string>
     <string name="health_diary_blood_pressure_value">1$s/2$s мм рт. ст.</string>
     <string name="health_diary_pulse_title">Пульс</string>
     <string name="health_diary_pulse_value">1$s уд./мин.</string>
@@ -69,6 +72,20 @@
     <string name="health_diary_weight_value">1$s кг</string>
     <string name="health_diary_health_diary">Дневник здоровья</string>
     <string name="health_diary_empty_survey">У вас пока нет записей</string>
+    <string name="health_diary_survey_date">Дата</string>
+    <string name="health_diary_survey_time">Время</string>
+    <string name="health_diary_survey_blood_pressure">Значение давления</string>
+    <string name="health_diary_survey_pulse">Значение пульса</string>
+    <string name="health_diary_survey_blood_glucose">Уровень глюкозы</string>
+    <string name="health_diary_survey_height">Значение роста</string>
+    <string name="health_diary_survey_weight">Значение веса</string>
+    <string name="health_diary_blood_pressure_unit">мм рт. ст.</string>
+    <string name="health_diary_pulse_unit">уд./мин.</string>
+    <string name="health_diary_blood_glucose_unit">ммоль/л</string>
+    <string name="health_diary_height_unit">см</string>
+    <string name="health_diary_weight_unit">кг</string>
+    <string name="health_diary_slash">/</string>
+
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>
@@ -93,7 +110,6 @@
     <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
     <string name="error_empty_profile">Выберите хотя бы один профиль</string>
     <string name="error_auth">Что-то пошло не так</string>
-    <string name="cancel">ОТМЕНА</string>
     <string name="error_profile_choose_color">Выберете хотя бы один цвет</string>
 
 </resources>

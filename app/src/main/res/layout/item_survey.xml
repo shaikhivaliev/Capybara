@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/date"
-            style="@style/Main.Text.Small16"
+            style="@style/Main.Text.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

@@ -20,6 +20,9 @@ class HealthDiaryViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
+    private val _expandedItem = MutableLiveData<ItemHealthDiary>()
+    val expandedItem: LiveData<ItemHealthDiary> = _expandedItem
+
     init {
         getHealthDiaryItems()
     }
@@ -42,7 +45,10 @@ class HealthDiaryViewModel(
 
     fun handleStepClick(item: ItemHealthDiary) {
         _healthDiaryItems.value?.let { items ->
-            items.find { it.id == item.id }?.isExpanded = item.isExpanded
+            items.find { it.id == item.id }?.also {
+                it.isExpanded = item.isExpanded
+                _expandedItem.value = it
+            }
             _healthDiaryItems.value = items
         }
     }
