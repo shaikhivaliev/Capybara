@@ -7,6 +7,7 @@ import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.HealthDiaryRepository
 import com.petapp.capybara.data.model.ItemHealthDiary
+import com.petapp.capybara.data.model.SurveyHealthDiary
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -33,12 +34,45 @@ class HealthDiaryViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _healthDiaryItems.value = it
+                    _healthDiaryItems.value = it.toRangeItems()
                     Log.d(TAG, "get health diary items success")
                 },
                 {
                     _errorMessage.value = R.string.error_get_health_diary_items
                     Log.d(TAG, "get health diary items error")
+                }
+            ).connect()
+    }
+
+    fun createHealthDiarySurvey(survey: SurveyHealthDiary?) {
+        if (survey != null) {
+            repository.createSurveyHealthDiary(survey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        getHealthDiaryItems()
+                        Log.d(TAG, "create health diary survey success")
+                    },
+                    {
+                        _errorMessage.value = R.string.error_get_health_diary_items
+                        Log.d(TAG, "create health diary survey error")
+                    }
+                ).connect()
+        }
+    }
+
+    fun deleteHealthDiary(surveyId: String) {
+        repository.deleteSurveyHealthDiary(surveyId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    getHealthDiaryItems()
+                    Log.d(TAG, "delete health diary survey $surveyId success")
+                },
+                {
+                    _errorMessage.value = R.string.error_delete_type
+                    Log.d(TAG, "delete health diary survey error")
                 }
             ).connect()
     }
@@ -53,13 +87,15 @@ class HealthDiaryViewModel(
         }
     }
 
-//    private fun List<BaseActItem>.toSteps(): List<Step> = groupBy { it.type.stepType }.map { (stepType, actItems) ->
-//        Step(
-//            subSteps = actItems.map { SubStep(it.type, it.state, it.type.toScreen()) },
-//            isExpanded = steps.value?.find { it.type == stepType }?.isExpanded ?: false,
-//            isLocked = stepType == ActStepType.COMPLETION && hasIncompleteNonCompletionSteps()
-//        )
-//    }
+    private fun List<ItemHealthDiary>.toRangeItems(): List<ItemHealthDiary> =
+        groupBy { it.type }.map { (itemType, items) ->
+            ItemHealthDiary(
+                id = itemType.ordinal,
+                type = itemType,
+                isExpanded = _healthDiaryItems.value?.find { it.type == itemType }?.isExpanded ?: false,
+                surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
+            )
+        }
 
     companion object {
         private const val TAG = "database_hd_items"

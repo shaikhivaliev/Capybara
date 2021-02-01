@@ -4,8 +4,8 @@ import com.petapp.capybara.data.model.HealthDiary
 import com.petapp.capybara.data.model.ItemHealthDiary
 
 fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = flatMap {
-    listOf(it) + if (it.isExpanded && it.subItems.isNotEmpty()) {
-        it.subItems
+    listOf(it) + if (it.isExpanded && it.surveys.isNotEmpty()) {
+        it.surveys
     } else if (it.isExpanded) {
         listOf(it.emptyItem)
     } else emptyList()

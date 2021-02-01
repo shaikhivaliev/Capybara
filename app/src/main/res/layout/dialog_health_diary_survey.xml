@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/margin_m"
-    android:id="@+id/dialog_content"
     app:layout_behavior="@string/bottom_sheet_behavior"
     >
 
@@ -20,13 +20,14 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/survey_date"
         style="@style/Main.Text.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_date_title"
+        tools:text="20.01.2020"
         />
 
 
@@ -42,19 +43,21 @@
         />
 
 
-    <EditText
+    <TextView
         android:id="@+id/survey_time"
         style="@style/Main.Text.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/survey_time_title"
         app:layout_constraintTop_toBottomOf="@id/survey_time_title"
+        tools:text = "14:28"
         />
 
     <View
         android:id="@+id/horizontal_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_s"
         android:background="@color/neutral_n60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,10 +79,10 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/survey_value"
         style="@style/Main.Text.Medium"
-        android:inputType="number"
-        android:maxLength="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_value_title"
         />
@@ -87,13 +90,13 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/blood_pressure_first"
         style="@style/Main.Text.Medium"
-        android:inputType="number"
-        android:maxLength="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="3"
+        app:layout_constraintEnd_toStartOf="@id/slash"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_value_title"
-        app:layout_constraintEnd_toStartOf="@id/slash"
         />
 
     <TextView
@@ -103,19 +106,19 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/margin_s"
         android:text="@string/health_diary_slash"
-        app:layout_constraintStart_toEndOf="@id/blood_pressure_first"
-        app:layout_constraintEnd_toStartOf="@id/blood_pressure_second"
         app:layout_constraintBaseline_toBaselineOf="@id/blood_pressure_second"
+        app:layout_constraintEnd_toStartOf="@id/blood_pressure_second"
+        app:layout_constraintStart_toEndOf="@id/blood_pressure_first"
         />
 
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/blood_pressure_second"
         style="@style/Main.Text.Medium"
-        android:inputType="number"
-        android:maxLength="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toBottomOf="@id/blood_pressure_first"
         app:layout_constraintStart_toEndOf="@id/slash"
         />
@@ -125,11 +128,11 @@
         style="@style/Main.Text.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_l"
-        android:text="@string/health_diary_survey_time"
+        android:layout_marginStart="@dimen/margin_s"
         android:paddingBottom="@dimen/margin_s"
-        tools:text="мл. рт. ст."
+        android:text="@string/health_diary_survey_time"
         tools:ignore="MissingConstraints"
+        tools:text="мл. рт. ст."
         />
 
     <androidx.constraintlayout.widget.Group

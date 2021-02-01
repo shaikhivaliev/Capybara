@@ -85,7 +85,7 @@
     <string name="health_diary_height_unit">см</string>
     <string name="health_diary_weight_unit">кг</string>
     <string name="health_diary_slash">/</string>
-
+    <string name="health_diary_delete_survey">Вы действительно хотите удалить исследование</string>
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>

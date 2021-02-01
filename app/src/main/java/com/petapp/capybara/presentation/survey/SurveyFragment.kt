@@ -72,9 +72,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
         done.setOnClickListener {
             if (args.survey != null) {
-                viewModel.updateSurvey(surveyFactory())
+                viewModel.updateSurvey(surveyBuilder())
             } else {
-                viewModel.createSurvey(surveyFactory())
+                viewModel.createSurvey(surveyBuilder())
             }
         }
         edit.setOnClickListener {
@@ -162,7 +162,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         survey_date.text = survey.date
     }
 
-    private fun surveyFactory(): Survey? {
+    private fun surveyBuilder(): Survey? {
         return if (isFieldsValid()) {
             val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
             val typeId = requireNotNull(currentType.value?.id)

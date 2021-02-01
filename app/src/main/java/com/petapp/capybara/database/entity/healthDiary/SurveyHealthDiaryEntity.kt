@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = ItemHealthDiaryEntity::class,
             parentColumns = ["id"],
-            childColumns = ["item_id"],
+            childColumns = ["type_id"],
             onUpdate = ForeignKey.CASCADE,
             onDelete = ForeignKey.CASCADE
         )
@@ -20,7 +20,15 @@ import androidx.room.PrimaryKey
 data class SurveyHealthDiaryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int = 0,
-    @ColumnInfo(name = "item_id")
-    val itemId: Int
+    val id: Long = 0,
+    @ColumnInfo(name = "type_id")
+    val typeId: String,
+    @ColumnInfo(name = "date")
+    val date: String,
+    @ColumnInfo(name = "time")
+    val time: String,
+    @ColumnInfo(name = "survey_value")
+    val surveyValue: String,
+    @ColumnInfo(name = "unit_of_measure")
+    val unitOfMeasure: String
 )

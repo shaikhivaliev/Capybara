@@ -6,7 +6,7 @@ sealed class HealthDiary : ListDiffer<HealthDiary> {
 
     override fun areItemsTheSame(other: HealthDiary) = when {
         this is ItemHealthDiary && other is ItemHealthDiary -> type == other.type
-        this is SubItemHealthDiary && other is SubItemHealthDiary -> type == other.type
+        this is SurveyHealthDiary && other is SurveyHealthDiary -> type == other.type
         this is EmptyItemHealthDiary && other is EmptyItemHealthDiary -> type == other.type
         else -> false
     }
@@ -18,16 +18,20 @@ data class ItemHealthDiary(
     val id: Int,
     val type: HealthDiaryType,
     var isExpanded: Boolean = false,
-    val subItems: List<SubItemHealthDiary> = emptyList(),
+    val surveys: List<SurveyHealthDiary> = emptyList(),
     val emptyItem: EmptyItemHealthDiary = EmptyItemHealthDiary(
         id = id,
         type = type
     )
 ) : HealthDiary()
 
-data class SubItemHealthDiary(
-    val id: Int,
-    val type: HealthDiaryType
+data class SurveyHealthDiary(
+    val id: String,
+    val type: HealthDiaryType,
+    val date: String,
+    val time: String,
+    val surveyValue: String,
+    val unitOfMeasure: String
 ) : HealthDiary()
 
 data class EmptyItemHealthDiary(

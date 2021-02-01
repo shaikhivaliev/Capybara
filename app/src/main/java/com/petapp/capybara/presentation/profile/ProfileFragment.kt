@@ -91,9 +91,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         done.setOnClickListener {
             if (args.profile != null) {
-                viewModel.updateProfile(profileFactory())
+                viewModel.updateProfile(profileBuilder())
             } else {
-                viewModel.createProfile(profileFactory())
+                viewModel.createProfile(profileBuilder())
             }
         }
 
@@ -212,7 +212,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun profileFactory(): Profile? {
+    private fun profileBuilder(): Profile? {
         return if (isNameValid() && isColorChosen()) {
             val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
             val etName = name_et.text.toString()

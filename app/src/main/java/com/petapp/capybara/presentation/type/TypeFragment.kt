@@ -45,9 +45,9 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
         done.setOnClickListener {
             if (args.type != null) {
-                viewModel.updateType(typeFactory())
+                viewModel.updateType(typeBuilder())
             } else {
-                viewModel.createType(typeFactory())
+                viewModel.createType(typeBuilder())
             }
         }
     }
@@ -69,7 +69,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         icon.tag = type.icon
     }
 
-    private fun typeFactory(): Type? {
+    private fun typeBuilder(): Type? {
         return if (isNameValid()) {
             val id = args.type?.id ?: DEFAULT_ID_FOR_ENTITY
             val name = name_et.text.toString()

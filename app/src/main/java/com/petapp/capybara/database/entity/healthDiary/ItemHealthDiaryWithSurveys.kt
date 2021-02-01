@@ -7,7 +7,7 @@ data class ItemHealthDiaryWithSurveys(
     @Embedded val item: ItemHealthDiaryEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "item_id"
+        entityColumn = "type_id"
     )
     val surveys: List<SurveyHealthDiaryEntity>
 )

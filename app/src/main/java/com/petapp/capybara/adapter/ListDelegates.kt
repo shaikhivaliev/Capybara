@@ -5,6 +5,7 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.*
 import kotlinx.android.synthetic.main.item_step_health_diary.view.*
+import kotlinx.android.synthetic.main.item_survey_health_diary.view.*
 
 private const val ROTATION_ANGLE = 180L
 private const val ROTATION_DURATION = 400L
@@ -49,8 +50,15 @@ fun emptySurveyHealthDiaryDelegate() =
         bind { }
     }
 
-fun surveyHealthDiaryDelegate(onClick: (SubItemHealthDiary) -> Unit) =
-    adapterDelegateLayoutContainer<SubItemHealthDiary, HealthDiary>(R.layout.item_survey_health_diary) {
-        itemView.setOnClickListener { onClick(item) }
-        bind { }
+fun surveyHealthDiaryDelegate(onDelete: (SurveyHealthDiary) -> Unit) =
+    adapterDelegateLayoutContainer<SurveyHealthDiary, HealthDiary>(R.layout.item_survey_health_diary) {
+        itemView.delete.setOnClickListener { onDelete(item) }
+        bind {
+            with(itemView) {
+                date.text = item.date
+                time.text = item.time
+                survey_value.text = item.surveyValue
+                unit_of_measure.text = item.unitOfMeasure
+            }
+        }
     }

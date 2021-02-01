@@ -4,6 +4,7 @@ import androidx.room.*
 import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
+import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
 import io.reactivex.Single
 
 @Dao
@@ -69,7 +70,13 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createHealthDiaryItem(item: ItemHealthDiaryEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun createHealthDiarySurvey(item: SurveyHealthDiaryEntity)
+
     @Transaction
     @Query("SELECT * FROM health_diary")
     fun getItemHealthDiaryWithSurveys(): Single<List<ItemHealthDiaryWithSurveys>>
+
+    @Query("DELETE FROM survey_health_diary WHERE id = :surveyId")
+    fun deleteSurveyHealthDiary(surveyId: String)
 }
