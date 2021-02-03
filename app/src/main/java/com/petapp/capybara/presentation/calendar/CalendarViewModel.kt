@@ -29,24 +29,29 @@ class CalendarViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
+    val profileId = MutableLiveData<String>()
+    val month = MutableLiveData<String>()
+
     init {
         getMarks()
     }
 
-    fun getSurveysByMonth(month: String) {
-        repositorySurveys.getSurveysByMonth(month)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    _surveys.value = it
-                    Log.d(TAG, "Get surveys success, ${it.size}")
-                },
-                {
-                    _errorMessage.value = R.string.error_get_marks
-                    Log.d(TAG, "Get surveys error")
-                }
-            ).connect()
+    fun getSurveysByMonth() {
+        if (month.value != null) {
+            repositorySurveys.getSurveysByMonth(month.value)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        _surveys.value = it.filter { item -> item.profileId == profileId.value }
+                        Log.d(TAG, "get surveys success, ${it.size}")
+                    },
+                    {
+                        _errorMessage.value = R.string.error_get_marks
+                        Log.d(TAG, "get surveys error")
+                    }
+                ).connect()
+        }
     }
 
     private fun getMarks() {
@@ -56,11 +61,11 @@ class CalendarViewModel(
             .subscribe(
                 {
                     _marks.value = it
-                    Log.d(TAG, "Get marks success")
+                    Log.d(TAG, "get marks success")
                 },
                 {
                     _errorMessage.value = R.string.error_get_marks
-                    Log.d(TAG, "Get marks error")
+                    Log.d(TAG, "get marks error")
                 }
             ).connect()
     }
@@ -74,6 +79,6 @@ class CalendarViewModel(
     }
 
     companion object {
-        private const val TAG = "database"
+        private const val TAG = "database_calendar"
     }
 }

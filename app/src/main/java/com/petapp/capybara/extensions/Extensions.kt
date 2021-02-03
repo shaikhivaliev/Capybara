@@ -50,7 +50,7 @@ fun currentMonth(date: Date): String {
 }
 
 fun currentDateMonthYear(date: Date): String {
-    return SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(date)
+    return SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date).capitalize()
 }
 
 fun createChip(context: Context, mark: Mark, padding: Float): Chip {

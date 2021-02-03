@@ -12,7 +12,7 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
         return appDao.getSurveysByType(typeId).map { it.toSurveys() }
     }
 
-    override fun getSurveysByMonth(month: String): Single<List<Survey>> {
+    override fun getSurveysByMonth(month: String?): Single<List<Survey>> {
         return appDao.getSurveysByMonth(month).map { it.toSurveys() }
     }
 

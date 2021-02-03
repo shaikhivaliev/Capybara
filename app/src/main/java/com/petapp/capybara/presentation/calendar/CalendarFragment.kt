@@ -2,6 +2,7 @@ package com.petapp.capybara.presentation.calendar
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
@@ -15,6 +16,8 @@ import androidx.lifecycle.Observer
 import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.extensions.currentMonth
 import com.petapp.capybara.widgets.CalendarView
+import kotlinx.android.synthetic.main.fragment_calendar.add_survey
+import kotlinx.android.synthetic.main.fragment_calendar.marks_group
 import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
@@ -23,24 +26,28 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         parametersOf(findNavController())
     }
 
+    private val chipIdToProfileId = mutableMapOf<Int, String>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews(view)
+        initViews()
         initObservers()
-        val month = currentMonth(Date())
-        viewModel.getSurveysByMonth(month)
+        viewModel.month.value = currentMonth(Date())
+        viewModel.getSurveysByMonth()
 
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
 
-    private fun initViews(view: View) {
+    private fun initViews() {
         marks_group.setOnCheckedChangeListener { _, checkedId ->
-            val marksButton = view.findViewById<Chip>(checkedId)
+            viewModel.profileId.value = chipIdToProfileId[checkedId]
+            viewModel.getSurveysByMonth()
         }
         calendar.onChangeMonthListener = object : CalendarView.OnChangeMonthListener {
             override fun onChangeMonth(month: String) {
-                return viewModel.getSurveysByMonth(month)
+                viewModel.month.value = month
+                viewModel.getSurveysByMonth()
             }
         }
     }
@@ -48,9 +55,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                if (marks.isEmpty()) showAlertEmptyProfiles()
-                for (mark in marks) {
-                    marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
+                if (marks.isEmpty()) {
+                    showAlertEmptyProfiles()
+                } else {
+                    for (mark in marks) {
+                        val chip = createChip(requireContext(), mark, CHIP_PADDING)
+                        marks_group.addView(chip)
+                        chipIdToProfileId[chip.id] = mark.id
+                    }
+                    (marks_group[0] as? Chip)?.isChecked = true
                 }
             })
             surveys.observe(viewLifecycleOwner, Observer {

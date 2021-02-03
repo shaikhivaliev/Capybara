@@ -8,7 +8,7 @@ interface SurveysRepository {
 
     fun getSurveysByType(typeId: String): Single<List<Survey>>
 
-    fun getSurveysByMonth(month: String): Single<List<Survey>>
+    fun getSurveysByMonth(month: String?): Single<List<Survey>>
 
     fun getSurvey(surveyId: String): Single<Survey>
 

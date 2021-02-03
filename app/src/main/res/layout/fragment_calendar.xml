@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:chipSpacingHorizontal="8dp"
+            app:selectionRequired="true"
             app:singleLine="true"
             app:singleSelection="true"
             />
@@ -30,6 +31,7 @@
         android:id="@+id/calendar"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_s"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +46,7 @@
         android:layout_marginBottom="@dimen/margin_m"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat = "@drawable/avd_add_to_done"
+        app:srcCompat="@drawable/avd_add_to_done"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

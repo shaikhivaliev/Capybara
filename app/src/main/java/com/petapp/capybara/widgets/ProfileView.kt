@@ -22,13 +22,10 @@ class ProfileView @JvmOverloads constructor(
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val initialsPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    // главная область рисования
     private val viewRect = Rect()
 
-    // для рисования каемки
     private var borderRect = Rect()
 
-    // рисуем либо инициалы, либо изображение (isAvatarMode = true)
     private var isAvatarMode = true
     private var initials = ""
 

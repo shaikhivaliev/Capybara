@@ -64,7 +64,7 @@ interface AppDao {
     fun getSurveysByType(typeId: String): Single<List<SurveyEntity>>
 
     @Query("SELECT * FROM survey WHERE month = :month")
-    fun getSurveysByMonth(month: String): Single<List<SurveyEntity>>
+    fun getSurveysByMonth(month: String?): Single<List<SurveyEntity>>
 
     // health_diary
     @Insert(onConflict = OnConflictStrategy.REPLACE)
