@@ -110,6 +110,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         change_color.setOnClickListener { startColorDialog() }
 
         delete_profile.setOnClickListener { deleteProfile() }
+
+        health_diary.setOnClickListener { viewModel.openHealthDiaryScreen() }
     }
 
     private fun initObservers() {

@@ -135,6 +135,10 @@ class ProfileViewModel(
         ProfileFragmentDirections.toProfiles().navigateWith(navController)
     }
 
+    fun openHealthDiaryScreen() {
+        ProfileFragmentDirections.toHealthDiary().navigateWith(navController)
+    }
+
     fun back() {
         navController.popBackStack()
     }
