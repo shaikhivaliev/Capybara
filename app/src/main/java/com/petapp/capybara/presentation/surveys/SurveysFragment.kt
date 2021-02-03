@@ -2,18 +2,19 @@ package com.petapp.capybara.presentation.surveys
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -53,8 +54,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                marks_group.visible(marks.isNotEmpty())
-                marks_group.removeAllViews()
+                if (marks.isEmpty()) showAlertEmptyProfiles()
                 for (mark in marks) {
                     marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
@@ -65,12 +65,21 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             })
 
             isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
-                mock.visible(isShow)
+                mock.isVisible = isShow
             })
 
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
+        }
+    }
+
+    private fun showAlertEmptyProfiles() {
+        MaterialDialog(requireActivity())
+            .cancelable(false)
+            .show {
+            title(text = getString(R.string.survey_incomplete_data))
+            positiveButton { viewModel.openProfileScreen() }
         }
     }
 

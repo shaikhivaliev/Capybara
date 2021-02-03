@@ -147,6 +147,7 @@ fun SurveyHealthDiary.toSurveyHealthDiaryEntity(): SurveyHealthDiaryEntity {
     return SurveyHealthDiaryEntity(
         id = id.toLong(),
         typeId = type.ordinal.toString(),
+        profileId = profileId,
         date = date,
         time = time,
         surveyValue = surveyValue,
@@ -158,6 +159,7 @@ fun SurveyHealthDiaryEntity.toSurveyHealthDiary(): SurveyHealthDiary {
     return SurveyHealthDiary(
         id = id.toString(),
         type = typeId.toHealthDiary(),
+        profileId = profileId,
         date = date,
         time = time,
         surveyValue = surveyValue,

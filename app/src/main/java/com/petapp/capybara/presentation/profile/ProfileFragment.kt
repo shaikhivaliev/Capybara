@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -19,9 +20,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.extensions.hideKeyboard
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.dialog_choose_pick_image.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,7 +43,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val imageFromCamera =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
             if (success) {
-                initials.visible(false)
+                initials.isVisible = false
                 Glide.with(this)
                     .load(currentPhotoUri)
                     .centerCrop()
@@ -55,7 +56,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.apply {
             currentPhotoUri = this.toString()
-            initials.visible(false)
+            initials.isVisible = false
             Glide.with(requireActivity())
                 .load(this)
                 .centerCrop()
@@ -71,8 +72,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         args.profile?.id?.apply { viewModel.getProfile(this) }
         if (args.profile?.id == null) {
-            current_profile.visible(false)
-            edit_profile.visible(true)
+            current_profile.isVisible = false
+            edit_profile.isVisible = true
             Glide.with(this)
                 .load(R.drawable.ic_photo_mock)
                 .into(photo)
@@ -84,15 +85,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun initViews() {
 
         edit.setOnClickListener {
-            current_profile.visible(false)
-            edit_profile.visible(true)
+            current_profile.isVisible = false
+            edit_profile.isVisible = true
             name_et.setText(args.profile?.name)
         }
 
         done.setOnClickListener {
             if (args.profile != null) {
+                done.hideKeyboard()
                 viewModel.updateProfile(profileBuilder())
             } else {
+                done.hideKeyboard()
                 viewModel.createProfile(profileBuilder())
             }
         }
@@ -134,7 +137,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun setProfileCard(profile: Profile) {
         profile_name.text = profile.name
         currentColor.value = profile.color
-        initials.visible(profile.photo.isNullOrEmpty())
+        initials.isVisible = profile.photo.isNullOrEmpty()
 
         if (!profile.photo.isNullOrEmpty()) {
             edit.setBackgroundResource(R.drawable.green_border_bgr_alpha40)

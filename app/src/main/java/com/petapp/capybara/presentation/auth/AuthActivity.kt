@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.petapp.capybara.R
-import com.petapp.capybara.extensions.visible
 import com.petapp.capybara.presentation.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -66,7 +66,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
             when {
                 resultCode == Activity.RESULT_OK -> openMainScreen()
                 data == null -> finish()
-                else -> auth_error.visible(true)
+                else -> auth_error.isVisible = true
             }
         }
     }

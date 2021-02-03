@@ -6,13 +6,16 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
+import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.adapter.StandardListAdapter
 import com.petapp.capybara.adapter.emptySurveyHealthDiaryDelegate
@@ -21,18 +24,25 @@ import com.petapp.capybara.adapter.surveyHealthDiaryDelegate
 import com.petapp.capybara.data.model.HealthDiaryType
 import com.petapp.capybara.data.model.ItemHealthDiary
 import com.petapp.capybara.data.model.SurveyHealthDiary
+import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
+import com.petapp.capybara.presentation.surveys.SurveysFragment
 import com.petapp.capybara.presentation.toPresentationModel
-import kotlinx.android.synthetic.main.dialog_health_diary_survey.*
 import kotlinx.android.synthetic.main.dialog_health_diary_survey.view.*
 import kotlinx.android.synthetic.main.fragment_health_diary.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
 class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
-    private val viewModel: HealthDiaryViewModel by viewModel()
+    private val viewModel: HealthDiaryViewModel by viewModel {
+        parametersOf(findNavController())
+    }
+
+    private val chipIdToProfileId = mutableMapOf<Int, String>()
+    private var profileId: String? = null
 
     private val adapter by lazy {
         StandardListAdapter(
@@ -43,6 +53,22 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
             surveyHealthDiaryDelegate { openDeleteDialog(it.id) },
             emptySurveyHealthDiaryDelegate()
         )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
+
+        marks_group.setOnCheckedChangeListener { _, checkedId ->
+            profileId = chipIdToProfileId[checkedId]
+            viewModel.profileId.value = profileId
+            viewModel.getHealthDiaryItems()
+        }
+
+        with(recycler_view) {
+            this.layoutManager = LinearLayoutManager(context)
+            adapter = this@HealthDiaryFragment.adapter
+        }
     }
 
     private fun openAddingSurveyDialog(item: ItemHealthDiary) {
@@ -100,7 +126,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
     private fun initDialogConstraints(view: View, isBloodPressureType: Boolean) {
         with(ConstraintSet()) {
-            clone(dialog_content)
+            clone(view.dialog_content)
             if (isBloodPressureType) {
                 connect(
                     R.id.unit_of_measure,
@@ -113,13 +139,14 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                 connect(R.id.unit_of_measure, ConstraintSet.BOTTOM, R.id.survey_value, ConstraintSet.BOTTOM)
                 connect(R.id.unit_of_measure, ConstraintSet.START, R.id.survey_value, ConstraintSet.END)
             }
-            applyTo(dialog_content)
+            applyTo(view.dialog_content)
         }
     }
 
     private fun healthDiarySurveyBuilder(view: View, item: ItemHealthDiary): SurveyHealthDiary? {
         val id = DEFAULT_ID_FOR_ENTITY
         val type = item.type
+        val profileId = profileId ?: "0"
         val date = view.survey_date.text.toString()
         val time = view.survey_time.text.toString()
         val unitOfMeasure = view.unit_of_measure.text.toString()
@@ -136,6 +163,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         return SurveyHealthDiary(
             id = id,
             type = type,
+            profileId = profileId,
             date = date,
             time = time,
             surveyValue = surveyValue,
@@ -143,24 +171,25 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObservers()
-        with(recycler_view) {
-            this.layoutManager = LinearLayoutManager(context)
-            adapter = this@HealthDiaryFragment.adapter
-        }
-    }
-
     private fun initObservers() {
         with(viewModel) {
+            marks.observe(viewLifecycleOwner, Observer { marks ->
+                if (marks.isEmpty()) {
+                    showAlertEmptyProfiles()
+                } else {
+                    for (mark in marks) {
+                        val chip = createChip(requireContext(), mark, SurveysFragment.CHIP_PADDING)
+                        marks_group.addView(chip)
+                        chipIdToProfileId[chip.id] = mark.id
+                    }
+                    (marks_group[0] as? Chip)?.isChecked = true
+                }
+            })
             healthDiaryItems.observe(viewLifecycleOwner, Observer {
                 adapter.items = it.toPresentationModel()
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
-            })
-            expandedItem.observe(viewLifecycleOwner, Observer { item ->
             })
         }
     }
@@ -174,6 +203,15 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
             }
             negativeButton { cancel() }
         }
+    }
+
+    private fun showAlertEmptyProfiles() {
+        MaterialDialog(requireActivity())
+            .cancelable(false)
+            .show {
+                title(text = getString(R.string.survey_incomplete_data))
+                positiveButton { viewModel.openProfileScreen() }
+            }
     }
 
     @SuppressLint("SimpleDateFormat")

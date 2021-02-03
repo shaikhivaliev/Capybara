@@ -18,7 +18,7 @@ data class ItemHealthDiary(
     val id: Int,
     val type: HealthDiaryType,
     var isExpanded: Boolean = false,
-    val surveys: List<SurveyHealthDiary> = emptyList(),
+    var surveys: List<SurveyHealthDiary> = emptyList(),
     val emptyItem: EmptyItemHealthDiary = EmptyItemHealthDiary(
         id = id,
         type = type
@@ -28,6 +28,7 @@ data class ItemHealthDiary(
 data class SurveyHealthDiary(
     val id: String,
     val type: HealthDiaryType,
+    val profileId: String,
     val date: String,
     val time: String,
     val surveyValue: String,

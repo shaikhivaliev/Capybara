@@ -66,6 +66,13 @@
                 />
 
         </action>
+
+        <action
+            android:id="@+id/to_profiles"
+            app:popUpTo="@id/tab_profiles"
+            app:destination="@id/tab_profiles"
+            />
+
     </fragment>
 
     <fragment
@@ -132,6 +139,12 @@
                 />
 
         </action>
+
+        <action
+            android:id="@+id/to_profiles"
+            app:popUpTo="@id/tab_types"
+            app:destination="@id/tab_profiles"
+            />
     </fragment>
 
     <fragment
@@ -168,6 +181,8 @@
 
         <action
             android:id="@+id/to_types"
+            app:popUpTo="@id/tab_types"
+            app:popUpToInclusive="true"
             app:destination="@id/tab_types"
             />
 
@@ -177,8 +192,15 @@
         android:id="@+id/health_diary"
         android:name="com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment"
         android:label="healthDiary"
-        tools:layout="@layout/fragment_health_diary"
-        />
+        tools:layout="@layout/fragment_health_diary">
+
+        <action
+            android:id="@+id/to_profiles"
+            app:popUpTo="@id/tab_types"
+            app:destination="@id/tab_profiles"
+            />
+
+    </fragment>
 
     <fragment
         android:id="@+id/feedback"

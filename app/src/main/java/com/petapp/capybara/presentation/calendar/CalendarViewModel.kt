@@ -69,6 +69,10 @@ class CalendarViewModel(
         CalendarFragmentDirections.toSurvey(survey).navigateWith(navController)
     }
 
+    fun openProfileScreen() {
+        CalendarFragmentDirections.toProfiles().navigateWith(navController)
+    }
+
     companion object {
         private const val TAG = "database"
     }

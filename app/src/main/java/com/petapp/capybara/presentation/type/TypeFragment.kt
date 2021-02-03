@@ -2,6 +2,7 @@ package com.petapp.capybara.presentation.type
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -9,9 +10,9 @@ import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.hideKeyboard
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_type.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -34,7 +35,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
         if (args.type?.id == null) {
             icon.setImageResource(DEFAULT_TYPE_IMAGE)
             icon.tag = DEFAULT_TYPE_IMAGE
-            delete_surveys_type.visible(false)
+            delete_surveys_type.isVisible = false
             name_et.requestFocus()
             name_et.showKeyboard()
         }
@@ -45,8 +46,10 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
 
         done.setOnClickListener {
             if (args.type != null) {
+                done.hideKeyboard()
                 viewModel.updateType(typeBuilder())
             } else {
+                done.hideKeyboard()
                 viewModel.createType(typeBuilder())
             }
         }

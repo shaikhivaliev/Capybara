@@ -7,6 +7,26 @@
     android:layout_height="match_parent"
     >
 
+    <HorizontalScrollView
+        android:id="@+id/mark_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/marks_group"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:chipSpacingHorizontal="8dp"
+            app:singleLine="true"
+            app:selectionRequired="true"
+            app:singleSelection="true"
+            />
+    </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
@@ -14,7 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mark_group_container"
         tools:listitem="@layout/item_step_health_diary"
         />
 

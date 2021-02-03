@@ -82,8 +82,12 @@ val appModule = module {
         )
     }
 
-    viewModel {
-        HealthDiaryViewModel(repository = get())
+    viewModel { (navController: NavController) ->
+        HealthDiaryViewModel(
+            repositoryHealthDiary = get(),
+            repositoryMarks = get(),
+            navController = navController
+        )
     }
 
     single<MarksRepository> { MarksRepositoryImpl(get()) }

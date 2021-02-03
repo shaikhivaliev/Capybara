@@ -223,7 +223,7 @@ class SwipeController(
     companion object {
         private const val BUTTON_WIDTH = 200F
         private const val OFFSET_Y = 70
-        private const val OFFSET_X = 40
+        private const val OFFSET_X = 50
         private const val PADDING = 20
     }
 }

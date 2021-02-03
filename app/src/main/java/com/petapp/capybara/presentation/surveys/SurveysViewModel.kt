@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
-import com.petapp.capybara.presentation.calendar.CalendarFragmentDirections
 import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.data.model.Mark
@@ -73,7 +72,11 @@ class SurveysViewModel(
     }
 
     fun openSurveyScreen(survey: Survey?) {
-        CalendarFragmentDirections.toSurvey(survey).navigateWith(navController)
+        SurveysFragmentDirections.toSurvey(survey).navigateWith(navController)
+    }
+
+    fun openProfileScreen() {
+        SurveysFragmentDirections.toProfiles().navigateWith(navController)
     }
 
     companion object {

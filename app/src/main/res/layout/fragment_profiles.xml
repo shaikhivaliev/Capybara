@@ -5,10 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
+    <TextView
         android:id="@+id/mock"
-        layout="@layout/view_mock"
-        android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        style="@style/Main.Text.Medium"
+        android:gravity="center"
+        android:text="@string/profile_mock"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

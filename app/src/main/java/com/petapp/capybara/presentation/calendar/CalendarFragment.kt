@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.lifecycle.Observer
+import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.extensions.currentMonth
 import com.petapp.capybara.widgets.CalendarView
 import java.util.*
@@ -47,6 +48,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
+                if (marks.isEmpty()) showAlertEmptyProfiles()
                 for (mark in marks) {
                     marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
                 }
@@ -58,6 +60,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 requireActivity().toast(error)
             })
         }
+    }
+
+    private fun showAlertEmptyProfiles() {
+        MaterialDialog(requireActivity())
+            .cancelable(false)
+            .show {
+                title(text = getString(R.string.survey_incomplete_data))
+                positiveButton { viewModel.openProfileScreen() }
+            }
     }
 
     companion object {

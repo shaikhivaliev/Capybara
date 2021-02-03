@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -20,10 +21,7 @@ import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.currentMonth
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.extensions.visible
 import kotlinx.android.synthetic.main.fragment_survey.*
-import kotlinx.android.synthetic.main.fragment_survey.done
-import kotlinx.android.synthetic.main.fragment_survey.edit
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -57,8 +55,8 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         args.survey?.id?.apply { viewModel.getSurvey(this) }
 
         if (args.survey?.id == null) {
-            current_survey.visible(false)
-            edit_survey.visible(true)
+            current_survey.isVisible = false
+            edit_survey.isVisible = true
             survey_name_et.requestFocus()
             survey_name_et.showKeyboard()
         }
@@ -78,8 +76,8 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             }
         }
         edit.setOnClickListener {
-            current_survey.visible(false)
-            edit_survey.visible(true)
+            current_survey.isVisible = false
+            edit_survey.isVisible = true
             survey_name_et.setText(args.survey?.name)
             survey_date_et.setText(args.survey?.date)
         }
@@ -111,7 +109,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 setSurvey(survey)
             })
             types.observe(viewLifecycleOwner, Observer { types ->
-                if (types.isEmpty()) showAlertCreateSurvey(getString(R.string.type))
                 change_survey_type.setOnClickListener { showChangeTypeDialog(types) }
                 if (args.survey?.typeId != null) {
                     val type = types.find { it.id == args.survey?.typeId }
@@ -119,7 +116,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 }
             })
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                if (marks.isEmpty()) showAlertCreateSurvey(getString(R.string.profile))
                 change_survey_profile.setOnClickListener { showChangeProfileDialog(marks) }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -157,7 +153,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private fun setSurvey(survey: Survey) {
         profile_mark.setBackgroundColor(survey.color)
-
         survey_name.text = survey.name
         survey_date.text = survey.date
     }
@@ -241,15 +236,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         else {
             requireActivity().toast(R.string.error_empty_profile)
             false
-        }
-    }
-
-    private fun showAlertCreateSurvey(incompleteDataName: String) {
-        MaterialDialog(requireActivity()).show {
-            title(text = getString(R.string.survey_incomplete_data, incompleteDataName))
-            positiveButton {
-                cancel()
-            }
         }
     }
 

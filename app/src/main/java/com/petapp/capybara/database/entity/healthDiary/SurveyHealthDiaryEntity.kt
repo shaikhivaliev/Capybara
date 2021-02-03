@@ -23,6 +23,8 @@ data class SurveyHealthDiaryEntity(
     val id: Long = 0,
     @ColumnInfo(name = "type_id")
     val typeId: String,
+    @ColumnInfo(name = "profile_id")
+    val profileId: String,
     @ColumnInfo(name = "date")
     val date: String,
     @ColumnInfo(name = "time")
