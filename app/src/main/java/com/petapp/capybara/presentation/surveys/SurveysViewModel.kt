@@ -17,7 +17,8 @@ import io.reactivex.schedulers.Schedulers
 class SurveysViewModel(
     private val repositorySurveys: SurveysRepository,
     private val repositoryMarks: MarksRepository,
-    private val navController: NavController
+    private val navController: NavController,
+    private val typeId: String
 ) : BaseViewModel() {
 
     private val _marks = MutableLiveData<List<Mark>>()
@@ -26,11 +27,10 @@ class SurveysViewModel(
     private val _surveys = MutableLiveData<List<Survey>>()
     val surveys: LiveData<List<Survey>> get() = _surveys
 
-    private val _isShowMock = MutableLiveData<Boolean>()
-    val isShowMock: LiveData<Boolean> get() = _isShowMock
-
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
+
+    val profileId = MutableLiveData<String>()
 
     init {
         getMarks()
@@ -52,19 +52,16 @@ class SurveysViewModel(
             ).connect()
     }
 
-    fun getSurveys(typeId: String) {
+    fun getSurveys() {
         repositorySurveys.getSurveysByType(typeId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess { if (it.isNotEmpty()) getMarks() }
             .subscribe(
                 {
-                    _isShowMock.value = it.isEmpty()
-                    _surveys.value = it
+                    _surveys.value = it.filter { item -> item.profileId == profileId.value }
                     Log.d(TAG, "get surveys success")
                 },
                 {
-                    _isShowMock.value = false
                     _errorMessage.value = R.string.error_get_surveys
                     Log.d(TAG, "get profiles error")
                 }

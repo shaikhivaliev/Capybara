@@ -59,11 +59,12 @@ val appModule = module {
         )
     }
 
-    viewModel { (navController: NavController) ->
+    viewModel { (navController: NavController, typeId: String) ->
         SurveysViewModel(
             navController = navController,
             repositoryMarks = get(),
-            repositorySurveys = get()
+            repositorySurveys = get(),
+            typeId = typeId
         )
     }
 

@@ -36,6 +36,7 @@
             android:layout_height="match_parent"
             app:chipSpacingHorizontal="8dp"
             app:singleLine="true"
+            app:selectionRequired="true"
             app:singleSelection="true"
             />
     </HorizontalScrollView>

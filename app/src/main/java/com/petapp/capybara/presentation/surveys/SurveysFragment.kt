@@ -2,6 +2,7 @@ package com.petapp.capybara.presentation.surveys
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,22 +22,20 @@ import org.koin.core.parameter.parametersOf
 
 class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
+    private val args: SurveysFragmentArgs by navArgs()
+
     private val viewModel: SurveysViewModel by viewModel {
-        parametersOf(findNavController())
+        parametersOf(findNavController(), args.typeId)
     }
 
     private val adapter: SurveysAdapter by lazy { SurveysAdapter() }
 
-    private val args: SurveysFragmentArgs by navArgs()
+    private val chipIdToProfileId = mutableMapOf<Int, String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.getSurveys(args.typeId)
-
         initViews(view)
         initObservers()
-
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
 
@@ -47,25 +46,28 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         }
 
         marks_group.setOnCheckedChangeListener { _, checkedId ->
-            val marksButton = view.findViewById<Chip>(checkedId)
+            viewModel.profileId.value = chipIdToProfileId[checkedId]
+            viewModel.getSurveys()
         }
     }
 
     private fun initObservers() {
         with(viewModel) {
             marks.observe(viewLifecycleOwner, Observer { marks ->
-                if (marks.isEmpty()) showAlertEmptyProfiles()
-                for (mark in marks) {
-                    marks_group.addView(createChip(requireContext(), mark, CHIP_PADDING))
+                if (marks.isEmpty()) {
+                    showAlertEmptyProfiles()
+                } else {
+                    for (mark in marks) {
+                        val chip = createChip(requireContext(), mark, CHIP_PADDING)
+                        marks_group.addView(chip)
+                        chipIdToProfileId[chip.id] = mark.id
+                    }
+                    (marks_group[0] as? Chip)?.isChecked = true
                 }
             })
 
-            surveys.observe(viewLifecycleOwner, Observer {
-                adapter.setDataSet(it)
-            })
-
-            isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
-                mock.isVisible = isShow
+            surveys.observe(viewLifecycleOwner, Observer { surveys ->
+                if (surveys.isNullOrEmpty()) mock.isVisible = true else adapter.setDataSet(surveys)
             })
 
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -78,9 +80,9 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         MaterialDialog(requireActivity())
             .cancelable(false)
             .show {
-            title(text = getString(R.string.survey_incomplete_data))
-            positiveButton { viewModel.openProfileScreen() }
-        }
+                title(text = getString(R.string.survey_incomplete_data))
+                positiveButton { viewModel.openProfileScreen() }
+            }
     }
 
     inner class SurveysAdapter : ListDelegationAdapter<MutableList<Any>>() {
