@@ -26,6 +26,7 @@
     <string name="profile_change_photo">Изменить фотографию</string>
     <string name="profile_delete_photo">Удалить фотографию</string>
     <string name="profile_delete">Удалить профиль</string>
+    <string name="profile_item_health_diary_empty">нет данных</string>
 
     <!-- survey-->
     <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>

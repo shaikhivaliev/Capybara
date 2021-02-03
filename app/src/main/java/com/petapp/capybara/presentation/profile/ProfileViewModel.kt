@@ -7,17 +7,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.petapp.capybara.BaseViewModel
 import com.petapp.capybara.R
+import com.petapp.capybara.data.HealthDiaryRepository
 import com.petapp.capybara.data.ProfileRepository
+import com.petapp.capybara.data.model.HealthDiaryForProfile
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.navigateWith
+import com.petapp.capybara.presentation.toPresentationModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 class ProfileViewModel(
-    private val repository: ProfileRepository,
+    private val repositoryProfile: ProfileRepository,
+    private val repositoryHealthDiary: HealthDiaryRepository,
     private val navController: NavController
 ) : BaseViewModel() {
 
@@ -30,8 +34,11 @@ class ProfileViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
+    private val _healthDiaryForProfile = MutableLiveData<HealthDiaryForProfile>()
+    val healthDiaryForProfile: LiveData<HealthDiaryForProfile> = _healthDiaryForProfile
+
     fun getProfile(profileId: String) {
-        repository.getProfile(profileId)
+        repositoryProfile.getProfile(profileId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -47,7 +54,7 @@ class ProfileViewModel(
 
     fun createProfile(profile: Profile?) {
         if (profile != null) {
-            repository.createProfile(profile)
+            repositoryProfile.createProfile(profile)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
@@ -64,7 +71,7 @@ class ProfileViewModel(
 
     fun updateProfile(profile: Profile?) {
         if (profile != null) {
-            repository.updateProfile(profile)
+            repositoryProfile.updateProfile(profile)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
@@ -80,7 +87,7 @@ class ProfileViewModel(
     }
 
     fun deleteProfile(profileId: String) {
-        repository.deleteProfile(profileId)
+        repositoryProfile.deleteProfile(profileId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -90,6 +97,22 @@ class ProfileViewModel(
                 {
                     _errorMessage.value = R.string.error_delete_profile
                     Log.d(TAG, "delete profile error")
+                }
+            ).connect()
+    }
+
+    fun getHealthDiaryItems(profileId: String) {
+        repositoryHealthDiary.getItemsHealthDiary()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _healthDiaryForProfile.value = it.toPresentationModel(profileId)
+                    Log.d(TAG, "get health diary items success")
+                },
+                {
+                    _errorMessage.value = R.string.error_get_health_diary_items
+                    Log.d(TAG, "get health diary items error")
                 }
             ).connect()
     }

@@ -33,7 +33,8 @@ val appModule = module {
     viewModel { (navController: NavController) ->
         ProfileViewModel(
             navController = navController,
-            repository = get()
+            repositoryProfile = get(),
+            repositoryHealthDiary = get()
         )
     }
 

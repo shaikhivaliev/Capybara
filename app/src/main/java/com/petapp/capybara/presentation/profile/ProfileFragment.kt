@@ -70,7 +70,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         initViews()
         initObservers()
 
-        args.profile?.id?.apply { viewModel.getProfile(this) }
+        args.profile?.id?.apply {
+            viewModel.getProfile(this)
+            viewModel.getHealthDiaryItems(this)
+        }
         if (args.profile?.id == null) {
             current_profile.isVisible = false
             edit_profile.isVisible = true
@@ -130,6 +133,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             currentColor.observe(viewLifecycleOwner, Observer { color ->
                 color_marker.setBackgroundColor(color)
+            })
+
+            healthDiaryForProfile.observe(viewLifecycleOwner, Observer { profile ->
+                blood_pressure_value.text = profile.bloodPressure ?: getString(R.string.profile_item_health_diary_empty)
+                pulse_value.text = profile.pulse ?: getString(R.string.profile_item_health_diary_empty)
+                blood_glucose_value.text = profile.bloodGlucose ?: getString(R.string.profile_item_health_diary_empty)
+                height_value.text = profile.height ?: getString(R.string.profile_item_health_diary_empty)
+                weight_value.text = profile.weight ?: getString(R.string.profile_item_health_diary_empty)
             })
         }
     }
