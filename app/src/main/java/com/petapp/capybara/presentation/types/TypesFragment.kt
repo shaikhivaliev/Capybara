@@ -10,9 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_types.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +22,9 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
         parametersOf(findNavController())
     }
 
-    private val adapter: TypesAdapter by lazy { TypesAdapter() }
+    private val adapter: TypesAdapter = TypesAdapter(
+        itemClick = { viewModel.openSurveysScreen(it.id) }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,8 +34,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@TypesFragment.adapter
             val swipeController = SwipeController(requireContext()) { viewHolder ->
-                val type = (viewHolder as TypesAdapterDelegate.ViewHolder).type
-                viewModel.openTypeScreen(type)
+                // viewModel.openTypeScreen(type)
             }
             val itemTouchHelper = ItemTouchHelper(swipeController)
             itemTouchHelper.attachToRecyclerView(this)
@@ -52,7 +51,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
     private fun initObservers() {
         with(viewModel) {
             types.observe(viewLifecycleOwner, Observer {
-                adapter.setDataSet(it)
+                adapter.items = it
             })
             isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
                 mock.isVisible = isShow
@@ -60,25 +59,6 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
-        }
-    }
-
-    inner class TypesAdapter : ListDelegationAdapter<MutableList<Any>>() {
-
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    TypesAdapterDelegate(
-                        itemClick = { viewModel.openSurveysScreen(it.id) }
-                    )
-                )
-        }
-
-        fun setDataSet(types: List<Type>) {
-            items.clear()
-            items.addAll(types)
-            notifyDataSetChanged()
         }
     }
 }

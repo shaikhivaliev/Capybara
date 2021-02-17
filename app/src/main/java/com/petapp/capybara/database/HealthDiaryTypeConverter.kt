@@ -1,7 +1,7 @@
 package com.petapp.capybara.database
 
 import androidx.room.TypeConverter
-import com.petapp.capybara.data.model.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 
 open class HealthDiaryTypeConverter {
 

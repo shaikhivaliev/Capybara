@@ -4,13 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.petapp.capybara.BaseViewModel
+import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.data.HealthDiaryRepository
 import com.petapp.capybara.data.MarksRepository
-import com.petapp.capybara.data.model.ItemHealthDiary
+import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.Mark
-import com.petapp.capybara.data.model.SurveyHealthDiary
+import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.extensions.navigateWith
 import com.petapp.capybara.presentation.surveys.SurveysFragmentDirections
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.database.entity.TypeEntity
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
 import java.util.concurrent.Executors

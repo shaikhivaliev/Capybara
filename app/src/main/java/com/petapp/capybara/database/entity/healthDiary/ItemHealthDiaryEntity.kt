@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.petapp.capybara.data.model.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.database.HealthDiaryTypeConverter
 
 @Entity(tableName = "health_diary")

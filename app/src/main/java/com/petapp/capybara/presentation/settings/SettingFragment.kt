@@ -7,10 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.presentation.auth.AuthActivity
 import com.petapp.capybara.data.model.Settings
+import com.petapp.capybara.presentation.auth.AuthActivity
 import kotlinx.android.synthetic.main.fragment_profiles.recycler_view
 import kotlinx.android.synthetic.main.fragment_settings.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +21,9 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
         parametersOf(findNavController())
     }
 
-    private val adapter: SettingAdapter by lazy { SettingAdapter() }
+    private val adapter: SettingsAdapter = SettingsAdapter(
+        itemClick = { viewModel.openSettingsScreen(it.name) }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,38 +31,17 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@SettingFragment.adapter
         }
-        adapter.setDataSet(
-            arrayListOf(
+        adapter.items =
+            listOf(
                 Settings(R.drawable.ic_feedback, R.string.settings_feedback),
                 Settings(R.drawable.ic_about_app, R.string.settings_about_app),
                 Settings(R.drawable.ic_rules, R.string.settings_rules)
             )
-        )
         exit.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireActivity(), AuthActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-        }
-    }
-
-    inner class SettingAdapter : ListDelegationAdapter<MutableList<Any>>() {
-
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    SettingsAdapterDelegate(
-                        itemClick = { settings ->
-                            viewModel.openSettingsScreen(settings.name)
-                        })
-                )
-        }
-
-        fun setDataSet(settings: List<Settings>) {
-            items.clear()
-            items.addAll(settings)
-            notifyDataSetChanged()
         }
     }
 }

@@ -2,7 +2,7 @@ package com.petapp.capybara.presentation.settings
 
 import androidx.annotation.StringRes
 import androidx.navigation.NavController
-import com.petapp.capybara.BaseViewModel
+import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.navigateWith
 

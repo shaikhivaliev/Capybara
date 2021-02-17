@@ -1,4 +1,4 @@
-package com.petapp.capybara
+package com.petapp.capybara.common
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable

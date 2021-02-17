@@ -17,13 +17,9 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
-import com.petapp.capybara.adapter.StandardListAdapter
-import com.petapp.capybara.adapter.emptySurveyHealthDiaryDelegate
-import com.petapp.capybara.adapter.itemHealthDiaryDelegate
-import com.petapp.capybara.adapter.surveyHealthDiaryDelegate
-import com.petapp.capybara.data.model.HealthDiaryType
-import com.petapp.capybara.data.model.ItemHealthDiary
-import com.petapp.capybara.data.model.SurveyHealthDiary
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.surveys.SurveysFragment
@@ -44,16 +40,12 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
     private val chipIdToProfileId = mutableMapOf<Int, String>()
     private var profileId: String? = null
 
-    private val adapter by lazy {
-        StandardListAdapter(
-            itemHealthDiaryDelegate(
-                expandItem = { viewModel.handleStepClick(it) },
-                addSurvey = { openAddingSurveyDialog(it) }
-            ),
-            surveyHealthDiaryDelegate { openDeleteDialog(it.id) },
-            emptySurveyHealthDiaryDelegate()
+    private val adapter: HealthDiaryAdapter =
+        HealthDiaryAdapter(
+            expandItem = { viewModel.handleStepClick(it) },
+            addSurvey = { openAddingSurveyDialog(it) },
+            onDelete = { openDeleteDialog(it.id) }
         )
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -182,7 +174,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                         marks_group.addView(chip)
                         chipIdToProfileId[chip.id] = mark.id
                     }
-                    (marks_group[0] as? Chip)?.isChecked = true
+                    (marks_group.get(0) as? Chip)?.isChecked = true
                 }
             })
             healthDiaryItems.observe(viewLifecycleOwner, Observer {

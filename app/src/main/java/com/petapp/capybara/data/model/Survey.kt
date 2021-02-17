@@ -1,6 +1,7 @@
 package com.petapp.capybara.data.model
 
 import android.os.Parcelable
+import com.petapp.capybara.common.ListItem
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -12,4 +13,4 @@ data class Survey(
     val name: String,
     val date: String,
     val month: String
-) : Parcelable
+) : Parcelable, ListItem

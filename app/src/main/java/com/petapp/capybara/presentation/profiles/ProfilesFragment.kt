@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_profiles.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,7 +19,9 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
         parametersOf(findNavController())
     }
 
-    private val adapter: ProfileAdapter by lazy { ProfileAdapter() }
+    private val adapter: ProfilesAdapter = ProfilesAdapter(
+        itemClick = { profile -> viewModel.openProfileScreen(profile) }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,7 +38,7 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
     private fun initObservers() {
         with(viewModel) {
             profiles.observe(viewLifecycleOwner, Observer {
-                adapter.setDataSet(it)
+                adapter.items = it
             })
             isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
                 mock.isVisible = isShow
@@ -46,26 +46,6 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
-        }
-    }
-
-    inner class ProfileAdapter : ListDelegationAdapter<MutableList<Any>>() {
-
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    ProfilesAdapterDelegate(
-                        itemClick = { profile, _ ->
-                            viewModel.openProfileScreen(profile)
-                        })
-                )
-        }
-
-        fun setDataSet(profiles: List<Profile>) {
-            items.clear()
-            items.addAll(profiles)
-            notifyDataSetChanged()
         }
     }
 }

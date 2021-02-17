@@ -11,9 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_surveys.*
@@ -28,7 +26,9 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         parametersOf(findNavController(), args.typeId)
     }
 
-    private val adapter: SurveysAdapter by lazy { SurveysAdapter() }
+    private val adapter: SurveysAdapter = SurveysAdapter(
+        itemClick = { viewModel.openSurveyScreen(it) }
+    )
 
     private val chipIdToProfileId = mutableMapOf<Int, String>()
 
@@ -67,7 +67,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             })
 
             surveys.observe(viewLifecycleOwner, Observer { surveys ->
-                if (surveys.isNullOrEmpty()) mock.isVisible = true else adapter.setDataSet(surveys)
+                if (surveys.isNullOrEmpty()) mock.isVisible = true else adapter.items = surveys
             })
 
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
@@ -83,24 +83,6 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
                 title(text = getString(R.string.survey_incomplete_data))
                 positiveButton { viewModel.openProfileScreen() }
             }
-    }
-
-    inner class SurveysAdapter : ListDelegationAdapter<MutableList<Any>>() {
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    SurveysAdapterDelegate(
-                        itemClick = { viewModel.openSurveyScreen(it) }
-                    )
-                )
-        }
-
-        fun setDataSet(surveys: List<Survey>) {
-            items.clear()
-            items.addAll(surveys)
-            notifyDataSetChanged()
-        }
     }
 
     companion object {

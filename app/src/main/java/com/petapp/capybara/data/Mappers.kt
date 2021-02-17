@@ -1,6 +1,9 @@
 package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.*
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity

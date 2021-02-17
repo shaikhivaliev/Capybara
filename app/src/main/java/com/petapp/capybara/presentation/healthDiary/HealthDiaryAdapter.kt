@@ -1,20 +1,40 @@
-package com.petapp.capybara.adapter
+package com.petapp.capybara.presentation.healthDiary
 
 import androidx.core.view.isVisible
+import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
+import com.petapp.capybara.common.ListItem
+import com.petapp.capybara.common.ListItemDiffCallback
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.*
+import com.petapp.capybara.data.model.healthDiary.EmptyItemHealthDiary
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import kotlinx.android.synthetic.main.item_step_health_diary.view.*
 import kotlinx.android.synthetic.main.item_survey_health_diary.view.*
 
 private const val ROTATION_ANGLE = 180L
 private const val ROTATION_DURATION = 400L
 
+class HealthDiaryAdapter(
+    expandItem: (ItemHealthDiary) -> Unit,
+    addSurvey: (ItemHealthDiary) -> Unit,
+    onDelete: (SurveyHealthDiary) -> Unit
+) : AsyncListDifferDelegationAdapter<ListItem>(ListItemDiffCallback) {
+    init {
+        with(delegatesManager) {
+            addDelegate(itemHealthDiaryDelegate(expandItem, addSurvey))
+            addDelegate(emptySurveyHealthDiaryDelegate())
+            addDelegate(surveyHealthDiaryDelegate(onDelete))
+        }
+    }
+}
+
 fun itemHealthDiaryDelegate(
     expandItem: (ItemHealthDiary) -> Unit,
     addSurvey: (ItemHealthDiary) -> Unit
 ) =
-    adapterDelegateLayoutContainer<ItemHealthDiary, HealthDiary>(R.layout.item_step_health_diary) {
+    adapterDelegateLayoutContainer<ItemHealthDiary, ListItem>(R.layout.item_step_health_diary) {
         with(itemView) {
             arrow_down.setOnClickListener {
                 expandItem(item.apply {
@@ -46,12 +66,12 @@ fun itemHealthDiaryDelegate(
     }
 
 fun emptySurveyHealthDiaryDelegate() =
-    adapterDelegateLayoutContainer<EmptyItemHealthDiary, HealthDiary>(R.layout.item_empty_survey) {
+    adapterDelegateLayoutContainer<EmptyItemHealthDiary, ListItem>(R.layout.item_empty_survey) {
         bind { }
     }
 
 fun surveyHealthDiaryDelegate(onDelete: (SurveyHealthDiary) -> Unit) =
-    adapterDelegateLayoutContainer<SurveyHealthDiary, HealthDiary>(R.layout.item_survey_health_diary) {
+    adapterDelegateLayoutContainer<SurveyHealthDiary, ListItem>(R.layout.item_survey_health_diary) {
         itemView.delete.setOnClickListener { onDelete(item) }
         bind {
             with(itemView) {

@@ -1,4 +1,4 @@
-package com.petapp.capybara.data.model
+package com.petapp.capybara.data.model.healthDiary
 
 enum class HealthDiaryType {
     BLOOD_PRESSURE,

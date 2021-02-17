@@ -1,18 +1,8 @@
-package com.petapp.capybara.data.model
+package com.petapp.capybara.data.model.healthDiary
 
-import com.petapp.capybara.adapter.ListDiffer
+import com.petapp.capybara.common.ListItem
 
-sealed class HealthDiary : ListDiffer<HealthDiary> {
-
-    override fun areItemsTheSame(other: HealthDiary) = when {
-        this is ItemHealthDiary && other is ItemHealthDiary -> type == other.type
-        this is SurveyHealthDiary && other is SurveyHealthDiary -> type == other.type
-        this is EmptyItemHealthDiary && other is EmptyItemHealthDiary -> type == other.type
-        else -> false
-    }
-
-    override fun areContentsTheSame(other: HealthDiary) = this == other
-}
+sealed class HealthDiary : ListItem
 
 data class ItemHealthDiary(
     val id: Int,

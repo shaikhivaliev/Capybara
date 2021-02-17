@@ -8,14 +8,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.customListAdapter
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.presentation.calendar.CalendarArrayAdapter
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.currentDateFull
 import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.extensions.currentMonth
-import com.petapp.capybara.presentation.surveys.SurveysAdapterDelegate
+import com.petapp.capybara.presentation.calendar.CalendarArrayAdapter
+import com.petapp.capybara.presentation.surveys.SurveysAdapter
 import java.util.*
 
 @Suppress("ForbiddenComment")
@@ -33,7 +32,9 @@ class CalendarView @JvmOverloads constructor(
     private var listOfDays: ArrayList<Date> = arrayListOf()
     private var listOfSurveyByMonth: ArrayList<Survey> = arrayListOf()
 
-    private val adapter: CalendarSurveysAdapter by lazy { CalendarSurveysAdapter() }
+    private val adapter: SurveysAdapter = SurveysAdapter(
+        itemClick = {}
+    )
 
     var onChangeMonthListener: OnChangeMonthListener? = null
 
@@ -62,7 +63,7 @@ class CalendarView @JvmOverloads constructor(
                 it.date == currentDateFull(currentDate)
             }
             if (currentSurveys.isNotEmpty()) {
-                adapter.setDataSet(currentSurveys)
+                adapter.items = currentSurveys
 
                 MaterialDialog(context).show {
                     title(text = currentDateFull(currentDate))
@@ -100,24 +101,6 @@ class CalendarView @JvmOverloads constructor(
             surveys = surveys
         )
         days.adapter = adapter
-    }
-
-    inner class CalendarSurveysAdapter : ListDelegationAdapter<MutableList<Any>>() {
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    SurveysAdapterDelegate(
-                        itemClick = {}
-                    )
-                )
-        }
-
-        fun setDataSet(surveys: List<Survey>) {
-            items.clear()
-            items.addAll(surveys)
-            notifyDataSetChanged()
-        }
     }
 
     companion object {
