@@ -137,7 +137,7 @@ class SwipeController(
         isCurrentlyActive: Boolean
     ) {
         recyclerView.setOnTouchListener { _, motionEvent ->
-            if (motionEvent.action == MotionEvent.ACTION_UP) {
+            if (motionEvent.action == MotionEvent.ACTION_UP || motionEvent.action == MotionEvent.ACTION_MOVE) {
                 super@SwipeController.onChildDraw(
                     canvas,
                     recyclerView,
@@ -150,12 +150,12 @@ class SwipeController(
                 recyclerView.setOnTouchListener { _, _ -> false }
                 setItemsClickable(recyclerView, true)
                 swipeBack = false
-                buttonShowedState = ButtonsState.GONE
             }
 
-            if (buttonShowedState == ButtonsState.RIGHT_VISIBLE &&
-                buttonInstance != null &&
-                buttonInstance!!.contains(motionEvent.x, motionEvent.y)
+            if (buttonShowedState == ButtonsState.RIGHT_VISIBLE && buttonInstance != null && buttonInstance!!.contains(
+                    motionEvent.x,
+                    motionEvent.y
+                )
             ) {
                 onEditClick(viewHolder)
             }

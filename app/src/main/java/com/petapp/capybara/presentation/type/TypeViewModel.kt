@@ -23,7 +23,7 @@ class TypeViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
-    fun getType(typeId: String) {
+    fun getType(typeId: Long) {
         repository.getType(typeId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -71,7 +71,7 @@ class TypeViewModel(
         }
     }
 
-    fun deleteType(typeId: String) {
+    fun deleteType(typeId: Long) {
         repository.deleteType(typeId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

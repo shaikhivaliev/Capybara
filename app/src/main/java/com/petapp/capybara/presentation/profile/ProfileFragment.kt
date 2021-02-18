@@ -261,6 +261,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     companion object {
-        private const val DEFAULT_ID_FOR_ENTITY = "0"
+        private const val DEFAULT_ID_FOR_ENTITY = 0L
     }
 }

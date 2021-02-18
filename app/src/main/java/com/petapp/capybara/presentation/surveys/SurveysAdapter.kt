@@ -2,9 +2,9 @@ package com.petapp.capybara.presentation.surveys
 
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
+import com.petapp.capybara.R
 import com.petapp.capybara.common.ListItem
 import com.petapp.capybara.common.ListItemDiffCallback
-import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import kotlinx.android.synthetic.main.item_survey.view.*
 
@@ -20,7 +20,7 @@ class SurveysAdapter(
 
 fun surveysAdapterDelegate(
     itemClick: (Survey) -> Unit
-) = adapterDelegateLayoutContainer<Survey, ListItem>(R.layout.item_profile) {
+) = adapterDelegateLayoutContainer<Survey, ListItem>(R.layout.item_survey) {
 
     bind {
         with(itemView) {

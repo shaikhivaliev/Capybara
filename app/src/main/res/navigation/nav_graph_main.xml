@@ -102,7 +102,7 @@
 
             <argument
                 android:name="typeId"
-                app:argType="string"
+                app:argType="long"
                 app:nullable="false"
                 />
         </action>
@@ -123,7 +123,7 @@
 
         <argument
             android:name="typeId"
-            app:argType="string"
+            app:argType="long"
             app:nullable="false"
             />
 

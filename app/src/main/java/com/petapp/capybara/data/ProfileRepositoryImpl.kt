@@ -12,7 +12,7 @@ class ProfileRepositoryImpl(private val appDao: AppDao) : ProfileRepository {
         return appDao.getProfilesWithSurveys().map { it.toProfiles() }
     }
 
-    override fun getProfile(profileId: String): Single<Profile> {
+    override fun getProfile(profileId: Long): Single<Profile> {
         return appDao.getProfile(profileId).map { it.toProfile() }
     }
 
@@ -26,7 +26,7 @@ class ProfileRepositoryImpl(private val appDao: AppDao) : ProfileRepository {
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteProfile(profileId: String): Completable {
+    override fun deleteProfile(profileId: Long): Completable {
         return Completable.fromAction { appDao.deleteProfile(profileId) }
             .subscribeOn(Schedulers.io())
     }

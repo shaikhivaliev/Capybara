@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Profile(
-    val id: String,
+    override val id: Long,
     val name: String,
     val color: Int,
     val photo: String? = null,

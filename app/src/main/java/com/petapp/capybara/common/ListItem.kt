@@ -1,3 +1,5 @@
 package com.petapp.capybara.common
 
-interface ListItem
+interface ListItem {
+    val id: Long
+}

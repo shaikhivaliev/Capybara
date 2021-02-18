@@ -13,7 +13,7 @@ fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = flatMap {
     } else emptyList()
 }
 
-fun List<ItemHealthDiary>.toPresentationModel(profileId: String): HealthDiaryForProfile {
+fun List<ItemHealthDiary>.toPresentationModel(profileId: Long): HealthDiaryForProfile {
     val profilesItems = this.map { item ->
         val surveys = item.surveys.filter { it.profileId == profileId }
         item.surveys = surveys.sortedBy { survey -> survey.date }.reversed()

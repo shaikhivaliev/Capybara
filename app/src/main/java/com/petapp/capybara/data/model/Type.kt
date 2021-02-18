@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Type(
-    val id: String,
+    override val id: Long,
     val name: String,
     val icon: Int,
     val surveys: List<Survey> = emptyList()

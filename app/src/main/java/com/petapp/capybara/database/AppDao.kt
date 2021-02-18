@@ -15,7 +15,7 @@ interface AppDao {
     fun getProfiles(): Single<List<ProfileEntity>>
 
     @Query("SELECT * FROM profile WHERE id = :profileId")
-    fun getProfile(profileId: String): Single<ProfileEntity>
+    fun getProfile(profileId: Long): Single<ProfileEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createProfile(profile: ProfileEntity)
@@ -24,7 +24,7 @@ interface AppDao {
     fun updateProfile(profile: ProfileEntity)
 
     @Query("DELETE FROM profile WHERE id = :profileId")
-    fun deleteProfile(profileId: String)
+    fun deleteProfile(profileId: Long)
 
     @Transaction
     @Query("SELECT * FROM profile")
@@ -32,7 +32,7 @@ interface AppDao {
 
     // type
     @Query("SELECT * FROM type WHERE id = :typeId")
-    fun getType(typeId: String): Single<TypeEntity>
+    fun getType(typeId: Long): Single<TypeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createType(type: TypeEntity)
@@ -41,7 +41,7 @@ interface AppDao {
     fun updateType(profile: TypeEntity)
 
     @Query("DELETE FROM type WHERE id = :typeId")
-    fun deleteType(typeId: String)
+    fun deleteType(typeId: Long)
 
     @Transaction
     @Query("SELECT * FROM type")
@@ -49,7 +49,7 @@ interface AppDao {
 
     // survey
     @Query("SELECT * FROM survey WHERE id = :surveyId")
-    fun getSurvey(surveyId: String): Single<SurveyEntity>
+    fun getSurvey(surveyId: Long): Single<SurveyEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createSurvey(survey: SurveyEntity)
@@ -58,10 +58,10 @@ interface AppDao {
     fun updateSurvey(survey: SurveyEntity)
 
     @Query("DELETE FROM survey WHERE id = :surveyId")
-    fun deleteSurvey(surveyId: String)
+    fun deleteSurvey(surveyId: Long)
 
     @Query("SELECT * FROM survey WHERE type_id = :typeId")
-    fun getSurveysByType(typeId: String): Single<List<SurveyEntity>>
+    fun getSurveysByType(typeId: Long): Single<List<SurveyEntity>>
 
     @Query("SELECT * FROM survey WHERE month = :month")
     fun getSurveysByMonth(month: String?): Single<List<SurveyEntity>>
@@ -78,5 +78,5 @@ interface AppDao {
     fun getItemHealthDiaryWithSurveys(): Single<List<ItemHealthDiaryWithSurveys>>
 
     @Query("DELETE FROM survey_health_diary WHERE id = :surveyId")
-    fun deleteSurveyHealthDiary(surveyId: String)
+    fun deleteSurveyHealthDiary(surveyId: Long)
 }

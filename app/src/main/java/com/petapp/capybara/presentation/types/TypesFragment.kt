@@ -34,7 +34,8 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@TypesFragment.adapter
             val swipeController = SwipeController(requireContext()) { viewHolder ->
-                // viewModel.openTypeScreen(type)
+                val type = (viewHolder as? TypesAdapterDelegate.ViewHolder)?.type
+                viewModel.openTypeScreen(type)
             }
             val itemTouchHelper = ItemTouchHelper(swipeController)
             itemTouchHelper.attachToRecyclerView(this)

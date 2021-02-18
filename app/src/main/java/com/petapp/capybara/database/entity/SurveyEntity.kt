@@ -29,9 +29,9 @@ data class SurveyEntity(
     @ColumnInfo(name = "id")
     val id: Long = 0,
     @ColumnInfo(name = "type_id")
-    val typeId: String,
+    val typeId: Long,
     @ColumnInfo(name = "profile_id")
-    val profileId: String,
+    val profileId: Long,
     @ColumnInfo(name = "color")
     val color: Int,
     @ColumnInfo(name = "title")

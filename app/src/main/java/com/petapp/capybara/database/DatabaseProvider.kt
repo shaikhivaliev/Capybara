@@ -22,31 +22,31 @@ class DatabaseProvider(private val context: Context) {
     private fun createHealthDiaryItems() {
         Executors.newSingleThreadExecutor().execute {
             val itemBloodPressure = ItemHealthDiaryEntity(
-                HealthDiaryType.BLOOD_PRESSURE.ordinal,
+                HealthDiaryType.BLOOD_PRESSURE.ordinal.toLong(),
                 HealthDiaryType.BLOOD_PRESSURE
             )
             database.appDao().createHealthDiaryItem(itemBloodPressure)
 
             val itemPulse = ItemHealthDiaryEntity(
-                HealthDiaryType.PULSE.ordinal,
+                HealthDiaryType.PULSE.ordinal.toLong(),
                 HealthDiaryType.PULSE
             )
             database.appDao().createHealthDiaryItem(itemPulse)
 
             val itemBloodGlucose = ItemHealthDiaryEntity(
-                HealthDiaryType.BLOOD_GLUCOSE.ordinal,
+                HealthDiaryType.BLOOD_GLUCOSE.ordinal.toLong(),
                 HealthDiaryType.BLOOD_GLUCOSE
             )
             database.appDao().createHealthDiaryItem(itemBloodGlucose)
 
             val itemHeight = ItemHealthDiaryEntity(
-                HealthDiaryType.HEIGHT.ordinal,
+                HealthDiaryType.HEIGHT.ordinal.toLong(),
                 HealthDiaryType.HEIGHT
             )
             database.appDao().createHealthDiaryItem(itemHeight)
 
             val itemWeight = ItemHealthDiaryEntity(
-                HealthDiaryType.WEIGHT.ordinal,
+                HealthDiaryType.WEIGHT.ordinal.toLong(),
                 HealthDiaryType.WEIGHT
             )
             database.appDao().createHealthDiaryItem(itemWeight)

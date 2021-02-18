@@ -5,7 +5,7 @@ import com.petapp.capybara.common.ListItem
 sealed class HealthDiary : ListItem
 
 data class ItemHealthDiary(
-    val id: Int,
+    override val id: Long,
     val type: HealthDiaryType,
     var isExpanded: Boolean = false,
     var surveys: List<SurveyHealthDiary> = emptyList(),
@@ -16,9 +16,9 @@ data class ItemHealthDiary(
 ) : HealthDiary()
 
 data class SurveyHealthDiary(
-    val id: String,
+    override val id: Long,
     val type: HealthDiaryType,
-    val profileId: String,
+    val profileId: Long,
     val date: String,
     val time: String,
     val surveyValue: String,
@@ -26,6 +26,6 @@ data class SurveyHealthDiary(
 ) : HealthDiary()
 
 data class EmptyItemHealthDiary(
-    val id: Int,
+    override val id: Long,
     val type: HealthDiaryType
 ) : HealthDiary()

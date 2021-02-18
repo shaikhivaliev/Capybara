@@ -11,5 +11,5 @@ interface HealthDiaryRepository {
 
     fun createSurveyHealthDiary(survey: SurveyHealthDiary): Completable
 
-    fun deleteSurveyHealthDiary(surveyId: String): Completable
+    fun deleteSurveyHealthDiary(surveyId: Long): Completable
 }

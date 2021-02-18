@@ -11,7 +11,7 @@ import com.petapp.capybara.database.HealthDiaryTypeConverter
 data class ItemHealthDiaryEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Long,
     @ColumnInfo(name = "type")
     @TypeConverters(HealthDiaryTypeConverter::class)
     var type: HealthDiaryType

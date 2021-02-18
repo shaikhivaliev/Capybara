@@ -33,9 +33,9 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
         }
         adapter.items =
             listOf(
-                Settings(R.drawable.ic_feedback, R.string.settings_feedback),
-                Settings(R.drawable.ic_about_app, R.string.settings_about_app),
-                Settings(R.drawable.ic_rules, R.string.settings_rules)
+                Settings(0L, R.drawable.ic_feedback, R.string.settings_feedback),
+                Settings(1L, R.drawable.ic_about_app, R.string.settings_about_app),
+                Settings(2L, R.drawable.ic_rules, R.string.settings_rules)
             )
         exit.setOnClickListener {
             FirebaseAuth.getInstance().signOut()

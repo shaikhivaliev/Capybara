@@ -1,6 +1,9 @@
 package com.petapp.capybara.data
 
-import com.petapp.capybara.data.model.*
+import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
@@ -10,7 +13,7 @@ import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
 
 fun ProfileEntity.toMark(): Mark {
     return Mark(
-        id = id.toString(),
+        id = id,
         name = name,
         color = color
     )
@@ -27,7 +30,7 @@ fun List<ProfileEntity>.toMarks(): List<Mark> {
 
 fun ProfileEntity.toProfile(): Profile {
     return Profile(
-        id = id.toString(),
+        id = id,
         name = name,
         color = color,
         photo = photo
@@ -36,7 +39,7 @@ fun ProfileEntity.toProfile(): Profile {
 
 fun ProfileWithSurveys.toProfile(): Profile {
     return Profile(
-        id = profile.id.toString(),
+        id = profile.id,
         name = profile.name,
         color = profile.color,
         photo = profile.photo,
@@ -46,7 +49,7 @@ fun ProfileWithSurveys.toProfile(): Profile {
 
 fun Profile.toProfileEntity(): ProfileEntity {
     return ProfileEntity(
-        id = id.toLong(),
+        id = id,
         name = name,
         color = color,
         photo = photo
@@ -64,7 +67,7 @@ fun List<ProfileWithSurveys>.toProfiles(): List<Profile> {
 
 fun SurveyEntity.toSurvey(): Survey {
     return Survey(
-        id = id.toString(),
+        id = id,
         typeId = typeId,
         profileId = profileId,
         color = color,
@@ -76,7 +79,7 @@ fun SurveyEntity.toSurvey(): Survey {
 
 fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
-        id = this.id.toLong(),
+        id = this.id,
         typeId = this.typeId,
         profileId = this.profileId,
         color = this.color,
@@ -97,7 +100,7 @@ fun List<SurveyEntity>.toSurveys(): List<Survey> {
 
 fun TypeEntity.toType(): Type {
     return Type(
-        id = id.toString(),
+        id = id,
         name = name,
         icon = icon
     )
@@ -105,7 +108,7 @@ fun TypeEntity.toType(): Type {
 
 fun TypeWithSurveys.toType(): Type {
     return Type(
-        id = type.id.toString(),
+        id = type.id,
         name = type.name,
         icon = type.icon,
         surveys = surveys.toSurveys()
@@ -114,7 +117,7 @@ fun TypeWithSurveys.toType(): Type {
 
 fun Type.toTypeEntity(): TypeEntity {
     return TypeEntity(
-        id = id.toLong(),
+        id = id,
         name = name,
         icon = icon
     )
@@ -148,8 +151,8 @@ fun ItemHealthDiaryWithSurveys.toHealthDiaryItem(): ItemHealthDiary {
 
 fun SurveyHealthDiary.toSurveyHealthDiaryEntity(): SurveyHealthDiaryEntity {
     return SurveyHealthDiaryEntity(
-        id = id.toLong(),
-        typeId = type.ordinal.toString(),
+        id = id,
+        typeId = type.ordinal.toLong(),
         profileId = profileId,
         date = date,
         time = time,
@@ -160,7 +163,7 @@ fun SurveyHealthDiary.toSurveyHealthDiaryEntity(): SurveyHealthDiaryEntity {
 
 fun SurveyHealthDiaryEntity.toSurveyHealthDiary(): SurveyHealthDiary {
     return SurveyHealthDiary(
-        id = id.toString(),
+        id = id,
         type = typeId.toHealthDiary(),
         profileId = profileId,
         date = date,
@@ -170,11 +173,11 @@ fun SurveyHealthDiaryEntity.toSurveyHealthDiary(): SurveyHealthDiary {
     )
 }
 
-private fun String.toHealthDiary(): HealthDiaryType = when (this) {
-    HealthDiaryType.BLOOD_PRESSURE.ordinal.toString() -> HealthDiaryType.BLOOD_PRESSURE
-    HealthDiaryType.PULSE.ordinal.toString() -> HealthDiaryType.PULSE
-    HealthDiaryType.BLOOD_GLUCOSE.ordinal.toString() -> HealthDiaryType.BLOOD_GLUCOSE
-    HealthDiaryType.HEIGHT.ordinal.toString() -> HealthDiaryType.HEIGHT
+private fun Long.toHealthDiary(): HealthDiaryType = when (this) {
+    HealthDiaryType.BLOOD_PRESSURE.ordinal.toLong() -> HealthDiaryType.BLOOD_PRESSURE
+    HealthDiaryType.PULSE.ordinal.toLong() -> HealthDiaryType.PULSE
+    HealthDiaryType.BLOOD_GLUCOSE.ordinal.toLong() -> HealthDiaryType.BLOOD_GLUCOSE
+    HealthDiaryType.HEIGHT.ordinal.toLong() -> HealthDiaryType.HEIGHT
     else -> HealthDiaryType.WEIGHT
 }
 

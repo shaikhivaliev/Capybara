@@ -29,7 +29,7 @@ class CalendarViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
-    val profileId = MutableLiveData<String>()
+    val profileId = MutableLiveData<Long>()
     val month = MutableLiveData<String>()
 
     init {

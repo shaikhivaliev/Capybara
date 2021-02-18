@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
+import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.data.HealthDiaryRepository
 import com.petapp.capybara.data.MarksRepository
-import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.extensions.navigateWith
 import com.petapp.capybara.presentation.surveys.SurveysFragmentDirections
@@ -31,7 +31,7 @@ class HealthDiaryViewModel(
     private val _marks = MutableLiveData<List<Mark>>()
     val marks: LiveData<List<Mark>> get() = _marks
 
-    val profileId = MutableLiveData<String>()
+    val profileId = MutableLiveData<Long>()
 
     init {
         getMarks()
@@ -72,7 +72,7 @@ class HealthDiaryViewModel(
         }
     }
 
-    fun deleteHealthDiary(surveyId: String) {
+    fun deleteHealthDiary(surveyId: Long) {
         repositoryHealthDiary.deleteSurveyHealthDiary(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -118,15 +118,19 @@ class HealthDiaryViewModel(
 
     private fun List<ItemHealthDiary>.toRangeItems(): List<ItemHealthDiary> =
         groupBy { it.type }.map { (itemType, items) ->
+
+            val isExpanded = _healthDiaryItems.value?.find { it.type == itemType }?.isExpanded ?: false
+            val surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
+
             ItemHealthDiary(
-                id = itemType.ordinal,
+                id = itemType.ordinal.toLong(),
                 type = itemType,
-                isExpanded = _healthDiaryItems.value?.find { it.type == itemType }?.isExpanded ?: false,
-                surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
+                isExpanded = isExpanded,
+                surveys = surveys
             )
         }
 
-    private fun List<ItemHealthDiary>.filtered(profileId: String?): List<ItemHealthDiary> {
+    private fun List<ItemHealthDiary>.filtered(profileId: Long?): List<ItemHealthDiary> {
         return this.map { item ->
             val surveys = item.surveys.filter { it.profileId == profileId }
             item.surveys = surveys

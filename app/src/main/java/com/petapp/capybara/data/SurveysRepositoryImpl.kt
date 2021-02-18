@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
 
-    override fun getSurveysByType(typeId: String): Single<List<Survey>> {
+    override fun getSurveysByType(typeId: Long): Single<List<Survey>> {
         return appDao.getSurveysByType(typeId).map { it.toSurveys() }
     }
 
@@ -16,7 +16,7 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
         return appDao.getSurveysByMonth(month).map { it.toSurveys() }
     }
 
-    override fun getSurvey(surveyId: String): Single<Survey> {
+    override fun getSurvey(surveyId: Long): Single<Survey> {
         return appDao.getSurvey(surveyId).map { it.toSurvey() }
     }
 
@@ -30,7 +30,7 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteSurvey(surveyId: String): Completable {
+    override fun deleteSurvey(surveyId: Long): Completable {
         return Completable.fromAction { appDao.deleteSurvey(surveyId) }
             .subscribeOn(Schedulers.io())
     }

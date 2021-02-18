@@ -30,7 +30,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         itemClick = { viewModel.openSurveyScreen(it) }
     )
 
-    private val chipIdToProfileId = mutableMapOf<Int, String>()
+    private val chipIdToProfileId = mutableMapOf<Int, Long>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,7 +67,8 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             })
 
             surveys.observe(viewLifecycleOwner, Observer { surveys ->
-                if (surveys.isNullOrEmpty()) mock.isVisible = true else adapter.items = surveys
+                mock.isVisible = surveys.isNullOrEmpty()
+                adapter.items = surveys
             })
 
             errorMessage.observe(viewLifecycleOwner, Observer { error ->

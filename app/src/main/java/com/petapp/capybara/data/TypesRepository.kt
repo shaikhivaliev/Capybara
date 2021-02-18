@@ -8,11 +8,11 @@ interface TypesRepository {
 
     fun getTypes(): Single<List<Type>>
 
-    fun getType(typeId: String): Single<Type>
+    fun getType(typeId: Long): Single<Type>
 
     fun createType(type: Type): Completable
 
     fun updateType(type: Type): Completable
 
-    fun deleteType(typeId: String): Completable
+    fun deleteType(typeId: Long): Completable
 }

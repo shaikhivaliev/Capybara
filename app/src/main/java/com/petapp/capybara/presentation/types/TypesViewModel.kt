@@ -47,7 +47,7 @@ class TypesViewModel(
             ).connect()
     }
 
-    fun openSurveysScreen(typeId: String) {
+    fun openSurveysScreen(typeId: Long) {
         TypesFragmentDirections.toSurveys(typeId).navigateWith(navController)
     }
 

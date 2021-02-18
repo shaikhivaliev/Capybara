@@ -37,7 +37,7 @@ class ProfileViewModel(
     private val _healthDiaryForProfile = MutableLiveData<HealthDiaryForProfile>()
     val healthDiaryForProfile: LiveData<HealthDiaryForProfile> = _healthDiaryForProfile
 
-    fun getProfile(profileId: String) {
+    fun getProfile(profileId: Long) {
         repositoryProfile.getProfile(profileId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -86,7 +86,7 @@ class ProfileViewModel(
         }
     }
 
-    fun deleteProfile(profileId: String) {
+    fun deleteProfile(profileId: Long) {
         repositoryProfile.deleteProfile(profileId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -101,7 +101,7 @@ class ProfileViewModel(
             ).connect()
     }
 
-    fun getHealthDiaryItems(profileId: String) {
+    fun getHealthDiaryItems(profileId: Long) {
         repositoryHealthDiary.getItemsHealthDiary()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

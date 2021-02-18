@@ -18,7 +18,7 @@ class HealthDiaryRepositoryImpl(private val appDao: AppDao) : HealthDiaryReposit
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteSurveyHealthDiary(surveyId: String): Completable {
+    override fun deleteSurveyHealthDiary(surveyId: Long): Completable {
         return Completable.fromAction { appDao.deleteSurveyHealthDiary(surveyId) }
             .subscribeOn(Schedulers.io())
     }

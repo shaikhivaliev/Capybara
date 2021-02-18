@@ -287,6 +287,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         const val MARGIN_TOP_BOTTOM = 14
         const val MARGIN_START_END = 24
         const val PADDING_START = 24
-        const val DEFAULT_ID_FOR_ENTITY = "0"
+        const val DEFAULT_ID_FOR_ENTITY = 0L
     }
 }

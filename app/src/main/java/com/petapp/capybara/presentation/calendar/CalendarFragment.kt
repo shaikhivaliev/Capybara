@@ -26,7 +26,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         parametersOf(findNavController())
     }
 
-    private val chipIdToProfileId = mutableMapOf<Int, String>()
+    private val chipIdToProfileId = mutableMapOf<Int, Long>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

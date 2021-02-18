@@ -55,7 +55,7 @@ class SurveyViewModel(
             ).connect()
     }
 
-    fun getSurvey(surveyId: String) {
+    fun getSurvey(surveyId: Long) {
         repositorySurveys.getSurvey(surveyId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -118,7 +118,7 @@ class SurveyViewModel(
         }
     }
 
-    fun deleteSurvey(surveyId: String) {
+    fun deleteSurvey(surveyId: Long) {
         repositorySurveys.deleteSurvey(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

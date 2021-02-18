@@ -35,7 +35,7 @@ data class HealthDiaryForProfile(
 
         fun pulse(pulse: String) = apply { this.pulse = pulse }
 
-        fun bloodGlucose(pulse: String) = apply { this.bloodGlucose = bloodGlucose }
+        fun bloodGlucose(bloodGlucose: String) = apply { this.bloodGlucose = bloodGlucose }
 
         fun height(height: String) = apply { this.height = height }
 

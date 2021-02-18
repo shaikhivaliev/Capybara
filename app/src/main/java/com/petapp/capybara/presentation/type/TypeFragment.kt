@@ -113,7 +113,7 @@ class TypeFragment : Fragment(R.layout.fragment_type) {
     }
 
     companion object {
-        const val DEFAULT_ID_FOR_ENTITY = "0"
+        const val DEFAULT_ID_FOR_ENTITY = 0L
         const val DEFAULT_TYPE_IMAGE = R.drawable.ic_default_type_icon
     }
 }

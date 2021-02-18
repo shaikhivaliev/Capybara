@@ -37,8 +37,8 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         parametersOf(findNavController())
     }
 
-    private val chipIdToProfileId = mutableMapOf<Int, String>()
-    private var profileId: String? = null
+    private val chipIdToProfileId = mutableMapOf<Int, Long>()
+    private var profileId: Long? = null
 
     private val adapter: HealthDiaryAdapter =
         HealthDiaryAdapter(
@@ -138,7 +138,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
     private fun healthDiarySurveyBuilder(view: View, item: ItemHealthDiary): SurveyHealthDiary? {
         val id = DEFAULT_ID_FOR_ENTITY
         val type = item.type
-        val profileId = profileId ?: "0"
+        val profileId = profileId ?: DEFAULT_ID_FOR_ENTITY
         val date = view.survey_date.text.toString()
         val time = view.survey_time.text.toString()
         val unitOfMeasure = view.unit_of_measure.text.toString()
@@ -186,7 +186,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         }
     }
 
-    private fun openDeleteDialog(surveyId: String) {
+    private fun openDeleteDialog(surveyId: Long) {
         MaterialDialog(requireActivity()).show {
             title(text = getString(R.string.health_diary_delete_survey))
             positiveButton {
@@ -247,6 +247,6 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
     }
 
     companion object {
-        private const val DEFAULT_ID_FOR_ENTITY = "0"
+        private const val DEFAULT_ID_FOR_ENTITY = 0L
     }
 }

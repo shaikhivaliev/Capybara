@@ -18,7 +18,7 @@ class SurveysViewModel(
     private val repositorySurveys: SurveysRepository,
     private val repositoryMarks: MarksRepository,
     private val navController: NavController,
-    private val typeId: String
+    private val typeId: Long
 ) : BaseViewModel() {
 
     private val _marks = MutableLiveData<List<Mark>>()
@@ -30,7 +30,7 @@ class SurveysViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
-    val profileId = MutableLiveData<String>()
+    val profileId = MutableLiveData<Long>()
 
     init {
         getMarks()

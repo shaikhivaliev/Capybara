@@ -6,9 +6,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Survey(
-    val id: String,
-    val typeId: String,
-    val profileId: String,
+    override val id: Long,
+    val typeId: Long,
+    val profileId: Long,
     val color: Int,
     val name: String,
     val date: String,
