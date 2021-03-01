@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_s"
-    android:layout_marginTop="@dimen/margin_m"
-    android:layout_marginEnd="@dimen/margin_m"
-    android:elevation="8dp"
-    app:cardCornerRadius="@dimen/widget_corner_radius">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card"
+        android:layout_marginStart="@dimen/margin_s"
+        android:layout_marginTop="@dimen/margin_m"
+        android:layout_marginEnd="@dimen/margin_m"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.petapp.capybara.widgets.ProfileView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/photo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="8dp"
+            android:padding="@dimen/margin_xs"
+            app:strokeWidth="@dimen/margin_xs"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerInside"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay"/>
 
         <TextView
             android:id="@+id/profile_name"
@@ -61,4 +59,3 @@
             tools:text="0"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>

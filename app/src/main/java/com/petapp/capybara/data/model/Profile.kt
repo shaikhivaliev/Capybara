@@ -9,6 +9,6 @@ data class Profile(
     override val id: Long,
     val name: String,
     val color: Int,
-    val photo: String? = null,
+    val photo: String,
     val surveys: List<Survey> = emptyList()
 ) : Parcelable, ListItem

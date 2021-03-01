@@ -43,7 +43,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val imageFromCamera =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
             if (success) {
-                initials.isVisible = false
                 Glide.with(this)
                     .load(currentPhotoUri)
                     .centerCrop()
@@ -56,7 +55,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.apply {
             currentPhotoUri = this.toString()
-            initials.isVisible = false
             Glide.with(requireActivity())
                 .load(this)
                 .centerCrop()
@@ -78,7 +76,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             current_profile.isVisible = false
             edit_profile.isVisible = true
             Glide.with(this)
-                .load(R.drawable.ic_photo_mock)
+                .load(R.drawable.ic_user_144)
+                .centerInside()
                 .into(photo)
             name_et.requestFocus()
             name_et.showKeyboard()
@@ -150,9 +149,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun setProfileCard(profile: Profile) {
         profile_name.text = profile.name
         currentColor.value = profile.color
-        initials.isVisible = profile.photo.isNullOrEmpty()
 
-        if (!profile.photo.isNullOrEmpty()) {
+        if (profile.photo != DEFAULT_PROFILE_ICON) {
             edit.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
             done.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
             Glide.with(this)
@@ -162,7 +160,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         } else {
             edit.setBackgroundResource(R.drawable.green_border_bgr)
             done.setBackgroundResource(R.drawable.green_border_bgr)
-            initials.text = profile.name.first().toString()
+            Glide.with(this)
+                .load(R.drawable.ic_user_144)
+                .centerInside()
+                .into(photo)
         }
     }
 
@@ -233,7 +234,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
             val etName = name_et.text.toString()
             val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
-            val photoUri = if (!currentPhotoUri.isNullOrEmpty()) currentPhotoUri else args.profile?.photo
+            val photoUri = currentPhotoUri ?: args.profile?.photo ?: DEFAULT_PROFILE_ICON
             Profile(id = id, name = name, color = requireNotNull(currentColor.value), photo = photoUri)
         } else {
             null
@@ -262,5 +263,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     companion object {
         private const val DEFAULT_ID_FOR_ENTITY = 0L
+        private const val DEFAULT_PROFILE_ICON = "default_profile_icon"
     }
 }

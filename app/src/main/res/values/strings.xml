@@ -8,6 +8,8 @@
     <string name="repeat">Повторить</string>
     <string name="save">СОХРАНИТЬ</string>
     <string name="cancel">ОТМЕНА</string>
+    <string name="dev_email">capybaraaplication@gmail.com</string>
+    <string name="email_subject">Capybara app feedback</string>
 
     <!-- auth-->
     <string name="auth_phone">Войти по номеру телефона</string>
@@ -47,8 +49,12 @@
     <!-- settings-->
     <string name="settings_feedback">Обратная связь</string>
     <string name="settings_about_app">О приложении</string>
-    <string name="settings_rules">Правила</string>
+    <string name="settings_rules">Политика конфиденциальности</string>
     <string name="settings_exit">Выход</string>
+    <string name="settings_capybara_title">Capybara app</string>
+    <string name="settings_app_version">Версия %1$s</string>
+    <string name="settings_rate_app">Оцените приложение</string>
+    <string name="settings_share_link">Поделиться</string>
 
     <!-- type-->
     <string name="type_default_health_diary">Дневник здоровья</string>

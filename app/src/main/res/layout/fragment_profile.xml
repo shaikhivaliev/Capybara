@@ -19,19 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <TextView
-        android:id="@+id/initials"
-        style="@style/Main.Text.Large"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/profile_photo_size"
-        android:background="@color/neutral_n20"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
     <ImageView
         android:id="@+id/edit"
         android:layout_width="@dimen/min_clickable_size"

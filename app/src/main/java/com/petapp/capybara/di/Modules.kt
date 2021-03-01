@@ -8,7 +8,6 @@ import com.petapp.capybara.presentation.calendar.CalendarViewModel
 import com.petapp.capybara.presentation.healthDiary.HealthDiaryViewModel
 import com.petapp.capybara.presentation.profile.ProfileViewModel
 import com.petapp.capybara.presentation.profiles.ProfilesViewModel
-import com.petapp.capybara.presentation.settings.SettingsViewModel
 import com.petapp.capybara.presentation.survey.SurveyViewModel
 import com.petapp.capybara.presentation.surveys.SurveysViewModel
 import com.petapp.capybara.presentation.type.TypeViewModel
@@ -75,12 +74,6 @@ val appModule = module {
             repositorySurveys = get(),
             repositoryTypes = get(),
             repositoryMarks = get()
-        )
-    }
-
-    viewModel { (navController: NavController) ->
-        SettingsViewModel(
-            navController = navController
         )
     }
 
