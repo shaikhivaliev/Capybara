@@ -9,6 +9,11 @@
     <string name="save">СОХРАНИТЬ</string>
     <string name="cancel">ОТМЕНА</string>
 
+    <!-- auth-->
+    <string name="auth_phone">Войти по номеру телефона</string>
+    <string name="auth_mail">Войти по адресу электронной почты</string>
+    <string name="auth_google">Войти через аккаунт Google</string>
+
     <!-- tabs-->
     <string name="tab_list">Исследования</string>
     <string name="tab_calendar">Календарь</string>

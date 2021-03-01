@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.petapp.capybara.R
 import com.petapp.capybara.presentation.main.MainActivity
@@ -17,11 +19,26 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     private val viewModel: AuthViewModel by viewModel()
 
-    private var providers: List<AuthUI.IdpConfig> = listOf(
+    private val providers: List<AuthUI.IdpConfig> = listOf(
         AuthUI.IdpConfig.PhoneBuilder().build(),
         AuthUI.IdpConfig.EmailBuilder().build(),
         AuthUI.IdpConfig.GoogleBuilder().build()
     )
+
+    private val customAuthUILayout = AuthMethodPickerLayout
+        .Builder(R.layout.view_auth_layout)
+        .setPhoneButtonId(R.id.auth_phone)
+        .setEmailButtonId(R.id.auth_mail)
+        .setGoogleButtonId(R.id.auth_google)
+        .build()
+
+    private val startAuthUI = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        when {
+            result.resultCode == Activity.RESULT_OK -> openMainScreen()
+            result.data == null -> finish()
+            else -> auth_error.isVisible = true
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +58,14 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
     }
 
     private fun signIn() {
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .setIsSmartLockEnabled(false)
-                .build(),
-            RC_SIGN_IN
-        )
+        val authIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .setIsSmartLockEnabled(false)
+            .setAuthMethodPickerLayout(customAuthUILayout)
+            .setTheme(R.style.AppThemeFirebaseAuth)
+            .build()
+        startAuthUI.launch(authIntent)
 
         auth_again.setOnClickListener {
             val intent = intent
@@ -60,17 +77,6 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            when {
-                resultCode == Activity.RESULT_OK -> openMainScreen()
-                data == null -> finish()
-                else -> auth_error.isVisible = true
-            }
-        }
-    }
-
     private fun openMainScreen() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -78,7 +84,6 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
     }
 
     companion object {
-        private const val RC_SIGN_IN = 123
         private const val TAG = "navigation"
     }
 }
