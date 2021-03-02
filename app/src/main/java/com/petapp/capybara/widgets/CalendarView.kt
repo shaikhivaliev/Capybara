@@ -37,7 +37,6 @@ class CalendarView @JvmOverloads constructor(
     private val touchSlop: Int = ViewConfiguration.get(context).scaledTouchSlop
     private val velocity = ViewConfiguration.get(context).scaledMinimumFlingVelocity.toFloat()
 
-
     private val adapter: SurveysAdapter = SurveysAdapter(
         itemClick = {}
     )
@@ -114,17 +113,11 @@ class CalendarView @JvmOverloads constructor(
 
     inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-            var result = false
-            try {
-                val diffX = e2.x - e1.x
-                if (abs(diffX) > touchSlop && abs(velocityX) > velocity) {
-                    if (diffX > 0) setUpPreviousMonth() else setUpNextMonth()
-                    result = true
-                }
-            } catch (exception: Exception) {
-                exception.printStackTrace()
+            val diffX = e2.x - e1.x
+            if (abs(diffX) > touchSlop && abs(velocityX) > velocity) {
+                if (diffX > 0) setUpPreviousMonth() else setUpNextMonth()
             }
-            return result
+            return true
         }
     }
 

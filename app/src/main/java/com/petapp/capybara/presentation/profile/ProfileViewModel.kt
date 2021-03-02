@@ -135,8 +135,8 @@ class ProfileViewModel(
         ProfileFragmentDirections.toProfiles().navigateWith(navController)
     }
 
-    fun openHealthDiaryScreen() {
-        ProfileFragmentDirections.toHealthDiary().navigateWith(navController)
+    fun openHealthDiaryScreen(profileId: Long?) {
+        profileId?.let { ProfileFragmentDirections.toHealthDiary(it).navigateWith(navController) }
     }
 
     fun back() {

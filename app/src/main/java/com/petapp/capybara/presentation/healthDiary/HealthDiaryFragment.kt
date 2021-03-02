@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
@@ -36,6 +37,8 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
     private val viewModel: HealthDiaryViewModel by viewModel {
         parametersOf(findNavController())
     }
+
+    private val args: HealthDiaryFragmentArgs by navArgs()
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
     private var profileId: Long? = null
@@ -174,7 +177,16 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                         marks_group.addView(chip)
                         chipIdToProfileId[chip.id] = mark.id
                     }
-                    (marks_group.get(0) as? Chip)?.isChecked = true
+                    if (args.profileId != 0L) {
+                        val index = chipIdToProfileId.filterValues { it == args.profileId }.keys.first()
+                        marks_group.post {
+                            marks_group.check(index)
+                            val chip = marks_group.findViewById<Chip>(marks_group.checkedChipId)
+                            mark_group_container.smoothScrollTo(chip.left, chip.top)
+                        }
+                    } else {
+                        (marks_group[0] as? Chip)?.isChecked = true
+                    }
                 }
             })
             healthDiaryItems.observe(viewLifecycleOwner, Observer {

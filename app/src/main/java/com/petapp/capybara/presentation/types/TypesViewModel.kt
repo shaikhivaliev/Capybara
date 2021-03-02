@@ -52,7 +52,7 @@ class TypesViewModel(
     }
 
     fun openHealthDiary() {
-        TypesFragmentDirections.toHealthDiary().navigateWith(navController)
+        TypesFragmentDirections.toHealthDiary(0L).navigateWith(navController)
     }
 
     fun openTypeScreen(type: Type?) {

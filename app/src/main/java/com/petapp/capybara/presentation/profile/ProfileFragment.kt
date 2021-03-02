@@ -107,7 +107,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         delete_profile.setOnClickListener { deleteProfile() }
 
-        health_diary.setOnClickListener { viewModel.openHealthDiaryScreen() }
+        health_diary.setOnClickListener { viewModel.openHealthDiaryScreen(args.profile?.id) }
     }
 
     private fun initObservers() {
