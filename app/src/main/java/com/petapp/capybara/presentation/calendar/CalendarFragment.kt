@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.createChip
+import com.petapp.capybara.extensions.currentMonth
 import com.petapp.capybara.extensions.toast
+import com.petapp.capybara.widgets.CalendarView
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import androidx.lifecycle.Observer
-import com.afollestad.materialdialogs.MaterialDialog
-import com.petapp.capybara.extensions.currentMonth
-import com.petapp.capybara.widgets.CalendarView
-import kotlinx.android.synthetic.main.fragment_calendar.add_survey
-import kotlinx.android.synthetic.main.fragment_calendar.marks_group
 import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
