@@ -5,12 +5,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
+import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.data.HealthDiaryRepository
 import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
 import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
 import com.petapp.capybara.extensions.createImageFile
 import com.petapp.capybara.extensions.navigateWith
 import com.petapp.capybara.presentation.toPresentationModel
@@ -75,7 +75,7 @@ class ProfileViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        openProfilesScreen()
+                        getProfile(profile.id)
                         Log.d(TAG, "update profile ${profile.id} success")
                     },
                     {

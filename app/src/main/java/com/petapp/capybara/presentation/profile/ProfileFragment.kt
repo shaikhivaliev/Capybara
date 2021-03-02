@@ -73,10 +73,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             viewModel.getHealthDiaryItems(this)
         }
         if (args.profile?.id == null) {
-            current_profile.isVisible = false
-            edit_profile.isVisible = true
+            setEditMode(true)
             Glide.with(this)
-                .load(R.drawable.ic_user_144)
+                .load(R.drawable.ic_user_144dp)
                 .centerInside()
                 .into(photo)
             name_et.requestFocus()
@@ -87,9 +86,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun initViews() {
 
         edit.setOnClickListener {
-            current_profile.isVisible = false
-            edit_profile.isVisible = true
-            name_et.setText(args.profile?.name)
+            setEditMode(true)
         }
 
         done.setOnClickListener {
@@ -117,6 +114,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         with(viewModel) {
             profile.observe(viewLifecycleOwner, Observer { profile ->
                 setProfileCard(profile)
+                setEditMode(false)
             })
 
             imageFile.observe(viewLifecycleOwner, Observer { file ->
@@ -148,6 +146,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun setProfileCard(profile: Profile) {
         profile_name.text = profile.name
+        name_et.setText(profile.name)
         currentColor.value = profile.color
 
         if (profile.photo != DEFAULT_PROFILE_ICON) {
@@ -161,7 +160,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             edit.setBackgroundResource(R.drawable.green_border_bgr)
             done.setBackgroundResource(R.drawable.green_border_bgr)
             Glide.with(this)
-                .load(R.drawable.ic_user_144)
+                .load(R.drawable.ic_user_144dp)
                 .centerInside()
                 .into(photo)
         }
@@ -239,6 +238,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         } else {
             null
         }
+    }
+
+    private fun setEditMode(isVisible: Boolean) {
+        current_profile.isVisible = !isVisible
+        edit_profile.isVisible = isVisible
     }
 
     private fun isNameValid(): Boolean {

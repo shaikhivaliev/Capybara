@@ -33,7 +33,7 @@ fun profilesAdapterDelegate(
             surveys_amount.text = item.surveys.size.toString()
             Glide.with(this)
                 .load(item.photo)
-                .error(R.drawable.ic_user_42)
+                .error(R.drawable.ic_user_42dp)
                 .centerCrop()
                 .into(photo)
         }
