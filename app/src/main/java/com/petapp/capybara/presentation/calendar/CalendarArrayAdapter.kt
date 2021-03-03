@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.currentDateFull
+import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.ONE_MONTH
 import com.petapp.capybara.widgets.CalendarDayView
-import com.petapp.capybara.widgets.CalendarView
 import org.jetbrains.annotations.NotNull
 import java.util.*
 
@@ -27,9 +27,9 @@ class CalendarArrayAdapter @JvmOverloads constructor(
         val calendar = Calendar.getInstance()
         calendar.time = monthDate
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val displayMonth = calendar.get(Calendar.MONTH) + CalendarView.ONE_MONTH
+        val displayMonth = calendar.get(Calendar.MONTH) + ONE_MONTH
         val displayYear = calendar.get(Calendar.YEAR)
-        val currentMonth = currentDate.get(Calendar.MONTH) + CalendarView.ONE_MONTH
+        val currentMonth = currentDate.get(Calendar.MONTH) + ONE_MONTH
         val currentYear = currentDate.get(Calendar.YEAR)
 
         var view = convertView

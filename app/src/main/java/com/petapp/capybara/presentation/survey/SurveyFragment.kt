@@ -18,7 +18,7 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.extensions.currentMonth
+import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_survey.*
@@ -168,7 +168,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val time = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date)
             val calendar = Calendar.getInstance()
             calendar.time = time!!
-            val month = currentMonth(calendar.time)
+            val monthYear = currentDateMonthYear(calendar.time)
             return Survey(
                 id = id,
                 typeId = typeId,
@@ -176,7 +176,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 color = color,
                 name = name,
                 date = date,
-                month = month
+                monthYear = monthYear
             )
         } else {
             null

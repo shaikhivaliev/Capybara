@@ -1,9 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText"
+    >
 
     <TextView
         android:layout_width="0dp"
@@ -11,8 +13,9 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="ПН"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
     <TextView
         android:layout_width="0dp"
@@ -20,8 +23,9 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="ВТ"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
     <TextView
         android:layout_width="0dp"
@@ -29,8 +33,9 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="СР"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
     <TextView
         android:layout_width="0dp"
@@ -38,17 +43,19 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="ЧТ"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
     <TextView
-       android:layout_width="0dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
         android:text="ПТ"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
     <TextView
         android:layout_width="0dp"
@@ -56,8 +63,9 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="СБ"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
     <TextView
         android:layout_width="0dp"
@@ -65,7 +73,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="ВС"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textColor="@color/main_black"
+        android:textSize="14sp"
+        />
 
 </LinearLayout>
