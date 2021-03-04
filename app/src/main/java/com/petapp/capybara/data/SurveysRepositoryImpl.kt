@@ -7,7 +7,7 @@ import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.ONE_MONTH
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function5
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
@@ -17,8 +17,11 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
         return appDao.getSurveysByType(typeId).map { it.toSurveys() }
     }
 
-    override fun getSurveysByMonths(currentDate: Calendar): Single<Months> {
-
+    override fun getInitMonths(currentDate: Calendar): Single<Months> {
+        val twoMonthAgo = (currentDate.clone() as Calendar).let {
+            it.add(Calendar.MONTH, -2)
+            currentDateMonthYear(it.time)
+        }
         val previousMonth = (currentDate.clone() as Calendar).let {
             it.add(Calendar.MONTH, -ONE_MONTH)
             currentDateMonthYear(it.time)
@@ -28,19 +31,31 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
             it.add(Calendar.MONTH, ONE_MONTH)
             currentDateMonthYear(it.time)
         }
+        val nextTwoMonth = (currentDate.clone() as Calendar).let {
+            it.add(Calendar.MONTH, 2)
+            currentDateMonthYear(it.time)
+        }
 
         return Single.zip(
+            appDao.getSurveysByMonth(twoMonthAgo).map { it.toSurveys() },
             appDao.getSurveysByMonth(previousMonth).map { it.toSurveys() },
             appDao.getSurveysByMonth(currentMonth).map { it.toSurveys() },
             appDao.getSurveysByMonth(nextMonth).map { it.toSurveys() },
-            Function3 { previousMonthSurveys, currentMonthSurveys, nextMonthSurveys ->
+            appDao.getSurveysByMonth(nextTwoMonth).map { it.toSurveys() },
+            Function5 { twoMonthAgo, previousMonth, currentMonth, nextMonth, nextTwoMonth ->
                 Months(
-                    previousMonthSurveys = previousMonthSurveys,
-                    currentMonthSurveys = currentMonthSurveys,
-                    nextMonthSurveys = nextMonthSurveys
+                    twoMonthAgoSurveys = twoMonthAgo,
+                    previousMonthSurveys = previousMonth,
+                    currentMonthSurveys = currentMonth,
+                    nextMonthSurveys = nextMonth,
+                    nextTwoMonthSurveys = nextTwoMonth
                 )
             }
         )
+    }
+
+    override fun getSurveysByMonth(currentDate: Calendar): Single<List<Survey>> {
+        return appDao.getSurveysByMonth(currentDateMonthYear(currentDate.time)).map { it.toSurveys() }
     }
 
     override fun getSurvey(surveyId: Long): Single<Survey> {

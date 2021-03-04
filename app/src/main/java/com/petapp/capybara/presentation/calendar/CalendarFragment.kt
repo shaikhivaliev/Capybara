@@ -6,6 +6,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
@@ -29,7 +30,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         CalendarPagerAdapter(requireContext())
     }
 
-    private val calendar: Calendar = Calendar.getInstance()
+    private var currentCalendar = Calendar.getInstance()
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
 
@@ -39,8 +40,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         initViews()
         initMonthPager()
         initObservers()
-        viewModel.currentDate.value = Calendar.getInstance()
-        viewModel.getSurveysByMonth()
+        viewModel.getInitMonths(Calendar.getInstance())
 
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
@@ -48,18 +48,31 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun initViews() {
         marks_group.setOnCheckedChangeListener { _, checkedId ->
             viewModel.profileId.value = chipIdToProfileId[checkedId]
-            viewModel.getSurveysByMonth()
+            viewModel.getInitMonths(Calendar.getInstance())
         }
     }
 
     private fun initMonthPager() {
         month_pager.apply {
             adapter = monthAdapter
-            setCurrentItem(1, true)
+            setPageTransformer(MarginPageTransformer(PAGE_MARGIN))
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    val currentCalendar = viewModel.currentDate.value
+
+                    currentCalendar = monthAdapter.months[position].calendar
+
+                    if (monthAdapter.itemCount - TWO_MONTH == position) {
+                        val month = currentCalendar.clone() as Calendar
+                        month.add(Calendar.MONTH, TWO_MONTH)
+                        viewModel.getNextMonth(month)
+                    }
+
+                    if (position == 1) {
+                        val month = currentCalendar.clone() as Calendar
+                        month.add(Calendar.MONTH, -TWO_MONTH)
+                        viewModel.getPreviousMonth(month)
+                    }
                 }
             })
         }
@@ -79,8 +92,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     (marks_group[0] as? Chip)?.isChecked = true
                 }
             })
-            surveys.observe(viewLifecycleOwner, Observer {
+            initMonths.observe(viewLifecycleOwner, Observer {
                 setupCalendar(it)
+            })
+            nextMonth.observe(viewLifecycleOwner, Observer {
+                monthAdapter.setNextMonth(it)
+            })
+            previousMonth.observe(viewLifecycleOwner, Observer {
+                monthAdapter.setPreviousMonth(it)
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
@@ -89,16 +108,23 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun setupCalendar(surveys: Months) {
+        val calendar = Calendar.getInstance()
+        val twoMonthAgo = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, -TWO_MONTH) }
         val previousMonth = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, -ONE_MONTH) }
-        val currentMonth = calendar
+        val currentMonth = Calendar.getInstance()
         val nextMonth = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, ONE_MONTH) }
+        val nextTwoMonth = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, TWO_MONTH) }
 
         val months = listOf(
+            Month(surveys.twoMonthAgoSurveys, twoMonthAgo),
             Month(surveys.previousMonthSurveys, previousMonth),
             Month(surveys.currentMonthSurveys, currentMonth),
-            Month(surveys.nextMonthSurveys, nextMonth)
+            Month(surveys.nextMonthSurveys, nextMonth),
+            Month(surveys.nextTwoMonthSurveys, nextTwoMonth)
         )
-        monthAdapter.setMonths(months)
+        monthAdapter.setInitMonths(months)
+
+        month_pager.setCurrentItem(2, false)
     }
 
     private fun showAlertEmptyProfiles() {
@@ -112,6 +138,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     companion object {
         const val CHIP_PADDING = 56F
+        const val PAGE_MARGIN = 120
         const val ONE_MONTH = 1
+        const val TWO_MONTH = 2
     }
 }

@@ -9,6 +9,7 @@ import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.data.MarksRepository
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Month
 import com.petapp.capybara.data.model.Months
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.navigateWith
@@ -25,39 +26,76 @@ class CalendarViewModel(
     private val _marks = MutableLiveData<List<Mark>>()
     val marks: LiveData<List<Mark>> get() = _marks
 
-    private val _surveys = MutableLiveData<Months>()
-    val surveys: LiveData<Months> get() = _surveys
+    private val _initMonths = MutableLiveData<Months>()
+    val initMonths: LiveData<Months> get() = _initMonths
+
+    private val _nextMonth = MutableLiveData<Month>()
+    val nextMonth: LiveData<Month> get() = _nextMonth
+
+    private val _previousMonth = MutableLiveData<Month>()
+    val previousMonth: LiveData<Month> get() = _previousMonth
 
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
     val profileId = MutableLiveData<Long>()
-    val currentDate = MutableLiveData<Calendar>()
 
     init {
         getMarks()
     }
 
-    fun getSurveysByMonth() {
-        if (currentDate.value != null) {
-            repositorySurveys.getSurveysByMonths(currentDate.value!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        _surveys.value = Months(
-                            it.previousMonthSurveys.filter { item -> item.profileId == profileId.value },
-                            it.currentMonthSurveys.filter { item -> item.profileId == profileId.value },
-                            it.nextMonthSurveys.filter { item -> item.profileId == profileId.value }
-                        )
-                        Log.d(TAG, "get surveys bu months success")
-                    },
-                    {
-                        _errorMessage.value = R.string.error_get_marks
-                        Log.d(TAG, "get surveys error")
-                    }
-                ).connect()
-        }
+    fun getInitMonths(currentDate: Calendar) {
+        repositorySurveys.getInitMonths(currentDate)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _initMonths.value = Months(
+                        it.twoMonthAgoSurveys.filter { item -> item.profileId == profileId.value },
+                        it.previousMonthSurveys.filter { item -> item.profileId == profileId.value },
+                        it.currentMonthSurveys.filter { item -> item.profileId == profileId.value },
+                        it.nextMonthSurveys.filter { item -> item.profileId == profileId.value },
+                        it.nextTwoMonthSurveys.filter { item -> item.profileId == profileId.value }
+                    )
+                    Log.d(TAG, "get surveys bu months success")
+                },
+                {
+                    _errorMessage.value = R.string.error_get_marks
+                    Log.d(TAG, "get surveys error")
+                }
+            ).connect()
+    }
+
+    fun getPreviousMonth(date: Calendar) {
+        repositorySurveys.getSurveysByMonth(date)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _previousMonth.value = Month(surveys = it, calendar = date)
+                    Log.d(TAG, "get surveys bu months success")
+                },
+                {
+                    _errorMessage.value = R.string.error_get_marks
+                    Log.d(TAG, "get surveys error")
+                }
+            ).connect()
+    }
+
+    fun getNextMonth(date: Calendar) {
+        repositorySurveys.getSurveysByMonth(date)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _nextMonth.value = Month(surveys = it, calendar = date)
+                    Log.d(TAG, "get surveys bu months success")
+                },
+                {
+                    _errorMessage.value = R.string.error_get_marks
+                    Log.d(TAG, "get surveys error")
+                }
+            ).connect()
     }
 
     private fun getMarks() {

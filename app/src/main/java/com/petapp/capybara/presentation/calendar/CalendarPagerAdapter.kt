@@ -22,7 +22,7 @@ class CalendarPagerAdapter(private val context: Context) :
         itemClick = {}
     )
 
-    private val months = mutableListOf<Month>()
+    val months = mutableListOf<Month>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_month, parent, false)
@@ -35,10 +35,26 @@ class CalendarPagerAdapter(private val context: Context) :
         setupCalendar(months[position], this)
     }
 
-    fun setMonths(months: List<Month>) {
+    fun setInitMonths(months: List<Month>) {
         this.months.clear()
         this.months.addAll(months)
         notifyDataSetChanged()
+    }
+
+    fun setNextMonth(month: Month) {
+        val isMonthAlreadyAdded = months.contains(month)
+        if (!isMonthAlreadyAdded) {
+            months.add(month)
+            notifyItemInserted(months.size - 1)
+        }
+    }
+
+    fun setPreviousMonth(month: Month) {
+        val isMonthAlreadyAdded = months.contains(month)
+        if (!isMonthAlreadyAdded) {
+            months.add(0, month)
+            notifyItemInserted(0)
+        }
     }
 
     private fun setupCalendar(month: Month, itemView: View) {

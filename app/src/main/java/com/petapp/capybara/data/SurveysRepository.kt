@@ -10,7 +10,9 @@ interface SurveysRepository {
 
     fun getSurveysByType(typeId: Long): Single<List<Survey>>
 
-    fun getSurveysByMonths(currentDate: Calendar): Single<Months>
+    fun getInitMonths(currentDate: Calendar): Single<Months>
+
+    fun getSurveysByMonth(currentDate: Calendar): Single<List<Survey>>
 
     fun getSurvey(surveyId: Long): Single<Survey>
 
