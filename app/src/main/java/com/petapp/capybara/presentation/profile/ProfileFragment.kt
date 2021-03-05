@@ -87,6 +87,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         edit.setOnClickListener {
             setEditMode(true)
+            delete_profile.isVisible = true
         }
 
         done.setOnClickListener {

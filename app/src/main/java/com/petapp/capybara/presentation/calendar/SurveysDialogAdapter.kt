@@ -9,10 +9,9 @@ import com.petapp.capybara.common.ListItemDiffCallback
 import com.petapp.capybara.data.model.Date
 import com.petapp.capybara.data.model.Survey
 import kotlinx.android.synthetic.main.item_survey.view.title
-import kotlinx.android.synthetic.main.item_survey_calendar.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.item_survey_dialog.view.*
 
-class SurveysAdapter(
+class SurveysDialogAdapter(
     private val itemClick: (Survey) -> Unit,
     private val addNewSurvey: (java.util.Date) -> Unit
 ) : AsyncListDifferDelegationAdapter<ListItem>(ListItemDiffCallback) {
@@ -26,7 +25,7 @@ class SurveysAdapter(
 
 fun surveysAdapterDelegate(
     itemClick: (Survey) -> Unit
-) = adapterDelegateLayoutContainer<Survey, ListItem>(R.layout.item_survey_calendar) {
+) = adapterDelegateLayoutContainer<Survey, ListItem>(R.layout.item_survey_dialog) {
 
     bind {
         with(itemView) {

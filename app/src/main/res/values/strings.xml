@@ -40,8 +40,8 @@
     <string name="survey_delete_explanation_empty">Вы действительно хотите удалить исследование?</string>
     <string name="survey_incomplete_data">Создайте хотя бы один профиль, чтобы затем создать запись исследования</string>
     <string name="survey_delete">Удалить исследование</string>
-    <string name="survey_change_survey_type">Изменить тип исследования</string>
-    <string name="survey_change_survey_profile">Изменить профиль</string>
+    <string name="survey_change_survey_type">Тип исследования</string>
+    <string name="survey_change_survey_profile">Профиль</string>
     <string name="survey_name">Название исследования</string>
     <string name="survey_date">Дата исследования</string>
     <string name="survey_mock">У вас пока нет записей</string>

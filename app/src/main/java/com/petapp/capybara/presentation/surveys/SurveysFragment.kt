@@ -14,7 +14,7 @@ import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.presentation.calendar.SurveysAdapter
+import com.petapp.capybara.presentation.calendar.SurveysDialogAdapter
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -27,11 +27,10 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         parametersOf(findNavController(), args.typeId)
     }
 
-    private val adapter: SurveysAdapter =
-        SurveysAdapter(
-            itemClick = { viewModel.openSurveyScreen(it) },
-            addNewSurvey = {}
-        )
+    private val adapter: SurveysDialogAdapter = SurveysDialogAdapter(
+        itemClick = { viewModel.openSurveyScreen(it) },
+        addNewSurvey = {}
+    )
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
 

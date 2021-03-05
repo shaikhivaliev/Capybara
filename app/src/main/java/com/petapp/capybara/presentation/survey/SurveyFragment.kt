@@ -13,16 +13,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.customListAdapter
+import com.afollestad.materialdialogs.list.getListAdapter
+import com.afollestad.materialdialogs.list.getRecyclerView
 import com.petapp.capybara.R
+import com.petapp.capybara.common.MarginItemDecoration
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.presentation.profiles.ProfilesAdapter
-import com.petapp.capybara.presentation.types.TypesAdapter
 import kotlinx.android.synthetic.main.fragment_survey.*
+import kotlinx.android.synthetic.main.item_survey.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -36,14 +38,14 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private val args: SurveyFragmentArgs by navArgs()
 
-    private val adapterTypesDialog: TypesAdapter = TypesAdapter(
+    private val adapterTypesDialog: TypesDialogAdapter = TypesDialogAdapter(
         itemClick = { type ->
             currentType.value = type
             typeIconDialog?.cancel()
         }
     )
 
-    private val adapterProfilesDialog: ProfilesAdapter = ProfilesAdapter(
+    private val adapterProfilesDialog: ProfilesDialogAdapter = ProfilesDialogAdapter(
         itemClick = { profile ->
             currentProfile.value = profile
             profileMarkDialog?.cancel()
@@ -55,6 +57,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private var typeIconDialog: MaterialDialog? = null
     private var profileMarkDialog: MaterialDialog? = null
+
+    private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    private val calendar: Calendar = Calendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,15 +73,14 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         if (args.survey?.id == null) {
             current_survey.isVisible = false
             edit_survey.isVisible = true
+            delete_survey.isVisible = false
             survey_name_et.requestFocus()
             survey_name_et.showKeyboard()
+            survey_date_et.setText(dateFormat.format(calendar.time))
         }
     }
 
     private fun initViews() {
-        survey_name_et.doAfterTextChanged { survey_name_layout.error = null }
-        survey_date_et.doAfterTextChanged { survey_date_layout.error = null }
-
         delete_survey.setOnClickListener { deleteSurvey() }
 
         done.setOnClickListener {
@@ -89,9 +93,13 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         edit.setOnClickListener {
             current_survey.isVisible = false
             edit_survey.isVisible = true
+            delete_survey.isVisible = true
             survey_name_et.setText(args.survey?.name)
             survey_date_et.setText(args.survey?.date)
         }
+
+        survey_name_et.doAfterTextChanged { survey_name_layout.error = null }
+        survey_date_et.doAfterTextChanged { survey_date_layout.error = null }
     }
 
     private fun showChangeTypeDialog(types: List<Type>) {
@@ -99,8 +107,11 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
         typeIconDialog = MaterialDialog(requireActivity()).show {
             title(R.string.type_caps)
-            positiveButton(android.R.string.ok) { this.cancel() }
             customListAdapter(adapterTypesDialog)
+            val itemCount = getListAdapter()?.itemCount ?: 0
+            getRecyclerView().addItemDecoration(
+                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_ml), itemCount - 1)
+            )
         }
     }
 
@@ -109,8 +120,11 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
         profileMarkDialog = MaterialDialog(requireActivity()).show {
             title(R.string.profile_caps)
-            positiveButton(android.R.string.ok) { this.cancel() }
             customListAdapter(adapterProfilesDialog)
+            val itemCount = getListAdapter()?.itemCount ?: 0
+            getRecyclerView().addItemDecoration(
+                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_s), itemCount - 1)
+            )
         }
     }
 
@@ -123,7 +137,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 change_survey_type.setOnClickListener { showChangeTypeDialog(types) }
                 if (args.survey?.typeId != null) {
                     val type = types.find { it.id == args.survey?.typeId }
-                    type?.let { type_icon.setImageResource(it.icon) }
+                    // type?.let { type_icon.setImageResource(it.icon) }
                 }
             })
             profiles.observe(viewLifecycleOwner, Observer { profiles ->
@@ -133,10 +147,10 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 requireActivity().toast(error)
             })
             currentProfile.observe(viewLifecycleOwner, Observer { profile ->
-                profile_mark.setBackgroundColor(profile.color)
+                //profile_mark.setBackgroundColor(profile.color)
             })
             currentType.observe(viewLifecycleOwner, Observer { type ->
-                type_icon.setImageResource(type.icon)
+                // type_icon.setImageResource(type.icon)
             })
         }
     }
@@ -145,25 +159,24 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     private fun initWorkWithDate() {
 
         survey_date_et.setOnClickListener {
-            val date = Calendar.getInstance()
-
+            survey_date_et.requestFocus()
             val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                date.set(year, month, dayOfMonth)
-                survey_date_et.setText(SimpleDateFormat("dd.MM.yyyy").format(date.time))
+                calendar.set(year, month, dayOfMonth)
+                survey_date_et.setText(dateFormat.format(calendar.time))
             }
 
             DatePickerDialog(
                 requireActivity(),
                 listener,
-                date.get(Calendar.YEAR),
-                date.get(Calendar.MONTH),
-                date.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
     }
 
     private fun setSurvey(survey: Survey) {
-        profile_mark.setBackgroundColor(survey.color)
+        // profile_mark.setBackgroundColor(survey.color)
         survey_name.text = survey.name
         survey_date.text = survey.date
     }
@@ -177,8 +190,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val profileIcon = requireNotNull(currentProfile.value?.photo)
             val name = survey_name_et.text.toString()
             val date = survey_date_et.text.toString()
-            val time = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date)
-            val calendar = Calendar.getInstance()
+            val time = dateFormat.parse(date)
             calendar.time = time!!
             val monthYear = currentDateMonthYear(calendar.time)
             return Survey(

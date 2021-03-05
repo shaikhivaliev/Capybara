@@ -7,20 +7,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.customListAdapter
+import com.afollestad.materialdialogs.list.getListAdapter
+import com.afollestad.materialdialogs.list.getRecyclerView
 import com.petapp.capybara.R
+import com.petapp.capybara.common.MarginItemDecoration
 import com.petapp.capybara.data.model.Month
 import com.petapp.capybara.extensions.currentDateFull
 import com.petapp.capybara.extensions.currentDateMonthYear
 import kotlinx.android.synthetic.main.item_month.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 import com.petapp.capybara.data.model.Date as DateModel
 
 class CalendarPagerAdapter(private val context: Context) :
     RecyclerView.Adapter<CalendarPagerAdapter.MonthViewHolder>() {
 
-    private val adapter: SurveysAdapter =
-        SurveysAdapter(
+    private val adapter: SurveysDialogAdapter =
+        SurveysDialogAdapter(
             itemClick = {},
             addNewSurvey = {}
         )
@@ -98,6 +100,10 @@ class CalendarPagerAdapter(private val context: Context) :
                     MaterialDialog(context).show {
                         title(text = currentDateMonthYear(currentDate))
                         customListAdapter(this@CalendarPagerAdapter.adapter)
+                        val itemCount = getListAdapter()?.itemCount ?: 0
+                        getRecyclerView().addItemDecoration(
+                            MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_s), itemCount - 1)
+                        )
                     }
                 }
             }

@@ -77,13 +77,13 @@
         android:id="@+id/health_diary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/widget_elevation"
         android:layout_marginStart="@dimen/margin_m"
-        android:layout_marginEnd="@dimen/margin_m"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_s"
+        android:layout_marginEnd="@dimen/margin_m"
+        android:elevation="@dimen/widget_elevation"
         app:cardCornerRadius="@dimen/button_corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_name"
 
         >
@@ -91,7 +91,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_s">
+            android:padding="@dimen/margin_s"
+            >
 
             <TextView
                 android:id="@+id/blood_pressure_title"
@@ -109,8 +110,8 @@
                 style="@style/Main.Text.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="start"
                 android:layout_marginStart="@dimen/margin_l"
+                android:gravity="start"
                 app:layout_constraintStart_toEndOf="@id/blood_pressure_title"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="120/70 мм. рт. ст."
@@ -248,7 +249,7 @@
 
     <TextView
         android:id="@+id/change_color"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.MediumSmall"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="16dp"
@@ -263,7 +264,7 @@
 
     <TextView
         android:id="@+id/change_photo"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.MediumSmall"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
@@ -280,15 +281,16 @@
         android:id="@+id/delete_profile"
         style="@style/Main.Text.Small"
         android:layout_width="0dp"
+        android:visibility="gone"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_m"
+        android:background="@drawable/red_border_bgr"
+        android:gravity="center"
         android:text="@string/profile_delete"
-        app:drawableEndCompat="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/change_photo"
         />
 
     <androidx.constraintlayout.widget.Group
@@ -304,7 +306,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="name_layout, change_color, change_photo, delete_profile, done"
+        app:constraint_referenced_ids="name_layout, change_color, change_photo, done"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
