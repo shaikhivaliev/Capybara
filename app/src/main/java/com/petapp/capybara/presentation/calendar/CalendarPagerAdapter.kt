@@ -11,16 +11,19 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Month
 import com.petapp.capybara.extensions.currentDateFull
 import com.petapp.capybara.extensions.currentDateMonthYear
-import com.petapp.capybara.presentation.surveys.SurveysAdapter
 import kotlinx.android.synthetic.main.item_month.view.*
 import java.util.*
+import kotlin.collections.ArrayList
+import com.petapp.capybara.data.model.Date as DateModel
 
 class CalendarPagerAdapter(private val context: Context) :
     RecyclerView.Adapter<CalendarPagerAdapter.MonthViewHolder>() {
 
-    private val adapter: SurveysAdapter = SurveysAdapter(
-        itemClick = {}
-    )
+    private val adapter: SurveysAdapter =
+        SurveysAdapter(
+            itemClick = {},
+            addNewSurvey = {}
+        )
 
     val months = mutableListOf<Month>()
 
@@ -90,11 +93,10 @@ class CalendarPagerAdapter(private val context: Context) :
                     it.date == currentDateFull(currentDate)
                 }
                 if (currentSurveys.isNotEmpty()) {
-                    this@CalendarPagerAdapter.adapter.items = currentSurveys
+                    this@CalendarPagerAdapter.adapter.items = currentSurveys + DateModel(DEFAULT_ID, currentDate)
 
                     MaterialDialog(context).show {
-                        title(text = currentDateFull(currentDate))
-                        positiveButton(android.R.string.ok) { this.cancel() }
+                        title(text = currentDateMonthYear(currentDate))
                         customListAdapter(this@CalendarPagerAdapter.adapter)
                     }
                 }
@@ -110,5 +112,6 @@ class CalendarPagerAdapter(private val context: Context) :
         private const val FOR_STARTING_FROM_MONDAY = 2
         const val FIRST_DAY_OF_THE_MONTH = 1
         const val ONE_DAY = 1
+        const val DEFAULT_ID = 0L
     }
 }

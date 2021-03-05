@@ -31,9 +31,9 @@ class TypesRepositoryImplTest {
     @Test
     fun `should emit type`() {
         val expected = Stubs.TYPE_ENTITY
-        `when`(appDao.getType(Mockito.anyString())).thenReturn(Single.just(expected))
+        `when`(appDao.getType(Mockito.anyLong())).thenReturn(Single.just(expected))
 
-        repository.getType("ID")
+        repository.getType(0L)
             .test()
             .assertResult(expected.toType())
             .assertNoErrors()

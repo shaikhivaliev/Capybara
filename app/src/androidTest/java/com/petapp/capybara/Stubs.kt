@@ -13,6 +13,8 @@ object Stubs {
     private const val TYPE_ID = 303L
     private const val DATE = "some_date"
     private const val ICON = 303
+    private const val MONTH_YEAR = "some_month"
+    private const val PROFILE_ICON = "some_icon"
 
     val PROFILE_ENTITY = ProfileEntity(
         id = PROFILE_ID,
@@ -22,11 +24,13 @@ object Stubs {
     )
     val SURVEY_ENTITY = SurveyEntity(
         id = SURVEY_ID,
-        typeId = TYPE_ID.toString(),
-        profileId = PROFILE_ID.toString(),
+        typeId = TYPE_ID,
+        profileId = PROFILE_ID,
         color = COLOR,
         name = NAME,
-        date = DATE
+        date = DATE,
+        monthYear = MONTH_YEAR,
+        profileIcon = PROFILE_ICON
     )
 
     val TYPE_ENTITY = TypeEntity(

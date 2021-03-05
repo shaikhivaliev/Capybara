@@ -5,6 +5,7 @@ import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.database.AppDao
 import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.ONE_MONTH
+import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.TWO_MONTH
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function5
@@ -19,7 +20,7 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
 
     override fun getInitMonths(currentDate: Calendar): Single<Months> {
         val twoMonthAgo = (currentDate.clone() as Calendar).let {
-            it.add(Calendar.MONTH, -2)
+            it.add(Calendar.MONTH, -TWO_MONTH)
             currentDateMonthYear(it.time)
         }
         val previousMonth = (currentDate.clone() as Calendar).let {
@@ -32,7 +33,7 @@ class SurveysRepositoryImpl(private val appDao: AppDao) : SurveysRepository {
             currentDateMonthYear(it.time)
         }
         val nextTwoMonth = (currentDate.clone() as Calendar).let {
-            it.add(Calendar.MONTH, 2)
+            it.add(Calendar.MONTH, TWO_MONTH)
             currentDateMonthYear(it.time)
         }
 

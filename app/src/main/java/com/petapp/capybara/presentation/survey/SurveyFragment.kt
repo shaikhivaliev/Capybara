@@ -13,14 +13,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.customListAdapter
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
+import com.petapp.capybara.presentation.profiles.ProfilesAdapter
+import com.petapp.capybara.presentation.types.TypesAdapter
 import kotlinx.android.synthetic.main.fragment_survey.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -35,11 +36,21 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private val args: SurveyFragmentArgs by navArgs()
 
-    private val adapterTypesDialog: TypesDialogAdapter by lazy { TypesDialogAdapter() }
+    private val adapterTypesDialog: TypesAdapter = TypesAdapter(
+        itemClick = { type ->
+            currentType.value = type
+            typeIconDialog?.cancel()
+        }
+    )
 
-    private val adapterMarksDialog: MarksDialogAdapter by lazy { MarksDialogAdapter() }
+    private val adapterProfilesDialog: ProfilesAdapter = ProfilesAdapter(
+        itemClick = { profile ->
+            currentProfile.value = profile
+            profileMarkDialog?.cancel()
+        }
+    )
 
-    private val currentProfileMark = MutableLiveData<Mark>()
+    private val currentProfile = MutableLiveData<Profile>()
     private val currentType = MutableLiveData<Type>()
 
     private var typeIconDialog: MaterialDialog? = null
@@ -84,7 +95,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun showChangeTypeDialog(types: List<Type>) {
-        adapterTypesDialog.setDataSet(types)
+        adapterTypesDialog.items = types
 
         typeIconDialog = MaterialDialog(requireActivity()).show {
             title(R.string.type_caps)
@@ -93,13 +104,13 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         }
     }
 
-    private fun showChangeProfileDialog(marks: List<Mark>) {
-        adapterMarksDialog.setDataSet(marks)
+    private fun showChangeProfileDialog(marks: List<Profile>) {
+        adapterProfilesDialog.items = marks
 
         profileMarkDialog = MaterialDialog(requireActivity()).show {
             title(R.string.profile_caps)
             positiveButton(android.R.string.ok) { this.cancel() }
-            customListAdapter(adapterMarksDialog)
+            customListAdapter(adapterProfilesDialog)
         }
     }
 
@@ -115,14 +126,14 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                     type?.let { type_icon.setImageResource(it.icon) }
                 }
             })
-            marks.observe(viewLifecycleOwner, Observer { marks ->
-                change_survey_profile.setOnClickListener { showChangeProfileDialog(marks) }
+            profiles.observe(viewLifecycleOwner, Observer { profiles ->
+                change_survey_profile.setOnClickListener { showChangeProfileDialog(profiles) }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
-            currentProfileMark.observe(viewLifecycleOwner, Observer { mark ->
-                profile_mark.setBackgroundColor(mark.color)
+            currentProfile.observe(viewLifecycleOwner, Observer { profile ->
+                profile_mark.setBackgroundColor(profile.color)
             })
             currentType.observe(viewLifecycleOwner, Observer { type ->
                 type_icon.setImageResource(type.icon)
@@ -161,8 +172,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         return if (isFieldsValid()) {
             val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
             val typeId = requireNotNull(currentType.value?.id)
-            val profileId = requireNotNull(currentProfileMark.value?.id)
-            val color = requireNotNull(currentProfileMark.value?.color)
+            val profileId = requireNotNull(currentProfile.value?.id)
+            val color = requireNotNull(currentProfile.value?.color)
+            val profileIcon = requireNotNull(currentProfile.value?.photo)
             val name = survey_name_et.text.toString()
             val date = survey_date_et.text.toString()
             val time = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(date)
@@ -176,7 +188,8 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 color = color,
                 name = name,
                 date = date,
-                monthYear = monthYear
+                monthYear = monthYear,
+                profileIcon = profileIcon
             )
         } else {
             null
@@ -232,54 +245,10 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun isProfileSelected(): Boolean {
-        return if (currentProfileMark.value != null) true
+        return if (currentProfile.value != null) true
         else {
             requireActivity().toast(R.string.error_empty_profile)
             false
-        }
-    }
-
-    inner class TypesDialogAdapter : ListDelegationAdapter<MutableList<Any>>() {
-
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    TypesDialogAdapterDelegate(
-                        itemClick = {
-                            currentType.value = it
-                            typeIconDialog?.cancel()
-                        }
-                    )
-                )
-        }
-
-        fun setDataSet(types: List<Type>) {
-            items.clear()
-            items.addAll(types)
-            notifyDataSetChanged()
-        }
-    }
-
-    inner class MarksDialogAdapter : ListDelegationAdapter<MutableList<Any>>() {
-
-        init {
-            items = mutableListOf()
-            delegatesManager
-                .addDelegate(
-                    MarksDialogAdapterDelegate(
-                        itemClick = {
-                            currentProfileMark.value = it
-                            profileMarkDialog?.cancel()
-                        }
-                    )
-                )
-        }
-
-        fun setDataSet(marks: List<Mark>) {
-            items.clear()
-            items.addAll(marks)
-            notifyDataSetChanged()
         }
     }
 

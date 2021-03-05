@@ -2,7 +2,7 @@ package com.petapp.capybara.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
-import com.petapp.capybara.data.MarksRepository
+import com.petapp.capybara.data.ProfileRepository
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.presentation.surveys.SurveysViewModel
 import com.petapp.capybara.utils.RxRule
@@ -32,17 +32,17 @@ class SurveysViewModelTest {
     lateinit var repositorySurveys: SurveysRepository
 
     @Mock
-    lateinit var repositoryMarks: MarksRepository
+    lateinit var repositoryProfile: ProfileRepository
 
     @Mock
     lateinit var navController: NavController
 
     @Test
-    fun `should populate surveys and marks LiveData`() {
+    fun `should populate surveys and profiles LiveData`() {
         val expectedMarks = listOf(
-            Stubs.MARK,
-            Stubs.MARK,
-            Stubs.MARK
+            Stubs.PROFILE,
+            Stubs.PROFILE,
+            Stubs.PROFILE
         )
 
         val expectedSurveys = listOf(
@@ -50,15 +50,15 @@ class SurveysViewModelTest {
             Stubs.SURVEY,
             Stubs.SURVEY
         )
-        `when`(repositoryMarks.getMarks())
+        `when`(repositoryProfile.getProfiles())
             .thenReturn(Single.just(expectedMarks))
-        `when`(repositorySurveys.getSurveysByType(Mockito.anyString()))
+        `when`(repositorySurveys.getSurveysByType(Mockito.anyLong()))
             .thenReturn(Single.just(expectedSurveys))
-        val viewModel = SurveysViewModel(repositorySurveys, repositoryMarks, navController)
+        val viewModel = SurveysViewModel(repositorySurveys, repositoryProfile, navController, 0L)
 
-        viewModel.getSurveys("ID")
+        viewModel.getSurveys()
         val surveys = viewModel.surveys.getOrAwaitValue()
-        val marks = viewModel.marks.getOrAwaitValue()
+        val marks = viewModel.profiles.getOrAwaitValue()
 
         Assert.assertEquals(expectedMarks, marks)
         Assert.assertEquals(expectedSurveys, surveys)
@@ -67,19 +67,19 @@ class SurveysViewModelTest {
     @Test
     fun `should populate errorMessage LiveData when repository emit error`() {
 
-        val expectedMarks = listOf(
-            Stubs.MARK,
-            Stubs.MARK,
-            Stubs.MARK
+        val expectedProfiles = listOf(
+            Stubs.PROFILE,
+            Stubs.PROFILE,
+            Stubs.PROFILE
         )
         val expected = Stubs.SURVEYS_ERROR
-        `when`(repositoryMarks.getMarks())
-            .thenReturn(Single.just(expectedMarks))
-        `when`(repositorySurveys.getSurveysByType(Mockito.anyString()))
+        `when`(repositoryProfile.getProfiles())
+            .thenReturn(Single.just(expectedProfiles))
+        `when`(repositorySurveys.getSurveysByType(Mockito.anyLong()))
             .thenReturn(Single.error(RuntimeException("Timeout exception")))
-        val viewModel = SurveysViewModel(repositorySurveys, repositoryMarks, navController)
+        val viewModel = SurveysViewModel(repositorySurveys, repositoryProfile, navController, 0L)
 
-        viewModel.getSurveys("ID")
+        viewModel.getSurveys()
         val value = viewModel.errorMessage.getOrAwaitValue()
 
         Assert.assertEquals(expected, value)

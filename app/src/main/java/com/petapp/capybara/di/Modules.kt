@@ -40,7 +40,7 @@ val appModule = module {
     viewModel { (navController: NavController) ->
         CalendarViewModel(
             navController = navController,
-            repositoryMark = get(),
+            repositoryProfile = get(),
             repositorySurveys = get()
         )
     }
@@ -62,7 +62,7 @@ val appModule = module {
     viewModel { (navController: NavController, typeId: Long) ->
         SurveysViewModel(
             navController = navController,
-            repositoryMarks = get(),
+            repositoryProfile = get(),
             repositorySurveys = get(),
             typeId = typeId
         )
@@ -73,19 +73,17 @@ val appModule = module {
             navController = navController,
             repositorySurveys = get(),
             repositoryTypes = get(),
-            repositoryMarks = get()
+            repositoryProfile = get()
         )
     }
 
     viewModel { (navController: NavController) ->
         HealthDiaryViewModel(
             repositoryHealthDiary = get(),
-            repositoryMarks = get(),
+            repositoryProfile = get(),
             navController = navController
         )
     }
-
-    single<MarksRepository> { MarksRepositoryImpl(get()) }
 
     single<ProfileRepository> { ProfileRepositoryImpl(get()) }
 

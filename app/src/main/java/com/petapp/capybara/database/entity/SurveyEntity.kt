@@ -39,5 +39,7 @@ data class SurveyEntity(
     @ColumnInfo(name = "date")
     var date: String,
     @ColumnInfo(name = "month")
-    var monthYear: String
+    var monthYear: String,
+    @ColumnInfo(name = "profile_icon")
+    var profileIcon: String
 )

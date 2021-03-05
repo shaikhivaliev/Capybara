@@ -80,14 +80,14 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private fun initObservers() {
         with(viewModel) {
-            marks.observe(viewLifecycleOwner, Observer { marks ->
-                if (marks.isEmpty()) {
+            profiles.observe(viewLifecycleOwner, Observer { profiles ->
+                if (profiles.isEmpty()) {
                     showAlertEmptyProfiles()
                 } else {
-                    for (mark in marks) {
-                        val chip = createChip(requireContext(), mark, CHIP_PADDING)
+                    for (profile in profiles) {
+                        val chip = createChip(requireContext(), profile, CHIP_PADDING)
                         marks_group.addView(chip)
-                        chipIdToProfileId[chip.id] = mark.id
+                        chipIdToProfileId[chip.id] = profile.id
                     }
                     (marks_group[0] as? Chip)?.isChecked = true
                 }

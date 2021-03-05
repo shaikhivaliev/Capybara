@@ -1,6 +1,5 @@
 package com.petapp.capybara.data
 
-import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
@@ -10,23 +9,6 @@ import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
-
-fun ProfileEntity.toMark(): Mark {
-    return Mark(
-        id = id,
-        name = name,
-        color = color
-    )
-}
-
-fun List<ProfileEntity>.toMarks(): List<Mark> {
-    val marks = arrayListOf<Mark>()
-    for (profileEntity in this) {
-        val mark = profileEntity.toMark()
-        marks.add(mark)
-    }
-    return marks
-}
 
 fun ProfileEntity.toProfile(): Profile {
     return Profile(
@@ -73,19 +55,21 @@ fun SurveyEntity.toSurvey(): Survey {
         color = color,
         name = name,
         date = date,
-        monthYear = monthYear
+        monthYear = monthYear,
+        profileIcon = profileIcon
     )
 }
 
 fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
-        id = this.id,
-        typeId = this.typeId,
-        profileId = this.profileId,
-        color = this.color,
-        name = this.name,
-        date = this.date,
-        monthYear = this.monthYear
+        id = id,
+        typeId = typeId,
+        profileId = profileId,
+        color = color,
+        name = name,
+        date = date,
+        monthYear = monthYear,
+        profileIcon = profileIcon
     )
 }
 

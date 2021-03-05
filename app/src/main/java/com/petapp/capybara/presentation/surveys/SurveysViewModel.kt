@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
-import com.petapp.capybara.data.MarksRepository
+import com.petapp.capybara.common.BaseViewModel
+import com.petapp.capybara.data.ProfileRepository
 import com.petapp.capybara.data.SurveysRepository
-import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,13 +16,13 @@ import io.reactivex.schedulers.Schedulers
 
 class SurveysViewModel(
     private val repositorySurveys: SurveysRepository,
-    private val repositoryMarks: MarksRepository,
+    private val repositoryProfile: ProfileRepository,
     private val navController: NavController,
     private val typeId: Long
 ) : BaseViewModel() {
 
-    private val _marks = MutableLiveData<List<Mark>>()
-    val marks: LiveData<List<Mark>> get() = _marks
+    private val _profiles = MutableLiveData<List<Profile>>()
+    val profiles: LiveData<List<Profile>> get() = _profiles
 
     private val _surveys = MutableLiveData<List<Survey>>()
     val surveys: LiveData<List<Survey>> get() = _surveys
@@ -37,17 +37,17 @@ class SurveysViewModel(
     }
 
     private fun getMarks() {
-        repositoryMarks.getMarks()
+        repositoryProfile.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _marks.value = it
-                    Log.d(TAG, "get marks success")
+                    _profiles.value = it
+                    Log.d(TAG, "get profiles success")
                 },
                 {
                     _errorMessage.value = R.string.error_get_marks
-                    Log.d(TAG, "get marks error")
+                    Log.d(TAG, "get profiles error")
                 }
             ).connect()
     }

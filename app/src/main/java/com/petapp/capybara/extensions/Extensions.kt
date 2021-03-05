@@ -18,7 +18,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.presentation.survey.SurveyFragment
 import java.io.File
 import java.text.SimpleDateFormat
@@ -53,16 +53,16 @@ fun currentDateMonthYear(date: Date): String {
     return SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date).capitalize()
 }
 
-fun createChip(context: Context, mark: Mark, padding: Float): Chip {
+fun createChip(context: Context, profile: Profile, padding: Float): Chip {
     val chip = Chip(context)
     chip.apply {
         chipEndPadding = padding
         chipStartPadding = padding
-        text = mark.name
+        text = profile.name
         setTextColor(ContextCompat.getColor(context, android.R.color.black))
         isCheckable = true
         checkedIcon = ContextCompat.getDrawable(context, R.drawable.ic_done_black)
-        chipBackgroundColor = ColorStateList.valueOf(mark.color)
+        chipBackgroundColor = ColorStateList.valueOf(profile.color)
     }
     return chip
 }

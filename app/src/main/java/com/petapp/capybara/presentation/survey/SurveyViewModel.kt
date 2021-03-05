@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
-import com.petapp.capybara.data.MarksRepository
+import com.petapp.capybara.common.BaseViewModel
+import com.petapp.capybara.data.ProfileRepository
 import com.petapp.capybara.data.SurveysRepository
 import com.petapp.capybara.data.TypesRepository
-import com.petapp.capybara.data.model.Mark
+import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.navigateWith
@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 class SurveyViewModel(
     private val repositorySurveys: SurveysRepository,
     private val repositoryTypes: TypesRepository,
-    private val repositoryMarks: MarksRepository,
+    private val repositoryProfile: ProfileRepository,
     private val navController: NavController
 ) : BaseViewModel() {
 
@@ -29,8 +29,8 @@ class SurveyViewModel(
     private val _survey = MutableLiveData<Survey>()
     val survey: LiveData<Survey> get() = _survey
 
-    private val _marks = MutableLiveData<List<Mark>>()
-    val marks: LiveData<List<Mark>> get() = _marks
+    private val _profiles = MutableLiveData<List<Profile>>()
+    val profiles: LiveData<List<Profile>> get() = _profiles
 
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
@@ -71,17 +71,17 @@ class SurveyViewModel(
     }
 
     private fun getMarks() {
-        repositoryMarks.getMarks()
+        repositoryProfile.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _marks.value = it
-                    Log.d(TAG, "get marks success")
+                    _profiles.value = it
+                    Log.d(TAG, "get profiles success")
                 },
                 {
                     _errorMessage.value = R.string.error_get_marks
-                    Log.d(TAG, "get marks error")
+                    Log.d(TAG, "get profiles error")
                 }
             ).connect()
     }

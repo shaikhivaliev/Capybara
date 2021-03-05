@@ -168,14 +168,14 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
     private fun initObservers() {
         with(viewModel) {
-            marks.observe(viewLifecycleOwner, Observer { marks ->
-                if (marks.isEmpty()) {
+            profiles.observe(viewLifecycleOwner, Observer { profiles ->
+                if (profiles.isEmpty()) {
                     showAlertEmptyProfiles()
                 } else {
-                    for (mark in marks) {
-                        val chip = createChip(requireContext(), mark, SurveysFragment.CHIP_PADDING)
+                    for (profile in profiles) {
+                        val chip = createChip(requireContext(), profile, SurveysFragment.CHIP_PADDING)
                         marks_group.addView(chip)
-                        chipIdToProfileId[chip.id] = mark.id
+                        chipIdToProfileId[chip.id] = profile.id
                     }
                     if (args.profileId != 0L) {
                         val index = chipIdToProfileId.filterValues { it == args.profileId }.keys.first()
