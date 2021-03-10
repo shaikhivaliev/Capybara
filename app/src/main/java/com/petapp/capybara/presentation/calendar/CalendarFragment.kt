@@ -122,8 +122,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             Month(surveys.nextMonthSurveys, nextMonth),
             Month(surveys.nextTwoMonthSurveys, nextTwoMonth)
         )
-        monthAdapter.setInitMonths(months)
-
+        monthAdapter.updateMonths(months)
         month_pager.setCurrentItem(2, false)
     }
 

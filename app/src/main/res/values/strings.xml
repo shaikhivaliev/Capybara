@@ -34,6 +34,9 @@
     <string name="profile_delete_photo">Удалить фотографию</string>
     <string name="profile_delete">Удалить профиль</string>
     <string name="profile_item_health_diary_empty">нет данных</string>
+    <string name="profile_image_picker_camera">Камера</string>
+    <string name="profile_image_picker_gallery">Галерея</string>
+    <string name="profile_image_picker_dialog_title">Добавить фотографию:</string>
 
     <!-- survey-->
     <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>

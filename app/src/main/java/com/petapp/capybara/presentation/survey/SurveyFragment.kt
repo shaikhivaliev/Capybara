@@ -146,12 +146,12 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
-            currentProfile.observe(viewLifecycleOwner, Observer { profile ->
-                //profile_mark.setBackgroundColor(profile.color)
-            })
-            currentType.observe(viewLifecycleOwner, Observer { type ->
-                // type_icon.setImageResource(type.icon)
-            })
+//            currentProfile.observe(viewLifecycleOwner, Observer { profile ->
+//                profile_mark.setBackgroundColor(profile.color)
+//            })
+//            currentType.observe(viewLifecycleOwner, Observer { type ->
+//                 type_icon.setImageResource(type.icon)
+//            })
         }
     }
 

@@ -40,7 +40,7 @@ class CalendarPagerAdapter(private val context: Context) :
         setupCalendar(months[position], this)
     }
 
-    fun setInitMonths(months: List<Month>) {
+    fun updateMonths(months: List<Month>) {
         this.months.clear()
         this.months.addAll(months)
         notifyDataSetChanged()

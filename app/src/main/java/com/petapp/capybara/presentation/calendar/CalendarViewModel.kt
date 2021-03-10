@@ -38,7 +38,7 @@ class CalendarViewModel(
     val profileId = MutableLiveData<Long>()
 
     init {
-        getMarks()
+        getProfiles()
     }
 
     fun getInitMonths(currentDate: Calendar) {
@@ -95,7 +95,7 @@ class CalendarViewModel(
             ).connect()
     }
 
-    private fun getMarks() {
+    private fun getProfiles() {
         repositoryProfile.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

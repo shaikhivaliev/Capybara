@@ -16,14 +16,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
+import com.afollestad.materialdialogs.list.customListAdapter
+import com.afollestad.materialdialogs.list.getListAdapter
+import com.afollestad.materialdialogs.list.getRecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.petapp.capybara.R
+import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.data.model.ImagePicker
+import com.petapp.capybara.data.model.ImagePickerType
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.extensions.hideKeyboard
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import kotlinx.android.synthetic.main.dialog_choose_pick_image.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -40,6 +44,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val currentColor = MutableLiveData<Int>()
 
+    private val adapterImagePickerDialog: ImagePickerDialogAdapter = ImagePickerDialogAdapter(
+        itemClick = { imagePicker ->
+            when (imagePicker.type) {
+                ImagePickerType.CAMERA -> viewModel.createImageFile(requireActivity())
+                ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
+            }
+            imagePickerDialog?.cancel()
+        }
+    )
+
+    private var imagePickerDialog: MaterialDialog? = null
+
     private val imageFromCamera =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
             if (success) {
@@ -51,6 +67,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 currentPhotoUri = args.profile?.photo
             }
         }
+    private val CAMERA = ImagePicker(
+        ImagePickerType.CAMERA.ordinal.toLong(),
+        ImagePickerType.CAMERA,
+        R.string.profile_image_picker_camera,
+        R.drawable.ic_camera
+    )
+
+    private val GALLERY = ImagePicker(
+        ImagePickerType.GALLERY.ordinal.toLong(),
+        ImagePickerType.GALLERY,
+        R.string.profile_image_picker_gallery,
+        R.drawable.ic_gallery
+    )
 
     private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.apply {
@@ -91,6 +120,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         done.setOnClickListener {
+            delete_profile.isVisible = false
             if (args.profile != null) {
                 done.hideKeyboard()
                 viewModel.updateProfile(profileBuilder())
@@ -102,7 +132,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         name_et.doAfterTextChanged { name_layout.error = null }
 
-        change_photo.setOnClickListener { pickImages() }
+        change_photo.setOnClickListener { pickImages(listOf(CAMERA, GALLERY)) }
 
         change_color.setOnClickListener { startColorDialog() }
 
@@ -167,19 +197,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun pickImages() {
-        val bottomSheet = layoutInflater.inflate(R.layout.dialog_choose_pick_image, null)
-        val dialog = BottomSheetDialog(this.requireContext())
-        dialog.setContentView(bottomSheet)
-        bottomSheet.add_photo_from_camera.setOnClickListener {
-            viewModel.createImageFile(requireActivity())
-            dialog.dismiss()
+    private fun pickImages(items: List<ImagePicker>) {
+
+        adapterImagePickerDialog.items = items
+
+        imagePickerDialog = MaterialDialog(requireActivity()).show {
+            title(R.string.profile_image_picker_dialog_title)
+            customListAdapter(adapterImagePickerDialog)
+            val itemCount = getListAdapter()?.itemCount ?: 0
+            getRecyclerView().addItemDecoration(
+                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_ml), itemCount - 1)
+            )
         }
-        bottomSheet.add_photo_from_gallery.setOnClickListener {
-            imageFromGallery.launch("image/*")
-            dialog.dismiss()
-        }
-        dialog.show()
     }
 
     private fun startColorDialog() {
