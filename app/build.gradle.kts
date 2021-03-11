@@ -24,7 +24,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore/keystore.jks")
+            storeFile = file("keystore/my_app_keystore")
             storePassword = System.getenv("KEYSTORE_PASSWORD")
             keyAlias = System.getenv("RELEASE_SIGN_KEY_ALIAS")
             keyPassword = System.getenv("RELEASE_SIGN_KEY_PASSWORD")
@@ -35,7 +35,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            signingConfig = signingConfigs["release"]
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile(
                     "proguard-android-optimize.txt"
@@ -104,7 +104,6 @@ dependencies {
 
     // material dialog
     implementation("com.afollestad.material-dialogs:core:3.3.0")
-
     implementation("com.afollestad.material-dialogs:color:3.2.1")
 
     // firebase core
