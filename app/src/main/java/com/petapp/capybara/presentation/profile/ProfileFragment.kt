@@ -67,14 +67,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 currentPhotoUri = args.profile?.photo
             }
         }
-    private val CAMERA = ImagePicker(
+    private val camera = ImagePicker(
         ImagePickerType.CAMERA.ordinal.toLong(),
         ImagePickerType.CAMERA,
         R.string.profile_image_picker_camera,
         R.drawable.ic_camera
     )
 
-    private val GALLERY = ImagePicker(
+    private val gallery = ImagePicker(
         ImagePickerType.GALLERY.ordinal.toLong(),
         ImagePickerType.GALLERY,
         R.string.profile_image_picker_gallery,
@@ -132,7 +132,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         name_et.doAfterTextChanged { name_layout.error = null }
 
-        change_photo.setOnClickListener { pickImages(listOf(CAMERA, GALLERY)) }
+        change_photo.setOnClickListener { pickImages(listOf(camera, gallery)) }
 
         change_color.setOnClickListener { startColorDialog() }
 

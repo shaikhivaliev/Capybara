@@ -7,5 +7,5 @@ object ListItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
         oldItem == newItem
 
     override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem): Boolean =
-        oldItem == newItem
+        oldItem.id == newItem.id
 }

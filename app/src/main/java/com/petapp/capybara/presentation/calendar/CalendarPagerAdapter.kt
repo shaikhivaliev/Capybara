@@ -101,9 +101,15 @@ class CalendarPagerAdapter(private val context: Context) :
                         title(text = currentDateMonthYear(currentDate))
                         customListAdapter(this@CalendarPagerAdapter.adapter)
                         val itemCount = getListAdapter()?.itemCount ?: 0
-                        getRecyclerView().addItemDecoration(
-                            MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_s), itemCount - 1)
-                        )
+                        with(getRecyclerView()) {
+                            itemAnimator = null
+                            addItemDecoration(
+                                MarginItemDecoration(
+                                    resources.getDimensionPixelSize(R.dimen.margin_s),
+                                    itemCount - 1
+                                )
+                            )
+                        }
                     }
                 }
             }

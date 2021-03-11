@@ -19,6 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin_s"
+        android:layout_marginHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_m"
         tools:listitem="@layout/item_profile" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

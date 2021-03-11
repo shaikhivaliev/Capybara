@@ -23,6 +23,7 @@ object Stubs {
     const val SURVEYS_ERROR = R.string.error_get_surveys
     const val TYPES_ERROR = R.string.error_get_types
     private const val PROFILE_ICON = "some_icon"
+    private const val TYPE_ICON = 505
 
     val PROFILE_ENTITY = ProfileEntity(
         id = ID_LONG,
@@ -44,7 +45,8 @@ object Stubs {
         name = NAME,
         date = DATE,
         monthYear = MONTH,
-        profileIcon = PROFILE_ICON
+        profileIcon = PROFILE_ICON,
+        typeIcon = TYPE_ICON
     )
 
     val SURVEY = Survey(
@@ -55,7 +57,8 @@ object Stubs {
         name = NAME,
         date = DATE,
         monthYear = MONTH,
-        profileIcon = PROFILE_ICON
+        profileIcon = PROFILE_ICON,
+        typeIcon = TYPE_ICON
     )
 
     val TYPE_ENTITY = TypeEntity(

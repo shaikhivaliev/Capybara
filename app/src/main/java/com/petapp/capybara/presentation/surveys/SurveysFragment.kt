@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
+import com.petapp.capybara.common.MarginItemDecoration
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
-import com.petapp.capybara.presentation.calendar.SurveysDialogAdapter
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -27,29 +27,34 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         parametersOf(findNavController(), args.typeId)
     }
 
-    private val adapter: SurveysDialogAdapter = SurveysDialogAdapter(
-        itemClick = { viewModel.openSurveyScreen(it) },
-        addNewSurvey = {}
+    private val adapter: SurveysAdapter = SurveysAdapter(
+        itemClick = { viewModel.openSurveyScreen(it) }
     )
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews(view)
         initObservers()
+        initRecycler()
         add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
-    }
-
-    private fun initViews(view: View) {
-        with(recycler_view) {
-            this.layoutManager = LinearLayoutManager(context)
-            adapter = this@SurveysFragment.adapter
-        }
-
         marks_group.setOnCheckedChangeListener { _, checkedId ->
             viewModel.profileId.value = chipIdToProfileId[checkedId]
             viewModel.getSurveys()
+        }
+    }
+
+    private fun initRecycler() {
+        with(recycler_view) {
+            this.layoutManager = LinearLayoutManager(context)
+            adapter = this@SurveysFragment.adapter
+            addItemDecoration(
+                MarginItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.margin_ml),
+                    this@SurveysFragment.adapter.itemCount - 1
+                )
+            )
+            itemAnimator = null
         }
     }
 

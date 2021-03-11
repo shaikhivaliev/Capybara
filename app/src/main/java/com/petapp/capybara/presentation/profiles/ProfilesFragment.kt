@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petapp.capybara.R
+import com.petapp.capybara.common.MarginItemDecoration
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_profiles.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,12 +28,21 @@ class ProfilesFragment : Fragment(R.layout.fragment_profiles) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getProfiles()
         initObservers()
+        initRecycler()
+        add_profile.setOnClickListener { viewModel.openProfileScreen(null) }
+    }
 
+    private fun initRecycler() {
         with(recycler_view) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@ProfilesFragment.adapter
+            addItemDecoration(
+                MarginItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.margin_ml),
+                    this@ProfilesFragment.adapter.itemCount - 1
+                )
+            )
         }
-        add_profile.setOnClickListener { viewModel.openProfileScreen(null) }
     }
 
     private fun initObservers() {

@@ -56,7 +56,8 @@ fun SurveyEntity.toSurvey(): Survey {
         name = name,
         date = date,
         monthYear = monthYear,
-        profileIcon = profileIcon
+        profileIcon = profileIcon,
+        typeIcon = typeIcon
     )
 }
 
@@ -69,7 +70,8 @@ fun Survey.toSurveyEntity(): SurveyEntity {
         name = name,
         date = date,
         monthYear = monthYear,
-        profileIcon = profileIcon
+        profileIcon = profileIcon,
+        typeIcon = typeIcon
     )
 }
 

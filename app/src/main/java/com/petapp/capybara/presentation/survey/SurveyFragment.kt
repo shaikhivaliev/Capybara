@@ -136,22 +136,24 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             types.observe(viewLifecycleOwner, Observer { types ->
                 change_survey_type.setOnClickListener { showChangeTypeDialog(types) }
                 if (args.survey?.typeId != null) {
-                    val type = types.find { it.id == args.survey?.typeId }
-                    // type?.let { type_icon.setImageResource(it.icon) }
+                    currentType.value = types.find { it.id == args.survey?.typeId }
                 }
             })
             profiles.observe(viewLifecycleOwner, Observer { profiles ->
                 change_survey_profile.setOnClickListener { showChangeProfileDialog(profiles) }
+                if (args.survey?.profileId != null) {
+                    currentProfile.value = profiles.find { it.id == args.survey?.profileId }
+                }
             })
             errorMessage.observe(viewLifecycleOwner, Observer { error ->
                 requireActivity().toast(error)
             })
-//            currentProfile.observe(viewLifecycleOwner, Observer { profile ->
-//                profile_mark.setBackgroundColor(profile.color)
-//            })
-//            currentType.observe(viewLifecycleOwner, Observer { type ->
-//                 type_icon.setImageResource(type.icon)
-//            })
+            currentProfile.observe(viewLifecycleOwner, Observer { profile ->
+                change_survey_profile.text = profile.name
+            })
+            currentType.observe(viewLifecycleOwner, Observer { type ->
+                change_survey_type.text = type.name
+            })
         }
     }
 
@@ -176,7 +178,6 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun setSurvey(survey: Survey) {
-        // profile_mark.setBackgroundColor(survey.color)
         survey_name.text = survey.name
         survey_date.text = survey.date
     }
@@ -188,6 +189,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             val profileId = requireNotNull(currentProfile.value?.id)
             val color = requireNotNull(currentProfile.value?.color)
             val profileIcon = requireNotNull(currentProfile.value?.photo)
+            val typeIcon = requireNotNull(currentType.value?.icon)
             val name = survey_name_et.text.toString()
             val date = survey_date_et.text.toString()
             val time = dateFormat.parse(date)
@@ -201,7 +203,8 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
                 name = name,
                 date = date,
                 monthYear = monthYear,
-                profileIcon = profileIcon
+                profileIcon = profileIcon,
+                typeIcon = typeIcon
             )
         } else {
             null

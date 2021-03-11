@@ -37,7 +37,7 @@ class SurveyViewModel(
 
     init {
         getTypes()
-        getMarks()
+        getProfiles()
     }
 
     private fun getTypes() {
@@ -70,7 +70,7 @@ class SurveyViewModel(
             ).connect()
     }
 
-    private fun getMarks() {
+    private fun getProfiles() {
         repositoryProfile.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

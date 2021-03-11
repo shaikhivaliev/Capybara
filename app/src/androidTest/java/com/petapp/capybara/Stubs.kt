@@ -15,6 +15,7 @@ object Stubs {
     private const val ICON = 303
     private const val MONTH_YEAR = "some_month"
     private const val PROFILE_ICON = "some_icon"
+    private const val TYPE_ICON = 505
 
     val PROFILE_ENTITY = ProfileEntity(
         id = PROFILE_ID,
@@ -30,7 +31,8 @@ object Stubs {
         name = NAME,
         date = DATE,
         monthYear = MONTH_YEAR,
-        profileIcon = PROFILE_ICON
+        profileIcon = PROFILE_ICON,
+        typeIcon = TYPE_ICON
     )
 
     val TYPE_ENTITY = TypeEntity(

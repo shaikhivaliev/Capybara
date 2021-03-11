@@ -13,5 +13,6 @@ data class Survey(
     val name: String,
     val date: String,
     val monthYear: String,
-    val profileIcon: String
+    val profileIcon: String,
+    val typeIcon: Int
 ) : Parcelable, ListItem
