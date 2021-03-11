@@ -38,7 +38,7 @@ class SurveysViewModelTest {
     lateinit var navController: NavController
 
     @Test
-    fun `should populate surveys and profiles LiveData`() {
+    fun `should populate profiles LiveData`() {
         val expectedMarks = listOf(
             Stubs.PROFILE,
             Stubs.PROFILE,
@@ -57,11 +57,9 @@ class SurveysViewModelTest {
         val viewModel = SurveysViewModel(repositorySurveys, repositoryProfile, navController, 0L)
 
         viewModel.getSurveys()
-        val surveys = viewModel.surveys.getOrAwaitValue()
         val marks = viewModel.profiles.getOrAwaitValue()
 
         Assert.assertEquals(expectedMarks, marks)
-        Assert.assertEquals(expectedSurveys, surveys)
     }
 
     @Test
