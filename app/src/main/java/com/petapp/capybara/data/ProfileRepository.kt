@@ -8,11 +8,11 @@ interface ProfileRepository {
 
     fun getProfiles(): Single<List<Profile>>
 
-    fun getProfile(profileId: String): Single<Profile>
+    fun getProfile(profileId: Long): Single<Profile>
 
     fun createProfile(profile: Profile): Completable
 
     fun updateProfile(profile: Profile): Completable
 
-    fun deleteProfile(profileId: String): Completable
+    fun deleteProfile(profileId: Long): Completable
 }

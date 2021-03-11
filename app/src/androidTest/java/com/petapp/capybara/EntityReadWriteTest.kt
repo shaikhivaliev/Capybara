@@ -37,7 +37,7 @@ class EntityReadWriteTest {
         database.appDao().createType(type)
 
         database.appDao()
-            .getType(type.id.toString())
+            .getType(type.id)
             .test()
             .assertValue {
                 it.id == type.id && it.name == type.name
@@ -54,7 +54,7 @@ class EntityReadWriteTest {
         database.appDao().createSurvey(survey)
 
         database.appDao()
-            .getSurvey(survey.id.toString())
+            .getSurvey(survey.id)
             .test()
             .assertValue {
                 it.id == survey.id && it.name == survey.name
@@ -67,7 +67,7 @@ class EntityReadWriteTest {
         database.appDao().createProfile(profile)
 
         database.appDao()
-            .getProfile(profile.id.toString())
+            .getProfile(profile.id)
             .test()
             .assertValue {
                 it.id == profile.id && it.name == profile.name

@@ -34,9 +34,9 @@ class SurveysRepositoryImplTest {
     @Test
     fun `should emit survey`() {
         val expected = Stubs.SURVEY_ENTITY
-        `when`(appDao.getSurvey(Mockito.anyString())).thenReturn(Single.just(expected))
+        `when`(appDao.getSurvey(Mockito.anyLong())).thenReturn(Single.just(expected))
 
-        repository.getSurvey("ID")
+        repository.getSurvey(0L)
             .test()
             .assertResult(expected.toSurvey())
             .assertNoErrors()
@@ -49,9 +49,9 @@ class SurveysRepositoryImplTest {
             Stubs.SURVEY_ENTITY,
             Stubs.SURVEY_ENTITY
         )
-        `when`(appDao.getSurveysByType(Mockito.anyString())).thenReturn(Single.just(expected))
+        `when`(appDao.getSurveysByType(Mockito.anyLong())).thenReturn(Single.just(expected))
 
-        repository.getSurveysByType("ID")
+        repository.getSurveysByType(0L)
             .test()
             .assertResult(expected.toSurveys())
             .assertNoErrors()

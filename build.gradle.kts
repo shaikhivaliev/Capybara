@@ -6,15 +6,15 @@ buildscript {
 
     dependencies {
         val kotlinVersion = "1.4.0"
-        classpath("com.android.tools.build:gradle:4.0.1")
+        classpath("com.android.tools.build:gradle:4.1.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.google.gms:google-services:4.3.3")
+        classpath("com.google.gms:google-services:4.3.4")
         classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0")
     }
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.12.0")
+    id("io.gitlab.arturbosch.detekt").version("1.16.0-RC1")
 }
 
 allprojects {
@@ -82,6 +82,6 @@ tasks.register<JavaExec>("ktlintCheck") {
         "--android",
         "--editorconfig=" + file(".editorconfig").path,
         "--reporter=plain?group_by_file",
-        "--disabled_rules=final-newline,import-ordering,no-wildcard-imports"
+        "--disabled_rules=final-newline,import-ordering,no-wildcard-imports,Missing newline after"
     ) + allprojects.map { it.file("src").path + "/**/*.kt" }
 }

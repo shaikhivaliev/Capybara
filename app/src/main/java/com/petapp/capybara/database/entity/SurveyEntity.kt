@@ -29,9 +29,9 @@ data class SurveyEntity(
     @ColumnInfo(name = "id")
     val id: Long = 0,
     @ColumnInfo(name = "type_id")
-    val typeId: String,
+    val typeId: Long,
     @ColumnInfo(name = "profile_id")
-    val profileId: String,
+    val profileId: Long,
     @ColumnInfo(name = "color")
     val color: Int,
     @ColumnInfo(name = "title")
@@ -39,5 +39,9 @@ data class SurveyEntity(
     @ColumnInfo(name = "date")
     var date: String,
     @ColumnInfo(name = "month")
-    var month: String
+    var monthYear: String,
+    @ColumnInfo(name = "profile_icon")
+    var profileIcon: String,
+    @ColumnInfo(name = "type_icon")
+    var typeIcon: Int
 )

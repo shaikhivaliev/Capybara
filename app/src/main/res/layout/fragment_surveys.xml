@@ -7,10 +7,18 @@
     android:layout_height="match_parent"
     >
 
-    <include
+    <TextView
         android:id="@+id/mock"
-        layout="@layout/view_mock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/Main.Text.Medium"
+        android:gravity="center"
+        android:text="@string/survey_mock"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mark_group_container"
         />
 
     <HorizontalScrollView
@@ -28,6 +36,7 @@
             android:layout_height="match_parent"
             app:chipSpacingHorizontal="8dp"
             app:singleLine="true"
+            app:selectionRequired="true"
             app:singleSelection="true"
             />
     </HorizontalScrollView>
@@ -38,6 +47,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_m"
+        android:layout_marginHorizontal="@dimen/margin_m"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mark_group_container"
         tools:listitem="@layout/item_survey"

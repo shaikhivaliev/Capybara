@@ -18,19 +18,35 @@
     <style name="Main.Text.Small" parent="">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/neutral_n60</item>
+        <item name="android:textColor">@color/main_black</item>
+    </style>
+
+    <style name="Main.Text.MediumSmall" parent="">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/main_black</item>
     </style>
 
     <style name="Main.Text.Medium" parent="">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/neutral_n60</item>
+        <item name="android:textColor">@color/main_black</item>
     </style>
 
     <style name="Main.Text.Large" parent="">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/neutral_n60</item>
+        <item name="android:textColor">@color/main_black</item>
+    </style>
+
+    <style name="AppThemeFirebaseAuth" parent="AppTheme">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay" parent="">
+        <item name="cornerSize">50%</item>
     </style>
 
 </resources>

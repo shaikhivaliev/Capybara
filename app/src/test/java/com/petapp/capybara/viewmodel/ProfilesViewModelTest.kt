@@ -3,7 +3,7 @@ package com.petapp.capybara.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
 import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.profiles.ProfilesViewModel
+import com.petapp.capybara.presentation.profiles.ProfilesViewModel
 import com.petapp.capybara.utils.RxRule
 import com.petapp.capybara.utils.Stubs
 import com.petapp.capybara.utils.getOrAwaitValue

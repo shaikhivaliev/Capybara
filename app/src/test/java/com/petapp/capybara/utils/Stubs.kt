@@ -1,7 +1,6 @@
 package com.petapp.capybara.utils
 
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
@@ -13,17 +12,18 @@ import com.petapp.capybara.database.entity.TypeWithSurveys
 object Stubs {
     private const val NAME = "some_name"
     private const val ID_LONG = 101L
-    private const val ID_STRING = "some_string"
     private const val COLOR = 202
     private const val PHOTO = "some_photo_url"
-    private const val TYPE_ID = "some_type_id"
-    private const val PROFILE_ID = "some_profile_id"
+    private const val TYPE_ID = 303L
+    private const val PROFILE_ID = 404L
     private const val DATE = "some_date"
     private const val ICON = 303
     private const val MONTH = "June"
     const val PROFILES_ERROR = R.string.error_get_profiles
     const val SURVEYS_ERROR = R.string.error_get_surveys
     const val TYPES_ERROR = R.string.error_get_types
+    private const val PROFILE_ICON = "some_icon"
+    private const val TYPE_ICON = 505
 
     val PROFILE_ENTITY = ProfileEntity(
         id = ID_LONG,
@@ -32,7 +32,7 @@ object Stubs {
         photo = PHOTO
     )
     val PROFILE = Profile(
-        id = ID_STRING,
+        id = ID_LONG,
         name = NAME,
         color = COLOR,
         photo = PHOTO
@@ -44,17 +44,21 @@ object Stubs {
         color = COLOR,
         name = NAME,
         date = DATE,
-        month = MONTH
+        monthYear = MONTH,
+        profileIcon = PROFILE_ICON,
+        typeIcon = TYPE_ICON
     )
 
     val SURVEY = Survey(
-        id = ID_STRING,
+        id = ID_LONG,
         typeId = TYPE_ID,
         profileId = PROFILE_ID,
         color = COLOR,
         name = NAME,
         date = DATE,
-        month = MONTH
+        monthYear = MONTH,
+        profileIcon = PROFILE_ICON,
+        typeIcon = TYPE_ICON
     )
 
     val TYPE_ENTITY = TypeEntity(
@@ -64,15 +68,9 @@ object Stubs {
     )
 
     val TYPE = Type(
-        id = ID_STRING,
+        id = ID_LONG,
         name = NAME,
         icon = ICON
-    )
-
-    val MARK = Mark(
-        id = ID_STRING,
-        name = NAME,
-        color = COLOR
     )
 
     val TYPE_SURVEYS = TypeWithSurveys(

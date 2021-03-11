@@ -6,6 +6,15 @@
     <string name="name">Имя</string>
     <string name="surveys_amount">Исследований:</string>
     <string name="repeat">Повторить</string>
+    <string name="save">СОХРАНИТЬ</string>
+    <string name="cancel">ОТМЕНА</string>
+    <string name="dev_email">capybaraaplication@gmail.com</string>
+    <string name="email_subject">Capybara app feedback</string>
+
+    <!-- auth-->
+    <string name="auth_phone">Войти по номеру телефона</string>
+    <string name="auth_mail">Войти по адресу электронной почты</string>
+    <string name="auth_google">Войти через аккаунт Google</string>
 
     <!-- tabs-->
     <string name="tab_list">Исследования</string>
@@ -17,34 +26,46 @@
     <string name="profile_name_hint">Изменить имя</string>
     <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
-    <string name="profile_mock">Список пуст</string>
+    <string name="profile_mock">Пока не создано ни одного\nпрофиля</string>
     <string name="profile">профиль</string>
     <string name="profile_caps">Профиль</string>
     <string name="profile_choose_color">Изменить цвет</string>
     <string name="profile_change_photo">Изменить фотографию</string>
     <string name="profile_delete_photo">Удалить фотографию</string>
     <string name="profile_delete">Удалить профиль</string>
+    <string name="profile_item_health_diary_empty">нет данных</string>
+    <string name="profile_image_picker_camera">Камера</string>
+    <string name="profile_image_picker_gallery">Галерея</string>
+    <string name="profile_image_picker_dialog_title">Добавить фотографию:</string>
 
     <!-- survey-->
     <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
     <string name="survey_delete_explanation_empty">Вы действительно хотите удалить исследование?</string>
-    <string name="survey_incomplete_data">Создайте хотя бы один %1$s, чтобы затем создать запись исследования</string>
+    <string name="survey_incomplete_data">Создайте хотя бы один профиль, чтобы затем создать запись исследования</string>
     <string name="survey_delete">Удалить исследование</string>
-    <string name="survey_change_survey_type">Изменить тип исследования</string>
-    <string name="survey_change_survey_profile">Изменить профиль</string>
+    <string name="survey_change_survey_type">Тип исследования</string>
+    <string name="survey_change_survey_profile">Профиль</string>
     <string name="survey_name">Название исследования</string>
     <string name="survey_date">Дата исследования</string>
+    <string name="survey_mock">У вас пока нет записей</string>
+    <string name="survey_add_new_survey">Добавить\nисследование</string>
 
     <!-- settings-->
     <string name="settings_feedback">Обратная связь</string>
     <string name="settings_about_app">О приложении</string>
-    <string name="settings_rules">Правила</string>
+    <string name="settings_rules">Политика конфиденциальности</string>
     <string name="settings_exit">Выход</string>
+    <string name="settings_capybara_title">Capybara app</string>
+    <string name="settings_app_version">Версия %1$s</string>
+    <string name="settings_rate_app">Оцените приложение</string>
+    <string name="settings_share_link">Поделиться</string>
 
     <!-- type-->
-    <string name="type_default_blood">Кровь</string>
-    <string name="type_default_heart">Сердце</string>
-    <string name="type_default_teeth">Стоматолог</string>
+    <string name="type_default_health_diary">Дневник здоровья</string>
+    <string name="type_default_vaccinations">Прививки</string>
+    <string name="type_default_analyzes">Анализы</string>
+    <string name="type_default_recipes">Рецепты</string>
+    <string name="type_default_surveys">Исследования</string>
     <string name="type">тип исследования</string>
     <string name="type_caps">Тип исследования</string>
     <string name="type_title">Тип</string>
@@ -53,6 +74,36 @@
     <string name="type_change_icon">Изменить иконку</string>
     <string name="type_delete_surveys_type">Удалить тип исследования</string>
     <string name="type_name">Название типа</string>
+    <string name="type_mock">Пока не создано ни одного\nтипа исследований</string>
+
+    <!-- health diary-->
+    <string name="health_diary_blood_pressure_title">Артериальное\nдавление</string>
+    <string name="health_diary_blood_pressure_title_one_line">Артериальное давление</string>
+    <string name="health_diary_blood_pressure_value">1$s/2$s мм рт. ст.</string>
+    <string name="health_diary_pulse_title">Пульс</string>
+    <string name="health_diary_pulse_value">1$s уд./мин.</string>
+    <string name="health_diary_blood_glucose_title">Глюкоза в крови</string>
+    <string name="health_diary_blood_glucose_value">1$s ммоль/л</string>
+    <string name="health_diary_height_title">Рост</string>
+    <string name="health_diary_height_value">1$s см</string>
+    <string name="health_diary_weight_title">Вес</string>
+    <string name="health_diary_weight_value">1$s кг</string>
+    <string name="health_diary_health_diary">Дневник здоровья</string>
+    <string name="health_diary_empty_survey">У вас пока нет записей</string>
+    <string name="health_diary_survey_date">Дата</string>
+    <string name="health_diary_survey_time">Время</string>
+    <string name="health_diary_survey_blood_pressure">Значение давления</string>
+    <string name="health_diary_survey_pulse">Значение пульса</string>
+    <string name="health_diary_survey_blood_glucose">Уровень глюкозы</string>
+    <string name="health_diary_survey_height">Значение роста</string>
+    <string name="health_diary_survey_weight">Значение веса</string>
+    <string name="health_diary_blood_pressure_unit">мм рт. ст.</string>
+    <string name="health_diary_pulse_unit">уд./мин.</string>
+    <string name="health_diary_blood_glucose_unit">ммоль/л</string>
+    <string name="health_diary_height_unit">см</string>
+    <string name="health_diary_weight_unit">кг</string>
+    <string name="health_diary_slash">/</string>
+    <string name="health_diary_delete_survey">Вы действительно хотите удалить исследование</string>
 
     <!-- errors-->
     <string name="error_create_profile">Произошла ошибка при создание профиля</string>
@@ -71,12 +122,12 @@
     <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
     <string name="error_get_type">Не удалось получить тип исследования</string>
     <string name="error_get_types">Не удалось получить тип исследований</string>
+    <string name="error_get_health_diary_items">Не удалось получить информацию о дневнике здоровья</string>
     <string name="error_empty_name">Пустое имя</string>
     <string name="error_empty_date">Пустая дата</string>
     <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
     <string name="error_empty_profile">Выберите хотя бы один профиль</string>
     <string name="error_auth">Что-то пошло не так</string>
-    <string name="cancel">ОТМЕНА</string>
     <string name="error_profile_choose_color">Выберете хотя бы один цвет</string>
 
 </resources>

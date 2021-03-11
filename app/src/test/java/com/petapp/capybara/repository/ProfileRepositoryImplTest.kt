@@ -33,9 +33,9 @@ class ProfileRepositoryImplTest {
     @Test
     fun `should emit profile`() {
         val expected = Stubs.PROFILE_ENTITY
-        `when`(appDao.getProfile(Mockito.anyString())).thenReturn(Single.just(expected))
+        `when`(appDao.getProfile(Mockito.anyLong())).thenReturn(Single.just(expected))
 
-        repository.getProfile("ID")
+        repository.getProfile(0L)
             .test()
             .assertResult(expected.toProfile())
             .assertNoErrors()

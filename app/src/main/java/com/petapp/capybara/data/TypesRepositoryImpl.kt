@@ -12,7 +12,7 @@ class TypesRepositoryImpl(private val appDao: AppDao) : TypesRepository {
         return appDao.getTypesWithSurveys().map { it.toTypes() }
     }
 
-    override fun getType(typeId: String): Single<Type> {
+    override fun getType(typeId: Long): Single<Type> {
         return appDao.getType(typeId).map { it.toType() }
     }
 
@@ -26,7 +26,7 @@ class TypesRepositoryImpl(private val appDao: AppDao) : TypesRepository {
             .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteType(typeId: String): Completable {
+    override fun deleteType(typeId: Long): Completable {
         return Completable.fromAction { appDao.deleteType(typeId) }
             .subscribeOn(Schedulers.io())
     }

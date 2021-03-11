@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ImageView
         android:id="@+id/icon"
@@ -63,35 +65,18 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/change_icon"
-        style="@style/Main.Text.Small"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/min_clickable_size"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:text="@string/type_change_icon"
-        app:drawableEndCompat="@drawable/ic_palette"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_layout"
-        />
-
-    <TextView
         android:id="@+id/delete_surveys_type"
         style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_m"
+        android:background="@drawable/red_border_bgr"
+        android:gravity="center"
         android:text="@string/type_delete_surveys_type"
-        app:drawableEndCompat="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/change_icon"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,12 +61,13 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.3.0")
 
     // ui
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    implementation("com.google.android.material:material:1.2.1")
-    implementation("androidx.fragment:fragment:1.3.0-beta02")
+    implementation("com.google.android.material:material:1.3.0")
+    implementation("androidx.fragment:fragment:1.3.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0-alpha01")
 
     // navigation
     val navigation = "2.3.0"
@@ -85,7 +86,7 @@ dependencies {
 
     // recycler adapter
     implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:4.3.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.21")
 
     // database
     val room = "2.2.5"
@@ -102,18 +103,19 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:$glide")
 
     // material dialog
-    implementation("com.afollestad.material-dialogs:core:3.2.1")
+    implementation("com.afollestad.material-dialogs:core:3.3.0")
+
     implementation("com.afollestad.material-dialogs:color:3.2.1")
 
     // firebase core
-    implementation("com.google.firebase:firebase-core:18.0.0")
+    implementation("com.google.firebase:firebase-core:18.0.2")
 
     // firebase auth
-    implementation("com.firebaseui:firebase-ui-auth:4.3.1")
-    implementation("com.google.firebase:firebase-auth:20.0.1")
+    implementation("com.firebaseui:firebase-ui-auth:6.2.0")
+    implementation("com.google.firebase:firebase-auth:20.0.3")
 
     // firebase analytics
-    implementation("com.google.firebase:firebase-analytics:18.0.0")
+    implementation("com.google.firebase:firebase-analytics:18.0.2")
 
     // test
     testImplementation("junit:junit:4.13")

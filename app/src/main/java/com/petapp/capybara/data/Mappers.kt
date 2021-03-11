@@ -1,53 +1,40 @@
 package com.petapp.capybara.data
 
-import com.petapp.capybara.data.model.Mark
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
+import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.database.entity.*
-
-fun ProfileEntity.toMark(): Mark {
-    return Mark(
-        id = this.id.toString(),
-        name = this.name,
-        color = this.color
-    )
-}
-
-fun List<ProfileEntity>.toMarks(): List<Mark> {
-    val marks = arrayListOf<Mark>()
-    for (profileEntity in this) {
-        val mark = profileEntity.toMark()
-        marks.add(mark)
-    }
-    return marks
-}
+import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
+import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
 
 fun ProfileEntity.toProfile(): Profile {
     return Profile(
-        id = this.id.toString(),
-        name = this.name,
-        color = this.color,
-        photo = this.photo
+        id = id,
+        name = name,
+        color = color,
+        photo = photo
     )
 }
 
 fun ProfileWithSurveys.toProfile(): Profile {
     return Profile(
-        id = this.profile.id.toString(),
-        name = this.profile.name,
-        color = this.profile.color,
-        photo = this.profile.photo,
-        surveys = this.surveys.toSurveys()
+        id = profile.id,
+        name = profile.name,
+        color = profile.color,
+        photo = profile.photo,
+        surveys = surveys.toSurveys()
     )
 }
 
 fun Profile.toProfileEntity(): ProfileEntity {
     return ProfileEntity(
-        id = this.id.toLong(),
-        name = this.name,
-        color = this.color,
-        photo = this.photo
+        id = id,
+        name = name,
+        color = color,
+        photo = photo
     )
 }
 
@@ -62,25 +49,29 @@ fun List<ProfileWithSurveys>.toProfiles(): List<Profile> {
 
 fun SurveyEntity.toSurvey(): Survey {
     return Survey(
-        id = this.id.toString(),
-        typeId = this.typeId,
-        profileId = this.profileId,
-        color = this.color,
-        name = this.name,
-        date = this.date,
-        month = this.month
+        id = id,
+        typeId = typeId,
+        profileId = profileId,
+        color = color,
+        name = name,
+        date = date,
+        monthYear = monthYear,
+        profileIcon = profileIcon,
+        typeIcon = typeIcon
     )
 }
 
 fun Survey.toSurveyEntity(): SurveyEntity {
     return SurveyEntity(
-        id = this.id.toLong(),
-        typeId = this.typeId,
-        profileId = this.profileId,
-        color = this.color,
-        name = this.name,
-        date = this.date,
-        month = this.month
+        id = id,
+        typeId = typeId,
+        profileId = profileId,
+        color = color,
+        name = name,
+        date = date,
+        monthYear = monthYear,
+        profileIcon = profileIcon,
+        typeIcon = typeIcon
     )
 }
 
@@ -95,26 +86,26 @@ fun List<SurveyEntity>.toSurveys(): List<Survey> {
 
 fun TypeEntity.toType(): Type {
     return Type(
-        id = this.id.toString(),
-        name = this.name,
-        icon = this.icon
+        id = id,
+        name = name,
+        icon = icon
     )
 }
 
 fun TypeWithSurveys.toType(): Type {
     return Type(
-        id = this.type.id.toString(),
-        name = this.type.name,
-        icon = this.type.icon,
-        surveys = this.surveys.toSurveys()
+        id = type.id,
+        name = type.name,
+        icon = type.icon,
+        surveys = surveys.toSurveys()
     )
 }
 
 fun Type.toTypeEntity(): TypeEntity {
     return TypeEntity(
-        id = this.id.toLong(),
-        name = this.name,
-        icon = this.icon
+        id = id,
+        name = name,
+        icon = icon
     )
 }
 
@@ -125,4 +116,62 @@ fun List<TypeWithSurveys>.toTypes(): List<Type> {
         types.add(profile)
     }
     return types
+}
+
+fun List<ItemHealthDiaryWithSurveys>.toHealthDiaryItems(): List<ItemHealthDiary> {
+    val items = arrayListOf<ItemHealthDiary>()
+    for (itemEntity in this) {
+        val survey = itemEntity.toHealthDiaryItem()
+        items.add(survey)
+    }
+    return items
+}
+
+fun ItemHealthDiaryWithSurveys.toHealthDiaryItem(): ItemHealthDiary {
+    return ItemHealthDiary(
+        id = item.id,
+        type = item.type,
+        surveys = surveys.toHealthDiarySurveys()
+    )
+}
+
+fun SurveyHealthDiary.toSurveyHealthDiaryEntity(): SurveyHealthDiaryEntity {
+    return SurveyHealthDiaryEntity(
+        id = id,
+        typeId = type.ordinal.toLong(),
+        profileId = profileId,
+        date = date,
+        time = time,
+        surveyValue = surveyValue,
+        unitOfMeasure = unitOfMeasure
+    )
+}
+
+fun SurveyHealthDiaryEntity.toSurveyHealthDiary(): SurveyHealthDiary {
+    return SurveyHealthDiary(
+        id = id,
+        type = typeId.toHealthDiary(),
+        profileId = profileId,
+        date = date,
+        time = time,
+        surveyValue = surveyValue,
+        unitOfMeasure = unitOfMeasure
+    )
+}
+
+private fun Long.toHealthDiary(): HealthDiaryType = when (this) {
+    HealthDiaryType.BLOOD_PRESSURE.ordinal.toLong() -> HealthDiaryType.BLOOD_PRESSURE
+    HealthDiaryType.PULSE.ordinal.toLong() -> HealthDiaryType.PULSE
+    HealthDiaryType.BLOOD_GLUCOSE.ordinal.toLong() -> HealthDiaryType.BLOOD_GLUCOSE
+    HealthDiaryType.HEIGHT.ordinal.toLong() -> HealthDiaryType.HEIGHT
+    else -> HealthDiaryType.WEIGHT
+}
+
+fun List<SurveyHealthDiaryEntity>.toHealthDiarySurveys(): List<SurveyHealthDiary> {
+    val surveys = arrayListOf<SurveyHealthDiary>()
+    for (surveyEntity in this) {
+        val survey = surveyEntity.toSurveyHealthDiary()
+        surveys.add(survey)
+    }
+    return surveys
 }

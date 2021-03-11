@@ -8,32 +8,6 @@
     >
 
     <ImageView
-        android:id="@+id/type_icon"
-        android:layout_width="@dimen/min_clickable_size"
-        android:layout_height="@dimen/min_clickable_size"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_s"
-        android:layout_marginStart="@dimen/margin_s"
-        android:contentDescription="@null"
-        android:scaleType="centerInside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/profile_mark"
-        android:layout_width="@dimen/min_clickable_size"
-        android:layout_height="@dimen/min_clickable_size"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_s"
-        android:layout_marginStart="@dimen/margin_l"
-        android:contentDescription="@null"
-        android:scaleType="centerInside"
-        app:layout_constraintStart_toEndOf="@id/type_icon"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageView
         android:id="@+id/edit"
         android:layout_width="@dimen/min_clickable_size"
         android:layout_height="@dimen/min_clickable_size"
@@ -47,7 +21,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-
 
     <ImageView
         android:id="@+id/done"
@@ -71,14 +44,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_m"
         android:layout_marginEnd="@dimen/margin_m"
-        android:background="@drawable/gray_border_bgr"
         android:paddingHorizontal="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_m"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit"
         app:layout_constraintBottom_toTopOf="@id/survey_date"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Name Name"
+        tools:text="Вакцинация ковид"
         />
 
     <TextView
@@ -87,16 +60,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_m"
+        android:layout_marginTop="@dimen/margin_s"
         android:layout_marginEnd="@dimen/margin_m"
-        android:background="@drawable/gray_border_bgr"
         android:paddingHorizontal="@dimen/margin_m"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_name"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="01.01.2020"
         />
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/survey_name_layout"
@@ -110,13 +81,12 @@
         app:layout_constraintBottom_toTopOf="@id/survey_date_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@id/done"
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/survey_name_et"
-            style="@style/Main.Text.Small"
+            style="@style/Main.Text.MediumSmall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
@@ -138,7 +108,6 @@
         android:background="@color/transparent"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintBottom_toTopOf="@id/change_survey_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_name_layout"
@@ -146,11 +115,12 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/survey_date_et"
-            style="@style/Main.Text.Small"
+            style="@style/Main.Text.MediumSmall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
             android:hint="@string/survey_date"
+            android:focusable="false"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:paddingStart="0dp"
@@ -161,7 +131,7 @@
 
     <TextView
         android:id="@+id/change_survey_type"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.MediumSmall"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="16dp"
@@ -169,8 +139,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:text="@string/survey_change_survey_type"
-        app:drawableEndCompat="@drawable/ic_types"
-        app:layout_constraintBottom_toTopOf="@id/change_survey_profile"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+        android:drawablePadding="@dimen/margin_m"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/survey_date_layout"
@@ -178,7 +148,7 @@
 
     <TextView
         android:id="@+id/change_survey_profile"
-        style="@style/Main.Text.Small"
+        style="@style/Main.Text.MediumSmall"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
         android:layout_marginHorizontal="16dp"
@@ -186,8 +156,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:text="@string/survey_change_survey_profile"
-        app:drawableEndCompat="@drawable/ic_person"
-        app:layout_constraintBottom_toTopOf="@id/delete_survey"
+        app:drawableEndCompat="@drawable/ic_arrow_down"
+        android:drawablePadding="@dimen/margin_m"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/change_survey_type"
@@ -198,16 +168,14 @@
         style="@style/Main.Text.Small"
         android:layout_width="0dp"
         android:layout_height="@dimen/min_clickable_size"
+        android:background="@drawable/red_border_bgr"
         android:layout_marginHorizontal="@dimen/margin_m"
-        android:layout_marginTop="@dimen/margin_s"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:gravity="center"
         android:text="@string/survey_delete"
-        app:drawableEndCompat="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/change_survey_profile"
+        android:layout_marginBottom="@dimen/margin_m"
         />
 
     <androidx.constraintlayout.widget.Group

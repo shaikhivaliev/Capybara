@@ -1,9 +1,11 @@
 package com.petapp.capybara.extensions
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Environment
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -16,8 +18,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Mark
-import com.petapp.capybara.survey.SurveyFragment
+import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.presentation.survey.SurveyFragment
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,10 +28,6 @@ fun NavDirections.navigateWith(navController: NavController, navOptions: NavOpti
     if (navController.currentDestination?.getAction(actionId) != null) {
         navController.navigate(this, navOptions)
     }
-}
-
-fun View.visible(visible: Boolean) {
-    this.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
 fun Context?.toast(stringRes: Int, duration: Int = Toast.LENGTH_LONG) =
@@ -52,19 +50,19 @@ fun currentMonth(date: Date): String {
 }
 
 fun currentDateMonthYear(date: Date): String {
-    return SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(date)
+    return SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date).capitalize()
 }
 
-fun createChip(context: Context, mark: Mark, padding: Float): Chip {
+fun createChip(context: Context, profile: Profile, padding: Float): Chip {
     val chip = Chip(context)
     chip.apply {
         chipEndPadding = padding
         chipStartPadding = padding
-        text = mark.name
+        text = profile.name
         setTextColor(ContextCompat.getColor(context, android.R.color.black))
         isCheckable = true
         checkedIcon = ContextCompat.getDrawable(context, R.drawable.ic_done_black)
-        chipBackgroundColor = ColorStateList.valueOf(mark.color)
+        chipBackgroundColor = ColorStateList.valueOf(profile.color)
     }
     return chip
 }
@@ -94,3 +92,20 @@ fun View.showKeyboard() {
     val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(this, InputMethodManager.SHOW_FORCED)
 }
+
+fun View.hideKeyboard() {
+    val windowToken = (activity.currentFocus ?: this).applicationWindowToken
+    val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+val View.activity: Activity
+    get() {
+        var context = context
+        while (true) {
+            when (context) {
+                is Activity -> return context
+                is ContextThemeWrapper -> context = context.baseContext
+            }
+        }
+    }
