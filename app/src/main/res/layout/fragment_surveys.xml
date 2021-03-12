@@ -62,7 +62,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/avd_add_to_done"
+        app:srcCompat="@drawable/ic_add"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,23 +12,7 @@
         android:name="com.petapp.capybara.presentation.settings.SettingFragment"
         android:label="settings"
         tools:layout="@layout/fragment_settings"
-        >
-        <action
-            android:id="@+id/to_feedback"
-            app:destination="@id/feedback"
-            />
-
-        <action
-            android:id="@+id/to_about_app"
-            app:destination="@id/about_app"
-            />
-
-        <action
-            android:id="@+id/to_rules"
-            app:destination="@id/rules"
-            />
-
-    </fragment>
+        />
 
     <fragment
         android:id="@+id/tab_profiles"
@@ -81,19 +65,6 @@
         android:label="types"
         tools:layout="@layout/fragment_types"
         >
-
-        <action
-            android:id="@+id/to_type"
-            app:destination="@id/type"
-            >
-
-            <argument
-                android:name="type"
-                app:argType="com.petapp.capybara.data.model.Type"
-                app:nullable="true"
-                />
-
-        </action>
 
         <action
             android:id="@+id/to_surveys"
@@ -172,28 +143,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/type"
-        android:name="com.petapp.capybara.presentation.type.TypeFragment"
-        android:label="type"
-        tools:layout="@layout/fragment_type"
-        >
-
-        <argument
-            android:name="type"
-            app:argType="com.petapp.capybara.data.model.Type"
-            app:nullable="true"
-            />
-
-        <action
-            android:id="@+id/to_types"
-            app:destination="@id/tab_types"
-            app:popUpTo="@id/tab_types"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/health_diary"
         android:name="com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment"
         android:label="healthDiary"
@@ -203,29 +152,9 @@
         <argument
             android:name="profile_id"
             app:argType="long"
-            app:nullable="false"/>
+            app:nullable="false"
+            />
     </fragment>
-
-    <fragment
-        android:id="@+id/feedback"
-        android:name="com.petapp.capybara.presentation.settings.FeedbackFragment"
-        android:label="feedback"
-        tools:layout="@layout/fragment_feedback"
-        />
-
-    <fragment
-        android:id="@+id/about_app"
-        android:name="com.petapp.capybara.presentation.settings.AboutAppFragment"
-        android:label="about_app"
-        tools:layout="@layout/fragment_about_app"
-        />
-
-    <fragment
-        android:id="@+id/rules"
-        android:name="com.petapp.capybara.presentation.settings.RulesFragment"
-        android:label="rules"
-        tools:layout="@layout/fragment_rules"
-        />
 
     <include app:graph="@navigation/nav_graph_survey" />
 

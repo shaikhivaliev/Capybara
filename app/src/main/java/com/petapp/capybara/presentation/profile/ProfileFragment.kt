@@ -67,6 +67,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 currentPhotoUri = args.profile?.photo
             }
         }
+
     private val camera = ImagePicker(
         ImagePickerType.CAMERA.ordinal.toLong(),
         ImagePickerType.CAMERA,

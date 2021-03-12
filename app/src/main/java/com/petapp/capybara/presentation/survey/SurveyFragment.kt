@@ -24,7 +24,6 @@ import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
 import kotlinx.android.synthetic.main.fragment_survey.*
-import kotlinx.android.synthetic.main.item_survey.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat

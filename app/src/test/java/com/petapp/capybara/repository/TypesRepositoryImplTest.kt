@@ -21,7 +21,7 @@ class TypesRepositoryImplTest {
     @Mock
     lateinit var appDao: AppDao
 
-    lateinit var repository: TypesRepository
+    private lateinit var repository: TypesRepository
 
     @Before
     fun setUp() {

@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.R
+import com.petapp.capybara.common.BaseViewModel
 import com.petapp.capybara.data.TypesRepository
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.navigateWith
@@ -53,10 +53,6 @@ class TypesViewModel(
 
     fun openHealthDiary() {
         TypesFragmentDirections.toHealthDiary(0L).navigateWith(navController)
-    }
-
-    fun openTypeScreen(type: Type?) {
-        TypesFragmentDirections.toType(type).navigateWith(navController)
     }
 
     companion object {

@@ -5,7 +5,7 @@ import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 
-fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = flatMap {
+fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = this.flatMap {
     listOf(it) + if (it.isExpanded && it.surveys.isNotEmpty()) {
         it.surveys.sortedBy { survey -> survey.date }.reversed()
     } else if (it.isExpanded) {

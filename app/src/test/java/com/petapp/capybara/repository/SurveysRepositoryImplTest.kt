@@ -24,7 +24,7 @@ class SurveysRepositoryImplTest {
     @Mock
     lateinit var appDao: AppDao
 
-    lateinit var repository: SurveysRepository
+    private lateinit var repository: SurveysRepository
 
     @Before
     fun setUp() {

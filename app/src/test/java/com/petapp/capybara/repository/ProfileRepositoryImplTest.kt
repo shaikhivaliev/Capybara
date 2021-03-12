@@ -23,7 +23,7 @@ class ProfileRepositoryImplTest {
     @Mock
     lateinit var appDao: AppDao
 
-    lateinit var repository: ProfileRepository
+    private lateinit var repository: ProfileRepository
 
     @Before
     fun setUp() {
