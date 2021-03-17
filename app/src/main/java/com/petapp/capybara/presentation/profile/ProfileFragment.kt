@@ -22,6 +22,7 @@ import com.afollestad.materialdialogs.list.getRecyclerView
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
 import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.data.model.DeleteImage
 import com.petapp.capybara.data.model.ImagePicker
 import com.petapp.capybara.data.model.ImagePickerType
 import com.petapp.capybara.data.model.Profile
@@ -51,7 +52,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
             }
             imagePickerDialog?.cancel()
-        }
+        },
+        deleteImage = {}
     )
 
     private var imagePickerDialog: MaterialDialog? = null
@@ -200,14 +202,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun pickImages(items: List<ImagePicker>) {
 
-        adapterImagePickerDialog.items = items
+        adapterImagePickerDialog.items = items + DeleteImage(DEFAULT_ID_FOR_ENTITY)
 
         imagePickerDialog = MaterialDialog(requireActivity()).show {
-            title(R.string.profile_image_picker_dialog_title)
+            title(R.string.profile_change_photo)
             customListAdapter(adapterImagePickerDialog)
             val itemCount = getListAdapter()?.itemCount ?: 0
             getRecyclerView().addItemDecoration(
-                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_ml), itemCount - 1)
+                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_s), itemCount - 1)
             )
         }
     }
