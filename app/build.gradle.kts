@@ -6,8 +6,8 @@ plugins {
     id(NAVIGATION_SAFEARGS)
     id(CHECK_DEPENDENCY_UPDATES_PLUGIN)
     id(KOTLIN_ANDROID_PLUGIN)
-    id(KOTLIN_PARCELIZE_PLUGIN)
     id(KOTLIN_KAPT_PLUGIN)
+    id(KOTLIN_ANDROID_EXTENSIONS)
 }
 
 android {
@@ -74,8 +74,6 @@ android {
         unitTests.isIncludeAndroidResources = true
         unitTests.isReturnDefaultValues = true
     }
-
-    configurations { implementation.get().exclude(mapOf("group" to "org.jetbrains", "module" to "annotations"))    }
 }
 
 tasks.named("check").dependsOn("ktlintCheck")

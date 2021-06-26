@@ -83,8 +83,8 @@ object Libraries {
     }
 
     object RxJava {
-        val rxAndroid = "io.reactivex.rxjava3:rxandroid:${Versions.rxJava}"
-        val rxJava = "io.reactivex.rxjava3:rxjava:${Versions.rxJava}"
+        val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
+        val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
         val roomRxJava = "androidx.room:room-rxjava2:${Versions.room}"
     }
 

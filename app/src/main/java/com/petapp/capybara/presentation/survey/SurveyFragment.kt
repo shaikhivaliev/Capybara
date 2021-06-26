@@ -58,6 +58,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     private var profileMarkDialog: MaterialDialog? = null
 
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    private val calendar: Calendar = Calendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
