@@ -77,7 +77,7 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
 val ktLintConfig = configurations.create("ktlint")
 
 dependencies {
-    "ktlint"("com.pinterest:ktlint:0.41.0")
+    "ktlint"("com.pinterest:ktlint:0.36.0")
 }
 
 tasks.register<JavaExec>("ktlintCheck") {

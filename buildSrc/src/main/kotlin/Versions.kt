@@ -1,5 +1,3 @@
-@file:Suppress("MayBeConstant")
-
 object Versions {
     val dagger = "2.37"
     val checkDependencyUpdates = "1.3.0"

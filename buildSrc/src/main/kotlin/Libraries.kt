@@ -1,5 +1,3 @@
-@file:Suppress("MayBeConstant")
-
 object Libraries {
 
     object Kotlin {
