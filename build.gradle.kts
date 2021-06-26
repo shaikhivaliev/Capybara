@@ -5,23 +5,29 @@ buildscript {
     }
 
     dependencies {
-        val kotlinVersion = "1.4.0"
-        classpath("com.android.tools.build:gradle:4.1.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.google.gms:google-services:4.3.4")
+        classpath(Libraries.AndroidTools.gradle)
+        classpath(kotlin("gradle-plugin", version = Versions.stdLib))
+        classpath("com.google.gms:google-services:4.3.8")
         classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0")
     }
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.16.0-RC1")
+    checkDependencyUpdates
+    detekt
 }
 
 allprojects {
     repositories {
         google()
         jcenter()
-        maven { url = uri("https://jitpack.io") }
+        maven(url = "https://jitpack.io")
+    }
+
+    // Enable to use Experimental APIs
+    project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
+        // kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn" // flatMapMerge
+        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
     }
 }
 
@@ -71,7 +77,7 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
 val ktLintConfig = configurations.create("ktlint")
 
 dependencies {
-    "ktlint"("com.pinterest:ktlint:0.36.0")
+    "ktlint"("com.pinterest:ktlint:0.41.0")
 }
 
 tasks.register<JavaExec>("ktlintCheck") {

@@ -10,11 +10,10 @@ import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.extensions.currentDateFull
 import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.ONE_MONTH
 import com.petapp.capybara.widgets.CalendarDayView
-import org.jetbrains.annotations.NotNull
 import java.util.*
 
 class CalendarArrayAdapter @JvmOverloads constructor(
-    @NotNull context: Context,
+    context: Context,
     private val dates: List<Date>,
     private val currentDate: Calendar,
     private val surveys: List<Survey>
