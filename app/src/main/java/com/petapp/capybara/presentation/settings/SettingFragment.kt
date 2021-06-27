@@ -6,16 +6,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.BuildConfig
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Settings
+import com.petapp.capybara.databinding.FragmentSettingsBinding
 import com.petapp.capybara.presentation.auth.AuthActivity
-import kotlinx.android.synthetic.main.fragment_profiles.recycler_view
-import kotlinx.android.synthetic.main.fragment_settings.*
 
 @Suppress("ForbiddenComment")
 class SettingFragment : Fragment(R.layout.fragment_settings) {
+
+    private val viewBinding by viewBinding(FragmentSettingsBinding::bind)
 
     private val adapter: SettingsAdapter = SettingsAdapter(
         itemClick = {
@@ -41,8 +43,8 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun initViews() {
-        app_version.text = getString(R.string.settings_app_version, BuildConfig.VERSION_NAME)
-        exit.setOnClickListener {
+        viewBinding.appVersion.text = getString(R.string.settings_app_version, BuildConfig.VERSION_NAME)
+        viewBinding.exit.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireActivity(), AuthActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -51,7 +53,7 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun initRecycler() {
-        with(recycler_view) {
+        with(viewBinding.recyclerView) {
             this.layoutManager = LinearLayoutManager(context)
             adapter = this@SettingFragment.adapter
         }

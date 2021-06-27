@@ -3,12 +3,12 @@ package com.petapp.capybara.presentation.profiles
 import android.content.res.ColorStateList
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.petapp.capybara.R
 import com.petapp.capybara.common.ListItem
 import com.petapp.capybara.common.ListItemDiffCallback
 import com.petapp.capybara.data.model.Profile
-import kotlinx.android.synthetic.main.item_profile.view.*
+import com.petapp.capybara.databinding.ItemProfileBinding
 
 class ProfilesAdapter(
     private val itemClick: (Profile) -> Unit
@@ -22,16 +22,18 @@ class ProfilesAdapter(
 
 fun profilesAdapterDelegate(
     itemClick: (Profile) -> Unit
-) = adapterDelegateLayoutContainer<Profile, ListItem>(R.layout.item_profile) {
+) = adapterDelegateViewBinding<Profile, ListItem, ItemProfileBinding>(
+    { layoutInflater, root -> ItemProfileBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
-        with(itemView) {
-            setOnClickListener { itemClick.invoke(item) }
-            profile_name.text = item.name
+        with(binding) {
+            root.setOnClickListener { itemClick.invoke(item) }
+            profileName.text = item.name
             photo.strokeColor = ColorStateList.valueOf(item.color)
             photo.transitionName = item.name
-            surveys_amount.text = item.surveys.size.toString()
-            Glide.with(this)
+            surveysAmount.text = item.surveys.size.toString()
+            Glide.with(context)
                 .load(item.photo)
                 .error(R.drawable.ic_user_42dp)
                 .centerCrop()

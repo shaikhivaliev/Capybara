@@ -2,7 +2,7 @@ package com.petapp.capybara.presentation.healthDiary
 
 import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.petapp.capybara.R
 import com.petapp.capybara.common.ListItem
 import com.petapp.capybara.common.ListItemDiffCallback
@@ -10,8 +10,9 @@ import com.petapp.capybara.data.model.healthDiary.EmptyItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import kotlinx.android.synthetic.main.item_step_health_diary.view.*
-import kotlinx.android.synthetic.main.item_survey_health_diary.view.*
+import com.petapp.capybara.databinding.ItemEmptySurveyBinding
+import com.petapp.capybara.databinding.ItemStepHealthDiaryBinding
+import com.petapp.capybara.databinding.ItemSurveyHealthDiaryBinding
 
 private const val ROTATION_ANGLE = 180L
 private const val ROTATION_DURATION = 400L
@@ -38,14 +39,16 @@ fun itemHealthDiaryDelegate(
     expandItem: (ItemHealthDiary) -> Unit,
     addSurvey: (ItemHealthDiary) -> Unit
 ) =
-    adapterDelegateLayoutContainer<ItemHealthDiary, ListItem>(R.layout.item_step_health_diary) {
+    adapterDelegateViewBinding<ItemHealthDiary, ListItem, ItemStepHealthDiaryBinding>(
+        { layoutInflater, root -> ItemStepHealthDiaryBinding.inflate(layoutInflater, root, false) }
+    ) {
 
         fun showAddingButton(isExpanded: Boolean) {
-            with(itemView) {
-                add_health_diary_survey.isVisible = item.isExpanded
+            with(binding) {
+                addHealthDiarySurvey.isVisible = item.isExpanded
 
                 val rotationAngle = if (isExpanded) ROTATION_ANGLE else 0
-                arrow_down.animate()
+                arrowDown.animate()
                     .rotation(rotationAngle.toFloat())
                     .setDuration(ROTATION_DURATION)
                     .start()
@@ -54,7 +57,7 @@ fun itemHealthDiaryDelegate(
 
         bind {
             showAddingButton(item.isExpanded)
-            with(itemView) {
+            with(binding) {
                 title.text = getString(
                     when (item.type) {
                         HealthDiaryType.BLOOD_PRESSURE -> R.string.health_diary_blood_pressure_title
@@ -64,13 +67,13 @@ fun itemHealthDiaryDelegate(
                         HealthDiaryType.WEIGHT -> R.string.health_diary_weight_title
                     }
                 )
-                arrow_down.setOnClickListener {
+                arrowDown.setOnClickListener {
                     expandItem(item.apply {
                         isExpanded = isExpanded.not()
                         showAddingButton(isExpanded)
                     })
                 }
-                add_health_diary_survey.setOnClickListener {
+                addHealthDiarySurvey.setOnClickListener {
                     addSurvey(item)
                 }
             }
@@ -78,19 +81,23 @@ fun itemHealthDiaryDelegate(
     }
 
 fun emptySurveyHealthDiaryDelegate() =
-    adapterDelegateLayoutContainer<EmptyItemHealthDiary, ListItem>(R.layout.item_empty_survey) {
+    adapterDelegateViewBinding<EmptyItemHealthDiary, ListItem, ItemEmptySurveyBinding>(
+        { layoutInflater, root -> ItemEmptySurveyBinding.inflate(layoutInflater, root, false) }
+    ) {
         bind { }
     }
 
 fun surveyHealthDiaryDelegate(onDelete: (SurveyHealthDiary) -> Unit) =
-    adapterDelegateLayoutContainer<SurveyHealthDiary, ListItem>(R.layout.item_survey_health_diary) {
-        itemView.delete.setOnClickListener { onDelete(item) }
+    adapterDelegateViewBinding<SurveyHealthDiary, ListItem, ItemSurveyHealthDiaryBinding>(
+        { layoutInflater, root -> ItemSurveyHealthDiaryBinding.inflate(layoutInflater, root, false) }
+    ) {
         bind {
-            with(itemView) {
+            with(binding) {
+                delete.setOnClickListener { onDelete(item) }
                 date.text = item.date
                 time.text = item.time
-                survey_value.text = item.surveyValue
-                unit_of_measure.text = item.unitOfMeasure
+                surveyValue.text = item.surveyValue
+                unitOfMeasure.text = item.unitOfMeasure
             }
         }
     }

@@ -2,14 +2,14 @@ package com.petapp.capybara.presentation.calendar
 
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.petapp.capybara.R
 import com.petapp.capybara.common.ListItem
 import com.petapp.capybara.common.ListItemDiffCallback
 import com.petapp.capybara.data.model.Date
 import com.petapp.capybara.data.model.Survey
-import kotlinx.android.synthetic.main.item_survey.view.title
-import kotlinx.android.synthetic.main.item_survey_dialog.view.*
+import com.petapp.capybara.databinding.ItemAddNewSurveyBinding
+import com.petapp.capybara.databinding.ItemSurveyDialogBinding
 
 class SurveysDialogAdapter(
     private val itemClick: (Survey) -> Unit,
@@ -25,24 +25,28 @@ class SurveysDialogAdapter(
 
 fun surveysAdapterDelegate(
     itemClick: (Survey) -> Unit
-) = adapterDelegateLayoutContainer<Survey, ListItem>(R.layout.item_survey_dialog) {
+) = adapterDelegateViewBinding<Survey, ListItem, ItemSurveyDialogBinding>(
+    { layoutInflater, root -> ItemSurveyDialogBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
-        with(itemView) {
-            setOnClickListener { itemClick(item) }
+        with(binding) {
+            root.setOnClickListener { itemClick(item) }
             title.text = item.name
-            Glide.with(this)
+            Glide.with(context)
                 .load(item.profileIcon)
                 .error(R.drawable.ic_user_42dp)
                 .centerCrop()
-                .into(profile_icon)
+                .into(profileIcon)
         }
     }
 }
 
 fun addNewSurveyAdapterDelegate(
     itemClick: (java.util.Date) -> Unit
-) = adapterDelegateLayoutContainer<Date, ListItem>(R.layout.item_add_new_survey) {
+) = adapterDelegateViewBinding<Date, ListItem, ItemAddNewSurveyBinding>(
+    { layoutInflater, root -> ItemAddNewSurveyBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
         with(itemView) {

@@ -4,17 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.petapp.capybara.R
 import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.databinding.FragmentTypesBinding
 import com.petapp.capybara.extensions.toast
-import kotlinx.android.synthetic.main.fragment_types.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TypesFragment : Fragment(R.layout.fragment_types) {
+
+    private val viewBinding by viewBinding(FragmentTypesBinding::bind)
 
     private val viewModel: TypesViewModel by viewModel {
         parametersOf(findNavController())
@@ -28,11 +30,11 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initRecycler()
-        health_diary.setOnClickListener { viewModel.openHealthDiary() }
+        viewBinding.healthDiary.root.setOnClickListener { viewModel.openHealthDiary() }
     }
 
     private fun initRecycler() {
-        with(recycler_view) {
+        with(viewBinding.recyclerView) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@TypesFragment.adapter
             addItemDecoration(
@@ -46,13 +48,13 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
 
     private fun initObservers() {
         with(viewModel) {
-            types.observe(viewLifecycleOwner, Observer {
+            types.observe(viewLifecycleOwner, {
                 adapter.items = it
             })
-            isShowMock.observe(viewLifecycleOwner, Observer { isShow ->
-                mock.isVisible = isShow
+            isShowMock.observe(viewLifecycleOwner, { isShow ->
+                viewBinding.mock.isVisible = isShow
             })
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
+            errorMessage.observe(viewLifecycleOwner, { error ->
                 requireActivity().toast(error)
             })
         }

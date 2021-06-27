@@ -2,12 +2,11 @@ package com.petapp.capybara.presentation.survey
 
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import com.petapp.capybara.R
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.petapp.capybara.common.ListItem
 import com.petapp.capybara.common.ListItemDiffCallback
 import com.petapp.capybara.data.model.Type
-import kotlinx.android.synthetic.main.item_type_dialog.view.*
+import com.petapp.capybara.databinding.ItemTypeDialogBinding
 
 class TypesDialogAdapter(
     private val itemClick: (Type) -> Unit
@@ -21,16 +20,18 @@ class TypesDialogAdapter(
 
 fun typesDialogAdapterDelegate(
     itemClick: (Type) -> Unit
-) = adapterDelegateLayoutContainer<Type, ListItem>(R.layout.item_type_dialog) {
+) = adapterDelegateViewBinding<Type, ListItem, ItemTypeDialogBinding>(
+    { layoutInflater, root -> ItemTypeDialogBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
-        with(itemView) {
-            setOnClickListener { itemClick.invoke(item) }
+        with(binding) {
+            root.setOnClickListener { itemClick.invoke(item) }
             title.text = item.name
-            Glide.with(this)
+            Glide.with(context)
                 .load(item.icon)
                 .fitCenter()
-                .into(type_icon)
+                .into(typeIcon)
         }
     }
 }

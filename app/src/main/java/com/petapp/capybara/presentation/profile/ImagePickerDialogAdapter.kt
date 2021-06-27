@@ -2,13 +2,13 @@ package com.petapp.capybara.presentation.profile
 
 import com.bumptech.glide.Glide
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
-import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateLayoutContainer
-import com.petapp.capybara.R
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.petapp.capybara.common.ListItem
 import com.petapp.capybara.common.ListItemDiffCallback
 import com.petapp.capybara.data.model.DeleteImage
 import com.petapp.capybara.data.model.ImagePicker
-import kotlinx.android.synthetic.main.item_image_picker.view.*
+import com.petapp.capybara.databinding.ItemDeleteImageBinding
+import com.petapp.capybara.databinding.ItemImagePickerBinding
 
 class ImagePickerDialogAdapter(
     private val itemClick: (ImagePicker) -> Unit,
@@ -24,26 +24,30 @@ class ImagePickerDialogAdapter(
 
 fun takeImageDialogAdapterDelegate(
     itemClick: (ImagePicker) -> Unit
-) = adapterDelegateLayoutContainer<ImagePicker, ListItem>(R.layout.item_image_picker) {
+) = adapterDelegateViewBinding<ImagePicker, ListItem, ItemImagePickerBinding>(
+    { layoutInflater, root -> ItemImagePickerBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
-        with(itemView) {
-            setOnClickListener { itemClick.invoke(item) }
+        with(binding) {
+            root.setOnClickListener { itemClick.invoke(item) }
             title.text = getString(item.name)
-            Glide.with(this)
+            Glide.with(context)
                 .load(item.icon)
-                .into(image_picker_icon)
+                .into(imagePickerIcon)
         }
     }
 }
 
 fun deleteImageDialogAdapterDelegate(
     deleteImage: () -> Unit
-) = adapterDelegateLayoutContainer<DeleteImage, ListItem>(R.layout.item_delete_image) {
+) = adapterDelegateViewBinding<DeleteImage, ListItem, ItemDeleteImageBinding>(
+    { layoutInflater, root -> ItemDeleteImageBinding.inflate(layoutInflater, root, false) }
+) {
 
     bind {
-        with(itemView) {
-            setOnClickListener { deleteImage.invoke() }
+        with(binding) {
+            root.setOnClickListener { deleteImage.invoke() }
         }
     }
 }

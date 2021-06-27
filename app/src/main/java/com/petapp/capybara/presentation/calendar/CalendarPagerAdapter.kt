@@ -2,7 +2,6 @@ package com.petapp.capybara.presentation.calendar
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -12,9 +11,9 @@ import com.afollestad.materialdialogs.list.getRecyclerView
 import com.petapp.capybara.R
 import com.petapp.capybara.common.MarginItemDecoration
 import com.petapp.capybara.data.model.Month
+import com.petapp.capybara.databinding.ItemMonthBinding
 import com.petapp.capybara.extensions.currentDateFull
 import com.petapp.capybara.extensions.currentDateMonthYear
-import kotlinx.android.synthetic.main.item_month.view.*
 import java.util.*
 import com.petapp.capybara.data.model.Date as DateModel
 
@@ -30,13 +29,13 @@ class CalendarPagerAdapter(private val context: Context) :
     val months = mutableListOf<Month>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_month, parent, false)
-        return MonthViewHolder(view)
+        val binding = ItemMonthBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MonthViewHolder(binding)
     }
 
     override fun getItemCount(): Int = months.size
 
-    override fun onBindViewHolder(holder: MonthViewHolder, position: Int) = holder.itemView.run {
+    override fun onBindViewHolder(holder: MonthViewHolder, position: Int) = holder.binding.run {
         setupCalendar(months[position], this)
     }
 
@@ -62,7 +61,7 @@ class CalendarPagerAdapter(private val context: Context) :
         }
     }
 
-    private fun setupCalendar(month: Month, itemView: View) {
+    private fun setupCalendar(month: Month, binding: ItemMonthBinding) {
         val listOfDays: ArrayList<Date> = arrayListOf()
 
         val monthCalendar = month.calendar.clone() as Calendar
@@ -86,11 +85,11 @@ class CalendarPagerAdapter(private val context: Context) :
             surveys = month.surveys
         )
 
-        with(itemView) {
-            month_title.text = currentDateMonthYear(month.calendar.time)
-            month_view.adapter = adapter
-            month_view.setOnItemClickListener { _, _, position, _ ->
-                val currentDate = month_view.adapter.getItem(position) as Date
+        with(binding) {
+            monthTitle.text = currentDateMonthYear(month.calendar.time)
+            monthView.adapter = adapter
+            monthView.setOnItemClickListener { _, _, position, _ ->
+                val currentDate = monthView.adapter.getItem(position) as Date
                 val currentSurveys = month.surveys.filter {
                     it.date == currentDateFull(currentDate)
                 }
@@ -116,7 +115,7 @@ class CalendarPagerAdapter(private val context: Context) :
         }
     }
 
-    class MonthViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class MonthViewHolder(val binding: ItemMonthBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {
         private const val MAX_CALENDAR_DAYS = 42

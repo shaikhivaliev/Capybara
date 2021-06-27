@@ -7,15 +7,17 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.petapp.capybara.R
+import com.petapp.capybara.databinding.ActivityAuthBinding
 import com.petapp.capybara.presentation.main.MainActivity
-import kotlinx.android.synthetic.main.activity_auth.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
+
+    private val viewBinding by viewBinding(ActivityAuthBinding::bind)
 
     private val viewModel: AuthViewModel by viewModel()
 
@@ -36,7 +38,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
         when {
             result.resultCode == Activity.RESULT_OK -> openMainScreen()
             result.data == null -> finish()
-            else -> auth_error.isVisible = true
+            else -> viewBinding.authError.isVisible = true
         }
     }
 
@@ -47,7 +49,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     private fun initObservers() {
         with(viewModel) {
-            authenticationState.observe(this@AuthActivity, Observer { state ->
+            authenticationState.observe(this@AuthActivity, { state ->
                 when (state) {
                     AuthViewModel.AuthState.AUTHENTICATED -> openMainScreen()
                     AuthViewModel.AuthState.UNAUTHENTICATED -> signIn()
@@ -67,7 +69,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
             .build()
         startAuthUI.launch(authIntent)
 
-        auth_again.setOnClickListener {
+        viewBinding.authAgain.setOnClickListener {
             val intent = intent
             overridePendingTransition(0, 0)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

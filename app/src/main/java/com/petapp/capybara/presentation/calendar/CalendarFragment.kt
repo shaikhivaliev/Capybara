@@ -4,23 +4,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Month
 import com.petapp.capybara.data.model.Months
+import com.petapp.capybara.databinding.FragmentCalendarBinding
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
+
+    private val viewBinding by viewBinding(FragmentCalendarBinding::bind)
 
     private val viewModel: CalendarViewModel by viewModel {
         parametersOf(findNavController())
@@ -42,18 +44,18 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         initObservers()
         viewModel.getInitMonths(Calendar.getInstance())
 
-        add_survey.setOnClickListener { viewModel.openSurveyScreen(null) }
+        viewBinding.addSurvey.setOnClickListener { viewModel.openSurveyScreen(null) }
     }
 
     private fun initViews() {
-        marks_group.setOnCheckedChangeListener { _, checkedId ->
+        viewBinding.marksGroup.setOnCheckedChangeListener { _, checkedId ->
             viewModel.profileId.value = chipIdToProfileId[checkedId]
             viewModel.getInitMonths(Calendar.getInstance())
         }
     }
 
     private fun initMonthPager() {
-        month_pager.apply {
+        viewBinding.monthPager.apply {
             adapter = monthAdapter
             setPageTransformer(MarginPageTransformer(PAGE_MARGIN))
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -80,28 +82,28 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private fun initObservers() {
         with(viewModel) {
-            profiles.observe(viewLifecycleOwner, Observer { profiles ->
+            profiles.observe(viewLifecycleOwner, { profiles ->
                 if (profiles.isEmpty()) {
                     showAlertEmptyProfiles()
                 } else {
                     for (profile in profiles) {
                         val chip = createChip(requireContext(), profile, CHIP_PADDING)
-                        marks_group.addView(chip)
+                        viewBinding.marksGroup.addView(chip)
                         chipIdToProfileId[chip.id] = profile.id
                     }
-                    (marks_group[0] as? Chip)?.isChecked = true
+                    (viewBinding.marksGroup[0] as? Chip)?.isChecked = true
                 }
             })
-            initMonths.observe(viewLifecycleOwner, Observer {
+            initMonths.observe(viewLifecycleOwner, {
                 setupCalendar(it)
             })
-            nextMonth.observe(viewLifecycleOwner, Observer {
+            nextMonth.observe(viewLifecycleOwner, {
                 monthAdapter.setNextMonth(it)
             })
-            previousMonth.observe(viewLifecycleOwner, Observer {
+            previousMonth.observe(viewLifecycleOwner, {
                 monthAdapter.setPreviousMonth(it)
             })
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
+            errorMessage.observe(viewLifecycleOwner, { error ->
                 requireActivity().toast(error)
             })
         }
@@ -123,7 +125,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             Month(surveys.nextTwoMonthSurveys, nextTwoMonth)
         )
         monthAdapter.updateMonths(months)
-        month_pager.setCurrentItem(2, false)
+        viewBinding.monthPager.setCurrentItem(2, false)
     }
 
     private fun showAlertEmptyProfiles() {

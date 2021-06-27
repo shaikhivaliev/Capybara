@@ -11,9 +11,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
 import com.afollestad.materialdialogs.list.customListAdapter
@@ -26,14 +26,16 @@ import com.petapp.capybara.data.model.DeleteImage
 import com.petapp.capybara.data.model.ImagePicker
 import com.petapp.capybara.data.model.ImagePickerType
 import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.databinding.FragmentProfileBinding
 import com.petapp.capybara.extensions.hideKeyboard
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
+
+    private val viewBinding by viewBinding(FragmentProfileBinding::bind)
 
     private val viewModel: ProfileViewModel by viewModel {
         parametersOf(findNavController())
@@ -64,7 +66,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 Glide.with(this)
                     .load(currentPhotoUri)
                     .centerCrop()
-                    .into(photo)
+                    .into(viewBinding.photo)
             } else {
                 currentPhotoUri = args.profile?.photo
             }
@@ -90,7 +92,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             Glide.with(requireActivity())
                 .load(this)
                 .centerCrop()
-                .into(photo)
+                .into(viewBinding.photo)
         }
     }
 
@@ -109,49 +111,49 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             Glide.with(this)
                 .load(R.drawable.ic_user_144dp)
                 .centerInside()
-                .into(photo)
-            name_et.requestFocus()
-            name_et.showKeyboard()
+                .into(viewBinding.photo)
+            viewBinding.nameEt.requestFocus()
+            viewBinding.nameEt.showKeyboard()
         }
     }
 
     private fun initViews() {
 
-        edit.setOnClickListener {
+        viewBinding.edit.setOnClickListener {
             setEditMode(true)
-            delete_profile.isVisible = true
+            viewBinding.deleteProfile.isVisible = true
         }
 
-        done.setOnClickListener {
-            delete_profile.isVisible = false
+        viewBinding.done.setOnClickListener {
+            viewBinding.deleteProfile.isVisible = false
             if (args.profile != null) {
-                done.hideKeyboard()
+                viewBinding.done.hideKeyboard()
                 viewModel.updateProfile(profileBuilder())
             } else {
-                done.hideKeyboard()
+                viewBinding.done.hideKeyboard()
                 viewModel.createProfile(profileBuilder())
             }
         }
 
-        name_et.doAfterTextChanged { name_layout.error = null }
+        viewBinding.nameEt.doAfterTextChanged { viewBinding.nameLayout.error = null }
 
-        change_photo.setOnClickListener { pickImages(listOf(camera, gallery)) }
+        viewBinding.changePhoto.setOnClickListener { pickImages(listOf(camera, gallery)) }
 
-        change_color.setOnClickListener { startColorDialog() }
+        viewBinding.changeColor.setOnClickListener { startColorDialog() }
 
-        delete_profile.setOnClickListener { deleteProfile() }
+        viewBinding.deleteProfile.setOnClickListener { deleteProfile() }
 
-        health_diary.setOnClickListener { viewModel.openHealthDiaryScreen(args.profile?.id) }
+        viewBinding.healthDiary.setOnClickListener { viewModel.openHealthDiaryScreen(args.profile?.id) }
     }
 
     private fun initObservers() {
         with(viewModel) {
-            profile.observe(viewLifecycleOwner, Observer { profile ->
+            profile.observe(viewLifecycleOwner, { profile ->
                 setProfileCard(profile)
                 setEditMode(false)
             })
 
-            imageFile.observe(viewLifecycleOwner, Observer { file ->
+            imageFile.observe(viewLifecycleOwner, { file ->
                 currentPhotoUri = FileProvider.getUriForFile(
                     requireActivity(),
                     requireActivity().getString(R.string.autority),
@@ -160,43 +162,45 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 imageFromCamera.launch(Uri.parse(currentPhotoUri))
             })
 
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
+            errorMessage.observe(viewLifecycleOwner, { error ->
                 requireActivity().toast(error)
             })
 
-            currentColor.observe(viewLifecycleOwner, Observer { color ->
-                color_marker.setBackgroundColor(color)
+            currentColor.observe(viewLifecycleOwner, { color ->
+                viewBinding.colorMarker.setBackgroundColor(color)
             })
 
-            healthDiaryForProfile.observe(viewLifecycleOwner, Observer { profile ->
-                blood_pressure_value.text = profile.bloodPressure ?: getString(R.string.profile_item_health_diary_empty)
-                pulse_value.text = profile.pulse ?: getString(R.string.profile_item_health_diary_empty)
-                blood_glucose_value.text = profile.bloodGlucose ?: getString(R.string.profile_item_health_diary_empty)
-                height_value.text = profile.height ?: getString(R.string.profile_item_health_diary_empty)
-                weight_value.text = profile.weight ?: getString(R.string.profile_item_health_diary_empty)
+            healthDiaryForProfile.observe(viewLifecycleOwner, { profile ->
+                viewBinding.bloodPressureValue.text =
+                    profile.bloodPressure ?: getString(R.string.profile_item_health_diary_empty)
+                viewBinding.pulseValue.text = profile.pulse ?: getString(R.string.profile_item_health_diary_empty)
+                viewBinding.bloodGlucoseValue.text =
+                    profile.bloodGlucose ?: getString(R.string.profile_item_health_diary_empty)
+                viewBinding.heightValue.text = profile.height ?: getString(R.string.profile_item_health_diary_empty)
+                viewBinding.weightValue.text = profile.weight ?: getString(R.string.profile_item_health_diary_empty)
             })
         }
     }
 
     private fun setProfileCard(profile: Profile) {
-        profile_name.text = profile.name
-        name_et.setText(profile.name)
+        viewBinding.profileName.text = profile.name
+        viewBinding.nameEt.setText(profile.name)
         currentColor.value = profile.color
 
         if (profile.photo != DEFAULT_PROFILE_ICON) {
-            edit.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
-            done.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
+            viewBinding.edit.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
+            viewBinding.done.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
             Glide.with(this)
                 .load(profile.photo)
                 .centerCrop()
-                .into(photo)
+                .into(viewBinding.photo)
         } else {
-            edit.setBackgroundResource(R.drawable.green_border_bgr)
-            done.setBackgroundResource(R.drawable.green_border_bgr)
+            viewBinding.edit.setBackgroundResource(R.drawable.green_border_bgr)
+            viewBinding.done.setBackgroundResource(R.drawable.green_border_bgr)
             Glide.with(this)
                 .load(R.drawable.ic_user_144dp)
                 .centerInside()
-                .into(photo)
+                .into(viewBinding.photo)
         }
     }
 
@@ -242,7 +246,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun deleteProfile() {
-        val name = profile_name.text
+        val name = viewBinding.profileName.text
         MaterialDialog(requireActivity()).show {
             if (name.isNotBlank()) {
                 title(text = getString(R.string.profile_delete_explanation, name))
@@ -264,7 +268,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun profileBuilder(): Profile? {
         return if (isNameValid() && isColorChosen()) {
             val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
-            val etName = name_et.text.toString()
+            val etName = viewBinding.nameEt.text.toString()
             val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
             val photoUri = currentPhotoUri ?: args.profile?.photo ?: DEFAULT_PROFILE_ICON
             Profile(id = id, name = name, color = requireNotNull(currentColor.value), photo = photoUri)
@@ -274,15 +278,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun setEditMode(isVisible: Boolean) {
-        current_profile.isVisible = !isVisible
-        edit_profile.isVisible = isVisible
+        viewBinding.currentProfile.isVisible = !isVisible
+        viewBinding.editProfile.isVisible = isVisible
     }
 
     private fun isNameValid(): Boolean {
-        val name = name_et.text.toString()
+        val name = viewBinding.nameEt.text.toString()
         return if (name.isNotBlank()) true
         else {
-            name_layout.error = requireActivity().getString(R.string.error_empty_name)
+            viewBinding.nameLayout.error = requireActivity().getString(R.string.error_empty_name)
             false
         }
     }
