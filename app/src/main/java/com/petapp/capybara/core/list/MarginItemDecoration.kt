@@ -1,4 +1,4 @@
-package com.petapp.capybara.common
+package com.petapp.capybara.core.list
 
 import android.graphics.Rect
 import android.view.View

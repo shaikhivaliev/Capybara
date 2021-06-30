@@ -2,10 +2,9 @@ package com.petapp.capybara.presentation.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-class AuthViewModel : ViewModel() {
+class AuthHelper {
 
     enum class AuthState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
@@ -24,10 +23,5 @@ class AuthViewModel : ViewModel() {
 
     init {
         FirebaseAuth.getInstance().addAuthStateListener(authStateListener)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        FirebaseAuth.getInstance().removeAuthStateListener(authStateListener)
     }
 }

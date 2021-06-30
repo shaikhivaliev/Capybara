@@ -4,29 +4,33 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
+import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.Month
 import com.petapp.capybara.data.model.Months
 import com.petapp.capybara.databinding.FragmentCalendarBinding
+import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import com.petapp.capybara.presentation.main.MainActivity
 import java.util.*
+import javax.inject.Inject
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private val viewBinding by viewBinding(FragmentCalendarBinding::bind)
 
-    private val viewModel: CalendarViewModel by viewModel {
-        parametersOf(findNavController())
-    }
+    @Inject
+    lateinit var vmFactory: CalendarVmFactory
+
+    private val vm: CalendarVm by stateViewModel(
+        vmFactoryProducer = { vmFactory }
+    )
 
     private val monthAdapter by lazy {
         CalendarPagerAdapter(requireContext())
@@ -36,21 +40,26 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
         initMonthPager()
         initObservers()
-        viewModel.getInitMonths(Calendar.getInstance())
+        vm.getInitMonths(Calendar.getInstance())
 
-        viewBinding.addSurvey.setOnClickListener { viewModel.openSurveyScreen(null) }
+        viewBinding.addSurvey.setOnClickListener { vm.openSurveyScreen(null) }
     }
 
     private fun initViews() {
         viewBinding.marksGroup.setOnCheckedChangeListener { _, checkedId ->
-            viewModel.profileId.value = chipIdToProfileId[checkedId]
-            viewModel.getInitMonths(Calendar.getInstance())
+            vm.profileId.value = chipIdToProfileId[checkedId]
+            vm.getInitMonths(Calendar.getInstance())
         }
     }
 
@@ -67,13 +76,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     if (monthAdapter.itemCount - TWO_MONTH == position) {
                         val month = currentCalendar.clone() as Calendar
                         month.add(Calendar.MONTH, TWO_MONTH)
-                        viewModel.getNextMonth(month)
+                        vm.getNextMonth(month)
                     }
 
                     if (position == 1) {
                         val month = currentCalendar.clone() as Calendar
                         month.add(Calendar.MONTH, -TWO_MONTH)
-                        viewModel.getPreviousMonth(month)
+                        vm.getPreviousMonth(month)
                     }
                 }
             })
@@ -81,7 +90,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private fun initObservers() {
-        with(viewModel) {
+        with(vm) {
             profiles.observe(viewLifecycleOwner, { profiles ->
                 if (profiles.isEmpty()) {
                     showAlertEmptyProfiles()
@@ -133,7 +142,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             .cancelable(false)
             .show {
                 title(text = getString(R.string.survey_incomplete_data))
-                positiveButton { viewModel.openProfileScreen() }
+                positiveButton { vm.openProfileScreen() }
             }
     }
 

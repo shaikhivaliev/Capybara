@@ -13,13 +13,12 @@ import com.firebase.ui.auth.AuthUI
 import com.petapp.capybara.R
 import com.petapp.capybara.databinding.ActivityAuthBinding
 import com.petapp.capybara.presentation.main.MainActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
-    private val viewBinding by viewBinding(ActivityAuthBinding::bind)
+    private val authHelper: AuthHelper = AuthHelper()
 
-    private val viewModel: AuthViewModel by viewModel()
+    private val viewBinding by viewBinding(ActivityAuthBinding::bind)
 
     private val providers: List<AuthUI.IdpConfig> = listOf(
         AuthUI.IdpConfig.PhoneBuilder().build(),
@@ -38,7 +37,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
         when {
             result.resultCode == Activity.RESULT_OK -> openMainScreen()
             result.data == null -> finish()
-            else -> viewBinding.authError.isVisible = true
+            else -> viewBinding.error.isVisible = true
         }
     }
 
@@ -48,11 +47,11 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
     }
 
     private fun initObservers() {
-        with(viewModel) {
+        with(authHelper) {
             authenticationState.observe(this@AuthActivity, { state ->
                 when (state) {
-                    AuthViewModel.AuthState.AUTHENTICATED -> openMainScreen()
-                    AuthViewModel.AuthState.UNAUTHENTICATED -> signIn()
+                    AuthHelper.AuthState.AUTHENTICATED -> openMainScreen()
+                    AuthHelper.AuthState.UNAUTHENTICATED -> signIn()
                     else -> Log.d(TAG, "Navigation from Main activity is error")
                 }
             })
@@ -69,7 +68,7 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
             .build()
         startAuthUI.launch(authIntent)
 
-        viewBinding.authAgain.setOnClickListener {
+        viewBinding.tryAgain.setOnClickListener {
             val intent = intent
             overridePendingTransition(0, 0)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

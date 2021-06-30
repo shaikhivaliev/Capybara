@@ -10,14 +10,15 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
+import com.petapp.capybara.core.navigation.LongNavDto
+import com.petapp.capybara.core.navigation.navDto
+import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
@@ -27,27 +28,29 @@ import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.surveys.SurveysFragment
 import com.petapp.capybara.presentation.toPresentationModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
     private val viewBinding by viewBinding(FragmentHealthDiaryBinding::bind)
 
-    private val viewModel: HealthDiaryViewModel by viewModel {
-        parametersOf(findNavController())
-    }
+    @Inject
+    lateinit var vmFactory: HealthDiaryVmFactory
 
-    private val args: HealthDiaryFragmentArgs by navArgs()
+    private val vm: HealthDiaryVm by stateViewModel(
+        vmFactoryProducer = { vmFactory }
+    )
+
+    private val args: LongNavDto by navDto()
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
     private var profileId: Long? = null
 
     private val adapter: HealthDiaryAdapter =
         HealthDiaryAdapter(
-            expandItem = { viewModel.handleStepClick(it) },
+            expandItem = { vm.handleStepClick(it) },
             addSurvey = { openAddingSurveyDialog(it) },
             onDelete = { openDeleteDialog(it.id) }
         )
@@ -58,8 +61,8 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
         viewBinding.marksGroup.setOnCheckedChangeListener { _, checkedId ->
             profileId = chipIdToProfileId[checkedId]
-            viewModel.profileId.value = profileId
-            viewModel.getHealthDiaryItems()
+            vm.profileId.value = profileId
+            vm.getHealthDiaryItems()
         }
 
         with(viewBinding.recyclerView) {
@@ -73,7 +76,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         val dialog = MaterialDialog(requireContext())
             .customView(view = binding.root)
             .positiveButton(R.string.save) {
-                viewModel.createHealthDiarySurvey(
+                vm.createHealthDiarySurvey(
                     healthDiarySurveyBuilder(
                         binding = binding,
                         item = item
@@ -174,7 +177,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
     }
 
     private fun initObservers() {
-        with(viewModel) {
+        with(vm) {
             profiles.observe(viewLifecycleOwner, { profiles ->
                 if (profiles.isEmpty()) {
                     showAlertEmptyProfiles()
@@ -184,8 +187,8 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                         viewBinding.marksGroup.addView(chip)
                         chipIdToProfileId[chip.id] = profile.id
                     }
-                    if (args.profileId != 0L) {
-                        val index = chipIdToProfileId.filterValues { it == args.profileId }.keys.first()
+                    if (args.value != 0L) {
+                        val index = chipIdToProfileId.filterValues { it == args.value }.keys.first()
                         viewBinding.marksGroup.post {
                             viewBinding.marksGroup.check(index)
                             val chip = viewBinding.marksGroup.findViewById<Chip>(viewBinding.marksGroup.checkedChipId)
@@ -209,7 +212,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         MaterialDialog(requireActivity()).show {
             title(text = getString(R.string.health_diary_delete_survey))
             positiveButton {
-                viewModel.deleteHealthDiary(surveyId)
+                vm.deleteHealthDiary(surveyId)
                 cancel()
             }
             negativeButton { cancel() }
@@ -221,7 +224,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
             .cancelable(false)
             .show {
                 title(text = getString(R.string.survey_incomplete_data))
-                positiveButton { viewModel.openProfileScreen() }
+                positiveButton { vm.openProfileScreen() }
             }
     }
 

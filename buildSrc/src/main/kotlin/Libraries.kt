@@ -86,10 +86,4 @@ object Libraries {
         val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
         val roomRxJava = "androidx.room:room-rxjava2:${Versions.room}"
     }
-
-    object Koin {
-        val koinAndroid = "org.koin:koin-android:${Versions.koin}"
-        val koinAndroidxScope = "org.koin:koin-androidx-scope:${Versions.koin}"
-        val koinAndroidxViewmodel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
-    }
 }

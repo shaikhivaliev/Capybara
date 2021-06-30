@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
@@ -21,27 +20,34 @@ import com.afollestad.materialdialogs.list.getListAdapter
 import com.afollestad.materialdialogs.list.getRecyclerView
 import com.bumptech.glide.Glide
 import com.petapp.capybara.R
-import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.core.list.MarginItemDecoration
+import com.petapp.capybara.core.navigation.ProfileNavDto
+import com.petapp.capybara.core.navigation.navDto
+import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.DeleteImage
 import com.petapp.capybara.data.model.ImagePicker
 import com.petapp.capybara.data.model.ImagePickerType
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.databinding.FragmentProfileBinding
+import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.extensions.hideKeyboard
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import com.petapp.capybara.presentation.main.MainActivity
+import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val viewBinding by viewBinding(FragmentProfileBinding::bind)
 
-    private val viewModel: ProfileViewModel by viewModel {
-        parametersOf(findNavController())
-    }
+    @Inject
+    lateinit var vmFactory: ProfileVmFactory
 
-    private val args: ProfileFragmentArgs by navArgs()
+    private val vm: ProfileVm by stateViewModel(
+        vmFactoryProducer = { vmFactory }
+    )
+
+    private val args: ProfileNavDto by navDto()
 
     private var currentPhotoUri: String? = null
 
@@ -50,7 +56,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val adapterImagePickerDialog: ImagePickerDialogAdapter = ImagePickerDialogAdapter(
         itemClick = { imagePicker ->
             when (imagePicker.type) {
-                ImagePickerType.CAMERA -> viewModel.createImageFile(requireActivity())
+                ImagePickerType.CAMERA -> vm.createImageFile(requireActivity())
                 ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
             }
             imagePickerDialog?.cancel()
@@ -96,6 +102,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -103,8 +114,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         initObservers()
 
         args.profile?.id?.apply {
-            viewModel.getProfile(this)
-            viewModel.getHealthDiaryItems(this)
+            vm.getProfile(this)
+            vm.getHealthDiaryItems(this)
         }
         if (args.profile?.id == null) {
             setEditMode(true)
@@ -128,10 +139,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             viewBinding.deleteProfile.isVisible = false
             if (args.profile != null) {
                 viewBinding.done.hideKeyboard()
-                viewModel.updateProfile(profileBuilder())
+                vm.updateProfile(profileBuilder())
             } else {
                 viewBinding.done.hideKeyboard()
-                viewModel.createProfile(profileBuilder())
+                vm.createProfile(profileBuilder())
             }
         }
 
@@ -143,11 +154,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         viewBinding.deleteProfile.setOnClickListener { deleteProfile() }
 
-        viewBinding.healthDiary.setOnClickListener { viewModel.openHealthDiaryScreen(args.profile?.id) }
+        viewBinding.healthDiary.setOnClickListener { vm.openHealthDiaryScreen(args.profile?.id) }
     }
 
     private fun initObservers() {
-        with(viewModel) {
+        with(vm) {
             profile.observe(viewLifecycleOwner, { profile ->
                 setProfileCard(profile)
                 setEditMode(false)
@@ -255,9 +266,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             positiveButton {
                 if (args.profile?.id != null) {
-                    viewModel.deleteProfile(args.profile?.id!!)
+                    vm.deleteProfile(args.profile?.id!!)
                 } else {
-                    viewModel.back()
+                    vm.back()
                 }
                 cancel()
             }

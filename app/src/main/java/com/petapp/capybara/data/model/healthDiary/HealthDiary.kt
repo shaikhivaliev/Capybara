@@ -1,6 +1,6 @@
 package com.petapp.capybara.data.model.healthDiary
 
-import com.petapp.capybara.common.ListItem
+import com.petapp.capybara.core.list.ListItem
 
 sealed class HealthDiary : ListItem
 

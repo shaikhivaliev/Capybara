@@ -9,13 +9,13 @@ import com.afollestad.materialdialogs.list.customListAdapter
 import com.afollestad.materialdialogs.list.getListAdapter
 import com.afollestad.materialdialogs.list.getRecyclerView
 import com.petapp.capybara.R
-import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.core.list.MarginItemDecoration
+import com.petapp.capybara.data.model.DateModel
 import com.petapp.capybara.data.model.Month
 import com.petapp.capybara.databinding.ItemMonthBinding
 import com.petapp.capybara.extensions.currentDateFull
 import com.petapp.capybara.extensions.currentDateMonthYear
 import java.util.*
-import com.petapp.capybara.data.model.Date as DateModel
 
 class CalendarPagerAdapter(private val context: Context) :
     RecyclerView.Adapter<CalendarPagerAdapter.MonthViewHolder>() {

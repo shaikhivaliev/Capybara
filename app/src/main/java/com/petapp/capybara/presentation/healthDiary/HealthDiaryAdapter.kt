@@ -4,8 +4,8 @@ import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import com.petapp.capybara.R
-import com.petapp.capybara.common.ListItem
-import com.petapp.capybara.common.ListItemDiffCallback
+import com.petapp.capybara.core.list.ListItem
+import com.petapp.capybara.core.list.ListItemDiffCallback
 import com.petapp.capybara.data.model.healthDiary.EmptyItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary

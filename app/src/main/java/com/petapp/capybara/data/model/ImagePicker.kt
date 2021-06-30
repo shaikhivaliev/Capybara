@@ -2,7 +2,7 @@ package com.petapp.capybara.data.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.petapp.capybara.common.ListItem
+import com.petapp.capybara.core.list.ListItem
 
 data class ImagePicker(
     override val id: Long,

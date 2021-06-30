@@ -2,8 +2,9 @@ package com.petapp.capybara.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
-import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.presentation.profiles.ProfilesViewModel
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.data.IProfileRepository
+import com.petapp.capybara.presentation.profiles.ProfilesVm
 import com.petapp.capybara.utils.RxRule
 import com.petapp.capybara.utils.Stubs
 import com.petapp.capybara.utils.getOrAwaitValue
@@ -29,16 +30,16 @@ class ProfilesViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    lateinit var repository: ProfileRepository
+    lateinit var repository: IProfileRepository
 
     @Mock
-    lateinit var navController: NavController
+    lateinit var mainNavigator: IMainNavigator
 
-    private lateinit var viewModel: ProfilesViewModel
+    private lateinit var viewModel: ProfilesVm
 
     @Before
     fun setUp() {
-        viewModel = ProfilesViewModel(repository, navController)
+        viewModel = ProfilesVm(repository, mainNavigator)
     }
 
     @Test

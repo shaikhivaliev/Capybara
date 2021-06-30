@@ -147,9 +147,4 @@ dependencies {
     implementation(Libraries.RxJava.rxJava)
     implementation(Libraries.RxJava.rxAndroid)
     implementation(Libraries.RxJava.roomRxJava)
-
-    // Koin
-    implementation(Libraries.Koin.koinAndroid)
-    implementation(Libraries.Koin.koinAndroidxScope)
-    implementation(Libraries.Koin.koinAndroidxViewmodel)
 }

@@ -4,33 +4,42 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.petapp.capybara.R
-import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.core.list.MarginItemDecoration
+import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.databinding.FragmentTypesBinding
+import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.extensions.toast
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import com.petapp.capybara.presentation.main.MainActivity
+import javax.inject.Inject
 
 class TypesFragment : Fragment(R.layout.fragment_types) {
 
     private val viewBinding by viewBinding(FragmentTypesBinding::bind)
 
-    private val viewModel: TypesViewModel by viewModel {
-        parametersOf(findNavController())
-    }
+    @Inject
+    lateinit var vmFactory: TypesVmFactory
+
+    private val vm: TypesVm by stateViewModel(
+        vmFactoryProducer = { vmFactory }
+    )
 
     private val adapter: TypesAdapter = TypesAdapter(
-        itemClick = { viewModel.openSurveysScreen(it.id) }
+        itemClick = { vm.openSurveysScreen(it.id) }
     )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initRecycler()
-        viewBinding.healthDiary.root.setOnClickListener { viewModel.openHealthDiary() }
+        viewBinding.healthDiary.root.setOnClickListener { vm.openHealthDiary() }
     }
 
     private fun initRecycler() {
@@ -47,7 +56,7 @@ class TypesFragment : Fragment(R.layout.fragment_types) {
     }
 
     private fun initObservers() {
-        with(viewModel) {
+        with(vm) {
             types.observe(viewLifecycleOwner, {
                 adapter.items = it
             })

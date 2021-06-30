@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
@@ -16,28 +15,35 @@ import com.afollestad.materialdialogs.list.customListAdapter
 import com.afollestad.materialdialogs.list.getListAdapter
 import com.afollestad.materialdialogs.list.getRecyclerView
 import com.petapp.capybara.R
-import com.petapp.capybara.common.MarginItemDecoration
+import com.petapp.capybara.core.list.MarginItemDecoration
+import com.petapp.capybara.core.navigation.SurveyNavDto
+import com.petapp.capybara.core.navigation.navDto
+import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.databinding.FragmentSurveyBinding
+import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.extensions.currentDateMonthYear
 import com.petapp.capybara.extensions.showKeyboard
 import com.petapp.capybara.extensions.toast
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import com.petapp.capybara.presentation.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
     private val viewBinding by viewBinding(FragmentSurveyBinding::bind)
 
-    private val viewModel: SurveyViewModel by viewModel {
-        parametersOf(findNavController())
-    }
+    @Inject
+    lateinit var vmFactory: SurveyVmFactory
 
-    private val args: SurveyFragmentArgs by navArgs()
+    private val vm: SurveyVm by stateViewModel(
+        vmFactoryProducer = { vmFactory }
+    )
+
+    private val args: SurveyNavDto by navDto()
 
     private val adapterTypesDialog: TypesDialogAdapter = TypesDialogAdapter(
         itemClick = { type ->
@@ -62,6 +68,11 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
     private val calendar: Calendar = Calendar.getInstance()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,7 +80,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
         initObservers()
         initWorkWithDate()
 
-        args.survey?.id?.apply { viewModel.getSurvey(this) }
+        args.survey?.id?.apply { vm.getSurvey(this) }
 
         if (args.survey?.id == null) {
             viewBinding.currentSurvey.isVisible = false
@@ -86,9 +97,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
 
         viewBinding.done.setOnClickListener {
             if (args.survey != null) {
-                viewModel.updateSurvey(surveyBuilder())
+                vm.updateSurvey(surveyBuilder())
             } else {
-                viewModel.createSurvey(surveyBuilder())
+                vm.createSurvey(surveyBuilder())
             }
         }
         viewBinding.edit.setOnClickListener {
@@ -130,7 +141,7 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
     }
 
     private fun initObservers() {
-        with(viewModel) {
+        with(vm) {
             survey.observe(viewLifecycleOwner, { survey ->
                 setSurvey(survey)
             })
@@ -222,9 +233,9 @@ class SurveyFragment : Fragment(R.layout.fragment_survey) {
             }
             positiveButton {
                 if (args.survey?.id != null) {
-                    viewModel.deleteSurvey(args.survey?.id!!)
+                    vm.deleteSurvey(args.survey?.id!!)
                 } else {
-                    viewModel.back()
+                    vm.back()
                 }
                 cancel()
             }

@@ -1,6 +1,6 @@
 package com.petapp.capybara.data.model
 
-import com.petapp.capybara.common.ListItem
+import com.petapp.capybara.core.list.ListItem
 
 data class DeleteImage(
     override val id: Long

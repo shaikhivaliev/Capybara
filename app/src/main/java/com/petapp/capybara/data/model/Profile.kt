@@ -1,8 +1,8 @@
 package com.petapp.capybara.data.model
 
 import android.os.Parcelable
-import com.petapp.capybara.common.ListItem
-import kotlinx.android.parcel.Parcelize
+import com.petapp.capybara.core.list.ListItem
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Profile(

@@ -8,6 +8,7 @@ import androidx.navigation.ui.NavigationUI
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.petapp.capybara.R
 import com.petapp.capybara.databinding.ActivityMainBinding
+import com.petapp.capybara.di.features.FeaturesComponentHolder
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -17,5 +18,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         val host = supportFragmentManager.findFragmentById(R.id.nav_host_home) as NavHostFragment? ?: return
         NavigationUI.setupWithNavController(viewBinding.bottomNavigation, host.findNavController())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        FeaturesComponentHolder.clearComponent()
     }
 }
