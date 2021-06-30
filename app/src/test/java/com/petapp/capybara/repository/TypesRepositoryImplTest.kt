@@ -21,11 +21,11 @@ class TypesRepositoryImplTest {
     @Mock
     lateinit var appDao: AppDao
 
-    private lateinit var repository: TypesRepository
+    private lateinit var repository: ITypesRepository
 
     @Before
     fun setUp() {
-        repository = TypesRepositoryImpl(appDao)
+        repository = TypesRepository(appDao)
     }
 
     @Test

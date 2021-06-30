@@ -2,14 +2,24 @@ package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
+import com.petapp.capybara.database.AppDao
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
-interface HealthDiaryRepository {
+class HealthDiaryRepository(private val appDao: AppDao) : IHealthDiaryRepository {
 
-    fun getItemsHealthDiary(): Single<List<ItemHealthDiary>>
+    override fun getItemsHealthDiary(): Single<List<ItemHealthDiary>> {
+        return appDao.getItemHealthDiaryWithSurveys().map { it.toHealthDiaryItems() }
+    }
 
-    fun createSurveyHealthDiary(survey: SurveyHealthDiary): Completable
+    override fun createSurveyHealthDiary(survey: SurveyHealthDiary): Completable {
+        return Completable.fromAction { appDao.createHealthDiarySurvey(survey.toSurveyHealthDiaryEntity()) }
+            .subscribeOn(Schedulers.io())
+    }
 
-    fun deleteSurveyHealthDiary(surveyId: Long): Completable
+    override fun deleteSurveyHealthDiary(surveyId: Long): Completable {
+        return Completable.fromAction { appDao.deleteSurveyHealthDiary(surveyId) }
+            .subscribeOn(Schedulers.io())
+    }
 }

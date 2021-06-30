@@ -1,18 +1,33 @@
 package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.database.AppDao
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
-interface TypesRepository {
+class TypesRepository(private val appDao: AppDao) : ITypesRepository {
 
-    fun getTypes(): Single<List<Type>>
+    override fun getTypes(): Single<List<Type>> {
+        return appDao.getTypesWithSurveys().map { it.toTypes() }
+    }
 
-    fun getType(typeId: Long): Single<Type>
+    override fun getType(typeId: Long): Single<Type> {
+        return appDao.getType(typeId).map { it.toType() }
+    }
 
-    fun createType(type: Type): Completable
+    override fun createType(type: Type): Completable {
+        return Completable.fromAction { appDao.createType(type.toTypeEntity()) }
+            .subscribeOn(Schedulers.io())
+    }
 
-    fun updateType(type: Type): Completable
+    override fun updateType(type: Type): Completable {
+        return Completable.fromAction { appDao.updateType(type.toTypeEntity()) }
+            .subscribeOn(Schedulers.io())
+    }
 
-    fun deleteType(typeId: Long): Completable
+    override fun deleteType(typeId: Long): Completable {
+        return Completable.fromAction { appDao.deleteType(typeId) }
+            .subscribeOn(Schedulers.io())
+    }
 }

@@ -1,7 +1,7 @@
 package com.petapp.capybara.repository
 
+import com.petapp.capybara.data.ISurveysRepository
 import com.petapp.capybara.data.SurveysRepository
-import com.petapp.capybara.data.SurveysRepositoryImpl
 import com.petapp.capybara.data.toSurvey
 import com.petapp.capybara.data.toSurveys
 import com.petapp.capybara.database.AppDao
@@ -24,11 +24,11 @@ class SurveysRepositoryImplTest {
     @Mock
     lateinit var appDao: AppDao
 
-    private lateinit var repository: SurveysRepository
+    private lateinit var repository: ISurveysRepository
 
     @Before
     fun setUp() {
-        repository = SurveysRepositoryImpl(appDao)
+        repository = SurveysRepository(appDao)
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.petapp.capybara.repository
 
+import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.data.ProfileRepositoryImpl
 import com.petapp.capybara.utils.Stubs
 import com.petapp.capybara.data.toProfile
 import com.petapp.capybara.database.AppDao
@@ -23,11 +23,11 @@ class ProfileRepositoryImplTest {
     @Mock
     lateinit var appDao: AppDao
 
-    private lateinit var repository: ProfileRepository
+    private lateinit var repository: IProfileRepository
 
     @Before
     fun setUp() {
-        repository = ProfileRepositoryImpl(appDao)
+        repository = ProfileRepository(appDao)
     }
 
     @Test
