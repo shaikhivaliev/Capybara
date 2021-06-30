@@ -42,7 +42,6 @@ class VmModule {
         healthDiaryRepository: IHealthDiaryRepository
     ): ProfileVmFactory = ProfileVmFactory(mainNavigator, profileRepository, healthDiaryRepository)
 
-
     @Provides
     @FeaturesScope
     fun provideProfilesVmFactory(

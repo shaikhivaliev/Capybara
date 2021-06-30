@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
@@ -13,7 +12,6 @@ import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.core.list.MarginItemDecoration
 import com.petapp.capybara.core.navigation.LongNavDto
-import com.petapp.capybara.core.navigation.SurveyNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.databinding.FragmentSurveysBinding

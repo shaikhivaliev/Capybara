@@ -23,5 +23,4 @@ class DataModule {
     @Provides
     @FeaturesScope
     fun provideHealthDiaryRepository(appDao: AppDao): IHealthDiaryRepository = HealthDiaryRepository(appDao)
-
 }

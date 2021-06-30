@@ -1,7 +1,6 @@
 package com.petapp.capybara.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.navigation.NavController
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.presentation.profiles.ProfilesVm

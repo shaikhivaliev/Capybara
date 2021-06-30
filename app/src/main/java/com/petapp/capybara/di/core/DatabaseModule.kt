@@ -5,7 +5,6 @@ import com.petapp.capybara.database.AppDao
 import com.petapp.capybara.database.DatabaseProvider
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class DatabaseModule {
@@ -17,5 +16,4 @@ class DatabaseModule {
     @Provides
     @CoreScope
     fun provideAppDao(databaseProvider: DatabaseProvider): AppDao = databaseProvider.appDao()
-
 }

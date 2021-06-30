@@ -16,7 +16,7 @@ import javax.inject.Singleton
     ]
 )
 @Singleton
-interface AppComponent: AndroidInjector<App> {
+interface AppComponent : AndroidInjector<App> {
 
     @Component.Builder
     interface Builder {

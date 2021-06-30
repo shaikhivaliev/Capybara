@@ -17,7 +17,6 @@ import com.petapp.capybara.data.model.Type
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-
 class SurveyVmFactory(
     private val mainNavigator: IMainNavigator,
     private val surveysRepository: ISurveysRepository,

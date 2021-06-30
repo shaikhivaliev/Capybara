@@ -19,5 +19,4 @@ class NavigationModule {
     fun provideMainNavigator(
         navControllerProvider: INavControllerProvider
     ): IMainNavigator = MainNavigator(navControllerProvider)
-
 }
