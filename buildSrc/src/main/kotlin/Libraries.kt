@@ -22,6 +22,7 @@ object Libraries {
         val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
         val viewPager = "androidx.viewpager2:viewpager2:1.1.0-alpha01"
         val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+        val lifecycle = "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
     }
 
     object Navigation {

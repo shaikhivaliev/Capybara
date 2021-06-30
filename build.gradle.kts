@@ -8,7 +8,6 @@ buildscript {
         classpath(Libraries.AndroidTools.gradle)
         classpath(kotlin("gradle-plugin", version = Versions.stdLib))
         classpath("com.google.gms:google-services:4.3.8")
-        classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0")
     }
 }
 

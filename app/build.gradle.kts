@@ -3,7 +3,6 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 plugins {
     id(ANDROID_APPLICATION_PLUGIN)
     id(GOOGLE_SERVICES)
-    id(NAVIGATION_SAFEARGS)
     id(CHECK_DEPENDENCY_UPDATES_PLUGIN)
     id(KOTLIN_ANDROID_PLUGIN)
     id(KOTLIN_KAPT_PLUGIN)
@@ -98,6 +97,7 @@ dependencies {
 
     // Lifecycle
     implementation(Libraries.AndroidX.viewModelKtx)
+    implementation(Libraries.AndroidX.lifecycle)
 
     // Material
     implementation(Libraries.Android.material)
