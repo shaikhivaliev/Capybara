@@ -3,18 +3,32 @@ package com.petapp.capybara.presentation.types
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.data.TypesRepository
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.ITypesRepository
 import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class TypesViewModel(
-    private val repository: TypesRepository,
-    private val navController: NavController
+class TypesVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val typesRepository: ITypesRepository
+) : SavedStateVmAssistedFactory<TypesVm> {
+    override fun create(handle: SavedStateHandle) =
+        TypesVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            typesRepository = typesRepository
+        )
+}
+
+class TypesVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val typesRepository: ITypesRepository
 ) : BaseViewModel() {
 
     private val _types = MutableLiveData<List<Type>>()
@@ -31,7 +45,7 @@ class TypesViewModel(
     }
 
     private fun getTypes() {
-        repository.getTypes()
+        typesRepository.getTypes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -48,11 +62,11 @@ class TypesViewModel(
     }
 
     fun openSurveysScreen(typeId: Long) {
-        TypesFragmentDirections.toSurveys(typeId).navigateWith(navController)
+        mainNavigator.openSurveys(typeId)
     }
 
     fun openHealthDiary() {
-        TypesFragmentDirections.toHealthDiary(0L).navigateWith(navController)
+        mainNavigator.openHealthDiary(0L)
     }
 
     companion object {

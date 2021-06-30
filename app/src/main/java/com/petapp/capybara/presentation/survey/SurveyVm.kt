@@ -3,24 +3,43 @@ package com.petapp.capybara.presentation.survey
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.data.SurveysRepository
-import com.petapp.capybara.data.TypesRepository
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.IProfileRepository
+import com.petapp.capybara.data.ISurveysRepository
+import com.petapp.capybara.data.ITypesRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class SurveyViewModel(
-    private val repositorySurveys: SurveysRepository,
-    private val repositoryTypes: TypesRepository,
-    private val repositoryProfile: ProfileRepository,
-    private val navController: NavController
+
+class SurveyVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val surveysRepository: ISurveysRepository,
+    private val typesRepository: ITypesRepository,
+    private val profileRepository: IProfileRepository
+) : SavedStateVmAssistedFactory<SurveyVm> {
+    override fun create(handle: SavedStateHandle) =
+        SurveyVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            surveysRepository = surveysRepository,
+            typesRepository = typesRepository,
+            profileRepository = profileRepository
+        )
+}
+
+class SurveyVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val surveysRepository: ISurveysRepository,
+    private val typesRepository: ITypesRepository,
+    private val profileRepository: IProfileRepository
 ) : BaseViewModel() {
 
     private val _types = MutableLiveData<List<Type>>()
@@ -41,7 +60,7 @@ class SurveyViewModel(
     }
 
     private fun getTypes() {
-        repositoryTypes.getTypes()
+        typesRepository.getTypes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -56,7 +75,7 @@ class SurveyViewModel(
     }
 
     fun getSurvey(surveyId: Long) {
-        repositorySurveys.getSurvey(surveyId)
+        surveysRepository.getSurvey(surveyId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -71,7 +90,7 @@ class SurveyViewModel(
     }
 
     private fun getProfiles() {
-        repositoryProfile.getProfiles()
+        profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -88,7 +107,7 @@ class SurveyViewModel(
 
     fun createSurvey(survey: Survey?) {
         if (survey != null) {
-            repositorySurveys.createSurvey(survey)
+            surveysRepository.createSurvey(survey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -103,7 +122,7 @@ class SurveyViewModel(
 
     fun updateSurvey(survey: Survey?) {
         if (survey != null) {
-            repositorySurveys.updateSurvey(survey)
+            surveysRepository.updateSurvey(survey)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
@@ -119,7 +138,7 @@ class SurveyViewModel(
     }
 
     fun deleteSurvey(surveyId: Long) {
-        repositorySurveys.deleteSurvey(surveyId)
+        surveysRepository.deleteSurvey(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -134,11 +153,11 @@ class SurveyViewModel(
     }
 
     private fun openTypesScreen() {
-        SurveyFragmentDirections.toTypes().navigateWith(navController)
+        mainNavigator.openTypes()
     }
 
     fun back() {
-        navController.popBackStack()
+        mainNavigator.back()
     }
 
     companion object {

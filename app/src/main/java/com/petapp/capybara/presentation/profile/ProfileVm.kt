@@ -4,25 +4,41 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.data.HealthDiaryRepository
-import com.petapp.capybara.data.ProfileRepository
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.IHealthDiaryRepository
+import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
 import com.petapp.capybara.extensions.createImageFile
-import com.petapp.capybara.extensions.navigateWith
 import com.petapp.capybara.presentation.toPresentationModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
-class ProfileViewModel(
-    private val repositoryProfile: ProfileRepository,
-    private val repositoryHealthDiary: HealthDiaryRepository,
-    private val navController: NavController
+class ProfileVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val profileRepository: IProfileRepository,
+    private val healthDiaryRepository: IHealthDiaryRepository
+) : SavedStateVmAssistedFactory<ProfileVm> {
+    override fun create(handle: SavedStateHandle) =
+        ProfileVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            profileRepository = profileRepository,
+            healthDiaryRepository = healthDiaryRepository
+        )
+}
+
+class ProfileVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val profileRepository: IProfileRepository,
+    private val healthDiaryRepository: IHealthDiaryRepository
 ) : BaseViewModel() {
 
     private val _profile = MutableLiveData<Profile>()
@@ -38,7 +54,7 @@ class ProfileViewModel(
     val healthDiaryForProfile: LiveData<HealthDiaryForProfile> = _healthDiaryForProfile
 
     fun getProfile(profileId: Long) {
-        repositoryProfile.getProfile(profileId)
+        profileRepository.getProfile(profileId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -54,7 +70,7 @@ class ProfileViewModel(
 
     fun createProfile(profile: Profile?) {
         if (profile != null) {
-            repositoryProfile.createProfile(profile)
+            profileRepository.createProfile(profile)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
@@ -71,7 +87,7 @@ class ProfileViewModel(
 
     fun updateProfile(profile: Profile?) {
         if (profile != null) {
-            repositoryProfile.updateProfile(profile)
+            profileRepository.updateProfile(profile)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
@@ -87,7 +103,7 @@ class ProfileViewModel(
     }
 
     fun deleteProfile(profileId: Long) {
-        repositoryProfile.deleteProfile(profileId)
+        profileRepository.deleteProfile(profileId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -102,7 +118,7 @@ class ProfileViewModel(
     }
 
     fun getHealthDiaryItems(profileId: Long) {
-        repositoryHealthDiary.getItemsHealthDiary()
+        healthDiaryRepository.getItemsHealthDiary()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -132,15 +148,15 @@ class ProfileViewModel(
     }
 
     private fun openProfilesScreen() {
-        ProfileFragmentDirections.toProfiles().navigateWith(navController)
+        mainNavigator.openProfiles()
     }
 
     fun openHealthDiaryScreen(profileId: Long?) {
-        profileId?.let { ProfileFragmentDirections.toHealthDiary(it).navigateWith(navController) }
+        mainNavigator.openHealthDiary(profileId)
     }
 
     fun back() {
-        navController.popBackStack()
+        mainNavigator.back()
     }
 
     companion object {

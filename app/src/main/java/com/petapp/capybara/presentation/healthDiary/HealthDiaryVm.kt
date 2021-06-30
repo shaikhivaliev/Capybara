@@ -3,23 +3,38 @@ package com.petapp.capybara.presentation.healthDiary
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.data.HealthDiaryRepository
-import com.petapp.capybara.data.ProfileRepository
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.IHealthDiaryRepository
+import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import com.petapp.capybara.extensions.navigateWith
-import com.petapp.capybara.presentation.surveys.SurveysFragmentDirections
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class HealthDiaryViewModel(
-    private val repositoryHealthDiary: HealthDiaryRepository,
-    private val repositoryProfile: ProfileRepository,
-    private val navController: NavController
+class HealthDiaryVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val healthDiaryRepository: IHealthDiaryRepository,
+    private val profileRepository: IProfileRepository
+) : SavedStateVmAssistedFactory<HealthDiaryVm> {
+    override fun create(handle: SavedStateHandle) =
+        HealthDiaryVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            healthDiaryRepository = healthDiaryRepository,
+            profileRepository = profileRepository
+        )
+}
+
+class HealthDiaryVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val healthDiaryRepository: IHealthDiaryRepository,
+    private val profileRepository: IProfileRepository
 ) : BaseViewModel() {
 
     private val _healthDiaryItems = MutableLiveData<List<ItemHealthDiary>>()
@@ -38,7 +53,7 @@ class HealthDiaryViewModel(
     }
 
     fun getHealthDiaryItems() {
-        repositoryHealthDiary.getItemsHealthDiary()
+        healthDiaryRepository.getItemsHealthDiary()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -56,7 +71,7 @@ class HealthDiaryViewModel(
 
     fun createHealthDiarySurvey(survey: SurveyHealthDiary?) {
         if (survey != null) {
-            repositoryHealthDiary.createSurveyHealthDiary(survey)
+            healthDiaryRepository.createSurveyHealthDiary(survey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -73,7 +88,7 @@ class HealthDiaryViewModel(
     }
 
     fun deleteHealthDiary(surveyId: Long) {
-        repositoryHealthDiary.deleteSurveyHealthDiary(surveyId)
+        healthDiaryRepository.deleteSurveyHealthDiary(surveyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
@@ -88,7 +103,7 @@ class HealthDiaryViewModel(
     }
 
     private fun getMarks() {
-        repositoryProfile.getProfiles()
+        profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -104,7 +119,7 @@ class HealthDiaryViewModel(
     }
 
     fun openProfileScreen() {
-        SurveysFragmentDirections.toProfiles().navigateWith(navController)
+        mainNavigator.openProfiles()
     }
 
     fun handleStepClick(item: ItemHealthDiary) {

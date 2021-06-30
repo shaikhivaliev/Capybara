@@ -2,8 +2,8 @@ package com.petapp.capybara.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
-import com.petapp.capybara.data.TypesRepository
-import com.petapp.capybara.presentation.types.TypesViewModel
+import com.petapp.capybara.data.ITypesRepository
+import com.petapp.capybara.presentation.types.TypesVm
 import com.petapp.capybara.utils.RxRule
 import com.petapp.capybara.utils.Stubs
 import com.petapp.capybara.utils.getOrAwaitValue
@@ -28,7 +28,7 @@ class TypesViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    lateinit var repository: TypesRepository
+    lateinit var repository: ITypesRepository
 
     @Mock
     lateinit var navController: NavController
@@ -43,7 +43,7 @@ class TypesViewModelTest {
         Mockito.`when`(repository.getTypes())
             .thenReturn(Single.just(expected))
 
-        val viewModel = TypesViewModel(repository, navController)
+        val viewModel = TypesVm(repository, navController)
         val value = viewModel.types.getOrAwaitValue()
 
         Assert.assertEquals(expected, value)
@@ -55,7 +55,7 @@ class TypesViewModelTest {
         Mockito.`when`(repository.getTypes())
             .thenReturn(Single.error(RuntimeException("Timeout exception")))
 
-        val viewModel = TypesViewModel(repository, navController)
+        val viewModel = TypesVm(repository, navController)
         val value = viewModel.errorMessage.getOrAwaitValue()
 
         Assert.assertEquals(expected, value)

@@ -3,21 +3,40 @@ package com.petapp.capybara.presentation.calendar
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.data.SurveysRepository
-import com.petapp.capybara.data.model.*
-import com.petapp.capybara.extensions.navigateWith
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.IProfileRepository
+import com.petapp.capybara.data.ISurveysRepository
+import com.petapp.capybara.data.model.Month
+import com.petapp.capybara.data.model.Months
+import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.data.model.Survey
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class CalendarViewModel(
-    private val repositoryProfile: ProfileRepository,
-    private val repositorySurveys: SurveysRepository,
-    private val navController: NavController
+class CalendarVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val profileRepository: IProfileRepository,
+    private val surveysRepository: ISurveysRepository
+) : SavedStateVmAssistedFactory<CalendarVm> {
+    override fun create(handle: SavedStateHandle) =
+        CalendarVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            profileRepository = profileRepository,
+            surveysRepository = surveysRepository
+        )
+}
+
+class CalendarVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val profileRepository: IProfileRepository,
+    private val surveysRepository: ISurveysRepository
 ) : BaseViewModel() {
 
     private val _profiles = MutableLiveData<List<Profile>>()
@@ -42,7 +61,7 @@ class CalendarViewModel(
     }
 
     fun getInitMonths(currentDate: Calendar) {
-        repositorySurveys.getInitMonths(currentDate)
+        surveysRepository.getInitMonths(currentDate)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -64,7 +83,7 @@ class CalendarViewModel(
     }
 
     fun getPreviousMonth(date: Calendar) {
-        repositorySurveys.getSurveysByMonth(date)
+        surveysRepository.getSurveysByMonth(date)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -80,7 +99,7 @@ class CalendarViewModel(
     }
 
     fun getNextMonth(date: Calendar) {
-        repositorySurveys.getSurveysByMonth(date)
+        surveysRepository.getSurveysByMonth(date)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -96,7 +115,7 @@ class CalendarViewModel(
     }
 
     private fun getProfiles() {
-        repositoryProfile.getProfiles()
+        profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -112,11 +131,11 @@ class CalendarViewModel(
     }
 
     fun openSurveyScreen(survey: Survey?) {
-        CalendarFragmentDirections.toSurvey(survey).navigateWith(navController)
+        mainNavigator.openSurvey(survey)
     }
 
     fun openProfileScreen() {
-        CalendarFragmentDirections.toProfiles().navigateWith(navController)
+        mainNavigator.openProfiles()
     }
 
     companion object {

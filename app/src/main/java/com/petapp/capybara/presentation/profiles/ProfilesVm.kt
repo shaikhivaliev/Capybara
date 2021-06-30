@@ -3,18 +3,32 @@ package com.petapp.capybara.presentation.profiles
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
-import com.petapp.capybara.common.BaseViewModel
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.data.ProfileRepository
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ProfilesViewModel(
-    private val repository: ProfileRepository,
-    private val navController: NavController
+class ProfilesVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val profileRepository: IProfileRepository
+) : SavedStateVmAssistedFactory<ProfilesVm> {
+    override fun create(handle: SavedStateHandle) =
+        ProfilesVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            profileRepository = profileRepository
+        )
+}
+
+class ProfilesVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val profileRepository: IProfileRepository
 ) : BaseViewModel() {
 
     private val _profiles = MutableLiveData<List<Profile>>()
@@ -26,8 +40,12 @@ class ProfilesViewModel(
     private val _errorMessage = MutableLiveData<Int>()
     val errorMessage: LiveData<Int> get() = _errorMessage
 
+    init {
+        getProfiles()
+    }
+
     fun getProfiles() {
-        repository.getProfiles()
+        profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -44,7 +62,7 @@ class ProfilesViewModel(
     }
 
     fun openProfileScreen(profile: Profile?) {
-        ProfilesFragmentDirections.toProfile(profile).navigateWith(navController)
+        mainNavigator.openProfile(profile)
     }
 
     companion object {

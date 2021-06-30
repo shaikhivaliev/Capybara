@@ -3,22 +3,37 @@ package com.petapp.capybara.presentation.surveys
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.common.BaseViewModel
-import com.petapp.capybara.data.ProfileRepository
-import com.petapp.capybara.data.SurveysRepository
+import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.viewmodel.BaseViewModel
+import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
+import com.petapp.capybara.data.IProfileRepository
+import com.petapp.capybara.data.ISurveysRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.extensions.navigateWith
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class SurveysViewModel(
-    private val repositorySurveys: SurveysRepository,
-    private val repositoryProfile: ProfileRepository,
-    private val navController: NavController,
-    private val typeId: Long
+class SurveysVmFactory(
+    private val mainNavigator: IMainNavigator,
+    private val surveysRepository: ISurveysRepository,
+    private val profileRepository: IProfileRepository
+) : SavedStateVmAssistedFactory<SurveysVm> {
+    override fun create(handle: SavedStateHandle) =
+        SurveysVm(
+            savedStateHandle = handle,
+            mainNavigator = mainNavigator,
+            surveysRepository = surveysRepository,
+            profileRepository = profileRepository
+        )
+}
+
+class SurveysVm(
+    private val savedStateHandle: SavedStateHandle,
+    private val mainNavigator: IMainNavigator,
+    private val surveysRepository: ISurveysRepository,
+    private val profileRepository: IProfileRepository
 ) : BaseViewModel() {
 
     private val _profiles = MutableLiveData<List<Profile>>()
@@ -37,7 +52,7 @@ class SurveysViewModel(
     }
 
     private fun getMarks() {
-        repositoryProfile.getProfiles()
+        profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -52,8 +67,8 @@ class SurveysViewModel(
             ).connect()
     }
 
-    fun getSurveys() {
-        repositorySurveys.getSurveysByType(typeId)
+    fun getSurveys(typeId: Long) {
+        surveysRepository.getSurveysByType(typeId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -69,11 +84,11 @@ class SurveysViewModel(
     }
 
     fun openSurveyScreen(survey: Survey?) {
-        SurveysFragmentDirections.toSurvey(survey).navigateWith(navController)
+        mainNavigator.openSurvey(survey)
     }
 
     fun openProfileScreen() {
-        SurveysFragmentDirections.toProfiles().navigateWith(navController)
+        mainNavigator.openProfiles()
     }
 
     companion object {
