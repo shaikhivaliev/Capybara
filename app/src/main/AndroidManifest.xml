@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.petapp.capybara.presentation.main.MainActivity"
+            android:name="com.petapp.capybara.presentation.auth.AuthActivity"
             android:windowSoftInputMode="adjustPan">
 
             <intent-filter>
@@ -21,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.petapp.capybara.presentation.main.MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

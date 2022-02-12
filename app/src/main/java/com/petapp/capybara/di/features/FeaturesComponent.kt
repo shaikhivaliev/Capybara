@@ -5,6 +5,7 @@ import com.petapp.capybara.di.app.AppComponent
 import com.petapp.capybara.di.core.CoreComponent
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.calendar.CalendarFragment
+import com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment
 import com.petapp.capybara.presentation.profile.ProfileFragment
 import com.petapp.capybara.presentation.profiles.ProfilesFragment
 import com.petapp.capybara.presentation.survey.SurveyFragment
@@ -43,4 +44,5 @@ interface FeaturesComponent {
     fun inject(target: CalendarFragment)
     fun inject(target: ProfileFragment)
     fun inject(target: ProfilesFragment)
+    fun inject(target: HealthDiaryFragment)
 }

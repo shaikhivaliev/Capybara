@@ -24,8 +24,10 @@ import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.databinding.DialogHealthDiarySurveyBinding
 import com.petapp.capybara.databinding.FragmentHealthDiaryBinding
+import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
+import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.surveys.SurveysFragment
 import com.petapp.capybara.presentation.toPresentationModel
 import java.text.SimpleDateFormat
@@ -54,6 +56,11 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
             addSurvey = { openAddingSurveyDialog(it) },
             onDelete = { openDeleteDialog(it.id) }
         )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

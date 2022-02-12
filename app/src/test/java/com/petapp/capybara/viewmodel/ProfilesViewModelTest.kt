@@ -1,6 +1,7 @@
 package com.petapp.capybara.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.presentation.profiles.ProfilesVm
@@ -29,6 +30,9 @@ class ProfilesViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Mock
+    lateinit var savedStateHandle: SavedStateHandle
+
+    @Mock
     lateinit var repository: IProfileRepository
 
     @Mock
@@ -38,7 +42,11 @@ class ProfilesViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ProfilesVm(repository, mainNavigator)
+        viewModel = ProfilesVm(
+            savedStateHandle = savedStateHandle,
+            profileRepository = repository,
+            mainNavigator = mainNavigator
+        )
     }
 
     @Test

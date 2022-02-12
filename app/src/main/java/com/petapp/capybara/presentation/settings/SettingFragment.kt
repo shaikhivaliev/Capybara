@@ -12,7 +12,7 @@ import com.petapp.capybara.BuildConfig
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Settings
 import com.petapp.capybara.databinding.FragmentSettingsBinding
-import com.petapp.capybara.presentation.main.MainActivity
+import com.petapp.capybara.presentation.auth.AuthActivity
 
 @Suppress("ForbiddenComment")
 class SettingFragment : Fragment(R.layout.fragment_settings) {
@@ -46,7 +46,7 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
         viewBinding.appVersion.text = getString(R.string.settings_app_version, BuildConfig.VERSION_NAME)
         viewBinding.exit.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            val intent = Intent(requireActivity(), MainActivity::class.java)
+            val intent = Intent(requireActivity(), AuthActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }

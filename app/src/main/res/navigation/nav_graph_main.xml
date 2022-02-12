@@ -154,6 +154,13 @@
             app:argType="long"
             app:nullable="false"
             />
+
+        <action
+            android:id="@+id/to_profiles"
+            app:destination="@id/tab_profiles"
+            app:popUpTo="@id/tab_profiles"
+            />
+
     </fragment>
 
     <include app:graph="@navigation/nav_graph_survey" />
