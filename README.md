@@ -3,4 +3,5 @@
 ## practicing and testing of different architectures, libraries, development approaches
 
 **branches**
-- dev - multimodule, compose, mvi, coroutine, dagger, cicerone
+- mvp_example
+- mvvm_rxjava_dagger_navigation_components
