@@ -3,4 +3,4 @@
 ## practicing and testing of different architectures, libraries, development approaches
 
 **branches**
-- dev - multimodule, compose, mvi, coroutine, dagger, navigation componets
+- dev - multimodule, compose, mvi, coroutine, dagger, cicerone
