@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.petapp.capybara"
-        minSdkVersion(23)
-        targetSdkVersion(29)
+        minSdk = 26
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0.0"
 
@@ -80,6 +80,9 @@ tasks.named("check").dependsOn("ktlintCheck")
 dependencies {
     // Desugar JdkLibs
     coreLibraryDesugaring(Libraries.AndroidTools.desugarJdkLibs)
+
+    // Duplicate class com.google.common.util.concurrent.ListenableFuture
+    implementation(Libraries.Android.guava)
 
     // Kotlin
     implementation(Libraries.Kotlin.stdLib)

@@ -13,6 +13,7 @@ object Libraries {
 
     object Android {
         val material = "com.google.android.material:material:${Versions.material}"
+        val guava = "com.google.guava:guava:${Versions.guava}"
     }
 
     object AndroidX {
