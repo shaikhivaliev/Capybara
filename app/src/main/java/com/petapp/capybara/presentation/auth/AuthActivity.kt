@@ -22,15 +22,13 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     private val providers: List<AuthUI.IdpConfig> = listOf(
         AuthUI.IdpConfig.PhoneBuilder().build(),
-        AuthUI.IdpConfig.EmailBuilder().build(),
-        AuthUI.IdpConfig.GoogleBuilder().build()
+        AuthUI.IdpConfig.EmailBuilder().build()
     )
 
     private val customAuthUILayout = AuthMethodPickerLayout
         .Builder(R.layout.view_auth_layout)
         .setPhoneButtonId(R.id.auth_phone)
         .setEmailButtonId(R.id.auth_mail)
-        .setGoogleButtonId(R.id.auth_google)
         .build()
 
     private val startAuthUI = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -48,13 +46,13 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     private fun initObservers() {
         with(authHelper) {
-            authenticationState.observe(this@AuthActivity, { state ->
+            authenticationState.observe(this@AuthActivity) { state ->
                 when (state) {
                     AuthHelper.AuthState.AUTHENTICATED -> openMainScreen()
                     AuthHelper.AuthState.UNAUTHENTICATED -> signIn()
                     else -> Log.d(TAG, "Navigation from Main activity is error")
                 }
-            })
+            }
         }
     }
 

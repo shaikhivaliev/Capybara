@@ -3,21 +3,35 @@ package com.petapp.capybara.presentation.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.BuildConfig
 import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Settings
-import com.petapp.capybara.databinding.FragmentSettingsBinding
 import com.petapp.capybara.presentation.auth.AuthActivity
 
 @Suppress("ForbiddenComment")
-class SettingFragment : Fragment(R.layout.fragment_settings) {
-
-    private val viewBinding by viewBinding(FragmentSettingsBinding::bind)
+class SettingFragment : Fragment() {
 
     private val adapter: SettingsAdapter = SettingsAdapter(
         itemClick = {
@@ -36,34 +50,55 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
         }
     )
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initRecycler()
-        initViews()
-    }
+    private val settingItems = listOf(
+        Settings(ID_FEEDBACK, R.drawable.ic_mail_outline, R.string.settings_feedback),
+        Settings(ID_RATE_APP, R.drawable.ic_start_rate, R.string.settings_rate_app),
+        Settings(ID_SHARE_LINK, R.drawable.ic_share, R.string.settings_share_link),
+        Settings(ID_RULES, R.drawable.ic_security, R.string.settings_rules)
+    )
 
-    private fun initViews() {
-        viewBinding.appVersion.text = getString(R.string.settings_app_version, BuildConfig.VERSION_NAME)
-        viewBinding.exit.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(requireActivity(), AuthActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                SettingsScreen()
+            }
         }
     }
 
-    private fun initRecycler() {
-        with(viewBinding.recyclerView) {
-            this.layoutManager = LinearLayoutManager(context)
-            adapter = this@SettingFragment.adapter
-        }
-        adapter.items =
-            listOf(
-                Settings(ID_FEEDBACK, R.drawable.ic_mail_outline, R.string.settings_feedback),
-                Settings(ID_RATE_APP, R.drawable.ic_start_rate, R.string.settings_rate_app),
-                Settings(ID_SHARE_LINK, R.drawable.ic_share, R.string.settings_share_link),
-                Settings(ID_RULES, R.drawable.ic_security, R.string.settings_rules)
+    @Preview
+    @Composable
+    private fun SettingsScreen() {
+        Column(Modifier.padding(dimensionResource(R.dimen.margin_m))) {
+            Text(
+                text = stringResource(R.string.settings_capybara_title),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.secondary
             )
+            Text(
+                text = stringResource(R.string.settings_app_version, BuildConfig.VERSION_NAME),
+            )
+            LazyColumn(content = {
+                items(settingItems) { item ->
+                    SettingItem(item)
+                }
+            })
+            Button(
+                onClick = { signOut() },
+                modifier = Modifier.fillMaxWidth(),
+                content = {
+                    Text(text = stringResource(R.string.settings_exit))
+                })
+        }
+    }
+
+    @Composable
+    private fun SettingItem(item: Settings) {
+        Row {
+            Image(
+                painter = painterResource(item.image),
+                contentDescription = null
+            )
+        }
     }
 
     private fun sendEmail() {
@@ -79,6 +114,13 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
         if (intent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intent)
         }
+    }
+
+    private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(requireActivity(), AuthActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     companion object {

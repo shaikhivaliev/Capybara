@@ -35,10 +35,6 @@ android {
             targetCompatibility = JavaVersion.VERSION_1_8
         }
 
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
-        }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -72,6 +68,14 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
         unitTests.isReturnDefaultValues = true
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
 }
 
@@ -150,4 +154,14 @@ dependencies {
     implementation(Libraries.RxJava.rxJava)
     implementation(Libraries.RxJava.rxAndroid)
     implementation(Libraries.RxJava.roomRxJava)
+
+    // Compose
+    val composeBom = platform(Libraries.Compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation((Libraries.Compose.materialDesign))
+    implementation((Libraries.Compose.toolingPreview))
+    debugImplementation((Libraries.Compose.uiTooling))
+    androidTestImplementation((Libraries.Compose.uiTest))
+    debugImplementation((Libraries.Compose.uiTestManifest))
 }
