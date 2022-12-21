@@ -161,6 +161,7 @@ dependencies {
     androidTestImplementation(composeBom)
     implementation((Libraries.Compose.materialDesign))
     implementation((Libraries.Compose.toolingPreview))
+    implementation((Libraries.Compose.themeAdapter))
     debugImplementation((Libraries.Compose.uiTooling))
     androidTestImplementation((Libraries.Compose.uiTest))
     debugImplementation((Libraries.Compose.uiTestManifest))

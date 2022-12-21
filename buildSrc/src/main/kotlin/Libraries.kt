@@ -96,5 +96,6 @@ object Libraries {
         const val uiTooling = "androidx.compose.ui:ui-tooling"
         const val uiTest = "androidx.compose.ui:ui-test-junit4"
         const val uiTestManifest = "androidx.compose.ui:ui-test-manifest"
+        const val themeAdapter = "com.google.accompanist:accompanist-themeadapter-material:${Versions.themeAdapter}"
     }
 }

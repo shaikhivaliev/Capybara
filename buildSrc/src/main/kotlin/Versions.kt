@@ -31,4 +31,5 @@ object Versions {
     const val detekt = "1.16.0-RC1"
     const val guava = "31.1-android"
     const val composeBom = "2022.10.00"
+    const val themeAdapter = "0.28.0"
 }
