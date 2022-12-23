@@ -162,6 +162,8 @@ dependencies {
     implementation((Libraries.Compose.materialDesign))
     implementation((Libraries.Compose.toolingPreview))
     implementation((Libraries.Compose.themeAdapter))
+    implementation((Libraries.Compose.glide))
+    implementation((Libraries.Compose.livedata))
     debugImplementation((Libraries.Compose.uiTooling))
     androidTestImplementation((Libraries.Compose.uiTest))
     debugImplementation((Libraries.Compose.uiTestManifest))

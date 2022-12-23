@@ -97,5 +97,7 @@ object Libraries {
         const val uiTest = "androidx.compose.ui:ui-test-junit4"
         const val uiTestManifest = "androidx.compose.ui:ui-test-manifest"
         const val themeAdapter = "com.google.accompanist:accompanist-themeadapter-material:${Versions.themeAdapter}"
+        const val glide = "com.github.bumptech.glide:compose:${Versions.glideCompose}"
+        const val livedata = "androidx.compose.runtime:runtime-livedata"
     }
 }

@@ -11,14 +11,12 @@
         android:id="@+id/tab_settings"
         android:name="com.petapp.capybara.presentation.settings.SettingFragment"
         android:label="settings"
-        tools:layout="@layout/fragment_settings"
         />
 
     <fragment
         android:id="@+id/tab_profiles"
         android:name="com.petapp.capybara.presentation.profiles.ProfilesFragment"
         android:label="profiles"
-        tools:layout="@layout/fragment_profiles"
         >
         <action
             android:id="@+id/to_profile"
