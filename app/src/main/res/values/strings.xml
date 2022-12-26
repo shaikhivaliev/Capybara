@@ -4,7 +4,7 @@
     <string name="autority">com.petapp.capybara</string>
     <string name="database_name">database</string>
     <string name="name">Имя</string>
-    <string name="surveys_amount">Исследований:</string>
+    <string name="surveys_amount">Исследований: %1$s</string>
     <string name="repeat">Повторить</string>
     <string name="save">СОХРАНИТЬ</string>
     <string name="cancel">ОТМЕНА</string>

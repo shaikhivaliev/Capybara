@@ -1,10 +1,10 @@
 package com.petapp.capybara.presentation.types
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
+import com.petapp.capybara.core.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
@@ -31,14 +31,8 @@ class TypesVm(
     private val typesRepository: ITypesRepository
 ) : BaseViewModel() {
 
-    private val _types = MutableLiveData<List<Type>>()
-    val types: LiveData<List<Type>> get() = _types
-
-    private val _errorMessage = MutableLiveData<Int>()
-    val errorMessage: LiveData<Int> get() = _errorMessage
-
-    private val _isShowMock = MutableLiveData<Boolean>()
-    val isShowMock: LiveData<Boolean> get() = _isShowMock
+    private val _typesState = MutableLiveData<DataState<List<Type>>>()
+    val typesState: LiveData<DataState<List<Type>>> get() = _typesState
 
     init {
         getTypes()
@@ -50,13 +44,14 @@ class TypesVm(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _isShowMock.value = it.isEmpty()
-                    _types.value = it
-                    Log.d(TAG, "get types success")
+                    if (it.isEmpty()) {
+                        _typesState.value = DataState.EMPTY
+                    } else {
+                        _typesState.value = DataState.DATA(it)
+                    }
                 },
                 {
-                    _errorMessage.value = R.string.error_get_types
-                    Log.d(TAG, "get types error")
+                    _typesState.value = DataState.ERROR(it)
                 }
             ).connect()
     }
@@ -67,9 +62,5 @@ class TypesVm(
 
     fun openHealthDiary() {
         mainNavigator.openHealthDiary(0L)
-    }
-
-    companion object {
-        private const val TAG = "database_types"
     }
 }

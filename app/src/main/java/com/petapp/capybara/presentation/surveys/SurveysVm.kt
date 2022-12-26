@@ -1,10 +1,9 @@
 package com.petapp.capybara.presentation.surveys
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.petapp.capybara.R
+import com.petapp.capybara.core.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
@@ -39,11 +38,8 @@ class SurveysVm(
     private val _profiles = MutableLiveData<List<Profile>>()
     val profiles: LiveData<List<Profile>> get() = _profiles
 
-    private val _surveys = MutableLiveData<List<Survey>>()
-    val surveys: LiveData<List<Survey>> get() = _surveys
-
-    private val _errorMessage = MutableLiveData<Int>()
-    val errorMessage: LiveData<Int> get() = _errorMessage
+    private val _surveysState = MutableLiveData<DataState<List<Survey>>>()
+    val surveysState: LiveData<DataState<List<Survey>>> get() = _surveysState
 
     val profileId = MutableLiveData<Long>()
 
@@ -58,11 +54,9 @@ class SurveysVm(
             .subscribe(
                 {
                     _profiles.value = it
-                    Log.d(TAG, "get profiles success")
                 },
                 {
-                    _errorMessage.value = R.string.error_get_marks
-                    Log.d(TAG, "get profiles error")
+                    _surveysState.value = DataState.ERROR(it)
                 }
             ).connect()
     }
@@ -73,12 +67,15 @@ class SurveysVm(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _surveys.value = it.filter { item -> item.profileId == profileId.value }
-                    Log.d(TAG, "get surveys success")
+                    val surveys = it.filter { item -> item.profileId == profileId.value }
+                    if (surveys.isEmpty()) {
+                        _surveysState.value = DataState.EMPTY
+                    } else {
+                        _surveysState.value = DataState.DATA(surveys)
+                    }
                 },
                 {
-                    _errorMessage.value = R.string.error_get_surveys
-                    Log.d(TAG, "get profiles error")
+                    _surveysState.value = DataState.ERROR(it)
                 }
             ).connect()
     }
@@ -89,9 +86,5 @@ class SurveysVm(
 
     fun openProfileScreen() {
         mainNavigator.openProfiles()
-    }
-
-    companion object {
-        private const val TAG = "database_surveys"
     }
 }

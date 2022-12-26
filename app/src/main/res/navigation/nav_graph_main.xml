@@ -61,7 +61,6 @@
         android:id="@+id/tab_types"
         android:name="com.petapp.capybara.presentation.types.TypesFragment"
         android:label="types"
-        tools:layout="@layout/fragment_types"
         >
 
         <action

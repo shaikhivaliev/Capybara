@@ -40,7 +40,7 @@ class SettingFragment : Fragment() {
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return ComposeView(requireContext()).apply {
+        return ComposeView(inflater.context).apply {
             setContent {
                 MdcTheme {
                     SettingsScreen()

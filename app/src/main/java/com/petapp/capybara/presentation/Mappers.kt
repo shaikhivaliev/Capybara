@@ -1,9 +1,16 @@
 package com.petapp.capybara.presentation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.petapp.capybara.R
+import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.data.model.healthDiary.HealthDiary
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.ui.data.IconTitleDescription
 
 fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = this.flatMap {
     listOf(it) + if (it.isExpanded && it.surveys.isNotEmpty()) {
@@ -38,4 +45,30 @@ fun List<ItemHealthDiary>.toPresentationModel(profileId: Long): HealthDiaryForPr
         }
     }
     return healthDiaryForProfile.build()
+}
+
+@Composable
+fun Type.toUiData(): IconTitleDescription {
+    return IconTitleDescription(
+        icon = icon,
+        title = name,
+        description = stringResource(R.string.surveys_amount, surveys.size.toString())
+    )
+}
+
+@Composable
+fun Profile.toUiData(): IconTitleDescription {
+    return IconTitleDescription(
+        icon = photo,
+        title = name,
+        description = stringResource(R.string.surveys_amount, surveys.size.toString())
+    )
+}
+@Composable
+fun Survey.toUiData(): IconTitleDescription {
+    return IconTitleDescription(
+        icon = typeIcon,
+        title = name,
+        description = date
+    )
 }
