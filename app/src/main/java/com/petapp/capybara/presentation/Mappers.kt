@@ -10,6 +10,7 @@ import com.petapp.capybara.data.model.healthDiary.HealthDiary
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.ui.data.Chip
 import com.petapp.capybara.ui.data.IconTitleDescription
 
 fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = this.flatMap {
@@ -64,6 +65,7 @@ fun Profile.toUiData(): IconTitleDescription {
         description = stringResource(R.string.surveys_amount, surveys.size.toString())
     )
 }
+
 @Composable
 fun Survey.toUiData(): IconTitleDescription {
     return IconTitleDescription(
@@ -71,4 +73,17 @@ fun Survey.toUiData(): IconTitleDescription {
         title = name,
         description = date
     )
+}
+
+@Composable
+fun List<Profile>.toUiData(click: (Long) -> Unit): List<Chip> {
+    return this.map {
+        Chip(
+            id = it.id,
+            selected = true,
+            text = it.name,
+            color = it.color,
+            click = click
+        )
+    }
 }

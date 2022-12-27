@@ -1,5 +1,6 @@
 package com.petapp.capybara.presentation.surveys
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -35,49 +36,54 @@ class SurveysVm(
     private val profileRepository: IProfileRepository
 ) : BaseViewModel() {
 
-    private val _profiles = MutableLiveData<List<Profile>>()
-    val profiles: LiveData<List<Profile>> get() = _profiles
+    private val _surveysState = MutableLiveData<DataState<SurveysState>>()
+    val surveysState: LiveData<DataState<SurveysState>> get() = _surveysState
 
-    private val _surveysState = MutableLiveData<DataState<List<Survey>>>()
-    val surveysState: LiveData<DataState<List<Survey>>> get() = _surveysState
-
-    val profileId = MutableLiveData<Long>()
-
-    init {
-        getMarks()
-    }
-
-    private fun getMarks() {
+    fun getMarks(typeId: Long) {
         profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _profiles.value = it
-                },
-                {
-                    _surveysState.value = DataState.ERROR(it)
-                }
-            ).connect()
-    }
-
-    fun getSurveys(typeId: Long) {
-        surveysRepository.getSurveysByType(typeId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    val surveys = it.filter { item -> item.profileId == profileId.value }
-                    if (surveys.isEmpty()) {
+                    if (it.isEmpty()) {
                         _surveysState.value = DataState.EMPTY
                     } else {
-                        _surveysState.value = DataState.DATA(surveys)
+                        getSurveys(
+                            typeId = typeId,
+                            profiles = it
+                        )
                     }
                 },
                 {
                     _surveysState.value = DataState.ERROR(it)
                 }
             ).connect()
+    }
+
+    private fun getSurveys(typeId: Long, profiles: List<Profile>) {
+        surveysRepository.getSurveysByType(typeId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    val checkedSurveys = it.filter { item -> item.profileId == profiles.first().id }
+                    _surveysState.value = DataState.DATA(
+                        SurveysState(
+                            profiles = profiles,
+                            surveys = it,
+                            checkedProfile = profiles.first(),
+                            checkedSurveys = checkedSurveys
+                        )
+                    )
+                },
+                {
+                    _surveysState.value = DataState.ERROR(it)
+                }
+            ).connect()
+    }
+
+    fun getCheckedSurveys(id: Long) {
+        // todo
     }
 
     fun openSurveyScreen(survey: Survey?) {
@@ -88,3 +94,10 @@ class SurveysVm(
         mainNavigator.openProfiles()
     }
 }
+
+data class SurveysState(
+    val profiles: List<Profile>,
+    val surveys: List<Survey>,
+    val checkedProfile: Profile,
+    val checkedSurveys: List<Survey>,
+)

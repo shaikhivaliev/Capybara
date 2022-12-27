@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -18,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
@@ -28,10 +26,7 @@ import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
-import com.petapp.capybara.ui.CircleIconTitleDescItem
-import com.petapp.capybara.ui.EmptyData
-import com.petapp.capybara.ui.modifierBaseList
-import com.petapp.capybara.ui.modifierCircleIcon76dp
+import com.petapp.capybara.ui.*
 import javax.inject.Inject
 
 class ProfilesFragment : Fragment() {
@@ -88,19 +83,15 @@ class ProfilesFragment : Fragment() {
 
     @Composable
     private fun ShowProfiles(profiles: List<Profile>) {
-        LazyColumn(
-            modifier = modifierBaseList(),
-            contentPadding = PaddingValues(vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            content = {
-                items(profiles) { item ->
-                    CircleIconTitleDescItem(
-                        onItemClick = { vm.openProfileScreen(item) },
-                        item = item.toUiData(),
-                        modifier = modifierCircleIcon76dp()
-                    )
-                }
-            })
+        StandardColumn {
+            items(profiles) { item ->
+                CircleIconTitleDescItem(
+                    onItemClick = { vm.openProfileScreen(item) },
+                    item = item.toUiData(),
+                    modifier = modifierCircleIcon76dp()
+                )
+            }
+        }
     }
 
     @Composable

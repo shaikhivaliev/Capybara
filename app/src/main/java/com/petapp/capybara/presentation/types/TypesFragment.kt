@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -97,19 +99,15 @@ class TypesFragment : Fragment() {
 
     @Composable
     private fun ShowTypes(types: List<Type>) {
-        LazyColumn(
-            modifier = modifierBaseList(),
-            contentPadding = PaddingValues(vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            content = {
-                items(types) { item ->
-                    CircleIconTitleDescItem(
-                        onItemClick = { vm.openSurveysScreen(item.id) },
-                        item = item.toUiData(),
-                        modifier = modifierCircleIcon76dp()
-                    )
-                }
-            })
+        StandardColumn {
+            items(types) { item ->
+                CircleIconTitleDescItem(
+                    onItemClick = { vm.openSurveysScreen(item.id) },
+                    item = item.toUiData(),
+                    modifier = modifierCircleIcon76dp()
+                )
+            }
+        }
     }
 
     @Composable

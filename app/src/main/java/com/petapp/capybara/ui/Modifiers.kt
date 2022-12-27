@@ -23,10 +23,3 @@ fun modifierCircleIcon76dp(): Modifier {
             shape = RoundedCornerShape(percent = 50)
         )
 }
-
-@SuppressLint("ModifierFactoryExtensionFunction")
-fun modifierBaseList(): Modifier {
-    return Modifier
-        .padding(start = 16.dp)
-        .fillMaxWidth()
-}
