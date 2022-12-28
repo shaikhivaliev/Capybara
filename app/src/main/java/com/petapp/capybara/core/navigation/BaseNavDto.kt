@@ -16,30 +16,27 @@ const val EXTRA_NAVIGATION_DTO = "EXTRA_NAVIGATION_DTO"
 interface BaseNavDto : Parcelable
 
 @Parcelize
-data class LongNavDto(val value: Long?) : BaseNavDto
+data class LongNavDto(val value: Long) : BaseNavDto
 
 @Parcelize
-data class SurveyNavDto(val survey: Survey?) : BaseNavDto
+data class SurveyNavDto(val survey: Survey) : BaseNavDto
 
 @Parcelize
-data class ProfileNavDto(val profile: Profile?) : BaseNavDto
+data class ProfileNavDto(val profile: Profile) : BaseNavDto
 
-inline fun <reified T : BaseNavDto> Bundle?.getNavDto(): T {
-    if (this == null)
-        throw Exception("${T::class.java} is null (because bundle is null)")
+inline fun <reified T : BaseNavDto> Bundle?.getNavDto(): T? {
+    if (this == null) return null
 
     return getParcelable(EXTRA_NAVIGATION_DTO)
-        ?: throw Exception("${T::class.java} is null")
 }
 
-inline fun <reified T : BaseNavDto> Fragment.getNavDto(): T {
-    if (arguments == null)
-        throw Exception("${T::class.java} is null (because arguments is null)")
+inline fun <reified T : BaseNavDto> Fragment.getNavDto(): T? {
+    if (arguments == null) return null
 
     return arguments.getNavDto()
 }
 
-inline fun <reified T : BaseNavDto> Fragment.navDto(): Lazy<T> = lazy {
+inline fun <reified T : BaseNavDto> Fragment.navDto(): Lazy<T?> = lazy {
     getNavDto()
 }
 

@@ -38,7 +38,11 @@ class SurveysVm(
     private val _surveysState = MutableLiveData<DataState<SurveysState>>()
     val surveysState: LiveData<DataState<SurveysState>> get() = _surveysState
 
-    fun getMarks(typeId: Long) {
+    fun getMarks(typeId: Long?) {
+        if (typeId == null) {
+            _surveysState.value = DataState.ERROR()
+            return
+        }
         _surveysState.value = DataState.READY
         profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
@@ -95,8 +99,12 @@ class SurveysVm(
         }
     }
 
-    fun openSurveyScreen(survey: Survey?) {
+    fun openSurveyScreen(survey: Survey) {
         mainNavigator.openSurvey(survey)
+    }
+
+    fun openNewSurveyScreen() {
+        mainNavigator.openNewSurvey()
     }
 
     fun openProfileScreen() {

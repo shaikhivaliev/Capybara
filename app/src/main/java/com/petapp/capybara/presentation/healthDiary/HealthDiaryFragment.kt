@@ -45,7 +45,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         vmFactoryProducer = { vmFactory }
     )
 
-    private val args: LongNavDto by navDto()
+    private val args: LongNavDto? by navDto()
 
     private val chipIdToProfileId = mutableMapOf<Int, Long>()
     private var profileId: Long? = null
@@ -185,7 +185,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
     private fun initObservers() {
         with(vm) {
-            profiles.observe(viewLifecycleOwner, { profiles ->
+            profiles.observe(viewLifecycleOwner) { profiles ->
                 if (profiles.isEmpty()) {
                     showAlertEmptyProfiles()
                 } else {
@@ -194,8 +194,8 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                         viewBinding.marksGroup.addView(chip)
                         chipIdToProfileId[chip.id] = profile.id
                     }
-                    if (args.value != 0L) {
-                        val index = chipIdToProfileId.filterValues { it == args.value }.keys.first()
+                    if (args?.value != 0L) {
+                        val index = chipIdToProfileId.filterValues { it == args?.value }.keys.first()
                         viewBinding.marksGroup.post {
                             viewBinding.marksGroup.check(index)
                             val chip = viewBinding.marksGroup.findViewById<Chip>(viewBinding.marksGroup.checkedChipId)
@@ -205,13 +205,13 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                         (viewBinding.marksGroup[0] as? Chip)?.isChecked = true
                     }
                 }
-            })
-            healthDiaryItems.observe(viewLifecycleOwner, {
+            }
+            healthDiaryItems.observe(viewLifecycleOwner) {
                 adapter.items = it.toPresentationModel()
-            })
-            errorMessage.observe(viewLifecycleOwner, { error ->
+            }
+            errorMessage.observe(viewLifecycleOwner) { error ->
                 requireActivity().toast(error)
-            })
+            }
         }
     }
 

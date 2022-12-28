@@ -131,7 +131,7 @@ class CalendarVm(
     }
 
     fun openSurveyScreen(survey: Survey?) {
-        mainNavigator.openSurvey(survey)
+        if (survey != null) mainNavigator.openSurvey(survey)
     }
 
     fun openProfileScreen() {

@@ -152,7 +152,7 @@ class ProfileVm(
     }
 
     fun openHealthDiaryScreen(profileId: Long?) {
-        mainNavigator.openHealthDiary(profileId)
+        mainNavigator.openHealthDiary(profileId ?: 0L)
     }
 
     fun back() {

@@ -12,7 +12,7 @@ sealed class DataState<out TData> {
 
     data class DATA<out TData>(val data: TData) : DataState<TData>()
 
-    data class ERROR(val error: Any?) : DataState<Nothing>()
+    data class ERROR(val error: Throwable? = null) : DataState<Nothing>()
 
     inline fun onData(block: (TData) -> Unit) {
         if (this is DATA) {

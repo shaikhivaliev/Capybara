@@ -56,7 +56,11 @@ class ProfilesVm(
             ).connect()
     }
 
-    fun openProfileScreen(profile: Profile?) {
+    fun openProfileScreen(profile: Profile) {
         mainNavigator.openProfile(profile)
+    }
+
+    fun openNewProfile() {
+        mainNavigator.openNewProfile()
     }
 }

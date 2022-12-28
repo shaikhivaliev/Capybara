@@ -5,10 +5,12 @@ import com.petapp.capybara.data.model.Survey
 
 interface IMainNavigator {
     fun back(): Boolean
-    fun openSurvey(survey: Survey?)
     fun openSurveys(typeId: Long)
-    fun openProfile(profile: Profile?)
+    fun openSurvey(survey: Survey)
+    fun openNewSurvey()
+    fun openProfile(profile: Profile)
+    fun openNewProfile()
     fun openProfiles()
-    fun openHealthDiary(profileId: Long?)
+    fun openHealthDiary(profileId: Long)
     fun openTypes()
 }

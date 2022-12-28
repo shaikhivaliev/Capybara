@@ -29,7 +29,7 @@ import com.petapp.capybara.presentation.toUiData
 import com.petapp.capybara.ui.*
 import javax.inject.Inject
 
-class SurveysFragment : Fragment(R.layout.fragment_surveys) {
+class SurveysFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: SurveysVmFactory
@@ -38,7 +38,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
         vmFactoryProducer = { vmFactory }
     )
 
-    private val args: LongNavDto by navDto()
+    private val args: LongNavDto? by navDto()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return ComposeView(requireContext()).apply {
-            args.value?.let { vm.getMarks(it) }
+            vm.getMarks(args?.value)
             setContent {
                 MdcTheme {
                     SurveysScreen()
@@ -66,7 +66,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        vm.openSurveyScreen(null)
+                        vm.openNewSurveyScreen()
                     }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_add),
@@ -81,7 +81,7 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
                     is DataState.ERROR -> ShowError(
                         scaffoldState = scaffoldState,
                         errorMessage = stringResource(R.string.error_explanation),
-                        action = { args.value?.let { vm.getMarks(it) } }
+                        action = { args?.value?.let { vm.getMarks(it) } }
                     )
                     else -> { // nothing
                     }

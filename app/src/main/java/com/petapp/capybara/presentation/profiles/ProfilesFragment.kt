@@ -61,7 +61,7 @@ class ProfilesFragment : Fragment() {
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        vm.openProfileScreen(null)
+                        vm.openNewProfile()
                     }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_add),

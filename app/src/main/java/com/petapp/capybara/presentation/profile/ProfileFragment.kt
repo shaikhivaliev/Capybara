@@ -46,7 +46,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         vmFactoryProducer = { vmFactory }
     )
 
-    private val args: ProfileNavDto by navDto()
+    private val args: ProfileNavDto? by navDto()
 
     private var currentPhotoUri: String? = null
 
@@ -73,7 +73,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     .centerCrop()
                     .into(viewBinding.photo)
             } else {
-                currentPhotoUri = args.profile?.photo
+                currentPhotoUri = args?.profile?.photo
             }
         }
 
@@ -112,11 +112,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         initViews()
         initObservers()
 
-        args.profile?.id?.apply {
+        args?.profile?.id?.apply {
             vm.getProfile(this)
             vm.getHealthDiaryItems(this)
         }
-        if (args.profile?.id == null) {
+        if (args?.profile?.id == null) {
             setEditMode(true)
             Glide.with(this)
                 .load(R.drawable.ic_user_144dp)
@@ -136,7 +136,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         viewBinding.done.setOnClickListener {
             viewBinding.deleteProfile.isVisible = false
-            if (args.profile != null) {
+            if (args?.profile != null) {
                 viewBinding.done.hideKeyboard()
                 vm.updateProfile(profileBuilder())
             } else {
@@ -153,34 +153,34 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         viewBinding.deleteProfile.setOnClickListener { deleteProfile() }
 
-        viewBinding.healthDiary.setOnClickListener { vm.openHealthDiaryScreen(args.profile?.id) }
+        viewBinding.healthDiary.setOnClickListener { vm.openHealthDiaryScreen(args?.profile?.id) }
     }
 
     private fun initObservers() {
         with(vm) {
-            profile.observe(viewLifecycleOwner, { profile ->
+            profile.observe(viewLifecycleOwner) { profile ->
                 setProfileCard(profile)
                 setEditMode(false)
-            })
+            }
 
-            imageFile.observe(viewLifecycleOwner, { file ->
+            imageFile.observe(viewLifecycleOwner) { file ->
                 currentPhotoUri = FileProvider.getUriForFile(
                     requireActivity(),
                     requireActivity().getString(R.string.autority),
                     file
                 ).toString()
                 imageFromCamera.launch(Uri.parse(currentPhotoUri))
-            })
+            }
 
-            errorMessage.observe(viewLifecycleOwner, { error ->
+            errorMessage.observe(viewLifecycleOwner) { error ->
                 requireActivity().toast(error)
-            })
+            }
 
-            currentColor.observe(viewLifecycleOwner, { color ->
+            currentColor.observe(viewLifecycleOwner) { color ->
                 viewBinding.colorMarker.setBackgroundColor(color)
-            })
+            }
 
-            healthDiaryForProfile.observe(viewLifecycleOwner, { profile ->
+            healthDiaryForProfile.observe(viewLifecycleOwner) { profile ->
                 viewBinding.bloodPressureValue.text =
                     profile.bloodPressure ?: getString(R.string.profile_item_health_diary_empty)
                 viewBinding.pulseValue.text = profile.pulse ?: getString(R.string.profile_item_health_diary_empty)
@@ -188,7 +188,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     profile.bloodGlucose ?: getString(R.string.profile_item_health_diary_empty)
                 viewBinding.heightValue.text = profile.height ?: getString(R.string.profile_item_health_diary_empty)
                 viewBinding.weightValue.text = profile.weight ?: getString(R.string.profile_item_health_diary_empty)
-            })
+            }
         }
     }
 
@@ -244,7 +244,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             getColor(requireActivity(), R.color.amber_500),
             getColor(requireActivity(), R.color.deep_orange_500)
         )
-        val initialColor = args.profile?.color ?: 0
+        val initialColor = args?.profile?.color ?: 0
 
         MaterialDialog(requireActivity()).show {
             title(R.string.profile_choose_color)
@@ -264,8 +264,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 title(text = getString(R.string.profile_delete_explanation_empty))
             }
             positiveButton {
-                if (args.profile?.id != null) {
-                    vm.deleteProfile(args.profile?.id!!)
+                if (args?.profile?.id != null) {
+                    vm.deleteProfile(args?.profile?.id!!)
                 } else {
                     vm.back()
                 }
@@ -277,10 +277,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun profileBuilder(): Profile? {
         return if (isNameValid() && isColorChosen()) {
-            val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
+            val id = args?.profile?.id ?: DEFAULT_ID_FOR_ENTITY
             val etName = viewBinding.nameEt.text.toString()
-            val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
-            val photoUri = currentPhotoUri ?: args.profile?.photo ?: DEFAULT_PROFILE_ICON
+            val name = if (etName.isNotBlank()) etName else args?.profile?.name ?: ""
+            val photoUri = currentPhotoUri ?: args?.profile?.photo ?: DEFAULT_PROFILE_ICON
             Profile(id = id, name = name, color = requireNotNull(currentColor.value), photo = photoUri)
         } else {
             null
