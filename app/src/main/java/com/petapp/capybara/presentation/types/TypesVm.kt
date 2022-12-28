@@ -38,7 +38,7 @@ class TypesVm(
         getTypes()
     }
 
-    private fun getTypes() {
+    fun getTypes() {
         typesRepository.getTypes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -76,11 +76,14 @@ fun Survey.toUiData(): IconTitleDescription {
 }
 
 @Composable
-fun List<Profile>.toUiData(click: (Long) -> Unit): List<Chip> {
+fun List<Profile>.toUiData(
+    selectedChipId: Long,
+    click: (Long) -> Unit
+): List<Chip> {
     return this.map {
         Chip(
             id = it.id,
-            selected = true,
+            selected = selectedChipId == it.id,
             text = it.name,
             color = it.color,
             click = click

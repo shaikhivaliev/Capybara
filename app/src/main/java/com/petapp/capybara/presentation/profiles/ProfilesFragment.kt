@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -56,8 +54,10 @@ class ProfilesFragment : Fragment() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun ProfilesScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
         val profileState by vm.profilesState.observeAsState()
         Scaffold(
+            scaffoldState = scaffoldState,
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
@@ -72,7 +72,11 @@ class ProfilesFragment : Fragment() {
             content = {
                 when (val state = profileState) {
                     DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
-                    is DataState.ERROR -> ShowError()
+                    is DataState.ERROR -> ShowError(
+                        scaffoldState = scaffoldState,
+                        errorMessage = stringResource(R.string.error_explanation),
+                        action = { vm.getProfiles() }
+                    )
                     is DataState.DATA -> ShowProfiles(state.data)
                     else -> { // nothing
                     }
@@ -92,10 +96,5 @@ class ProfilesFragment : Fragment() {
                 )
             }
         }
-    }
-
-    @Composable
-    private fun ShowError() {
-        // todo
     }
 }

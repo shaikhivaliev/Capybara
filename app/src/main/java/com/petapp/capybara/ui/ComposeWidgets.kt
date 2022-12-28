@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -132,4 +133,23 @@ fun StandardColumn(content: LazyListScope.() -> Unit) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = content
     )
+}
+
+@Composable
+fun ShowError(
+    scaffoldState: ScaffoldState,
+    errorMessage: String,
+    action: () -> Unit,
+    dismissed: (() -> Unit)? = null
+) {
+    LaunchedEffect(scaffoldState.snackbarHostState) {
+        val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+            message = errorMessage,
+            actionLabel = "Повторить"
+        )
+        when (snackbarResult) {
+            SnackbarResult.Dismissed -> dismissed?.invoke()
+            SnackbarResult.ActionPerformed -> action()
+        }
+    }
 }

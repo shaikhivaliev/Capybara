@@ -7,14 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -63,9 +59,10 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun SurveysScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
         val surveysState by vm.surveysState.observeAsState()
-
         Scaffold(
+            scaffoldState = scaffoldState,
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
@@ -79,10 +76,13 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
             },
             content = {
                 when (val state = surveysState) {
-                    DataState.EMPTY -> EmptyData(stringResource(R.string.survey_mock))
                     DataState.ACTION -> showAlertEmptyProfiles()
-                    is DataState.ERROR -> ShowError()
                     is DataState.DATA -> ShowSurveys(state.data)
+                    is DataState.ERROR -> ShowError(
+                        scaffoldState = scaffoldState,
+                        errorMessage = stringResource(R.string.error_explanation),
+                        action = { args.value?.let { vm.getMarks(it) } }
+                    )
                     else -> { // nothing
                     }
                 }
@@ -92,39 +92,28 @@ class SurveysFragment : Fragment(R.layout.fragment_surveys) {
 
     @Composable
     private fun ShowSurveys(surveys: SurveysState) {
-        // todo
-        val selectedChip by remember { mutableStateOf(false) }
-
         Column {
-            ChipRow(chips = surveys.profiles.toUiData(
-                click = {
-                    vm.getCheckedSurveys(it)
-                }
-            ))
-            StandardColumn {
-                items(surveys.checkedSurveys) { item ->
-                    CircleIconTitleDescItem(
-                        onItemClick = { vm.openSurveyScreen(item) },
-                        item = item.toUiData(),
-                        modifier = modifierCircleIcon76dp()
-                    )
+            ChipRow(
+                chips = surveys.profiles.toUiData(
+                    selectedChipId = surveys.checkedProfileId,
+                    click = {
+                        vm.getCheckedSurveys(it)
+                    }
+                ))
+            if (surveys.checkedSurveys.isEmpty()) {
+                EmptyData(stringResource(R.string.survey_mock))
+            } else {
+                StandardColumn {
+                    items(surveys.checkedSurveys) { item ->
+                        CircleIconTitleDescItem(
+                            onItemClick = { vm.openSurveyScreen(item) },
+                            item = item.toUiData(),
+                            modifier = modifierCircleIcon76dp()
+                        )
+                    }
                 }
             }
         }
-    }
-
-    @Composable
-    private fun ShowError() {
-//        LaunchedEffect(scaffoldState.snackbarHostState) {
-//            // Show snackbar using a coroutine, when the coroutine is cancelled the
-//            // snackbar will automatically dismiss. This coroutine will cancel whenever
-//            // `state.hasError` is false, and only start when `state.hasError` is true
-//            // (due to the above if-check), or if `scaffoldState.snackbarHostState` changes.
-//            scaffoldState.snackbarHostState.showSnackbar(
-//                message = "Error message",
-//                actionLabel = "Retry message"
-//            )
-//        }
     }
 
     private fun showAlertEmptyProfiles() {

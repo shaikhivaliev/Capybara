@@ -1,6 +1,5 @@
 package com.petapp.capybara.presentation.surveys
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -40,13 +39,14 @@ class SurveysVm(
     val surveysState: LiveData<DataState<SurveysState>> get() = _surveysState
 
     fun getMarks(typeId: Long) {
+        _surveysState.value = DataState.READY
         profileRepository.getProfiles()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     if (it.isEmpty()) {
-                        _surveysState.value = DataState.EMPTY
+                        _surveysState.value = DataState.ACTION
                     } else {
                         getSurveys(
                             typeId = typeId,
@@ -66,13 +66,13 @@ class SurveysVm(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    val checkedSurveys = it.filter { item -> item.profileId == profiles.first().id }
+                    val firstProfileId = profiles.first().id
                     _surveysState.value = DataState.DATA(
                         SurveysState(
                             profiles = profiles,
                             surveys = it,
-                            checkedProfile = profiles.first(),
-                            checkedSurveys = checkedSurveys
+                            checkedProfileId = firstProfileId,
+                            checkedSurveys = it.filterSurveys(firstProfileId)
                         )
                     )
                 },
@@ -83,7 +83,16 @@ class SurveysVm(
     }
 
     fun getCheckedSurveys(id: Long) {
-        // todo
+        _surveysState.value?.onData {
+            _surveysState.value = DataState.DATA(
+                SurveysState(
+                    profiles = it.profiles,
+                    surveys = it.surveys,
+                    checkedProfileId = id,
+                    checkedSurveys = it.surveys.filterSurveys(id)
+                )
+            )
+        }
     }
 
     fun openSurveyScreen(survey: Survey?) {
@@ -93,11 +102,15 @@ class SurveysVm(
     fun openProfileScreen() {
         mainNavigator.openProfiles()
     }
+
+    private fun List<Survey>.filterSurveys(id: Long): List<Survey> {
+        return this.filter { item -> item.profileId == id }
+    }
 }
 
 data class SurveysState(
     val profiles: List<Profile>,
     val surveys: List<Survey>,
-    val checkedProfile: Profile,
+    val checkedProfileId: Long,
     val checkedSurveys: List<Survey>,
 )

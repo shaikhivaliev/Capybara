@@ -1,5 +1,6 @@
 package com.petapp.capybara.presentation.types
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -40,9 +40,7 @@ class TypesFragment : Fragment() {
     @Inject
     lateinit var vmFactory: TypesVmFactory
 
-    private val vm: TypesVm by stateViewModel(
-        vmFactoryProducer = { vmFactory }
-    )
+    private val vm: TypesVm by stateViewModel(vmFactoryProducer = { vmFactory })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,42 +57,52 @@ class TypesFragment : Fragment() {
         }
     }
 
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun TypesScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
         val typeState by vm.typesState.observeAsState()
-        Column {
-            Card(
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
-                elevation = 4.dp
-            ) {
-                Row(modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
-                    .clickable {
-                        vm.openHealthDiary()
-                    },
-                    verticalAlignment = Alignment.CenterVertically,
-                    content = {
-                        Image(
-                            painter = painterResource(R.drawable.ic_healt_diary),
-                            contentDescription = null,
-                            contentScale = ContentScale.Inside
+        Scaffold(
+            scaffoldState = scaffoldState,
+            content = {
+                Column {
+                    Card(
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp), elevation = 4.dp
+                    ) {
+                        Row(modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth()
+                            .clickable {
+                                vm.openHealthDiary()
+                            },
+                            verticalAlignment = Alignment.CenterVertically,
+                            content = {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_healt_diary),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Inside
+                                )
+                                Text(
+                                    text = stringResource(R.string.health_diary_health_diary),
+                                    style = textMedium(),
+                                    modifier = Modifier.padding(start = 16.dp)
+                                )
+                            })
+                    }
+                    when (val state = typeState) {
+                        DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
+                        is DataState.ERROR -> ShowError(
+                            scaffoldState = scaffoldState,
+                            errorMessage = stringResource(R.string.error_explanation),
+                            action = { vm.getTypes() }
                         )
-                        Text(
-                            text = stringResource(R.string.health_diary_health_diary),
-                            style = textMedium(),
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
-                    })
-            }
-            when (val state = typeState) {
-                DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
-                is DataState.ERROR -> ShowError()
-                is DataState.DATA -> ShowTypes(state.data)
-                else -> { // nothing
+                        is DataState.DATA -> ShowTypes(state.data)
+                        else -> { // nothing
+                        }
+                    }
                 }
             }
-        }
+        )
     }
 
     @Composable
@@ -108,10 +116,5 @@ class TypesFragment : Fragment() {
                 )
             }
         }
-    }
-
-    @Composable
-    private fun ShowError() {
-        // todo
     }
 }
