@@ -107,8 +107,7 @@ class SurveysFragment : Fragment() {
                     items(surveys.checkedSurveys) { item ->
                         CircleIconTitleDescItem(
                             onItemClick = { vm.openSurveyScreen(item) },
-                            item = item.toUiData(),
-                            modifier = modifierCircleIcon76dp()
+                            item = item.toUiData()
                         )
                     }
                 }
@@ -123,9 +122,5 @@ class SurveysFragment : Fragment() {
                 title(text = getString(R.string.survey_incomplete_data))
                 positiveButton { vm.openProfileScreen() }
             }
-    }
-
-    companion object {
-        const val CHIP_PADDING = 56F
     }
 }

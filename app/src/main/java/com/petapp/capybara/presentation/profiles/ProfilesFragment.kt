@@ -91,8 +91,7 @@ class ProfilesFragment : Fragment() {
             items(profiles) { item ->
                 CircleIconTitleDescItem(
                     onItemClick = { vm.openProfileScreen(item) },
-                    item = item.toUiData(),
-                    modifier = modifierCircleIcon76dp()
+                    item = item.toUiData()
                 )
             }
         }

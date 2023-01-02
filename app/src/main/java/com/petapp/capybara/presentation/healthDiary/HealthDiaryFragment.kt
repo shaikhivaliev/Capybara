@@ -190,7 +190,7 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
                     showAlertEmptyProfiles()
                 } else {
                     for (profile in profiles) {
-                        val chip = createChip(requireContext(), profile, SurveysFragment.CHIP_PADDING)
+                        val chip = createChip(requireContext(), profile, CHIP_PADDING)
                         viewBinding.marksGroup.addView(chip)
                         chipIdToProfileId[chip.id] = profile.id
                     }
@@ -277,5 +277,6 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
     companion object {
         private const val DEFAULT_ID_FOR_ENTITY = 0L
+        private const val CHIP_PADDING = 56F
     }
 }

@@ -30,7 +30,6 @@ import com.petapp.capybara.ui.data.IconTitleDescription
 @Composable
 fun CircleIconTitleDescItem(
     onItemClick: () -> Unit,
-    modifier: Modifier,
     item: IconTitleDescription
 ) {
     Row(modifier = Modifier
@@ -44,7 +43,7 @@ fun CircleIconTitleDescItem(
                 model = item.icon,
                 contentDescription = null,
                 contentScale = ContentScale.Inside,
-                modifier = modifier
+                modifier = modifierCircleIcon76dp()
             ) {
                 it
                     .error(R.drawable.ic_launcher_foreground)
@@ -152,4 +151,93 @@ fun ShowError(
             SnackbarResult.ActionPerformed -> action()
         }
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ExpandedDropdownMenu(
+    label: String,
+    selectedTitle: String,
+    expanded: Boolean,
+    selectionOptions: List<String> = emptyList(),
+    onExpandedChange: (Boolean) -> Unit,
+    onSelectedText: (String) -> Unit
+) {
+    ExposedDropdownMenuBox(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        expanded = expanded,
+        onExpandedChange = {
+            onExpandedChange(it)
+        },
+        content = {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                readOnly = true,
+                value = selectedTitle,
+                onValueChange = {},
+                label = { Text(label) },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = expanded
+                    )
+                }
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = {
+                    onExpandedChange(false)
+                }
+            ) {
+                selectionOptions.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        onClick = {
+                            onSelectedText(selectionOption)
+                            onExpandedChange(false)
+                        }
+                    ) {
+                        Text(text = selectionOption)
+                    }
+                }
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ExpandedDropdownMenuReadOnly(
+    value: String,
+    label: String
+) {
+    OutlinedTextField(
+        modifier = Modifier.padding(top = 16.dp),
+        enabled = false,
+        value = value,
+        onValueChange = {},
+        label = { Text(label) },
+        trailingIcon = {
+            ExposedDropdownMenuDefaults.TrailingIcon(
+                expanded = false
+            )
+        }
+    )
+}
+
+@Composable
+fun OutlinedTextFieldReadOnly(
+    value: String,
+    label: String
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        value = value,
+        enabled = false,
+        onValueChange = {},
+        label = { Text(label) }
+    )
 }

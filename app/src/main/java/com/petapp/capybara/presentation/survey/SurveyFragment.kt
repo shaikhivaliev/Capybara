@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -18,27 +18,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.customListAdapter
-import com.afollestad.materialdialogs.list.getListAdapter
-import com.afollestad.materialdialogs.list.getRecyclerView
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.DataState
-import com.petapp.capybara.core.list.MarginItemDecoration
 import com.petapp.capybara.core.navigation.SurveyNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
-import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.di.features.FeaturesComponentHolder
-import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.main.MainActivity
+import com.petapp.capybara.ui.ExpandedDropdownMenu
+import com.petapp.capybara.ui.ExpandedDropdownMenuReadOnly
+import com.petapp.capybara.ui.OutlinedTextFieldReadOnly
 import com.petapp.capybara.ui.ShowError
-import com.petapp.capybara.ui.textLarge
-import com.petapp.capybara.ui.textMedium
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -53,26 +45,6 @@ class SurveyFragment : Fragment() {
     )
 
     private val args: SurveyNavDto? by navDto()
-
-    private val adapterTypesDialog: TypesDialogAdapter = TypesDialogAdapter(
-        itemClick = { type ->
-            currentType.value = type
-            typeIconDialog?.cancel()
-        }
-    )
-
-    private val adapterProfilesDialog: ProfilesDialogAdapter = ProfilesDialogAdapter(
-        itemClick = { profile ->
-            currentProfile.value = profile
-            profileMarkDialog?.cancel()
-        }
-    )
-
-    private val currentProfile = MutableLiveData<Profile>()
-    private val currentType = MutableLiveData<Type>()
-
-    private var typeIconDialog: MaterialDialog? = null
-    private var profileMarkDialog: MaterialDialog? = null
 
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
     private val calendar: Calendar = Calendar.getInstance()
@@ -115,165 +87,164 @@ class SurveyFragment : Fragment() {
         )
     }
 
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun ShowSurvey(mode: SurveyMode) {
-        when (mode) {
-            is SurveyMode.NEW -> ShowNewMode()
-            is SurveyMode.EDIT -> ShowEditMode(mode.survey)
-            is SurveyMode.OPEN -> ShowOpenMode(mode.survey)
-        }
-    }
+        val surveyState: MutableState<Survey?> = remember { mutableStateOf(null) }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-    @Composable
-    private fun ShowNewMode() {
+        val surveySt = remember { mutableStateOf("") }
+        val dateSt = remember { mutableStateOf("") }
+        val profileSt = remember { mutableStateOf("") }
+        val typeSt = remember { mutableStateOf("") }
+
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        // todo
+                        when (mode) {
+                            is SurveyMode.NEW, is SurveyMode.EDIT -> vm.verifySurvey(
+                                surveyState.value,
+                                surveySt,
+                                dateSt,
+                                profileSt,
+                                typeSt
+                            )
+                            is SurveyMode.READONLY -> vm.toEditMode(mode.data)
+                        }
                     }) {
+                    val fabImage = when (mode) {
+                        is SurveyMode.NEW -> ImageVector.vectorResource(R.drawable.ic_done)
+                        is SurveyMode.EDIT -> ImageVector.vectorResource(R.drawable.ic_done)
+                        is SurveyMode.READONLY -> ImageVector.vectorResource(R.drawable.ic_edit)
+                    }
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_done),
+                        imageVector = fabImage,
                         contentDescription = null
                     )
                 }
             },
             content = {
+                when (mode) {
+                    is SurveyMode.NEW -> SurveyContent(
+                        profiles = mode.data.profiles.map { it.name },
+                        types = mode.data.types.map { it.name },
+                        surveyTitle = surveySt,
+                        dateTitle = dateSt,
+                        profileTitle = profileSt,
+                        typeTitle = typeSt,
+                        isEditMode = false
+                    )
+                    is SurveyMode.EDIT -> {
+                        with(mode.data) {
+                            surveySt.value = survey.name
+                            dateSt.value = survey.date
+                            profileSt.value = profileTitle
+                            typeSt.value = typeTitle
+                        }
+                        SurveyContent(
+                            profiles = mode.data.profiles.map { it.name },
+                            types = mode.data.types.map { it.name },
+                            surveyTitle = surveySt,
+                            dateTitle = dateSt,
+                            profileTitle = profileSt,
+                            typeTitle = typeSt,
+                            isEditMode = true
+                        )
+                    }
+                    is SurveyMode.READONLY -> SurveyContentReadOnly(mode.data)
+                }
             }
         )
     }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    private fun ShowEditMode(survey: Survey) {
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = {
-                        // todo
-                    }) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_done),
-                        contentDescription = null
-                    )
+    fun SurveyContent(
+        profiles: List<String>,
+        types: List<String>,
+        surveyTitle: MutableState<String>,
+        dateTitle: MutableState<String>,
+        profileTitle: MutableState<String>,
+        typeTitle: MutableState<String>,
+        isEditMode: Boolean
+    ) {
+        val profilesMenuExpanded = remember { mutableStateOf(false) }
+        val typesMenuExpanded = remember { mutableStateOf(false) }
+        Column(
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                value = surveyTitle.value,
+                onValueChange = {
+                    surveyTitle.value = it
+                },
+                label = { Text(stringResource(R.string.survey)) }
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                value = dateTitle.value,
+                onValueChange = {
+                    dateTitle.value = it
+                },
+                label = { Text(stringResource(R.string.health_diary_survey_date)) }
+            )
+            ExpandedDropdownMenu(
+                label = stringResource(R.string.profile_caps),
+                selectedTitle = profileTitle.value,
+                expanded = profilesMenuExpanded.value,
+                selectionOptions = profiles,
+                onExpandedChange = {
+                    profilesMenuExpanded.value = !profilesMenuExpanded.value
+                },
+                onSelectedText = {
+                    profileTitle.value = it
                 }
-            },
-            content = {
-            }
-        )
-    }
-
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-    @Composable
-    private fun ShowOpenMode(survey: Survey) {
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = {
-                        vm.toEditMode(survey)
-                    }) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_edit),
-                        contentDescription = null
-                    )
+            )
+            ExpandedDropdownMenu(
+                label = stringResource(R.string.survey_change_survey_type),
+                selectedTitle = typeTitle.value,
+                expanded = typesMenuExpanded.value,
+                selectionOptions = types,
+                onExpandedChange = {
+                    typesMenuExpanded.value = !typesMenuExpanded.value
+                },
+                onSelectedText = {
+                    typeTitle.value = it
                 }
-            },
-            content = {
-                Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp)) {
-                    Text(
-                        text = survey.name,
-                        style = textLarge()
-                    )
-                    Text(
-                        text = survey.date,
-                        style = textMedium()
-                    )
-                }
-            }
-        )
-    }
-
-
-//        if (args.survey?.id == null) {
-//            viewBinding.currentSurvey.isVisible = false
-//            viewBinding.editSurvey.isVisible = true
-//            viewBinding.deleteSurvey.isVisible = false
-//            viewBinding.surveyNameEt.requestFocus()
-//            viewBinding.surveyNameEt.showKeyboard()
-//            viewBinding.surveyDateEt.setText(dateFormat.format(calendar.time))
-//            viewBinding.deleteSurvey.setOnClickListener { deleteSurvey() }
-//
-//            viewBinding.done.setOnClickListener {
-//                if (args.survey != null) {
-//                    vm.updateSurvey(surveyBuilder())
-//                } else {
-//                    vm.createSurvey(surveyBuilder())
-//                }
-//            }
-//            viewBinding.edit.setOnClickListener {
-//                viewBinding.currentSurvey.isVisible = false
-//                viewBinding.editSurvey.isVisible = true
-//                viewBinding.deleteSurvey.isVisible = true
-//                viewBinding.surveyNameEt.setText(args.survey?.name)
-//                viewBinding.surveyDateEt.setText(args.survey?.date)
-//            }
-//
-//            viewBinding.surveyNameEt.doAfterTextChanged { viewBinding.surveyNameLayout.error = null }
-//            viewBinding.surveyDateEt.doAfterTextChanged { viewBinding.surveyDateLayout.error = null }
-//private fun initObservers() {
-//    with(vm) {
-//        survey.observe(viewLifecycleOwner, { survey ->
-//            setSurvey(survey)
-//        })
-//        types.observe(viewLifecycleOwner, { types ->
-//            viewBinding.changeSurveyType.setOnClickListener { showChangeTypeDialog(types) }
-//            if (args.survey?.typeId != null) {
-//                currentType.value = types.find { it.id == args.survey?.typeId }
-//            }
-//        })
-//        profiles.observe(viewLifecycleOwner, { profiles ->
-//            viewBinding.changeSurveyProfile.setOnClickListener { showChangeProfileDialog(profiles) }
-//            if (args.survey?.profileId != null) {
-//                currentProfile.value = profiles.find { it.id == args.survey?.profileId }
-//            }
-//        })
-//        currentProfile.observe(viewLifecycleOwner, { profile ->
-//            viewBinding.changeSurveyProfile.text = profile.name
-//        })
-//        currentType.observe(viewLifecycleOwner, { type ->
-//            viewBinding.changeSurveyType.text = type.name
-//        })
-//    }
-//}
-
-    private fun showChangeTypeDialog(types: List<Type>) {
-        adapterTypesDialog.items = types
-
-        typeIconDialog = MaterialDialog(requireActivity()).show {
-            title(R.string.type_caps)
-            customListAdapter(adapterTypesDialog)
-            val itemCount = getListAdapter()?.itemCount ?: 0
-            getRecyclerView().addItemDecoration(
-                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_ml), itemCount - 1)
             )
         }
     }
 
-    private fun showChangeProfileDialog(marks: List<Profile>) {
-        adapterProfilesDialog.items = marks
-
-        profileMarkDialog = MaterialDialog(requireActivity()).show {
-            title(R.string.profile_caps)
-            customListAdapter(adapterProfilesDialog)
-            val itemCount = getListAdapter()?.itemCount ?: 0
-            getRecyclerView().addItemDecoration(
-                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_s), itemCount - 1)
+    @Composable
+    fun SurveyContentReadOnly(data: SurveyUI) {
+        Column(
+            modifier = Modifier
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp),
+        ) {
+            OutlinedTextFieldReadOnly(
+                value = data.survey.name,
+                label = stringResource(R.string.survey)
+            )
+            OutlinedTextFieldReadOnly(
+                value = data.survey.date,
+                label = stringResource(R.string.health_diary_survey_date)
+            )
+            ExpandedDropdownMenuReadOnly(
+                value = data.profileTitle,
+                label = stringResource(R.string.profile_caps)
+            )
+            ExpandedDropdownMenuReadOnly(
+                value = data.typeTitle,
+                label = stringResource(R.string.survey_change_survey_type)
             )
         }
     }
 
-    private fun initWorkWithDate() {
+//    private fun initWorkWithDate() {
 //        viewBinding.surveyDateEt.setOnClickListener {
 //            viewBinding.surveyDateEt.requestFocus()
 //            val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -289,38 +260,9 @@ class SurveyFragment : Fragment() {
 //                calendar.get(Calendar.DAY_OF_MONTH)
 //            ).show()
 //        }
-    }
-
-//    private fun surveyBuilder(): Survey {
-//        return if (isFieldsValid()) {
-//            val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
-//            val typeId = requireNotNull(currentType.value?.id)
-//            val profileId = requireNotNull(currentProfile.value?.id)
-//            val color = requireNotNull(currentProfile.value?.color)
-//            val profileIcon = requireNotNull(currentProfile.value?.photo)
-//            val typeIcon = requireNotNull(currentType.value?.icon)
-//            val name = viewBinding.surveyNameEt.text.toString()
-//            val date = viewBinding.surveyDateEt.text.toString()
-//            val time = dateFormat.parse(date)
-//            calendar.time = time!!
-//            val monthYear = currentDateMonthYear(calendar.time)
-//            return Survey(
-//                id = id,
-//                typeId = typeId,
-//                profileId = profileId,
-//                color = color,
-//                name = name,
-//                date = date,
-//                monthYear = monthYear,
-//                profileIcon = profileIcon,
-//                typeIcon = typeIcon
-//            )
-//        } else {
-//            null
-//        }
 //    }
 
-    private fun deleteSurvey() {
+//    private fun deleteSurvey() {
 //        val name = viewBinding.surveyNameEt.text.toString()
 //        MaterialDialog(requireActivity()).show {
 //            if (name.isNotBlank()) {
@@ -338,45 +280,5 @@ class SurveyFragment : Fragment() {
 //            }
 //            negativeButton { cancel() }
 //        }
-    }
 
-//    private fun isFieldsValid(): Boolean {
-//        return isNameValid() && isDateValid() && isTypeSelected() && isProfileSelected()
-//    }
-
-//    private fun isNameValid(): Boolean {
-//        return if (viewBinding.surveyNameEt.text.toString().isNotBlank()) true
-//        else {
-//            viewBinding.surveyNameLayout.error = requireActivity().getString(R.string.error_empty_name)
-//            false
-//        }
-//    }
-
-//    private fun isDateValid(): Boolean {
-//        return if (viewBinding.surveyDateEt.text.toString().isNotBlank()) true
-//        else {
-//            viewBinding.surveyDateLayout.error = requireActivity().getString(R.string.error_empty_date)
-//            false
-//        }
-//    }
-
-    private fun isTypeSelected(): Boolean {
-        return if (currentType.value != null) true
-        else {
-            requireActivity().toast(R.string.error_empty_type)
-            false
-        }
-    }
-
-    private fun isProfileSelected(): Boolean {
-        return if (currentProfile.value != null) true
-        else {
-            requireActivity().toast(R.string.error_empty_profile)
-            false
-        }
-    }
-
-    companion object {
-        const val DEFAULT_ID_FOR_ENTITY = 0L
-    }
 }

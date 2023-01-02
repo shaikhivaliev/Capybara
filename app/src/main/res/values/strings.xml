@@ -49,6 +49,7 @@
     <string name="survey_date">Дата исследования</string>
     <string name="survey_mock">У вас пока нет записей</string>
     <string name="survey_add_new_survey">Добавить\nисследование</string>
+    <string name="survey">Исследование</string>
 
     <!-- settings-->
     <string name="settings_feedback">Обратная связь</string>

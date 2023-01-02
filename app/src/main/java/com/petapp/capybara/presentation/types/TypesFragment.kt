@@ -111,8 +111,7 @@ class TypesFragment : Fragment() {
             items(types) { item ->
                 CircleIconTitleDescItem(
                     onItemClick = { vm.openSurveysScreen(item.id) },
-                    item = item.toUiData(),
-                    modifier = modifierCircleIcon76dp()
+                    item = item.toUiData()
                 )
             }
         }
