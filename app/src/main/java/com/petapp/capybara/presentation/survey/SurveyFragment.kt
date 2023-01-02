@@ -30,7 +30,7 @@ import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.ui.ExpandedDropdownMenu
 import com.petapp.capybara.ui.ExpandedDropdownMenuReadOnly
 import com.petapp.capybara.ui.OutlinedTextFieldReadOnly
-import com.petapp.capybara.ui.ShowError
+import com.petapp.capybara.ui.ShowSnackbar
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -75,10 +75,14 @@ class SurveyFragment : Fragment() {
             content = {
                 when (val state = surveyState) {
                     is DataState.DATA -> ShowSurvey(state.data)
-                    is DataState.ERROR -> ShowError(
+                    is DataState.ERROR -> ShowSnackbar(
                         scaffoldState = scaffoldState,
                         errorMessage = stringResource(R.string.error_explanation),
                         action = { vm.getSurvey(args?.survey) }
+                    )
+                    is DataState.ACTION -> ShowSnackbar(
+                        scaffoldState = scaffoldState,
+                        errorMessage = stringResource(R.string.error_empty_data)
                     )
                     else -> { // nothing
                     }
@@ -103,6 +107,7 @@ class SurveyFragment : Fragment() {
                     onClick = {
                         when (mode) {
                             is SurveyMode.NEW, is SurveyMode.EDIT -> vm.verifySurvey(
+                                mode,
                                 surveyState.value,
                                 surveySt,
                                 dateSt,
@@ -280,5 +285,4 @@ class SurveyFragment : Fragment() {
 //            }
 //            negativeButton { cancel() }
 //        }
-
 }

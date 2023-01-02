@@ -135,20 +135,21 @@ fun StandardColumn(content: LazyListScope.() -> Unit) {
 }
 
 @Composable
-fun ShowError(
+fun ShowSnackbar(
     scaffoldState: ScaffoldState,
     errorMessage: String,
-    action: () -> Unit,
-    dismissed: (() -> Unit)? = null
+    action: (() -> Unit)? = null,
+    dismissed: (() -> Unit)? = null,
+    actionLabel: String? = null
 ) {
     LaunchedEffect(scaffoldState.snackbarHostState) {
         val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
             message = errorMessage,
-            actionLabel = "Повторить"
+            actionLabel = actionLabel.orEmpty()
         )
         when (snackbarResult) {
             SnackbarResult.Dismissed -> dismissed?.invoke()
-            SnackbarResult.ActionPerformed -> action()
+            SnackbarResult.ActionPerformed -> action?.invoke()
         }
     }
 }

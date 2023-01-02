@@ -78,10 +78,11 @@ class SurveysFragment : Fragment() {
                 when (val state = surveysState) {
                     DataState.ACTION -> showAlertEmptyProfiles()
                     is DataState.DATA -> ShowSurveys(state.data)
-                    is DataState.ERROR -> ShowError(
+                    is DataState.ERROR -> ShowSnackbar(
                         scaffoldState = scaffoldState,
                         errorMessage = stringResource(R.string.error_explanation),
-                        action = { args?.value?.let { vm.getMarks(it) } }
+                        action = { args?.value?.let { vm.getMarks(it) } },
+                        actionLabel = stringResource(R.string.repeat)
                     )
                     else -> { // nothing
                     }

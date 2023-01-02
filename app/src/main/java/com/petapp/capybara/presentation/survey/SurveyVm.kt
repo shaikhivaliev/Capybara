@@ -101,13 +101,38 @@ class SurveyVm(
     }
 
     fun verifySurvey(
+        mode: SurveyMode,
         value: Survey?,
         surveyTitle: MutableState<String>,
         date: MutableState<String>,
         profileTitle: MutableState<String>,
         typeTitle: MutableState<String>
     ) {
-//        surveysRepository.updateSurvey(survey)
+        if (value == null ||
+            surveyTitle.value.isEmpty() ||
+            date.value.isEmpty() ||
+            profileTitle.value.isEmpty() ||
+            typeTitle.value.isEmpty()
+        ) {
+            _surveyState.value = DataState.ACTION
+        }
+//        val survey: Survey = Survey(
+//            id = it.id,
+//            typeId = it.typeId,
+//            profileId =,
+//            color =,
+//            name =,
+//            date =,
+//            monthYear =,
+//            profileIcon =,
+//            typeIcon =
+//        )
+//        val request = if (mode is SurveyMode.EDIT) {
+//            surveysRepository.updateSurvey(survey)
+//        } else {
+//            surveysRepository.createSurvey(survey)
+//        }
+//        request
 //            .subscribeOn(Schedulers.io())
 //            .observeOn(AndroidSchedulers.mainThread())
 //            .subscribe({

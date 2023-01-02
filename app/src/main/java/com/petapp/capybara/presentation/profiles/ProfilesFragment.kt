@@ -72,10 +72,11 @@ class ProfilesFragment : Fragment() {
             content = {
                 when (val state = profileState) {
                     DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
-                    is DataState.ERROR -> ShowError(
+                    is DataState.ERROR -> ShowSnackbar(
                         scaffoldState = scaffoldState,
                         errorMessage = stringResource(R.string.error_explanation),
-                        action = { vm.getProfiles() }
+                        action = { vm.getProfiles() },
+                        actionLabel = stringResource(R.string.repeat)
                     )
                     is DataState.DATA -> ShowProfiles(state.data)
                     else -> { // nothing
