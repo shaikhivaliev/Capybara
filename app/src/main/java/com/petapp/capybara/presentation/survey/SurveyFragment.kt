@@ -12,25 +12,25 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.SurveyNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
-import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
-import com.petapp.capybara.ui.ExpandedDropdownMenu
-import com.petapp.capybara.ui.ExpandedDropdownMenuReadOnly
-import com.petapp.capybara.ui.OutlinedTextFieldReadOnly
-import com.petapp.capybara.ui.ShowSnackbar
+import com.petapp.capybara.ui.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -70,96 +70,93 @@ class SurveyFragment : Fragment() {
     private fun SurveyScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val surveyState by vm.surveyState.observeAsState()
+        val sideEffect by vm.sideEffect.observeAsState()
+        val surveyInputData = SurveyInputData()
+
         Scaffold(
             scaffoldState = scaffoldState,
+            floatingActionButton = {
+                ShowFab(surveyState, surveyInputData)
+            },
             content = {
                 when (val state = surveyState) {
-                    is DataState.DATA -> ShowSurvey(state.data)
-                    is DataState.ERROR -> ShowSnackbar(
-                        scaffoldState = scaffoldState,
-                        errorMessage = stringResource(R.string.error_explanation),
-                        action = { vm.getSurvey(args?.survey) }
-                    )
-                    is DataState.ACTION -> ShowSnackbar(
+                    is DataState.DATA -> {
+                        ShowSurvey(state.data, surveyInputData)
+                    }
+                    is DataState.ERROR -> Error()
+                    else -> { // nothing
+                    }
+                }
+
+                if (sideEffect is SideEffect.ACTION) {
+                    // todo fix repeat showing
+                    ShowSnackbar(
                         scaffoldState = scaffoldState,
                         errorMessage = stringResource(R.string.error_empty_data)
                     )
-                    else -> { // nothing
-                    }
                 }
             }
         )
     }
 
+    @Composable
+    private fun ShowFab(surveyState: DataState<SurveyMode>?, surveyInputData: SurveyInputData) {
+        surveyState?.onData { mode ->
+            FloatingActionButton(
+                onClick = {
+                    when (mode) {
+                        is SurveyMode.NEW, is SurveyMode.EDIT -> vm.verifySurvey(
+                            mode,
+                            surveyInputData
+                        )
+                        is SurveyMode.READONLY -> vm.toEditMode(mode.data)
+                    }
+                }) {
+                val fabImage = when (mode) {
+                    is SurveyMode.NEW -> ImageVector.vectorResource(R.drawable.ic_done)
+                    is SurveyMode.EDIT -> ImageVector.vectorResource(R.drawable.ic_done)
+                    is SurveyMode.READONLY -> ImageVector.vectorResource(R.drawable.ic_edit)
+                }
+                Icon(
+                    imageVector = fabImage,
+                    contentDescription = null
+                )
+            }
+        }
+    }
+
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    private fun ShowSurvey(mode: SurveyMode) {
-        val surveyState: MutableState<Survey?> = remember { mutableStateOf(null) }
-
-        val surveySt = remember { mutableStateOf("") }
-        val dateSt = remember { mutableStateOf("") }
-        val profileSt = remember { mutableStateOf("") }
-        val typeSt = remember { mutableStateOf("") }
-
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = {
-                        when (mode) {
-                            is SurveyMode.NEW, is SurveyMode.EDIT -> vm.verifySurvey(
-                                mode,
-                                surveyState.value,
-                                surveySt,
-                                dateSt,
-                                profileSt,
-                                typeSt
-                            )
-                            is SurveyMode.READONLY -> vm.toEditMode(mode.data)
-                        }
-                    }) {
-                    val fabImage = when (mode) {
-                        is SurveyMode.NEW -> ImageVector.vectorResource(R.drawable.ic_done)
-                        is SurveyMode.EDIT -> ImageVector.vectorResource(R.drawable.ic_done)
-                        is SurveyMode.READONLY -> ImageVector.vectorResource(R.drawable.ic_edit)
-                    }
-                    Icon(
-                        imageVector = fabImage,
-                        contentDescription = null
-                    )
+    private fun ShowSurvey(mode: SurveyMode, surveyInputData: SurveyInputData) {
+        when (mode) {
+            is SurveyMode.NEW -> SurveyContent(
+                profiles = mode.data.profiles.map { it.name },
+                types = mode.data.types.map { it.name },
+                surveyTitle = surveyInputData.survey,
+                dateTitle = surveyInputData.date,
+                profileTitle = surveyInputData.profile,
+                typeTitle = surveyInputData.type,
+                isEditMode = false
+            )
+            is SurveyMode.EDIT -> {
+                with(mode.data) {
+                    surveyInputData.survey.value = survey.name
+                    surveyInputData.date.value = survey.date
+                    surveyInputData.profile.value = profileTitle
+                    surveyInputData.type.value = typeTitle
                 }
-            },
-            content = {
-                when (mode) {
-                    is SurveyMode.NEW -> SurveyContent(
-                        profiles = mode.data.profiles.map { it.name },
-                        types = mode.data.types.map { it.name },
-                        surveyTitle = surveySt,
-                        dateTitle = dateSt,
-                        profileTitle = profileSt,
-                        typeTitle = typeSt,
-                        isEditMode = false
-                    )
-                    is SurveyMode.EDIT -> {
-                        with(mode.data) {
-                            surveySt.value = survey.name
-                            dateSt.value = survey.date
-                            profileSt.value = profileTitle
-                            typeSt.value = typeTitle
-                        }
-                        SurveyContent(
-                            profiles = mode.data.profiles.map { it.name },
-                            types = mode.data.types.map { it.name },
-                            surveyTitle = surveySt,
-                            dateTitle = dateSt,
-                            profileTitle = profileSt,
-                            typeTitle = typeSt,
-                            isEditMode = true
-                        )
-                    }
-                    is SurveyMode.READONLY -> SurveyContentReadOnly(mode.data)
-                }
+                SurveyContent(
+                    profiles = mode.data.profiles.map { it.name },
+                    types = mode.data.types.map { it.name },
+                    surveyTitle = surveyInputData.survey,
+                    dateTitle = surveyInputData.date,
+                    profileTitle = surveyInputData.profile,
+                    typeTitle = surveyInputData.type,
+                    isEditMode = true
+                )
             }
-        )
+            is SurveyMode.READONLY -> SurveyContentReadOnly(mode.data)
+        }
     }
 
     @Composable
@@ -221,6 +218,19 @@ class SurveyFragment : Fragment() {
                     typeTitle.value = it
                 }
             )
+            if (isEditMode) {
+                TextButton(onClick = { deleteSurvey() }) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp),
+                        text = stringResource(R.string.survey_delete),
+                        color = Color.Red,
+                        style = textSmall(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     }
 
@@ -249,6 +259,24 @@ class SurveyFragment : Fragment() {
         }
     }
 
+    private fun deleteSurvey() {
+        // todo
+        val name = "name"
+        MaterialDialog(requireActivity()).show {
+            if (name.isNotBlank()) {
+                title(text = getString(R.string.survey_delete_explanation, name))
+            } else {
+                title(text = getString(R.string.survey_delete_explanation_empty))
+            }
+            positiveButton {
+                args?.survey?.id?.let { vm.deleteSurvey(it) } ?: vm.back()
+                cancel()
+            }
+            negativeButton { cancel() }
+        }
+    }
+
+
 //    private fun initWorkWithDate() {
 //        viewBinding.surveyDateEt.setOnClickListener {
 //            viewBinding.surveyDateEt.requestFocus()
@@ -267,22 +295,4 @@ class SurveyFragment : Fragment() {
 //        }
 //    }
 
-//    private fun deleteSurvey() {
-//        val name = viewBinding.surveyNameEt.text.toString()
-//        MaterialDialog(requireActivity()).show {
-//            if (name.isNotBlank()) {
-//                title(text = getString(R.string.survey_delete_explanation, name))
-//            } else {
-//                title(text = getString(R.string.survey_delete_explanation_empty))
-//            }
-//            positiveButton {
-//                if (args.survey?.id != null) {
-//                    vm.deleteSurvey(args.survey?.id!!)
-//                } else {
-//                    vm.back()
-//                }
-//                cancel()
-//            }
-//            negativeButton { cancel() }
-//        }
 }

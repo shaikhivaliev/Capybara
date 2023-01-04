@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -214,7 +215,9 @@ fun ExpandedDropdownMenuReadOnly(
     label: String
 ) {
     OutlinedTextField(
-        modifier = Modifier.padding(top = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
         enabled = false,
         value = value,
         onValueChange = {},
@@ -241,4 +244,26 @@ fun OutlinedTextFieldReadOnly(
         onValueChange = {},
         label = { Text(label) }
     )
+}
+
+@Composable
+fun Error() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier.size(150.dp),
+            painter = painterResource(R.drawable.ic_capybara),
+            contentDescription = null,
+            contentScale = ContentScale.Inside
+        )
+        Text(
+            text = stringResource(R.string.error_explanation),
+            style = textMedium(),
+            modifier = Modifier.padding(start = 16.dp),
+            textAlign = TextAlign.Center
+        )
+    }
 }

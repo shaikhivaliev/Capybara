@@ -6,8 +6,6 @@ sealed class DataState<out TData> {
 
     object LOADING : DataState<Nothing>()
 
-    object ACTION : DataState<Nothing>()
-
     object EMPTY : DataState<Nothing>()
 
     data class DATA<out TData>(val data: TData) : DataState<TData>()
@@ -19,5 +17,10 @@ sealed class DataState<out TData> {
             block(this.data)
         }
     }
+}
+
+sealed class SideEffect {
+    object READY : SideEffect()
+    object ACTION : SideEffect()
 }
 

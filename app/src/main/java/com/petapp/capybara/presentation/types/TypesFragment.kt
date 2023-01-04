@@ -91,12 +91,7 @@ class TypesFragment : Fragment() {
                     }
                     when (val state = typeState) {
                         DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
-                        is DataState.ERROR -> ShowSnackbar(
-                            scaffoldState = scaffoldState,
-                            errorMessage = stringResource(R.string.error_explanation),
-                            action = { vm.getTypes() },
-                            actionLabel = stringResource(R.string.repeat)
-                        )
+                        is DataState.ERROR -> Error()
                         is DataState.DATA -> ShowTypes(state.data)
                         else -> { // nothing
                         }

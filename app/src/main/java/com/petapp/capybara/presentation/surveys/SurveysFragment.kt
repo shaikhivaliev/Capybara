@@ -76,14 +76,9 @@ class SurveysFragment : Fragment() {
             },
             content = {
                 when (val state = surveysState) {
-                    DataState.ACTION -> showAlertEmptyProfiles()
+                    DataState.EMPTY -> showAlertEmptyProfiles()
                     is DataState.DATA -> ShowSurveys(state.data)
-                    is DataState.ERROR -> ShowSnackbar(
-                        scaffoldState = scaffoldState,
-                        errorMessage = stringResource(R.string.error_explanation),
-                        action = { args?.value?.let { vm.getMarks(it) } },
-                        actionLabel = stringResource(R.string.repeat)
-                    )
+                    is DataState.ERROR -> Error()
                     else -> { // nothing
                     }
                 }

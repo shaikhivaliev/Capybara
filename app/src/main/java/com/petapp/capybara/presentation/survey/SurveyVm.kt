@@ -1,10 +1,12 @@
 package com.petapp.capybara.presentation.survey
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
@@ -43,6 +45,9 @@ class SurveyVm(
 
     private val _surveyState = MutableLiveData<DataState<SurveyMode>>()
     val surveyState: LiveData<DataState<SurveyMode>> get() = _surveyState
+
+    private val _sideEffect = MutableLiveData<SideEffect>()
+    val sideEffect: LiveData<SideEffect> get() = _sideEffect
 
     fun getSurvey(survey: Survey?) {
         if (survey == null) {
@@ -102,44 +107,68 @@ class SurveyVm(
 
     fun verifySurvey(
         mode: SurveyMode,
-        value: Survey?,
-        surveyTitle: MutableState<String>,
-        date: MutableState<String>,
-        profileTitle: MutableState<String>,
-        typeTitle: MutableState<String>
+        surveyInputData: SurveyInputData
     ) {
-        if (value == null ||
-            surveyTitle.value.isEmpty() ||
-            date.value.isEmpty() ||
-            profileTitle.value.isEmpty() ||
-            typeTitle.value.isEmpty()
+        _sideEffect.value = SideEffect.READY
+        if (
+            surveyInputData.survey.value.isEmpty() ||
+            surveyInputData.date.value.isEmpty() ||
+            surveyInputData.profile.value.isEmpty() ||
+            surveyInputData.type.value.isEmpty()
         ) {
-            _surveyState.value = DataState.ACTION
+            _sideEffect.value = SideEffect.ACTION
+        } else {
+            when (mode) {
+                is SurveyMode.EDIT -> {
+                    // todo
+                    val survey = Survey(
+                        id = mode.data.survey.id,
+                        name = surveyInputData.survey.value,
+                        date = surveyInputData.date.value,
+                        profileIcon = "0",
+                        profileId = 0,
+                        color = 0,
+                        typeId = 0,
+                        typeIcon = 0,
+                        monthYear = ""
+                    )
+                    surveysRepository.updateSurvey(survey)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            openTypesScreen()
+                        }, {
+                            _surveyState.value = DataState.ERROR(it)
+                        }).connect()
+
+                }
+                is SurveyMode.NEW -> {
+                    // todo
+                    val survey = Survey(
+                        id = 0L,
+                        name = surveyInputData.survey.value,
+                        date = surveyInputData.date.value,
+                        profileIcon = "0",
+                        profileId = 0,
+                        color = 0,
+                        typeId = 0,
+                        typeIcon = 0,
+                        monthYear = ""
+                    )
+                    surveysRepository.createSurvey(survey)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            openTypesScreen()
+                        }, {
+                            _surveyState.value = DataState.ERROR(it)
+                        }).connect()
+
+                }
+                else -> {//nothing
+                }
+            }
         }
-//        val survey: Survey = Survey(
-//            id = it.id,
-//            typeId = it.typeId,
-//            profileId =,
-//            color =,
-//            name =,
-//            date =,
-//            monthYear =,
-//            profileIcon =,
-//            typeIcon =
-//        )
-//        val request = if (mode is SurveyMode.EDIT) {
-//            surveysRepository.updateSurvey(survey)
-//        } else {
-//            surveysRepository.createSurvey(survey)
-//        }
-//        request
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                openTypesScreen()
-//            }, {
-//                _surveyState.value = DataState.ERROR(it)
-//            }).connect()
     }
 
     fun deleteSurvey(surveyId: Long) {
@@ -161,6 +190,10 @@ class SurveyVm(
             SurveyMode.EDIT(data)
         )
     }
+
+    fun back() {
+        mainNavigator.back()
+    }
 }
 
 sealed class SurveyMode {
@@ -180,4 +213,11 @@ data class SurveyUI(
     val typeTitle: String,
     val profiles: List<Profile>,
     val types: List<Type>
+)
+
+data class SurveyInputData(
+    val survey: MutableState<String> = mutableStateOf(""),
+    val date: MutableState<String> = mutableStateOf(""),
+    val profile: MutableState<String> = mutableStateOf(""),
+    val type: MutableState<String> = mutableStateOf("")
 )

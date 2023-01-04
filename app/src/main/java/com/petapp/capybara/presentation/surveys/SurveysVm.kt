@@ -50,7 +50,7 @@ class SurveysVm(
             .subscribe(
                 {
                     if (it.isEmpty()) {
-                        _surveysState.value = DataState.ACTION
+                        _surveysState.value = DataState.EMPTY
                     } else {
                         getSurveys(
                             typeId = typeId,
