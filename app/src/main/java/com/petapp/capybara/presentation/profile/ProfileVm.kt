@@ -168,6 +168,9 @@ class ProfileVm(
         mainNavigator.back()
     }
 
+    fun dismissSnackbar() {
+        _sideEffect.value = SideEffect.READY
+    }
 
     companion object {
         private val COLORS: List<String> = listOf(

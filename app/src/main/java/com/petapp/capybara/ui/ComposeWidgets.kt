@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -17,21 +18,24 @@ import com.petapp.capybara.ui.data.Chip
 
 @Composable
 fun ShowSnackbar(
-    scaffoldState: ScaffoldState,
     errorMessage: String,
+    retryMessage: String? = null,
+    snackbarHostState: SnackbarHostState,
     action: (() -> Unit)? = null,
-    dismissed: (() -> Unit)? = null,
-    actionLabel: String? = null
+    dismissed: (() -> Unit)? = null
 ) {
-    LaunchedEffect(scaffoldState.snackbarHostState) {
-        val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+    val onActionState = rememberUpdatedState(action)
+    val onDismissedState = rememberUpdatedState(dismissed)
+
+    LaunchedEffect(errorMessage, retryMessage, snackbarHostState) {
+        val snackbarResult = snackbarHostState.showSnackbar(
             message = errorMessage,
-            actionLabel = actionLabel.orEmpty()
+            actionLabel = retryMessage
         )
-        when (snackbarResult) {
-            SnackbarResult.Dismissed -> dismissed?.invoke()
-            SnackbarResult.ActionPerformed -> action?.invoke()
+        if (snackbarResult == SnackbarResult.ActionPerformed) {
+            onActionState.value?.invoke()
         }
+        onDismissedState.value?.invoke()
     }
 }
 
@@ -152,7 +156,7 @@ fun OutlinedTextFieldReadOnly(
 }
 
 @Composable
-fun DeleteButton(title: Int, onClick: () -> Unit){
+fun DeleteButton(title: Int, onClick: () -> Unit) {
     TextButton(
         modifier = Modifier.padding(top = 16.dp),
         onClick = {

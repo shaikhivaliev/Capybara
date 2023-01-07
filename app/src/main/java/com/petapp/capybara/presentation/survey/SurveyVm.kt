@@ -16,6 +16,7 @@ import com.petapp.capybara.data.ITypesRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.extensions.currentDateMonthYear
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -109,7 +110,6 @@ class SurveyVm(
         mode: SurveyMode,
         surveyInputData: SurveyInputData
     ) {
-        _sideEffect.value = SideEffect.READY
         if (
             surveyInputData.survey.value.isEmpty() ||
             surveyInputData.date.value.isEmpty() ||
@@ -120,6 +120,35 @@ class SurveyVm(
         } else {
             when (mode) {
                 is SurveyMode.EDIT -> {
+
+//                    val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
+//                    val typeId = requireNotNull(currentType.value?.id)
+//                    val profileId = requireNotNull(currentProfile.value?.id)
+//                    val color = requireNotNull(currentProfile.value?.color)
+//                    val profileIcon = requireNotNull(currentProfile.value?.photo)
+//                    val typeIcon = requireNotNull(currentType.value?.icon)
+//                    val name = viewBinding.surveyNameEt.text.toString()
+//                    val date = viewBinding.surveyDateEt.text.toString()
+//                    val time = dateFormat.parse(date)
+//                    calendar.time = time!!
+//                    val monthYear = currentDateMonthYear(calendar.time)
+//                    return Survey(
+//                        id = id,
+//                        typeId = typeId,
+//                        profileId = profileId,
+//                        color = color,
+//                        name = name,
+//                        date = date,
+//                        monthYear = monthYear,
+//                        profileIcon = profileIcon,
+//                        typeIcon = typeIcon
+//                    )
+
+
+
+
+
+
                     // todo
                     val survey = Survey(
                         id = mode.data.survey.id,
@@ -191,8 +220,8 @@ class SurveyVm(
         )
     }
 
-    fun back() {
-        mainNavigator.back()
+    fun dismissSnackbar() {
+        _sideEffect.value = SideEffect.READY
     }
 }
 

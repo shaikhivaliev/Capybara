@@ -70,13 +70,13 @@ class SettingFragment : Fragment() {
                             when (item.id) {
                                 ID_FEEDBACK -> sendEmail()
                                 ID_RATE_APP -> {
-                                    // todo navigate to play market
+                                    // navigate to play market
                                 }
                                 ID_SHARE_LINK -> {
-                                    // todo share play market link
+                                    // share play market link
                                 }
                                 ID_RULES -> {
-                                    // todo navigate to web view with rules
+                                    // navigate to web view with rules
                                 }
                             }
                         }

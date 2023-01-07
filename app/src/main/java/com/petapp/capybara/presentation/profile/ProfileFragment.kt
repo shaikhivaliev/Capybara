@@ -140,15 +140,15 @@ class ProfileFragment : Fragment() {
                     else -> { // nothing
                     }
                 }
+                if (sideEffect is SideEffect.ACTION) {
+                    ShowSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        errorMessage = stringResource(R.string.error_empty_data),
+                        dismissed = { vm.dismissSnackbar() }
+                    )
+                }
             }
         )
-        if (sideEffect is SideEffect.ACTION) {
-            // todo fix repeat showing
-            ShowSnackbar(
-                scaffoldState = scaffoldState,
-                errorMessage = stringResource(R.string.error_empty_data)
-            )
-        }
     }
 
     @Composable
