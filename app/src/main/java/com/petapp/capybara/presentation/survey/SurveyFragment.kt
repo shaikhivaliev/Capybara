@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -87,16 +85,15 @@ class SurveyFragment : Fragment() {
                     else -> { // nothing
                     }
                 }
-
-                if (sideEffect is SideEffect.ACTION) {
-                    // todo fix repeat showing
-                    ShowSnackbar(
-                        scaffoldState = scaffoldState,
-                        errorMessage = stringResource(R.string.error_empty_data)
-                    )
-                }
             }
         )
+        if (sideEffect is SideEffect.ACTION) {
+            // todo fix repeat showing
+            ShowSnackbar(
+                scaffoldState = scaffoldState,
+                errorMessage = stringResource(R.string.error_empty_data)
+            )
+        }
     }
 
     @Composable
@@ -132,10 +129,7 @@ class SurveyFragment : Fragment() {
             is SurveyMode.NEW -> SurveyContent(
                 profiles = mode.data.profiles.map { it.name },
                 types = mode.data.types.map { it.name },
-                surveyTitle = surveyInputData.survey,
-                dateTitle = surveyInputData.date,
-                profileTitle = surveyInputData.profile,
-                typeTitle = surveyInputData.type,
+                surveyInputData = surveyInputData,
                 isEditMode = false
             )
             is SurveyMode.EDIT -> {
@@ -148,10 +142,7 @@ class SurveyFragment : Fragment() {
                 SurveyContent(
                     profiles = mode.data.profiles.map { it.name },
                     types = mode.data.types.map { it.name },
-                    surveyTitle = surveyInputData.survey,
-                    dateTitle = surveyInputData.date,
-                    profileTitle = surveyInputData.profile,
-                    typeTitle = surveyInputData.type,
+                    surveyInputData = surveyInputData,
                     isEditMode = true
                 )
             }
@@ -163,10 +154,7 @@ class SurveyFragment : Fragment() {
     fun SurveyContent(
         profiles: List<String>,
         types: List<String>,
-        surveyTitle: MutableState<String>,
-        dateTitle: MutableState<String>,
-        profileTitle: MutableState<String>,
-        typeTitle: MutableState<String>,
+        surveyInputData: SurveyInputData,
         isEditMode: Boolean
     ) {
         val profilesMenuExpanded = remember { mutableStateOf(false) }
@@ -178,9 +166,9 @@ class SurveyFragment : Fragment() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                value = surveyTitle.value,
+                value = surveyInputData.survey.value,
                 onValueChange = {
-                    surveyTitle.value = it
+                    surveyInputData.survey.value = it
                 },
                 label = { Text(stringResource(R.string.survey)) }
             )
@@ -188,38 +176,40 @@ class SurveyFragment : Fragment() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                value = dateTitle.value,
+                value = surveyInputData.date.value,
                 onValueChange = {
-                    dateTitle.value = it
+                    surveyInputData.date.value = it
                 },
                 label = { Text(stringResource(R.string.health_diary_survey_date)) }
             )
             ExpandedDropdownMenu(
                 label = stringResource(R.string.profile_caps),
-                selectedTitle = profileTitle.value,
+                selectedTitle = surveyInputData.profile.value,
                 expanded = profilesMenuExpanded.value,
                 selectionOptions = profiles,
                 onExpandedChange = {
                     profilesMenuExpanded.value = !profilesMenuExpanded.value
                 },
                 onSelectedText = {
-                    profileTitle.value = it
+                    surveyInputData.profile.value = it
                 }
             )
             ExpandedDropdownMenu(
                 label = stringResource(R.string.survey_change_survey_type),
-                selectedTitle = typeTitle.value,
+                selectedTitle = surveyInputData.type.value,
                 expanded = typesMenuExpanded.value,
                 selectionOptions = types,
                 onExpandedChange = {
                     typesMenuExpanded.value = !typesMenuExpanded.value
                 },
                 onSelectedText = {
-                    typeTitle.value = it
+                    surveyInputData.type.value = it
                 }
             )
             if (isEditMode) {
-                TextButton(onClick = { deleteSurvey() }) {
+                TextButton(onClick = {
+                    // deleteSurvey()
+                }) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -259,23 +249,20 @@ class SurveyFragment : Fragment() {
         }
     }
 
-    private fun deleteSurvey() {
-        // todo
-        val name = "name"
+    private fun deleteSurvey(title: String, surveyId: Long) {
         MaterialDialog(requireActivity()).show {
-            if (name.isNotBlank()) {
-                title(text = getString(R.string.survey_delete_explanation, name))
+            if (title.isNotBlank()) {
+                title(text = getString(R.string.survey_delete_explanation, title))
             } else {
                 title(text = getString(R.string.survey_delete_explanation_empty))
             }
             positiveButton {
-                args?.survey?.id?.let { vm.deleteSurvey(it) } ?: vm.back()
+                vm.deleteSurvey(surveyId)
                 cancel()
             }
             negativeButton { cancel() }
         }
     }
-
 
 //    private fun initWorkWithDate() {
 //        viewBinding.surveyDateEt.setOnClickListener {

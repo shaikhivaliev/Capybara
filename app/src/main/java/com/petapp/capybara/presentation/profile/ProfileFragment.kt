@@ -1,43 +1,37 @@
 package com.petapp.capybara.presentation.profile
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.FileProvider
-import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.color.colorChooser
-import com.afollestad.materialdialogs.list.customListAdapter
-import com.afollestad.materialdialogs.list.getListAdapter
-import com.afollestad.materialdialogs.list.getRecyclerView
-import com.bumptech.glide.Glide
+import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.list.MarginItemDecoration
+import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.ProfileNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
-import com.petapp.capybara.data.model.DeleteImage
 import com.petapp.capybara.data.model.ImagePicker
 import com.petapp.capybara.data.model.ImagePickerType
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.databinding.FragmentProfileBinding
 import com.petapp.capybara.di.features.FeaturesComponentHolder
-import com.petapp.capybara.extensions.hideKeyboard
-import com.petapp.capybara.extensions.showKeyboard
-import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.main.MainActivity
+import com.petapp.capybara.ui.Error
+import com.petapp.capybara.ui.ShowSnackbar
 import javax.inject.Inject
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
-
-    private val viewBinding by viewBinding(FragmentProfileBinding::bind)
+class ProfileFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: ProfileVmFactory
@@ -48,33 +42,27 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val args: ProfileNavDto? by navDto()
 
-    private var currentPhotoUri: String? = null
+//    ImagePickerType.CAMERA -> vm.createImageFile(requireActivity())
+//    ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
+//    imageFile.observe(viewLifecycleOwner) { file ->
+//        currentPhotoUri = FileProvider.getUriForFile(
+//            requireActivity(),
+//            requireActivity().getString(R.string.autority),
+//            file
+//        ).toString()
+//        imageFromCamera.launch(Uri.parse(currentPhotoUri))
 
-    private val currentColor = MutableLiveData<Int>()
-
-    private val adapterImagePickerDialog: ImagePickerDialogAdapter = ImagePickerDialogAdapter(
-        itemClick = { imagePicker ->
-            when (imagePicker.type) {
-                ImagePickerType.CAMERA -> vm.createImageFile(requireActivity())
-                ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
-            }
-            imagePickerDialog?.cancel()
-        },
-        deleteImage = {}
-    )
-
-    private var imagePickerDialog: MaterialDialog? = null
 
     private val imageFromCamera =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
-            if (success) {
-                Glide.with(this)
-                    .load(currentPhotoUri)
-                    .centerCrop()
-                    .into(viewBinding.photo)
-            } else {
-                currentPhotoUri = args?.profile?.photo
-            }
+//            if (success) {
+//                Glide.with(this)
+//                    .load(currentPhotoUri)
+//                    .centerCrop()
+//                    .into(viewBinding.photo)
+//            } else {
+//                currentPhotoUri = args?.profile?.photo
+//            }
         }
 
     private val camera = ImagePicker(
@@ -93,11 +81,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.apply {
-            currentPhotoUri = this.toString()
-            Glide.with(requireActivity())
-                .load(this)
-                .centerCrop()
-                .into(viewBinding.photo)
+//            currentPhotoUri = this.toString()
+//            Glide.with(requireActivity())
+//                .load(this)
+//                .centerCrop()
+//                .into(viewBinding.photo)
         }
     }
 
@@ -106,214 +94,84 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        initObservers()
-
-        args?.profile?.id?.apply {
-            vm.getProfile(this)
-            vm.getHealthDiaryItems(this)
-        }
-        if (args?.profile?.id == null) {
-            setEditMode(true)
-            Glide.with(this)
-                .load(R.drawable.ic_user_144dp)
-                .centerInside()
-                .into(viewBinding.photo)
-            viewBinding.nameEt.requestFocus()
-            viewBinding.nameEt.showKeyboard()
-        }
-    }
-
-    private fun initViews() {
-
-        viewBinding.edit.setOnClickListener {
-            setEditMode(true)
-            viewBinding.deleteProfile.isVisible = true
-        }
-
-        viewBinding.done.setOnClickListener {
-            viewBinding.deleteProfile.isVisible = false
-            if (args?.profile != null) {
-                viewBinding.done.hideKeyboard()
-                vm.updateProfile(profileBuilder())
-            } else {
-                viewBinding.done.hideKeyboard()
-                vm.createProfile(profileBuilder())
-            }
-        }
-
-        viewBinding.nameEt.doAfterTextChanged { viewBinding.nameLayout.error = null }
-
-        viewBinding.changePhoto.setOnClickListener { pickImages(listOf(camera, gallery)) }
-
-        viewBinding.changeColor.setOnClickListener { startColorDialog() }
-
-        viewBinding.deleteProfile.setOnClickListener { deleteProfile() }
-
-        viewBinding.healthDiary.setOnClickListener { vm.openHealthDiaryScreen(args?.profile?.id) }
-    }
-
-    private fun initObservers() {
-        with(vm) {
-            profile.observe(viewLifecycleOwner) { profile ->
-                setProfileCard(profile)
-                setEditMode(false)
-            }
-
-            imageFile.observe(viewLifecycleOwner) { file ->
-                currentPhotoUri = FileProvider.getUriForFile(
-                    requireActivity(),
-                    requireActivity().getString(R.string.autority),
-                    file
-                ).toString()
-                imageFromCamera.launch(Uri.parse(currentPhotoUri))
-            }
-
-            errorMessage.observe(viewLifecycleOwner) { error ->
-                requireActivity().toast(error)
-            }
-
-            currentColor.observe(viewLifecycleOwner) { color ->
-                viewBinding.colorMarker.setBackgroundColor(color)
-            }
-
-            healthDiaryForProfile.observe(viewLifecycleOwner) { profile ->
-                viewBinding.bloodPressureValue.text =
-                    profile.bloodPressure ?: getString(R.string.profile_item_health_diary_empty)
-                viewBinding.pulseValue.text = profile.pulse ?: getString(R.string.profile_item_health_diary_empty)
-                viewBinding.bloodGlucoseValue.text =
-                    profile.bloodGlucose ?: getString(R.string.profile_item_health_diary_empty)
-                viewBinding.heightValue.text = profile.height ?: getString(R.string.profile_item_health_diary_empty)
-                viewBinding.weightValue.text = profile.weight ?: getString(R.string.profile_item_health_diary_empty)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return ComposeView(requireContext()).apply {
+            vm.getProfile(args?.profile?.id)
+            setContent {
+                MdcTheme {
+                    ProfileScreen()
+                }
             }
         }
     }
 
-    private fun setProfileCard(profile: Profile) {
-        viewBinding.profileName.text = profile.name
-        viewBinding.nameEt.setText(profile.name)
-        currentColor.value = profile.color
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @Composable
+    private fun ProfileScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val profileState by vm.profileState.observeAsState()
+        val sideEffect by vm.sideEffect.observeAsState()
+        val profileInputData = ProfileInputData()
 
-        if (profile.photo != DEFAULT_PROFILE_ICON) {
-            viewBinding.edit.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
-            viewBinding.done.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
-            Glide.with(this)
-                .load(profile.photo)
-                .centerCrop()
-                .into(viewBinding.photo)
-        } else {
-            viewBinding.edit.setBackgroundResource(R.drawable.green_border_bgr)
-            viewBinding.done.setBackgroundResource(R.drawable.green_border_bgr)
-            Glide.with(this)
-                .load(R.drawable.ic_user_144dp)
-                .centerInside()
-                .into(viewBinding.photo)
-        }
-    }
-
-    private fun pickImages(items: List<ImagePicker>) {
-
-        adapterImagePickerDialog.items = items + DeleteImage(DEFAULT_ID_FOR_ENTITY)
-
-        imagePickerDialog = MaterialDialog(requireActivity()).show {
-            title(R.string.profile_change_photo)
-            customListAdapter(adapterImagePickerDialog)
-            val itemCount = getListAdapter()?.itemCount ?: 0
-            getRecyclerView().addItemDecoration(
-                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_s), itemCount - 1)
+        Scaffold(
+            scaffoldState = scaffoldState,
+            floatingActionButton = {
+                ShowFab(profileState, profileInputData)
+            },
+            content = {
+                when (val state = profileState) {
+                    is DataState.DATA -> {}
+                    is DataState.ERROR -> Error()
+                    else -> { // nothing
+                    }
+                }
+            }
+        )
+        if (sideEffect is SideEffect.ACTION) {
+            // todo fix repeat showing
+            ShowSnackbar(
+                scaffoldState = scaffoldState,
+                errorMessage = stringResource(R.string.error_empty_data)
             )
         }
     }
 
-    private fun startColorDialog() {
-
-        val colors = intArrayOf(
-            getColor(requireActivity(), R.color.red_500),
-            getColor(requireActivity(), R.color.pink_500),
-            getColor(requireActivity(), R.color.deep_purple_500),
-            getColor(requireActivity(), R.color.indigo_500),
-            getColor(requireActivity(), R.color.light_blue_500),
-            getColor(requireActivity(), R.color.cyan_500),
-            getColor(requireActivity(), R.color.teal_500),
-            getColor(requireActivity(), R.color.green_500),
-            getColor(requireActivity(), R.color.lime_500),
-            getColor(requireActivity(), R.color.yellow_500),
-            getColor(requireActivity(), R.color.amber_500),
-            getColor(requireActivity(), R.color.deep_orange_500)
-        )
-        val initialColor = args?.profile?.color ?: 0
-
-        MaterialDialog(requireActivity()).show {
-            title(R.string.profile_choose_color)
-            colorChooser(colors, initialSelection = initialColor) { _, color ->
-                currentColor.value = color
+    @Composable
+    private fun ShowFab(surveyState: DataState<ProfileMode>?, profileInputData: ProfileInputData) {
+        surveyState?.onData { mode ->
+            FloatingActionButton(
+                onClick = {
+                    when (mode) {
+                        is ProfileMode.NEW, is ProfileMode.EDIT -> vm.verifyProfile()
+                        is ProfileMode.READONLY -> vm.toEditMode(mode.data)
+                    }
+                }) {
+                val fabImage = when (mode) {
+                    is ProfileMode.NEW -> ImageVector.vectorResource(R.drawable.ic_done)
+                    is ProfileMode.EDIT -> ImageVector.vectorResource(R.drawable.ic_done)
+                    is ProfileMode.READONLY -> ImageVector.vectorResource(R.drawable.ic_edit)
+                }
+                Icon(
+                    imageVector = fabImage,
+                    contentDescription = null
+                )
             }
-            negativeButton(R.string.cancel) { cancel() }
         }
     }
 
-    private fun deleteProfile() {
-        val name = viewBinding.profileName.text
+
+    private fun deleteProfile(title: String, profileId: Long) {
         MaterialDialog(requireActivity()).show {
-            if (name.isNotBlank()) {
-                title(text = getString(R.string.profile_delete_explanation, name))
+            if (title.isNotBlank()) {
+                title(text = getString(R.string.profile_delete_explanation, title))
             } else {
                 title(text = getString(R.string.profile_delete_explanation_empty))
             }
             positiveButton {
-                if (args?.profile?.id != null) {
-                    vm.deleteProfile(args?.profile?.id!!)
-                } else {
-                    vm.back()
-                }
+                vm.deleteProfile(profileId)
                 cancel()
             }
             negativeButton { cancel() }
         }
-    }
-
-    private fun profileBuilder(): Profile? {
-        return if (isNameValid() && isColorChosen()) {
-            val id = args?.profile?.id ?: DEFAULT_ID_FOR_ENTITY
-            val etName = viewBinding.nameEt.text.toString()
-            val name = if (etName.isNotBlank()) etName else args?.profile?.name ?: ""
-            val photoUri = currentPhotoUri ?: args?.profile?.photo ?: DEFAULT_PROFILE_ICON
-            Profile(id = id, name = name, color = requireNotNull(currentColor.value), photo = photoUri)
-        } else {
-            null
-        }
-    }
-
-    private fun setEditMode(isVisible: Boolean) {
-        viewBinding.currentProfile.isVisible = !isVisible
-        viewBinding.editProfile.isVisible = isVisible
-    }
-
-    private fun isNameValid(): Boolean {
-        val name = viewBinding.nameEt.text.toString()
-        return if (name.isNotBlank()) true
-        else {
-            viewBinding.nameLayout.error = requireActivity().getString(R.string.error_empty_name)
-            false
-        }
-    }
-
-    private fun isColorChosen(): Boolean {
-        return if (currentColor.value != null) true
-        else {
-            Toast.makeText(
-                requireActivity(),
-                resources.getString(R.string.error_profile_choose_color), Toast.LENGTH_LONG
-            ).show()
-            false
-        }
-    }
-
-    companion object {
-        private const val DEFAULT_ID_FOR_ENTITY = 0L
-        private const val DEFAULT_PROFILE_ICON = "default_profile_icon"
     }
 }

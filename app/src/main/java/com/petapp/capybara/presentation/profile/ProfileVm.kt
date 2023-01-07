@@ -1,11 +1,14 @@
 package com.petapp.capybara.presentation.profile
 
 import android.content.Context
-import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
+import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
@@ -18,7 +21,6 @@ import com.petapp.capybara.presentation.toPresentationModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.io.File
 
 class ProfileVmFactory(
     private val mainNavigator: IMainNavigator,
@@ -41,31 +43,61 @@ class ProfileVm(
     private val healthDiaryRepository: IHealthDiaryRepository
 ) : BaseViewModel() {
 
-    private val _profile = MutableLiveData<Profile>()
-    val profile: LiveData<Profile> get() = _profile
+    private val _profileState = MutableLiveData<DataState<ProfileMode>>()
+    val profileState: LiveData<DataState<ProfileMode>> get() = _profileState
 
-    private val _imageFile = MutableLiveData<File>()
-    val imageFile: LiveData<File> get() = _imageFile
+    private val _sideEffect = MutableLiveData<SideEffect>()
+    val sideEffect: LiveData<SideEffect> get() = _sideEffect
 
-    private val _errorMessage = MutableLiveData<Int>()
-    val errorMessage: LiveData<Int> get() = _errorMessage
+    fun getProfile(profileId: Long?) {
+        if (profileId == null) {
+            _profileState.value = DataState.DATA(
+                ProfileMode.NEW(
+                    ProfileNew(
+                        colors = COLORS,
+                        chooseOptions = CHOOSE_OPTIONS
+                    )
+                )
+            )
+        } else {
+            getProfileHealthDiary(profileId)
+        }
+    }
 
-    private val _healthDiaryForProfile = MutableLiveData<HealthDiaryForProfile>()
-    val healthDiaryForProfile: LiveData<HealthDiaryForProfile> = _healthDiaryForProfile
-
-    fun getProfile(profileId: Long) {
-        profileRepository.getProfile(profileId)
+    private fun getProfileHealthDiary(profileId: Long) {
+        Single.zip(
+            profileRepository.getProfile(profileId)
+                .subscribeOn(Schedulers.io()),
+            healthDiaryRepository.getItemsHealthDiary()
+                .subscribeOn(Schedulers.io())
+        ) { profile, healthDiary ->
+            ProfileUI(
+                colors = COLORS,
+                chooseOptions = CHOOSE_OPTIONS,
+                profile = profile,
+                healthDiary = healthDiary.toPresentationModel(profileId)
+            )
+        }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _profile.value = it
-                Log.d(TAG, "get profile ${it.id} success")
+                _profileState.value = DataState.DATA(
+                    ProfileMode.READONLY(it)
+                )
             },
                 {
-                    _errorMessage.value = R.string.error_get_profile
-                    Log.d(TAG, "get profile error")
+                    _profileState.value = DataState.ERROR(it)
                 }
             ).connect()
+    }
+
+    fun toEditMode(data: ProfileUI) {
+        _profileState.value = DataState.DATA(
+            ProfileMode.EDIT(data)
+        )
+    }
+
+    fun verifyProfile() {
     }
 
     fun createProfile(profile: Profile?) {
@@ -75,11 +107,9 @@ class ProfileVm(
                 .subscribe(
                     {
                         openProfilesScreen()
-                        Log.d(TAG, "create profile ${profile.id} success")
                     },
                     {
-                        _errorMessage.value = R.string.error_create_profile
-                        Log.d(TAG, "create profile ${profile.id} error")
+                        _profileState.value = DataState.ERROR(it)
                     }
                 ).connect()
         }
@@ -92,11 +122,9 @@ class ProfileVm(
                 .subscribe(
                     {
                         getProfile(profile.id)
-                        Log.d(TAG, "update profile ${profile.id} success")
                     },
                     {
-                        _errorMessage.value = R.string.error_update_profile
-                        Log.d(TAG, "update profile ${profile.id} error")
+                        _profileState.value = DataState.ERROR(it)
                     }
                 ).connect()
         }
@@ -108,27 +136,9 @@ class ProfileVm(
             .subscribe(
                 {
                     openProfilesScreen()
-                    Log.d(TAG, "delete profile $profileId success")
                 },
                 {
-                    _errorMessage.value = R.string.error_delete_profile
-                    Log.d(TAG, "delete profile error")
-                }
-            ).connect()
-    }
-
-    fun getHealthDiaryItems(profileId: Long) {
-        healthDiaryRepository.getItemsHealthDiary()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    _healthDiaryForProfile.value = it.toPresentationModel(profileId)
-                    Log.d(TAG, "get health diary items success")
-                },
-                {
-                    _errorMessage.value = R.string.error_get_health_diary_items
-                    Log.d(TAG, "get health diary items error")
+                    _profileState.value = DataState.ERROR(it)
                 }
             ).connect()
     }
@@ -138,11 +148,10 @@ class ProfileVm(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _imageFile.value = it
-                    Log.d(TAG, "create file success")
+                    // _imageFile.value = it
                 },
                 {
-                    Log.d(TAG, "create file error")
+                    _profileState.value = DataState.ERROR(it)
                 }
             ).connect()
     }
@@ -159,7 +168,50 @@ class ProfileVm(
         mainNavigator.back()
     }
 
+
     companion object {
-        private const val TAG = "database_profile"
+        private val COLORS: List<String> = listOf(
+//        ContextCompat.getColor(requireActivity(), R.color.red_500),
+//        ContextCompat.getColor(requireActivity(), R.color.pink_500),
+//        ContextCompat.getColor(requireActivity(), R.color.deep_purple_500),
+//        ContextCompat.getColor(requireActivity(), R.color.indigo_500),
+//        ContextCompat.getColor(requireActivity(), R.color.light_blue_500),
+//        ContextCompat.getColor(requireActivity(), R.color.cyan_500),
+//        ContextCompat.getColor(requireActivity(), R.color.teal_500),
+//        ContextCompat.getColor(requireActivity(), R.color.green_500),
+//        ContextCompat.getColor(requireActivity(), R.color.lime_500),
+//        ContextCompat.getColor(requireActivity(), R.color.yellow_500),
+//        ContextCompat.getColor(requireActivity(), R.color.amber_500),
+//        ContextCompat.getColor(requireActivity(), R.color.deep_orange_500)
+        )
+        private val CHOOSE_OPTIONS: List<Int> = listOf(
+            R.string.profile_image_picker_camera,
+            R.string.profile_image_picker_gallery,
+            R.string.profile_image_picker_delete_image
+        )
     }
 }
+
+sealed class ProfileMode {
+    data class NEW(val data: ProfileNew) : ProfileMode()
+    data class EDIT(val data: ProfileUI) : ProfileMode()
+    data class READONLY(val data: ProfileUI) : ProfileMode()
+}
+
+data class ProfileNew(
+    val colors: List<String>,
+    val chooseOptions: List<Int>
+)
+
+data class ProfileUI(
+    val colors: List<String>,
+    val chooseOptions: List<Int>,
+    val profile: Profile,
+    val healthDiary: HealthDiaryForProfile
+)
+
+data class ProfileInputData(
+    val name: MutableState<String> = mutableStateOf(""),
+    val color: MutableState<String> = mutableStateOf(""),
+    val photoUri: MutableState<String> = mutableStateOf("")
+)
