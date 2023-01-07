@@ -35,7 +35,7 @@ fun surveysAdapterDelegate(
             title.text = item.name
             Glide.with(context)
                 .load(item.profileIcon)
-                .error(R.drawable.ic_user_42dp)
+                .error(R.drawable.ic_launcher_foreground)
                 .centerCrop()
                 .into(profileIcon)
         }

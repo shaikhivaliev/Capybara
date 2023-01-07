@@ -211,7 +211,7 @@ data class ProfileUI(
 )
 
 data class ProfileInputData(
+    val photoUri: MutableState<String> = mutableStateOf(""),
     val name: MutableState<String> = mutableStateOf(""),
-    val color: MutableState<String> = mutableStateOf(""),
-    val photoUri: MutableState<String> = mutableStateOf("")
+    val color: MutableState<Int> = mutableStateOf(0)
 )

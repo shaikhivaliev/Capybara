@@ -6,16 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.DataState
@@ -27,8 +41,7 @@ import com.petapp.capybara.data.model.ImagePicker
 import com.petapp.capybara.data.model.ImagePickerType
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
-import com.petapp.capybara.ui.Error
-import com.petapp.capybara.ui.ShowSnackbar
+import com.petapp.capybara.ui.*
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -120,7 +133,9 @@ class ProfileFragment : Fragment() {
             },
             content = {
                 when (val state = profileState) {
-                    is DataState.DATA -> {}
+                    is DataState.DATA -> {
+                        ShowProfile(state.data, profileInputData)
+                    }
                     is DataState.ERROR -> Error()
                     else -> { // nothing
                     }
@@ -159,6 +174,129 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @Composable
+    private fun ShowProfile(mode: ProfileMode, profileInputData: ProfileInputData) {
+        when (mode) {
+            is ProfileMode.NEW -> ProfileContent(
+                colors = mode.data.colors,
+                chooseOptions = mode.data.chooseOptions,
+                profileInputData = profileInputData,
+                isEditMode = false
+            )
+            is ProfileMode.EDIT -> {
+                with(mode.data) {
+                    profileInputData.photoUri.value = profile.photo
+                    profileInputData.name.value = profile.name
+                    profileInputData.color.value = profile.color
+                }
+                ProfileContent(
+                    colors = mode.data.colors,
+                    chooseOptions = mode.data.chooseOptions,
+                    profileInputData = profileInputData,
+                    isEditMode = true
+                )
+            }
+            is ProfileMode.READONLY -> ProfileContentReadOnly(mode.data)
+        }
+    }
+
+    @OptIn(ExperimentalGlideComposeApi::class)
+    @Composable
+    fun ProfileContent(
+        colors: List<String>,
+        chooseOptions: List<Int>,
+        profileInputData: ProfileInputData,
+        isEditMode: Boolean
+    ) {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
+            GlideImage(
+                model = profileInputData.photoUri,
+                contentDescription = null,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                    .size(200.dp)
+                    .border(
+                        color = Color.LightGray,
+                        width = 2.dp
+                    )
+            ) {
+                it
+                    .error(R.drawable.ic_launcher_foreground)
+            }
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                value = profileInputData.name.value,
+                onValueChange = {
+                    profileInputData.name.value = it
+                },
+                label = { Text(stringResource(R.string.name)) }
+            )
+            IconTitleItem(
+                icon = R.drawable.ic_palette,
+                title = R.string.profile_label
+            ) {
+                // todo
+            }
+            IconTitleItem(
+                icon = R.drawable.ic_camera,
+                title = R.string.profile_photo
+            ) {
+                // todo
+            }
+            if (isEditMode) {
+                DeleteButton(
+                    title = R.string.profile_delete,
+                    onClick = { // todo
+                    }
+                )
+            }
+        }
+    }
+
+    @OptIn(ExperimentalGlideComposeApi::class)
+    @Composable
+    fun ProfileContentReadOnly(data: ProfileUI) {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
+            GlideImage(
+                model = data.profile.photo,
+                contentDescription = null,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                    .size(200.dp)
+                    .border(
+                        color = Color.LightGray,
+                        width = 2.dp
+                    )
+            ) {
+                it
+                    .error(R.drawable.ic_launcher_foreground)
+            }
+            OutlinedTextFieldReadOnly(
+                value = data.profile.name,
+                label = stringResource(R.string.name)
+            )
+            Row(
+                modifier = Modifier.padding(top = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_palette),
+                    contentDescription = null
+                )
+                Box(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .height(40.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color(data.profile.color))
+                )
+            }
+        }
+    }
 
     private fun deleteProfile(title: String, profileId: Long) {
         MaterialDialog(requireActivity()).show {

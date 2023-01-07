@@ -105,7 +105,7 @@ class TypesFragment : Fragment() {
     private fun ShowTypes(types: List<Type>) {
         StandardColumn {
             items(types) { item ->
-                CircleIconTitleDescItem(
+                IconTitleDescItem(
                     onItemClick = { vm.openSurveysScreen(item.id) },
                     item = item.toUiData()
                 )

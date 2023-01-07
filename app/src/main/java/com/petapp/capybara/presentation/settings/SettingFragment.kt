@@ -6,17 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -67,54 +63,31 @@ class SettingFragment : Fragment() {
             LazyColumn(
                 content = {
                     items(settingItems) { item ->
-                        SettingItem(item)
+                        IconTitleItem(
+                            icon = item.image,
+                            title = item.name
+                        ) {
+                            when (item.id) {
+                                ID_FEEDBACK -> sendEmail()
+                                ID_RATE_APP -> {
+                                    // todo navigate to play market
+                                }
+                                ID_SHARE_LINK -> {
+                                    // todo share play market link
+                                }
+                                ID_RULES -> {
+                                    // todo navigate to web view with rules
+                                }
+                            }
+                        }
                     }
                 },
                 modifier = Modifier.padding(top = 16.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
-            TextButton(
-                onClick = { signOut() },
-                modifier = Modifier.fillMaxWidth(),
-                content = {
-                    Text(
-                        text = stringResource(R.string.settings_exit),
-                        style = textMedium()
-                    )
-                })
-        }
-    }
-
-    @Composable
-    private fun SettingItem(item: Settings) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp)
-            .clickable {
-                when (item.id) {
-                    ID_FEEDBACK -> sendEmail()
-                    ID_RATE_APP -> {
-                        // todo navigate to play market
-                    }
-                    ID_SHARE_LINK -> {
-                        // todo share play market link
-                    }
-                    ID_RULES -> {
-                        // todo navigate to web view with rules
-                    }
-                }
-            }) {
-            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp)) {
-                Image(
-                    painter = painterResource(item.image),
-                    contentDescription = null
-                )
-                Text(
-                    text = stringResource(item.name),
-                    style = textSmall(),
-                    modifier = Modifier.padding(start = 24.dp)
-                )
-            }
+            DeleteButton(
+                title = R.string.settings_exit,
+                onClick = { signOut() }
+            )
         }
     }
 

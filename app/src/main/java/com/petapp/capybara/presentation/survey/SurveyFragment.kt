@@ -10,12 +10,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
@@ -207,19 +205,11 @@ class SurveyFragment : Fragment() {
                 }
             )
             if (isEditMode) {
-                TextButton(onClick = {
-                    // deleteSurvey()
-                }) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp),
-                        text = stringResource(R.string.survey_delete),
-                        color = Color.Red,
-                        style = textSmall(),
-                        textAlign = TextAlign.Center
-                    )
-                }
+                DeleteButton(
+                    title = R.string.survey_delete,
+                    onClick = { // todo
+                    }
+                )
             }
         }
     }
@@ -281,5 +271,4 @@ class SurveyFragment : Fragment() {
 //            ).show()
 //        }
 //    }
-
 }

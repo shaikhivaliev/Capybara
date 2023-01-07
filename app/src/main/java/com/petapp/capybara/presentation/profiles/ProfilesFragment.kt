@@ -85,7 +85,7 @@ class ProfilesFragment : Fragment() {
     private fun ShowProfiles(profiles: List<Profile>) {
         StandardColumn {
             items(profiles) { item ->
-                CircleIconTitleDescItem(
+                IconTitleDescItem(
                     onItemClick = { vm.openProfileScreen(item) },
                     item = item.toUiData()
                 )

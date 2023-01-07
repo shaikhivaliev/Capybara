@@ -101,7 +101,7 @@ class SurveysFragment : Fragment() {
             } else {
                 StandardColumn {
                     items(surveys.checkedSurveys) { item ->
-                        CircleIconTitleDescItem(
+                        IconTitleDescItem(
                             onItemClick = { vm.openSurveyScreen(item) },
                             item = item.toUiData()
                         )
