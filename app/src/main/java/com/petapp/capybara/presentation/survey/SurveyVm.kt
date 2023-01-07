@@ -20,6 +20,8 @@ import com.petapp.capybara.extensions.currentDateMonthYear
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SurveyVmFactory(
     private val mainNavigator: IMainNavigator,
@@ -118,85 +120,87 @@ class SurveyVm(
         ) {
             _sideEffect.value = SideEffect.ACTION
         } else {
-            when (mode) {
-                is SurveyMode.EDIT -> {
+            val survey = createSurvey(mode, surveyInputData)
 
-//                    val id = args.survey?.id ?: DEFAULT_ID_FOR_ENTITY
-//                    val typeId = requireNotNull(currentType.value?.id)
-//                    val profileId = requireNotNull(currentProfile.value?.id)
-//                    val color = requireNotNull(currentProfile.value?.color)
-//                    val profileIcon = requireNotNull(currentProfile.value?.photo)
-//                    val typeIcon = requireNotNull(currentType.value?.icon)
-//                    val name = viewBinding.surveyNameEt.text.toString()
-//                    val date = viewBinding.surveyDateEt.text.toString()
-//                    val time = dateFormat.parse(date)
-//                    calendar.time = time!!
-//                    val monthYear = currentDateMonthYear(calendar.time)
-//                    return Survey(
-//                        id = id,
-//                        typeId = typeId,
-//                        profileId = profileId,
-//                        color = color,
-//                        name = name,
-//                        date = date,
-//                        monthYear = monthYear,
-//                        profileIcon = profileIcon,
-//                        typeIcon = typeIcon
-//                    )
+            val request = when {
+                mode is SurveyMode.NEW && survey != null -> {
+                    surveysRepository.createSurvey(survey)
+                }
+                mode is SurveyMode.EDIT && survey != null -> {
+                    surveysRepository.updateSurvey(survey)
+                }
+                else -> return
+            }
 
+            request
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    openTypesScreen()
+                }, {
+                    _surveyState.value = DataState.ERROR(it)
+                }).connect()
+        }
+    }
 
+    private fun createSurvey(
+        mode: SurveyMode,
+        surveyInputData: SurveyInputData
+    ): Survey? {
+        return when (mode) {
+            is SurveyMode.EDIT -> {
+                val profileTitle = surveyInputData.profile.value
+                val typeTitle = surveyInputData.type.value
+                val profile = mode.data.profiles.find { it.name == profileTitle }
+                val type = mode.data.types.find { it.name == typeTitle }
 
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+                val time = dateFormat.parse(surveyInputData.date.value)
+                val monthYear = time?.let { currentDateMonthYear(it) }
 
-
-
-                    // todo
-                    val survey = Survey(
+                if (profile != null && type != null) {
+                    Survey(
                         id = mode.data.survey.id,
                         name = surveyInputData.survey.value,
                         date = surveyInputData.date.value,
-                        profileIcon = "0",
-                        profileId = 0,
-                        color = 0,
-                        typeId = 0,
-                        typeIcon = 0,
-                        monthYear = ""
+                        typeId = type.id,
+                        typeIcon = type.icon,
+                        profileId = profile.id,
+                        profileIcon = profile.photo,
+                        color = profile.color,
+                        monthYear = monthYear.orEmpty()
                     )
-                    surveysRepository.updateSurvey(survey)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            openTypesScreen()
-                        }, {
-                            _surveyState.value = DataState.ERROR(it)
-                        }).connect()
-
+                } else {
+                    null
                 }
-                is SurveyMode.NEW -> {
-                    // todo
-                    val survey = Survey(
+            }
+            is SurveyMode.NEW -> {
+                val profileTitle = surveyInputData.profile.value
+                val typeTitle = surveyInputData.type.value
+                val profile = mode.data.profiles.find { it.name == profileTitle }
+                val type = mode.data.types.find { it.name == typeTitle }
+
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+                val time = dateFormat.parse(surveyInputData.date.value)
+                val monthYear = time?.let { currentDateMonthYear(it) }
+
+                if (profile != null && type != null) {
+                    Survey(
                         id = 0L,
                         name = surveyInputData.survey.value,
                         date = surveyInputData.date.value,
-                        profileIcon = "0",
-                        profileId = 0,
-                        color = 0,
-                        typeId = 0,
-                        typeIcon = 0,
-                        monthYear = ""
+                        typeId = type.id,
+                        typeIcon = type.icon,
+                        profileId = profile.id,
+                        profileIcon = profile.photo,
+                        color = profile.color,
+                        monthYear = monthYear.orEmpty()
                     )
-                    surveysRepository.createSurvey(survey)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            openTypesScreen()
-                        }, {
-                            _surveyState.value = DataState.ERROR(it)
-                        }).connect()
-
-                }
-                else -> {//nothing
+                } else {
+                    null
                 }
             }
+            else -> null
         }
     }
 
