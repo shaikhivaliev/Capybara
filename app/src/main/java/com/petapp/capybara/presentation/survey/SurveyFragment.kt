@@ -1,6 +1,7 @@
 package com.petapp.capybara.presentation.survey
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -127,8 +132,7 @@ class SurveyFragment : Fragment() {
             is SurveyMode.NEW -> SurveyContent(
                 profiles = mode.data.profiles.map { it.name },
                 types = mode.data.types.map { it.name },
-                surveyInputData = surveyInputData,
-                isEditMode = false
+                surveyInputData = surveyInputData
             )
             is SurveyMode.EDIT -> {
                 with(mode.data) {
@@ -136,13 +140,13 @@ class SurveyFragment : Fragment() {
                     surveyInputData.date.value = survey.date
                     surveyInputData.profile.value = profileTitle
                     surveyInputData.type.value = typeTitle
+                    SurveyContent(
+                        profiles = profiles.map { it.name },
+                        types = types.map { it.name },
+                        surveyInputData = surveyInputData,
+                        surveyId = survey.id
+                    )
                 }
-                SurveyContent(
-                    profiles = mode.data.profiles.map { it.name },
-                    types = mode.data.types.map { it.name },
-                    surveyInputData = surveyInputData,
-                    isEditMode = true
-                )
             }
             is SurveyMode.READONLY -> SurveyContentReadOnly(mode.data)
         }
@@ -153,10 +157,13 @@ class SurveyFragment : Fragment() {
         profiles: List<String>,
         types: List<String>,
         surveyInputData: SurveyInputData,
-        isEditMode: Boolean
+        surveyId: Long? = null
     ) {
         val profilesMenuExpanded = remember { mutableStateOf(false) }
         val typesMenuExpanded = remember { mutableStateOf(false) }
+
+        val focusManager = LocalFocusManager.current
+        val focusRequester = remember { FocusRequester() }
         Column(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
         ) {
@@ -173,11 +180,21 @@ class SurveyFragment : Fragment() {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { focus ->
+                        if (focus.isFocused) {
+                            initCalendar {
+                                surveyInputData.date.value = it
+                                focusManager.clearFocus()
+                            }
+                        }
+                    },
                 value = surveyInputData.date.value,
                 onValueChange = {
                     surveyInputData.date.value = it
                 },
+                readOnly = true,
                 label = { Text(stringResource(R.string.health_diary_survey_date)) }
             )
             ExpandedDropdownMenu(
@@ -204,10 +221,14 @@ class SurveyFragment : Fragment() {
                     surveyInputData.type.value = it
                 }
             )
-            if (isEditMode) {
+            if (surveyId != null) {
                 DeleteButton(
                     title = R.string.survey_delete,
-                    onClick = { // todo
+                    onClick = {
+                        deleteSurvey(
+                            title = surveyInputData.survey.value,
+                            surveyId = surveyId
+                        )
                     }
                 )
             }
@@ -241,11 +262,7 @@ class SurveyFragment : Fragment() {
 
     private fun deleteSurvey(title: String, surveyId: Long) {
         MaterialDialog(requireActivity()).show {
-            if (title.isNotBlank()) {
-                title(text = getString(R.string.survey_delete_explanation, title))
-            } else {
-                title(text = getString(R.string.survey_delete_explanation_empty))
-            }
+            title(text = getString(R.string.survey_delete_explanation, title))
             positiveButton {
                 vm.deleteSurvey(surveyId)
                 cancel()
@@ -254,21 +271,18 @@ class SurveyFragment : Fragment() {
         }
     }
 
-//    private fun initWorkWithDate() {
-//        viewBinding.surveyDateEt.setOnClickListener {
-//            viewBinding.surveyDateEt.requestFocus()
-//            val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-//                calendar.set(year, month, dayOfMonth)
-//                viewBinding.surveyDateEt.setText(dateFormat.format(calendar.time))
-//            }
-//
-//            DatePickerDialog(
-//                requireActivity(),
-//                listener,
-//                calendar.get(Calendar.YEAR),
-//                calendar.get(Calendar.MONTH),
-//                calendar.get(Calendar.DAY_OF_MONTH)
-//            ).show()
-//        }
-//    }
+    private fun initCalendar(onClick: (String) -> Unit) {
+        val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            calendar.set(year, month, dayOfMonth)
+            onClick(dateFormat.format(calendar.time))
+        }
+
+        DatePickerDialog(
+            requireActivity(),
+            listener,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
 }

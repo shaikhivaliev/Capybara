@@ -71,7 +71,7 @@ class ProfilesFragment : Fragment() {
             },
             content = {
                 when (val state = profileState) {
-                    DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
+                    DataState.EMPTY -> Empty(stringResource(R.string.profile_mock))
                     is DataState.ERROR -> Error()
                     is DataState.DATA -> ShowProfiles(state.data)
                     else -> { // nothing
@@ -83,10 +83,10 @@ class ProfilesFragment : Fragment() {
 
     @Composable
     private fun ShowProfiles(profiles: List<Profile>) {
-        StandardColumn {
+        BaseLazyColumn {
             items(profiles) { item ->
                 IconTitleDescItem(
-                    onItemClick = { vm.openProfileScreen(item) },
+                    onClick = { vm.openProfileScreen(item) },
                     item = item.toUiData()
                 )
             }

@@ -89,7 +89,7 @@ class SurveysFragment : Fragment() {
     @Composable
     private fun ShowSurveys(surveys: SurveysState) {
         Column {
-            ChipRow(
+            ChipLazyRow(
                 chips = surveys.profiles.toUiData(
                     selectedChipId = surveys.checkedProfileId,
                     click = {
@@ -97,12 +97,12 @@ class SurveysFragment : Fragment() {
                     }
                 ))
             if (surveys.checkedSurveys.isEmpty()) {
-                EmptyData(stringResource(R.string.survey_mock))
+                Empty(stringResource(R.string.survey_mock))
             } else {
-                StandardColumn {
+                BaseLazyColumn {
                     items(surveys.checkedSurveys) { item ->
                         IconTitleDescItem(
-                            onItemClick = { vm.openSurveyScreen(item) },
+                            onClick = { vm.openSurveyScreen(item) },
                             item = item.toUiData()
                         )
                     }

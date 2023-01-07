@@ -21,17 +21,16 @@ import com.petapp.capybara.R
 import com.petapp.capybara.ui.data.Chip
 import com.petapp.capybara.ui.data.IconTitleDescription
 
-
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun IconTitleDescItem(
-    onItemClick: () -> Unit,
-    item: IconTitleDescription
+    item: IconTitleDescription,
+    onClick: () -> Unit
 ) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .clickable {
-            onItemClick()
+            onClick()
         },
         verticalAlignment = Alignment.CenterVertically,
         content = {
@@ -62,30 +61,6 @@ fun IconTitleDescItem(
                 )
             }
         })
-//        photo.transitionName = item.name
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun ChipItem(item: Chip) {
-    FilterChip(
-        selected = item.selected,
-        leadingIcon = {
-            if (item.selected) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_done_black),
-                    contentDescription = null
-                )
-            }
-        },
-        colors = ChipDefaults.filterChipColors(
-            backgroundColor = Color(item.color),
-            contentColor = mainBlack
-        ),
-        onClick = { item.click(item.id) }
-    ) {
-        Text(text = item.text)
-    }
 }
 
 @Composable
@@ -107,5 +82,32 @@ fun IconTitleItem(icon: Int, title: Int, onClick: () -> Unit) {
                 modifier = Modifier.padding(start = 24.dp)
             )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ChipItem(item: Chip) {
+    FilterChip(
+        selected = item.selected,
+        leadingIcon = {
+            if (item.selected) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_done_black),
+                    contentDescription = null
+                )
+            }
+        },
+        colors = ChipDefaults.filterChipColors(
+            backgroundColor = Color(item.color),
+            contentColor = mainBlack
+        ),
+        onClick = {
+            item.click(item.id)
+        }
+    ) {
+        Text(
+            text = item.text
+        )
     }
 }

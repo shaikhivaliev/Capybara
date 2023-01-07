@@ -90,7 +90,7 @@ class TypesFragment : Fragment() {
                             })
                     }
                     when (val state = typeState) {
-                        DataState.EMPTY -> EmptyData(stringResource(R.string.profile_mock))
+                        DataState.EMPTY -> Empty(stringResource(R.string.profile_mock))
                         is DataState.ERROR -> Error()
                         is DataState.DATA -> ShowTypes(state.data)
                         else -> { // nothing
@@ -103,10 +103,10 @@ class TypesFragment : Fragment() {
 
     @Composable
     private fun ShowTypes(types: List<Type>) {
-        StandardColumn {
+        BaseLazyColumn {
             items(types) { item ->
                 IconTitleDescItem(
-                    onItemClick = { vm.openSurveysScreen(item.id) },
+                    onClick = { vm.openSurveysScreen(item.id) },
                     item = item.toUiData()
                 )
             }

@@ -3,7 +3,6 @@ package com.petapp.capybara.presentation.profiles
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.petapp.capybara.R
 import com.petapp.capybara.core.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.BaseViewModel

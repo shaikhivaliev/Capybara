@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.petapp.capybara.R
 import com.petapp.capybara.ui.data.Chip
 
 @Composable
@@ -37,7 +36,7 @@ fun ShowSnackbar(
 }
 
 @Composable
-fun ChipRow(chips: List<Chip>) {
+fun ChipLazyRow(chips: List<Chip>) {
     LazyRow(
         modifier = Modifier.padding(top = 12.dp),
         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -50,7 +49,7 @@ fun ChipRow(chips: List<Chip>) {
 }
 
 @Composable
-fun StandardColumn(content: LazyListScope.() -> Unit) {
+fun BaseLazyColumn(content: LazyListScope.() -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()

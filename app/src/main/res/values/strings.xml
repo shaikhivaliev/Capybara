@@ -14,7 +14,6 @@
     <!-- auth-->
     <string name="auth_phone">Войти по номеру телефона</string>
     <string name="auth_mail">Войти по адресу электронной почты</string>
-    <string name="auth_google">Войти через аккаунт Google</string>
 
     <!-- tabs-->
     <string name="tab_list">Исследования</string>
@@ -23,7 +22,6 @@
     <string name="tab_settings">Настройки</string>
 
     <!-- profile-->
-    <string name="profile_name_hint">Изменить имя</string>
     <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
     <string name="profile_mock">Пока не создано ни одного\nпрофиля</string>
@@ -69,15 +67,6 @@
     <string name="type_default_analyzes">Анализы</string>
     <string name="type_default_recipes">Рецепты</string>
     <string name="type_default_surveys">Исследования</string>
-    <string name="type">тип исследования</string>
-    <string name="type_caps">Тип исследования</string>
-    <string name="type_title">Тип</string>
-    <string name="type_delete_explanation">Вы действительно хотите удалить тип исследования %1$s?\nБудут потеряны все исследования связанные с этим типом</string>
-    <string name="type_delete_explanation_empty">Вы действительно хотите удалить тип исследования?</string>
-    <string name="type_change_icon">Изменить иконку</string>
-    <string name="type_delete_surveys_type">Удалить тип исследования</string>
-    <string name="type_name">Название типа</string>
-    <string name="type_mock">Пока не создано ни одного\nтипа исследований</string>
 
     <!-- health diary-->
     <string name="health_diary_blood_pressure_title">Артериальное\nдавление</string>
@@ -109,29 +98,14 @@
     <string name="health_diary_delete_survey">Вы действительно хотите удалить исследование</string>
 
     <!-- errors-->
-    <string name="error_create_profile">Произошла ошибка при создание профиля</string>
-    <string name="error_delete_profile">Произошла ошибка при удаление профиля</string>
-    <string name="error_update_profile">Произошла ошибка при обновление профиля</string>
-    <string name="error_get_profile">Не удалось получить профиль</string>
+    <string name="error_empty_data">Заполнены не все поля</string>
+    <string name="error_explanation">Что-то пошло не так</string>
     <string name="error_get_profiles">Не удалось получить профили</string>
     <string name="error_get_marks">Не удалось получить профили</string>
-    <string name="error_create_survey">Произошла ошибка при создание исследования</string>
-    <string name="error_delete_survey">Произошла ошибка при удаление исследования</string>
     <string name="error_update_survey">Произошла ошибка при обновление исследования</string>
-    <string name="error_get_survey">Не удалось получить исследование</string>
     <string name="error_get_surveys">Не удалось получить исследования</string>
-    <string name="error_create_type">Произошла ошибка при создание типа исследования</string>
     <string name="error_delete_type">Произошла ошибка при удаление типа исследования</string>
-    <string name="error_update_type">Произошла ошибка при обновление типа исследования</string>
-    <string name="error_get_type">Не удалось получить тип исследования</string>
     <string name="error_get_types">Не удалось получить тип исследований</string>
     <string name="error_get_health_diary_items">Не удалось получить информацию о дневнике здоровья</string>
-    <string name="error_empty_name">Пустое имя</string>
-    <string name="error_empty_date">Пустая дата</string>
-    <string name="error_empty_type">Выберите хотя бы один тип исследования</string>
-    <string name="error_empty_profile">Выберите хотя бы один профиль</string>
-    <string name="error_explanation">Что-то пошло не так</string>
-    <string name="error_empty_data">Заполнены не все поля</string>
-    <string name="error_profile_choose_color">Выберете хотя бы один цвет</string>
 
 </resources>
