@@ -2,7 +2,7 @@ package com.petapp.capybara.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.navigation.IMainCoordinator
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.presentation.profiles.ProfilesVm
 import com.petapp.capybara.utils.RxRule
@@ -36,7 +36,7 @@ class ProfilesViewModelTest {
     lateinit var repository: IProfileRepository
 
     @Mock
-    lateinit var mainNavigator: IMainNavigator
+    lateinit var mainNavigator: IMainCoordinator
 
     private lateinit var viewModel: ProfilesVm
 

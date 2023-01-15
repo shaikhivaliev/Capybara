@@ -95,8 +95,7 @@ dependencies {
     implementation(Libraries.AndroidX.viewPager)
 
     // Navigation
-    implementation(Libraries.Navigation.fragmentKtx)
-    implementation(Libraries.Navigation.uiKtx)
+    implementation(Libraries.Navigation.cicerone)
 
     // Lifecycle
     implementation(Libraries.AndroidX.viewModelKtx)

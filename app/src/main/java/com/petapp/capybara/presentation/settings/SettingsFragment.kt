@@ -15,7 +15,7 @@ import com.petapp.capybara.databinding.FragmentSettingsBinding
 import com.petapp.capybara.presentation.auth.AuthActivity
 
 @Suppress("ForbiddenComment")
-class SettingFragment : Fragment(R.layout.fragment_settings) {
+class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private val viewBinding by viewBinding(FragmentSettingsBinding::bind)
 
@@ -55,7 +55,7 @@ class SettingFragment : Fragment(R.layout.fragment_settings) {
     private fun initRecycler() {
         with(viewBinding.recyclerView) {
             this.layoutManager = LinearLayoutManager(context)
-            adapter = this@SettingFragment.adapter
+            adapter = this@SettingsFragment.adapter
         }
         adapter.items =
             listOf(

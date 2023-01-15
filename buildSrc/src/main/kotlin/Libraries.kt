@@ -27,8 +27,7 @@ object Libraries {
     }
 
     object Navigation {
-        val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
-        val uiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+        val cicerone = "com.github.terrakok:cicerone:${Versions.cicerone}"
     }
 
     object Room {

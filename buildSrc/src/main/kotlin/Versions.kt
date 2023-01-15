@@ -14,7 +14,7 @@ object Versions {
     val constraintLayout = "2.1.0-alpha2"
     val lifecycle = "2.4.0"
     val room = "2.2.5"
-    val navigation = "2.3.5"
+    val cicerone = "7.1"
     val junit = "4.13.2"
     val espressoCore = "3.3.0"
     val stetho = "1.6.0"

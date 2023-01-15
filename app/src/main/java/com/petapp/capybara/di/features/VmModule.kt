@@ -1,6 +1,6 @@
 package com.petapp.capybara.di.features
 
-import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.navigation.IMainCoordinator
 import com.petapp.capybara.data.IHealthDiaryRepository
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.ISurveysRepository
@@ -21,7 +21,7 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideCalendarVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         profileRepository: IProfileRepository,
         surveysRepository: ISurveysRepository
     ): CalendarVmFactory = CalendarVmFactory(mainNavigator, profileRepository, surveysRepository)
@@ -29,7 +29,7 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideHealthDiaryVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         healthDiaryRepository: IHealthDiaryRepository,
         profileRepository: IProfileRepository
     ): HealthDiaryVmFactory = HealthDiaryVmFactory(mainNavigator, healthDiaryRepository, profileRepository)
@@ -37,7 +37,7 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideProfileVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         profileRepository: IProfileRepository,
         healthDiaryRepository: IHealthDiaryRepository
     ): ProfileVmFactory = ProfileVmFactory(mainNavigator, profileRepository, healthDiaryRepository)
@@ -45,14 +45,14 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideProfilesVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         profileRepository: IProfileRepository
     ): ProfilesVmFactory = ProfilesVmFactory(mainNavigator, profileRepository)
 
     @Provides
     @FeaturesScope
     fun provideSurveyVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         surveysRepository: ISurveysRepository,
         typesRepository: ITypesRepository,
         profileRepository: IProfileRepository
@@ -61,7 +61,7 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideSurveysVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         surveysRepository: ISurveysRepository,
         profileRepository: IProfileRepository
     ): SurveysVmFactory = SurveysVmFactory(mainNavigator, surveysRepository, profileRepository)
@@ -69,7 +69,7 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideTypesVmFactory(
-        mainNavigator: IMainNavigator,
+        mainNavigator: IMainCoordinator,
         typesRepository: ITypesRepository
     ): TypesVmFactory = TypesVmFactory(mainNavigator, typesRepository)
 }

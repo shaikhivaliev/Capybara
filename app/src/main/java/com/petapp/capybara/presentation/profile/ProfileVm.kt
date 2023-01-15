@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.petapp.capybara.R
-import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.navigation.IMainCoordinator
 import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IHealthDiaryRepository
@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 class ProfileVmFactory(
-    private val mainNavigator: IMainNavigator,
+    private val mainNavigator: IMainCoordinator,
     private val profileRepository: IProfileRepository,
     private val healthDiaryRepository: IHealthDiaryRepository
 ) : SavedStateVmAssistedFactory<ProfileVm> {
@@ -36,7 +36,7 @@ class ProfileVmFactory(
 
 class ProfileVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
+    private val mainNavigator: IMainCoordinator,
     private val profileRepository: IProfileRepository,
     private val healthDiaryRepository: IHealthDiaryRepository
 ) : BaseViewModel() {
