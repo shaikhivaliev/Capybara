@@ -2,11 +2,7 @@ package com.petapp.capybara.core.navigation
 
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.annotation.IdRes
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import kotlinx.parcelize.Parcelize
@@ -41,12 +37,4 @@ inline fun <reified T : BaseNavDto> Fragment.getNavDto(): T {
 
 inline fun <reified T : BaseNavDto> Fragment.navDto(): Lazy<T> = lazy {
     getNavDto()
-}
-
-fun NavController.navigate(@IdRes resId: Int, navDto: BaseNavDto?, navOptions: NavOptions? = null) {
-    return navigate(resId, navDto?.toBundle(), navOptions)
-}
-
-fun BaseNavDto.toBundle(): Bundle {
-    return bundleOf(EXTRA_NAVIGATION_DTO to this)
 }
