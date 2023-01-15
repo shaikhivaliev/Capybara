@@ -1,11 +1,10 @@
 package com.petapp.capybara.di.features
 
-import com.petapp.capybara.core.navigation.NavControllerProvider
 import com.petapp.capybara.di.app.AppComponent
 import com.petapp.capybara.di.core.CoreComponent
-import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.calendar.CalendarFragment
 import com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment
+import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.profile.ProfileFragment
 import com.petapp.capybara.presentation.profiles.ProfilesFragment
 import com.petapp.capybara.presentation.survey.SurveyFragment
@@ -37,7 +36,7 @@ interface FeaturesComponent {
         fun build(): FeaturesComponent
     }
 
-    fun inject(target: NavControllerProvider)
+    fun inject(target: MainActivity)
     fun inject(target: SurveyFragment)
     fun inject(target: SurveysFragment)
     fun inject(target: TypesFragment)
