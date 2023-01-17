@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,8 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.color.colorChooser
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.accompanist.themeadapter.material.MdcTheme
@@ -37,8 +38,6 @@ import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.ProfileNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
-import com.petapp.capybara.data.model.ImagePicker
-import com.petapp.capybara.data.model.ImagePickerType
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.ui.*
@@ -55,52 +54,6 @@ class ProfileFragment : Fragment() {
 
     private val args: ProfileNavDto? by navDto()
 
-//    ImagePickerType.CAMERA -> vm.createImageFile(requireActivity())
-//    ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
-//    imageFile.observe(viewLifecycleOwner) { file ->
-//        currentPhotoUri = FileProvider.getUriForFile(
-//            requireActivity(),
-//            requireActivity().getString(R.string.autority),
-//            file
-//        ).toString()
-//        imageFromCamera.launch(Uri.parse(currentPhotoUri))
-
-
-    private val imageFromCamera =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
-//            if (success) {
-//                Glide.with(this)
-//                    .load(currentPhotoUri)
-//                    .centerCrop()
-//                    .into(viewBinding.photo)
-//            } else {
-//                currentPhotoUri = args?.profile?.photo
-//            }
-        }
-
-    private val camera = ImagePicker(
-        ImagePickerType.CAMERA.ordinal.toLong(),
-        ImagePickerType.CAMERA,
-        R.string.profile_image_picker_camera,
-        R.drawable.ic_camera
-    )
-
-    private val gallery = ImagePicker(
-        ImagePickerType.GALLERY.ordinal.toLong(),
-        ImagePickerType.GALLERY,
-        R.string.profile_image_picker_gallery,
-        R.drawable.ic_gallery
-    )
-
-    private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.apply {
-//            currentPhotoUri = this.toString()
-//            Glide.with(requireActivity())
-//                .load(this)
-//                .centerCrop()
-//                .into(viewBinding.photo)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,7 +110,10 @@ class ProfileFragment : Fragment() {
             FloatingActionButton(
                 onClick = {
                     when (mode) {
-                        is ProfileMode.NEW, is ProfileMode.EDIT -> vm.verifyProfile()
+                        is ProfileMode.NEW, is ProfileMode.EDIT -> vm.verifyProfile(
+                            mode,
+                            profileInputData
+                        )
                         is ProfileMode.READONLY -> vm.toEditMode(mode.data)
                     }
                 }) {
@@ -174,15 +130,12 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun ShowProfile(mode: ProfileMode, profileInputData: ProfileInputData) {
         when (mode) {
             is ProfileMode.NEW -> ProfileContent(
                 colors = mode.data.colors,
-                chooseOptions = mode.data.chooseOptions,
-                profileInputData = profileInputData,
-                isEditMode = false
+                profileInputData = profileInputData
             )
             is ProfileMode.EDIT -> {
                 with(mode.data) {
@@ -192,9 +145,8 @@ class ProfileFragment : Fragment() {
                 }
                 ProfileContent(
                     colors = mode.data.colors,
-                    chooseOptions = mode.data.chooseOptions,
                     profileInputData = profileInputData,
-                    isEditMode = true
+                    profileId = mode.data.profile.id
                 )
             }
             is ProfileMode.READONLY -> ProfileContentReadOnly(mode.data)
@@ -204,10 +156,9 @@ class ProfileFragment : Fragment() {
     @OptIn(ExperimentalGlideComposeApi::class)
     @Composable
     fun ProfileContent(
-        colors: List<String>,
-        chooseOptions: List<Int>,
+        colors: List<Int>,
         profileInputData: ProfileInputData,
-        isEditMode: Boolean
+        profileId: Long? = null
     ) {
         Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
             GlideImage(
@@ -238,18 +189,24 @@ class ProfileFragment : Fragment() {
                 icon = R.drawable.ic_palette,
                 title = R.string.profile_label
             ) {
-                // todo
+                startColorDialog(colors) {
+                    profileInputData.color.value = it
+                }
             }
             IconTitleItem(
                 icon = R.drawable.ic_camera,
                 title = R.string.profile_photo
             ) {
-                // todo
+                pickImageFromGallery()
             }
-            if (isEditMode) {
+            if (profileId != null) {
                 DeleteButton(
                     title = R.string.profile_delete,
-                    onClick = { // todo
+                    onClick = {
+                        deleteProfile(
+                            title = profileInputData.name.value,
+                            profileId = profileId
+                        )
                     }
                 )
             }
@@ -300,16 +257,28 @@ class ProfileFragment : Fragment() {
 
     private fun deleteProfile(title: String, profileId: Long) {
         MaterialDialog(requireActivity()).show {
-            if (title.isNotBlank()) {
-                title(text = getString(R.string.profile_delete_explanation, title))
-            } else {
-                title(text = getString(R.string.profile_delete_explanation_empty))
-            }
+            title(text = getString(R.string.profile_delete_explanation, title))
             positiveButton {
                 vm.deleteProfile(profileId)
                 cancel()
             }
             negativeButton { cancel() }
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun startColorDialog(colorsId: List<Int>, onClick: (Int) -> Unit) {
+        val initialColor = args?.profile?.color ?: 0
+        val colors = colorsId.map { ContextCompat.getColor(requireActivity(), it) }
+        MaterialDialog(requireActivity()).show {
+            title(R.string.profile_choose_color)
+            colorChooser(colors.toIntArray(), initialSelection = initialColor) { _, color ->
+                onClick(color)
+            }
+            negativeButton(R.string.cancel) { cancel() }
+        }
+    }
+
+    private fun pickImageFromGallery() {
     }
 }

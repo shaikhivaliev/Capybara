@@ -54,8 +54,7 @@ class ProfileVm(
             _profileState.value = DataState.DATA(
                 ProfileMode.NEW(
                     ProfileNew(
-                        colors = COLORS,
-                        chooseOptions = CHOOSE_OPTIONS
+                        colors = COLORS
                     )
                 )
             )
@@ -73,7 +72,6 @@ class ProfileVm(
         ) { profile, healthDiary ->
             ProfileUI(
                 colors = COLORS,
-                chooseOptions = CHOOSE_OPTIONS,
                 profile = profile,
                 healthDiary = healthDiary.toPresentationModel(profileId)
             )
@@ -97,36 +95,60 @@ class ProfileVm(
         )
     }
 
-    fun verifyProfile() {
-    }
+    fun verifyProfile(
+        mode: ProfileMode,
+        profileInputData: ProfileInputData
+    ) {
+        if (
+            profileInputData.photoUri.value.isEmpty() ||
+            profileInputData.name.value.isEmpty() ||
+            profileInputData.color.value == 0
+        ) {
+            _sideEffect.value = SideEffect.ACTION
+        } else {
+            val profile = createProfile(mode, profileInputData)
 
-    fun createProfile(profile: Profile?) {
-        if (profile != null) {
-            profileRepository.createProfile(profile)
+            val request = when {
+                mode is ProfileMode.NEW && profile != null -> {
+                    profileRepository.createProfile(profile)
+                }
+                mode is ProfileMode.EDIT && profile != null -> {
+                    profileRepository.updateProfile(profile)
+                }
+                else -> return
+            }
+
+            request
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        openProfilesScreen()
-                    },
-                    {
-                        _profileState.value = DataState.ERROR(it)
-                    }
-                ).connect()
+                .subscribe({
+                    openProfilesScreen()
+                }, {
+                    _profileState.value = DataState.ERROR(it)
+                }).connect()
         }
     }
 
-    fun updateProfile(profile: Profile?) {
-        if (profile != null) {
-            profileRepository.updateProfile(profile)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        getProfile(profile.id)
-                    },
-                    {
-                        _profileState.value = DataState.ERROR(it)
-                    }
-                ).connect()
+    private fun createProfile(mode: ProfileMode, profileInputData: ProfileInputData): Profile? {
+        return when (mode) {
+            is ProfileMode.EDIT -> {
+                Profile(
+                    id = mode.data.profile.id,
+                    name = profileInputData.name.value,
+                    color = profileInputData.color.value,
+                    photo = profileInputData.photoUri.value,
+                    surveys = mode.data.profile.surveys
+                )
+            }
+            is ProfileMode.NEW -> {
+                Profile(
+                    id = 0L,
+                    name = profileInputData.name.value,
+                    color = profileInputData.color.value,
+                    photo = profileInputData.photoUri.value
+                )
+            }
+            else -> null
         }
     }
 
@@ -143,6 +165,14 @@ class ProfileVm(
             ).connect()
     }
 
+    private fun openProfilesScreen() {
+        mainNavigator.openProfiles()
+    }
+
+    fun dismissSnackbar() {
+        _sideEffect.value = SideEffect.READY
+    }
+
     fun createImageFile(context: Context) {
         Single.just(context.createImageFile())
             .observeOn(AndroidSchedulers.mainThread())
@@ -156,41 +186,20 @@ class ProfileVm(
             ).connect()
     }
 
-    private fun openProfilesScreen() {
-        mainNavigator.openProfiles()
-    }
-
-    fun openHealthDiaryScreen(profileId: Long?) {
-        mainNavigator.openHealthDiary(profileId ?: 0L)
-    }
-
-    fun back() {
-        mainNavigator.back()
-    }
-
-    fun dismissSnackbar() {
-        _sideEffect.value = SideEffect.READY
-    }
-
     companion object {
-        private val COLORS: List<String> = listOf(
-//        ContextCompat.getColor(requireActivity(), R.color.red_500),
-//        ContextCompat.getColor(requireActivity(), R.color.pink_500),
-//        ContextCompat.getColor(requireActivity(), R.color.deep_purple_500),
-//        ContextCompat.getColor(requireActivity(), R.color.indigo_500),
-//        ContextCompat.getColor(requireActivity(), R.color.light_blue_500),
-//        ContextCompat.getColor(requireActivity(), R.color.cyan_500),
-//        ContextCompat.getColor(requireActivity(), R.color.teal_500),
-//        ContextCompat.getColor(requireActivity(), R.color.green_500),
-//        ContextCompat.getColor(requireActivity(), R.color.lime_500),
-//        ContextCompat.getColor(requireActivity(), R.color.yellow_500),
-//        ContextCompat.getColor(requireActivity(), R.color.amber_500),
-//        ContextCompat.getColor(requireActivity(), R.color.deep_orange_500)
-        )
-        private val CHOOSE_OPTIONS: List<Int> = listOf(
-            R.string.profile_image_picker_camera,
-            R.string.profile_image_picker_gallery,
-            R.string.profile_image_picker_delete_image
+        private val COLORS: List<Int> = listOf(
+            R.color.red_500,
+            R.color.pink_500,
+            R.color.deep_purple_500,
+            R.color.indigo_500,
+            R.color.light_blue_500,
+            R.color.cyan_500,
+            R.color.teal_500,
+            R.color.green_500,
+            R.color.lime_500,
+            R.color.yellow_500,
+            R.color.amber_500,
+            R.color.deep_orange_500
         )
     }
 }
@@ -202,13 +211,11 @@ sealed class ProfileMode {
 }
 
 data class ProfileNew(
-    val colors: List<String>,
-    val chooseOptions: List<Int>
+    val colors: List<Int>
 )
 
 data class ProfileUI(
-    val colors: List<String>,
-    val chooseOptions: List<Int>,
+    val colors: List<Int>,
     val profile: Profile,
     val healthDiary: HealthDiaryForProfile
 )

@@ -164,6 +164,7 @@ dependencies {
     implementation((Libraries.Compose.themeAdapter))
     implementation((Libraries.Compose.glide))
     implementation((Libraries.Compose.livedata))
+    implementation((Libraries.Compose.activityCompose))
     debugImplementation((Libraries.Compose.uiTooling))
     androidTestImplementation((Libraries.Compose.uiTest))
     debugImplementation((Libraries.Compose.uiTestManifest))
