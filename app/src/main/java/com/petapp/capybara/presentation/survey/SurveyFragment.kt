@@ -169,8 +169,7 @@ class SurveyFragment : Fragment() {
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .fillMaxWidth(),
                 value = surveyInputData.survey.value,
                 onValueChange = {
                     surveyInputData.survey.value = it

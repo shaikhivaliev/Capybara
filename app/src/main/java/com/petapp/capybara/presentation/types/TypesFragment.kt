@@ -107,7 +107,8 @@ class TypesFragment : Fragment() {
             items(types) { item ->
                 IconTitleDescItem(
                     onClick = { vm.openSurveysScreen(item.id) },
-                    item = item.toUiData()
+                    item = item.toUiData(),
+                    contentScale = ContentScale.Inside
                 )
             }
         }

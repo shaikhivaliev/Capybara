@@ -5,23 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.Image
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -54,6 +50,11 @@ class ProfileFragment : Fragment() {
 
     private val args: ProfileNavDto? by navDto()
 
+    private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.apply {
+            vm.updatePhoto(this.toString())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,10 +134,16 @@ class ProfileFragment : Fragment() {
     @Composable
     private fun ShowProfile(mode: ProfileMode, profileInputData: ProfileInputData) {
         when (mode) {
-            is ProfileMode.NEW -> ProfileContent(
-                colors = mode.data.colors,
-                profileInputData = profileInputData
-            )
+            is ProfileMode.NEW -> {
+                val photoUri = mode.data.photoUri
+                if (photoUri != null) {
+                    profileInputData.photoUri.value = photoUri
+                }
+                ProfileContent(
+                    colors = mode.data.colors,
+                    profileInputData = profileInputData
+                )
+            }
             is ProfileMode.EDIT -> {
                 with(mode.data) {
                     profileInputData.photoUri.value = profile.photo
@@ -161,19 +168,28 @@ class ProfileFragment : Fragment() {
         profileId: Long? = null
     ) {
         Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
-            GlideImage(
-                model = profileInputData.photoUri,
-                contentDescription = null,
-                contentScale = ContentScale.Inside,
-                modifier = Modifier
-                    .size(200.dp)
-                    .border(
-                        color = Color.LightGray,
-                        width = 2.dp
-                    )
-            ) {
-                it
-                    .error(R.drawable.ic_launcher_foreground)
+            Row {
+                GlideImage(
+                    model = profileInputData.photoUri.value,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .border(
+                            color = neutralN40,
+                            width = 1.dp
+                        )
+                ) {
+                    it
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(Color(profileInputData.color.value))
+                )
             }
             OutlinedTextField(
                 modifier = Modifier
@@ -217,41 +233,33 @@ class ProfileFragment : Fragment() {
     @Composable
     fun ProfileContentReadOnly(data: ProfileUI) {
         Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
-            GlideImage(
-                model = data.profile.photo,
-                contentDescription = null,
-                contentScale = ContentScale.Inside,
-                modifier = Modifier
-                    .size(200.dp)
-                    .border(
-                        color = Color.LightGray,
-                        width = 2.dp
-                    )
-            ) {
-                it
-                    .error(R.drawable.ic_launcher_foreground)
+            Row {
+                GlideImage(
+                    model = data.profile.photo,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .border(
+                            color = neutralN40,
+                            width = 1.dp
+                        )
+                ) {
+                    it
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(Color(data.profile.color))
+                )
             }
             OutlinedTextFieldReadOnly(
                 value = data.profile.name,
                 label = stringResource(R.string.name)
             )
-            Row(
-                modifier = Modifier.padding(top = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_palette),
-                    contentDescription = null
-                )
-                Box(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .height(40.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color(data.profile.color))
-                )
-            }
         }
     }
 
@@ -280,5 +288,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun pickImageFromGallery() {
+        imageFromGallery.launch("image/*")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        imageFromGallery.unregister()
     }
 }

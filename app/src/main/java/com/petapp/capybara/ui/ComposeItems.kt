@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,6 +24,7 @@ import com.petapp.capybara.ui.data.IconTitleDescription
 @Composable
 fun IconTitleDescItem(
     item: IconTitleDescription,
+    contentScale: ContentScale,
     onClick: () -> Unit
 ) {
     Row(modifier = Modifier
@@ -32,17 +32,16 @@ fun IconTitleDescItem(
         .clickable {
             onClick()
         },
-        verticalAlignment = Alignment.CenterVertically,
         content = {
             GlideImage(
                 model = item.icon,
                 contentDescription = null,
-                contentScale = ContentScale.Inside,
+                contentScale = contentScale,
                 modifier = Modifier
                     .size(76.dp)
                     .border(
-                        color = Color.LightGray,
-                        width = 2.dp
+                        color = neutralN40,
+                        width = 1.dp
                     )
             ) {
                 it

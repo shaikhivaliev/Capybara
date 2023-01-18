@@ -87,10 +87,10 @@ class DatabaseProvider(private val context: Context) {
     private val database: AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
-        context.getString(R.string.database_name)
+        "database.db"
     )
         .addCallback(setInitialData)
-        .fallbackToDestructiveMigration()
+        .fallbackToDestructiveMigrationOnDowngrade()
         .build()
 
     fun appDao() = database.appDao()

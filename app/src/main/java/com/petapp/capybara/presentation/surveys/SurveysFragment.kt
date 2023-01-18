@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -103,7 +104,8 @@ class SurveysFragment : Fragment() {
                     items(surveys.checkedSurveys) { item ->
                         IconTitleDescItem(
                             onClick = { vm.openSurveyScreen(item) },
-                            item = item.toUiData()
+                            item = item.toUiData(),
+                            contentScale = ContentScale.Inside
                         )
                     }
                 }

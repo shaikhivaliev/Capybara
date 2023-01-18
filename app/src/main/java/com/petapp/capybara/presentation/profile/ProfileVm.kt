@@ -100,7 +100,6 @@ class ProfileVm(
         profileInputData: ProfileInputData
     ) {
         if (
-            profileInputData.photoUri.value.isEmpty() ||
             profileInputData.name.value.isEmpty() ||
             profileInputData.color.value == 0
         ) {
@@ -173,6 +172,25 @@ class ProfileVm(
         _sideEffect.value = SideEffect.READY
     }
 
+    fun updatePhoto(uri: String) {
+        _profileState.value?.onData { mode ->
+            _profileState.value = when (mode) {
+                is ProfileMode.EDIT -> {
+                    val profile = mode.data.profile.copy(photo = uri)
+                    val data = mode.data.copy(profile = profile)
+                    DataState.DATA(mode.copy(data = data))
+                }
+                is ProfileMode.NEW -> {
+                    val data = mode.data.copy(photoUri = uri)
+                    DataState.DATA(mode.copy(data = data))
+                }
+                is ProfileMode.READONLY -> {
+                    DataState.DATA(mode)
+                }
+            }
+        }
+    }
+
     fun createImageFile(context: Context) {
         Single.just(context.createImageFile())
             .observeOn(AndroidSchedulers.mainThread())
@@ -211,6 +229,7 @@ sealed class ProfileMode {
 }
 
 data class ProfileNew(
+    val photoUri: String? = null,
     val colors: List<Int>
 )
 
