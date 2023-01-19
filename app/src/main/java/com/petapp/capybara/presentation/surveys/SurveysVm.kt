@@ -11,6 +11,7 @@ import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.ISurveysRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.presentation.filterSurveys
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -109,10 +110,6 @@ class SurveysVm(
 
     fun openProfileScreen() {
         mainNavigator.openProfiles()
-    }
-
-    private fun List<Survey>.filterSurveys(id: Long): List<Survey> {
-        return this.filter { item -> item.profileId == id }
     }
 }
 

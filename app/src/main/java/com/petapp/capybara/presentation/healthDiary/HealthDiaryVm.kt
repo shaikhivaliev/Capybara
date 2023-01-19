@@ -1,6 +1,5 @@
 package com.petapp.capybara.presentation.healthDiary
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -60,11 +59,9 @@ class HealthDiaryVm(
                 {
                     val sortedItems = it.toRangeItems()
                     _healthDiaryItems.value = sortedItems.filtered(profileId.value)
-                    Log.d(TAG, "get health diary items success")
                 },
                 {
                     _errorMessage.value = R.string.error_get_health_diary_items
-                    Log.d(TAG, "get health diary items error")
                 }
             ).connect()
     }
@@ -77,11 +74,9 @@ class HealthDiaryVm(
                 .subscribe(
                     {
                         getHealthDiaryItems()
-                        Log.d(TAG, "create health diary survey success")
                     },
                     {
                         _errorMessage.value = R.string.error_get_health_diary_items
-                        Log.d(TAG, "create health diary survey error")
                     }
                 ).connect()
         }
@@ -93,11 +88,9 @@ class HealthDiaryVm(
             .subscribe(
                 {
                     getHealthDiaryItems()
-                    Log.d(TAG, "delete health diary survey $surveyId success")
                 },
                 {
                     _errorMessage.value = R.string.error_delete_type
-                    Log.d(TAG, "delete health diary survey error")
                 }
             ).connect()
     }
@@ -109,11 +102,9 @@ class HealthDiaryVm(
             .subscribe(
                 {
                     _profiles.value = it
-                    Log.d(TAG, "get profiles success")
                 },
                 {
                     _errorMessage.value = R.string.error_get_marks
-                    Log.d(TAG, "get profiles error")
                 }
             ).connect()
     }
@@ -151,9 +142,5 @@ class HealthDiaryVm(
             item.surveys = surveys
             item
         }
-    }
-
-    companion object {
-        private const val TAG = "database_hd_items"
     }
 }

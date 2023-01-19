@@ -34,4 +34,5 @@ object Versions {
     const val themeAdapter = "0.28.0"
     const val glideCompose = "1.0.0-alpha.1"
     const val activityCompose = "1.3.0-alpha06"
+    const val composeСalendar = "1.0.2"
 }

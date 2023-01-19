@@ -90,3 +90,7 @@ fun List<Profile>.toUiData(
         )
     }
 }
+
+fun List<Survey>.filterSurveys(id: Long): List<Survey> {
+    return this.filter { item -> item.profileId == id }
+}

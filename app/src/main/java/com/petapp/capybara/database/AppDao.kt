@@ -60,11 +60,8 @@ interface AppDao {
     @Query("DELETE FROM survey WHERE id = :surveyId")
     fun deleteSurvey(surveyId: Long)
 
-    @Query("SELECT * FROM survey WHERE type_id = :typeId")
-    fun getSurveysByType(typeId: Long): Single<List<SurveyEntity>>
-
-    @Query("SELECT * FROM survey WHERE month = :month")
-    fun getSurveysByMonth(month: String?): Single<List<SurveyEntity>>
+    @Query("SELECT * FROM survey")
+    fun getAllSurveys(): Single<List<SurveyEntity>>
 
     // health_diary
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -79,4 +76,8 @@ interface AppDao {
 
     @Query("DELETE FROM survey_health_diary WHERE id = :surveyId")
     fun deleteSurveyHealthDiary(surveyId: Long)
+
+    @Query("SELECT * FROM survey WHERE type_id = :typeId")
+    fun getSurveysByType(typeId: Long): Single<List<SurveyEntity>>
+
 }

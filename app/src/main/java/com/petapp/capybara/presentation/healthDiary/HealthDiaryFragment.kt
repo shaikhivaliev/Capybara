@@ -28,7 +28,6 @@ import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.main.MainActivity
-import com.petapp.capybara.presentation.surveys.SurveysFragment
 import com.petapp.capybara.presentation.toPresentationModel
 import java.text.SimpleDateFormat
 import java.util.*

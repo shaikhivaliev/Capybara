@@ -5,21 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.vectorResource
 import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
+import com.petapp.capybara.core.DataState
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
 import com.petapp.capybara.ui.ChipLazyRow
+import com.petapp.capybara.ui.Error
+import com.petapp.capybara.ui.rememberStaticSelectionState
+import io.github.boguszpawlowski.composecalendar.Calendar
 import javax.inject.Inject
 
 class CalendarFragment : Fragment() {
@@ -50,8 +58,7 @@ class CalendarFragment : Fragment() {
     @Composable
     fun CalendarScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        // todo change to state
-        val profiles by vm.profiles.observeAsState()
+        val calendarState by vm.calendarState.observeAsState()
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {
@@ -66,16 +73,41 @@ class CalendarFragment : Fragment() {
                 }
             },
             content = {
-                val profilesUi = profiles?.let {
-                    it.toUiData(
-                        selectedChipId = it.first().id,
-                        click = {
-                            // todo change to state
-                        }
-                    )
-                } ?: emptyList()
-                ChipLazyRow(profilesUi)
+                when (val state = calendarState) {
+                    DataState.EMPTY -> showAlertEmptyProfiles()
+                    is DataState.DATA -> ShowCalendar(state.data)
+                    is DataState.ERROR -> Error()
+                    else -> { // nothing
+                    }
+                }
             }
         )
+    }
+
+    @Composable
+    private fun ShowCalendar(calendarUI: CalendarUI) {
+        val state = rememberStaticSelectionState()
+        state.selectionState.selection = calendarUI.checkedSurveysDates
+        Column(
+            Modifier.verticalScroll(rememberScrollState())
+        ) {
+            ChipLazyRow(
+                chips = calendarUI.profiles.toUiData(
+                    selectedChipId = calendarUI.checkedProfileId,
+                    click = {
+                        vm.getCheckedSurveys(it)
+                    }
+                ))
+            Calendar(calendarState = state)
+        }
+    }
+
+    private fun showAlertEmptyProfiles() {
+        MaterialDialog(requireActivity())
+            .cancelable(false)
+            .show {
+                title(text = getString(R.string.survey_incomplete_data))
+                positiveButton { vm.openProfileScreen() }
+            }
     }
 }

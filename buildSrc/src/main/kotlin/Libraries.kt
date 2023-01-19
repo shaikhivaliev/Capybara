@@ -100,5 +100,9 @@ object Libraries {
         const val glide = "com.github.bumptech.glide:compose:${Versions.glideCompose}"
         const val livedata = "androidx.compose.runtime:runtime-livedata"
         const val activityCompose = "androidx.activity:activity-compose:${Versions.activityCompose}"
+        const val composeCalendar =
+            "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeСalendar}"
+        const val composeCalendarDateTime =
+            "io.github.boguszpawlowski.composecalendar:kotlinx-datetime:${Versions.composeСalendar}"
     }
 }
