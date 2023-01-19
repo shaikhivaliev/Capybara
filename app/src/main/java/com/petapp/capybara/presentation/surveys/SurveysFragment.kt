@@ -92,7 +92,7 @@ class SurveysFragment : Fragment() {
         Column {
             ChipLazyRow(
                 chips = surveys.profiles.toUiData(
-                    selectedChipId = surveys.checkedProfileId,
+                    selectedChipId = surveys.profiles.first().id,
                     click = {
                         vm.getCheckedSurveys(it)
                     }

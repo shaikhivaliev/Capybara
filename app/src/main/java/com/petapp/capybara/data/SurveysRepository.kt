@@ -4,8 +4,6 @@ import com.petapp.capybara.data.model.Months
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.database.AppDao
 import com.petapp.capybara.extensions.currentDateMonthYear
-import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.ONE_MONTH
-import com.petapp.capybara.presentation.calendar.CalendarFragment.Companion.TWO_MONTH
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function5
@@ -76,5 +74,10 @@ class SurveysRepository(private val appDao: AppDao) : ISurveysRepository {
     override fun deleteSurvey(surveyId: Long): Completable {
         return Completable.fromAction { appDao.deleteSurvey(surveyId) }
             .subscribeOn(Schedulers.io())
+    }
+
+    companion object {
+        const val ONE_MONTH = 1
+        const val TWO_MONTH = 2
     }
 }

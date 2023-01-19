@@ -1,29 +1,28 @@
 package com.petapp.capybara.presentation.calendar
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.view.get
+import android.view.ViewGroup
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.vectorResource
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.afollestad.materialdialogs.MaterialDialog
-import com.google.android.material.chip.Chip
+import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.viewmodel.stateViewModel
-import com.petapp.capybara.data.model.Month
-import com.petapp.capybara.data.model.Months
-import com.petapp.capybara.databinding.FragmentCalendarBinding
 import com.petapp.capybara.di.features.FeaturesComponentHolder
-import com.petapp.capybara.extensions.createChip
-import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.main.MainActivity
-import java.util.*
+import com.petapp.capybara.presentation.toUiData
+import com.petapp.capybara.ui.ChipLazyRow
 import javax.inject.Inject
 
-class CalendarFragment : Fragment(R.layout.fragment_calendar) {
-
-    private val viewBinding by viewBinding(FragmentCalendarBinding::bind)
+class CalendarFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: CalendarVmFactory
@@ -32,124 +31,51 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         vmFactoryProducer = { vmFactory }
     )
 
-    private val monthAdapter by lazy {
-        CalendarPagerAdapter(requireContext())
-    }
-
-    private var currentCalendar = Calendar.getInstance()
-
-    private val chipIdToProfileId = mutableMapOf<Int, Long>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        initMonthPager()
-        initObservers()
-        vm.getInitMonths(Calendar.getInstance())
-
-        viewBinding.addSurvey.setOnClickListener { vm.openSurveyScreen(null) }
-    }
-
-    private fun initViews() {
-        viewBinding.marksGroup.setOnCheckedChangeListener { _, checkedId ->
-            vm.profileId.value = chipIdToProfileId[checkedId]
-            vm.getInitMonths(Calendar.getInstance())
-        }
-    }
-
-    private fun initMonthPager() {
-        viewBinding.monthPager.apply {
-            adapter = monthAdapter
-            setPageTransformer(MarginPageTransformer(PAGE_MARGIN))
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-
-                    currentCalendar = monthAdapter.months[position].calendar
-
-                    if (monthAdapter.itemCount - TWO_MONTH == position) {
-                        val month = currentCalendar.clone() as Calendar
-                        month.add(Calendar.MONTH, TWO_MONTH)
-                        vm.getNextMonth(month)
-                    }
-
-                    if (position == 1) {
-                        val month = currentCalendar.clone() as Calendar
-                        month.add(Calendar.MONTH, -TWO_MONTH)
-                        vm.getPreviousMonth(month)
-                    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MdcTheme {
+                    CalendarScreen()
                 }
-            })
-        }
-    }
-
-    private fun initObservers() {
-        with(vm) {
-            profiles.observe(viewLifecycleOwner, { profiles ->
-                if (profiles.isEmpty()) {
-                    showAlertEmptyProfiles()
-                } else {
-                    for (profile in profiles) {
-                        val chip = createChip(requireContext(), profile, CHIP_PADDING)
-                        viewBinding.marksGroup.addView(chip)
-                        chipIdToProfileId[chip.id] = profile.id
-                    }
-                    (viewBinding.marksGroup[0] as? Chip)?.isChecked = true
-                }
-            })
-            initMonths.observe(viewLifecycleOwner, {
-                setupCalendar(it)
-            })
-            nextMonth.observe(viewLifecycleOwner, {
-                monthAdapter.setNextMonth(it)
-            })
-            previousMonth.observe(viewLifecycleOwner, {
-                monthAdapter.setPreviousMonth(it)
-            })
-            errorMessage.observe(viewLifecycleOwner, { error ->
-                requireActivity().toast(error)
-            })
-        }
-    }
-
-    private fun setupCalendar(surveys: Months) {
-        val calendar = Calendar.getInstance()
-        val twoMonthAgo = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, -TWO_MONTH) }
-        val previousMonth = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, -ONE_MONTH) }
-        val currentMonth = Calendar.getInstance()
-        val nextMonth = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, ONE_MONTH) }
-        val nextTwoMonth = (calendar.clone() as Calendar).apply { add(Calendar.MONTH, TWO_MONTH) }
-
-        val months = listOf(
-            Month(surveys.twoMonthAgoSurveys, twoMonthAgo),
-            Month(surveys.previousMonthSurveys, previousMonth),
-            Month(surveys.currentMonthSurveys, currentMonth),
-            Month(surveys.nextMonthSurveys, nextMonth),
-            Month(surveys.nextTwoMonthSurveys, nextTwoMonth)
-        )
-        monthAdapter.updateMonths(months)
-        viewBinding.monthPager.setCurrentItem(2, false)
-    }
-
-    private fun showAlertEmptyProfiles() {
-        MaterialDialog(requireActivity())
-            .cancelable(false)
-            .show {
-                title(text = getString(R.string.survey_incomplete_data))
-                positiveButton { vm.openProfileScreen() }
             }
+        }
     }
 
-    companion object {
-        const val CHIP_PADDING = 56F
-        const val PAGE_MARGIN = 120
-        const val ONE_MONTH = 1
-        const val TWO_MONTH = 2
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @Composable
+    fun CalendarScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        // todo change to state
+        val profiles by vm.profiles.observeAsState()
+        Scaffold(
+            scaffoldState = scaffoldState,
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        vm.openNewSurveyScreen()
+                    }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_add),
+                        contentDescription = null
+                    )
+                }
+            },
+            content = {
+                val profilesUi = profiles?.let {
+                    it.toUiData(
+                        selectedChipId = it.first().id,
+                        click = {
+                            // todo change to state
+                        }
+                    )
+                } ?: emptyList()
+                ChipLazyRow(profilesUi)
+            }
+        )
     }
 }
