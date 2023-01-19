@@ -167,14 +167,14 @@ class SurveyFragment : Fragment() {
         Column(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
         ) {
-            OutlinedTextField(
+            OutlinedTextFieldOneLine(
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = surveyInputData.survey.value,
                 onValueChange = {
                     surveyInputData.survey.value = it
                 },
-                label = { Text(stringResource(R.string.survey)) }
+                label = stringResource(R.string.survey)
             )
             OutlinedTextField(
                 modifier = Modifier

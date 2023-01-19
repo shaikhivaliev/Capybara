@@ -191,7 +191,7 @@ class ProfileFragment : Fragment() {
                         .background(Color(profileInputData.color.value))
                 )
             }
-            OutlinedTextField(
+            OutlinedTextFieldOneLine(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
@@ -199,7 +199,7 @@ class ProfileFragment : Fragment() {
                 onValueChange = {
                     profileInputData.name.value = it
                 },
-                label = { Text(stringResource(R.string.name)) }
+                label = stringResource(R.string.name)
             )
             IconTitleItem(
                 icon = R.drawable.ic_palette,

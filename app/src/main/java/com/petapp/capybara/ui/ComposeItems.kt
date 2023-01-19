@@ -13,6 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -51,10 +52,14 @@ fun IconTitleDescItem(
                 modifier = Modifier.padding(start = 16.dp)
             ) {
                 Text(
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
                     text = item.title,
                     style = textMedium()
                 )
                 Text(
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
                     text = item.description,
                     style = textSmall()
                 )
