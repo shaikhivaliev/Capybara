@@ -2,14 +2,12 @@ package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import io.reactivex.Completable
-import io.reactivex.Single
 
 interface IHealthDiaryRepository {
 
-    fun getItemsHealthDiary(): Single<List<ItemHealthDiary>>
+    suspend fun getItemsHealthDiary(): List<ItemHealthDiary>
 
-    fun createSurveyHealthDiary(survey: SurveyHealthDiary): Completable
+    suspend fun createSurveyHealthDiary(survey: SurveyHealthDiary)
 
-    fun deleteSurveyHealthDiary(surveyId: Long): Completable
+    suspend fun deleteSurveyHealthDiary(surveyId: Long)
 }

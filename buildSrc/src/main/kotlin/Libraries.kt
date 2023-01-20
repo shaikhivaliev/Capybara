@@ -2,8 +2,6 @@ object Libraries {
 
     object Kotlin {
         const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.stdLib}"
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-        const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     }
 
     object AndroidTools {
@@ -83,10 +81,10 @@ object Libraries {
             "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.viewBindingPropertyDelegate}"
     }
 
-    object RxJava {
-        const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-        const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
-        const val roomRxJava = "androidx.room:room-rxjava2:${Versions.room}"
+    object Coroutines {
+        const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+        const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+        const val coroutinesRoom = "androidx.room:room-coroutines:${Versions.coroutinesRoom}"
     }
 
     object Compose {
@@ -101,8 +99,8 @@ object Libraries {
         const val livedata = "androidx.compose.runtime:runtime-livedata"
         const val activityCompose = "androidx.activity:activity-compose:${Versions.activityCompose}"
         const val composeCalendar =
-            "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeСalendar}"
+            "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeCalendar}"
         const val composeCalendarDateTime =
-            "io.github.boguszpawlowski.composecalendar:kotlinx-datetime:${Versions.composeСalendar}"
+            "io.github.boguszpawlowski.composecalendar:kotlinx-datetime:${Versions.composeCalendar}"
     }
 }

@@ -1,18 +1,16 @@
 package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.Profile
-import io.reactivex.Completable
-import io.reactivex.Single
 
 interface IProfileRepository {
 
-    fun getProfiles(): Single<List<Profile>>
+    suspend fun getProfiles(): List<Profile>
 
-    fun getProfile(profileId: Long): Single<Profile>
+    suspend fun getProfile(profileId: Long): Profile
 
-    fun createProfile(profile: Profile): Completable
+    suspend fun createProfile(profile: Profile)
 
-    fun updateProfile(profile: Profile): Completable
+    suspend fun updateProfile(profile: Profile)
 
-    fun deleteProfile(profileId: Long): Completable
+    suspend fun deleteProfile(profileId: Long)
 }

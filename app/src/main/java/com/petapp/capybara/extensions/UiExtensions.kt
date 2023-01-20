@@ -7,7 +7,6 @@ import android.content.res.ColorStateList
 import android.os.Environment
 import android.view.ContextThemeWrapper
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.chip.Chip
@@ -28,10 +27,6 @@ fun Context.createImageFile(): File {
     return File(storageDir, imageFileName)
 }
 
-fun currentDateFull(date: Date): String {
-    return SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(date)
-}
-
 fun currentDateMonthYear(date: Date): String {
     return SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date).capitalize()
 }
@@ -48,17 +43,6 @@ fun createChip(context: Context, profile: Profile, padding: Float): Chip {
         chipBackgroundColor = ColorStateList.valueOf(profile.color)
     }
     return chip
-}
-
-fun View.showKeyboard() {
-    val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(this, InputMethodManager.SHOW_FORCED)
-}
-
-fun View.hideKeyboard() {
-    val windowToken = (activity.currentFocus ?: this).applicationWindowToken
-    val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
 val View.activity: Activity

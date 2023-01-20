@@ -1,19 +1,15 @@
 package com.petapp.capybara.presentation.healthDiary
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.*
 import com.petapp.capybara.R
 import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IHealthDiaryRepository
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 class HealthDiaryVmFactory(
     private val mainNavigator: IMainNavigator,
@@ -34,7 +30,7 @@ class HealthDiaryVm(
     private val mainNavigator: IMainNavigator,
     private val healthDiaryRepository: IHealthDiaryRepository,
     private val profileRepository: IProfileRepository
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val _healthDiaryItems = MutableLiveData<List<ItemHealthDiary>>()
     val healthDiaryItems: LiveData<List<ItemHealthDiary>> = _healthDiaryItems
@@ -52,61 +48,63 @@ class HealthDiaryVm(
     }
 
     fun getHealthDiaryItems() {
-        healthDiaryRepository.getItemsHealthDiary()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+        viewModelScope.launch {
+            runCatching {
+                healthDiaryRepository.getItemsHealthDiary()
+            }
+                .onSuccess {
                     val sortedItems = it.toRangeItems()
                     _healthDiaryItems.value = sortedItems.filtered(profileId.value)
-                },
-                {
+                }
+                .onFailure {
                     _errorMessage.value = R.string.error_get_health_diary_items
                 }
-            ).connect()
+        }
     }
 
     fun createHealthDiarySurvey(survey: SurveyHealthDiary?) {
         if (survey != null) {
-            healthDiaryRepository.createSurveyHealthDiary(survey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
+            viewModelScope.launch {
+                runCatching {
+                    healthDiaryRepository.createSurveyHealthDiary(survey)
+                }
+                    .onSuccess {
                         getHealthDiaryItems()
-                    },
-                    {
+                    }
+                    .onFailure {
                         _errorMessage.value = R.string.error_get_health_diary_items
                     }
-                ).connect()
+            }
         }
     }
 
     fun deleteHealthDiary(surveyId: Long) {
-        healthDiaryRepository.deleteSurveyHealthDiary(surveyId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+        viewModelScope.launch {
+            runCatching {
+                healthDiaryRepository.deleteSurveyHealthDiary(surveyId)
+            }
+                .onSuccess {
                     getHealthDiaryItems()
-                },
-                {
+                }
+                .onFailure {
                     _errorMessage.value = R.string.error_delete_type
                 }
-            ).connect()
+        }
     }
 
     private fun getMarks() {
-        profileRepository.getProfiles()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+        viewModelScope.launch {
+            runCatching {
+                profileRepository.getProfiles()
+            }
+                .onSuccess {
                     _profiles.value = it
-                },
-                {
-                    _errorMessage.value = R.string.error_get_marks
                 }
-            ).connect()
+                .onFailure {
+                    _errorMessage.value = R.string.error_get_marks
+
+                }
+        }
     }
 
     fun openProfileScreen() {

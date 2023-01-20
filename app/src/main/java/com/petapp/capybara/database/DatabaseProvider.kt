@@ -8,21 +8,23 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.database.entity.TypeEntity
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 class DatabaseProvider(private val context: Context) {
 
     private val setInitialData: RoomDatabase.Callback = object : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            ioThread {
+            CoroutineScope(IO).launch {
                 createTypes()
                 createHealthDiaryItems()
             }
         }
     }
 
-    private fun createHealthDiaryItems() {
+    private suspend fun createHealthDiaryItems() {
         val itemBloodPressure = ItemHealthDiaryEntity(
             HealthDiaryType.BLOOD_PRESSURE.ordinal.toLong(),
             HealthDiaryType.BLOOD_PRESSURE
@@ -54,7 +56,7 @@ class DatabaseProvider(private val context: Context) {
         database.appDao().createHealthDiaryItem(itemWeight)
     }
 
-    private fun createTypes() {
+    private suspend fun createTypes() {
         val typeVaccinations = TypeEntity(
             0L,
             context.getString(R.string.type_default_vaccinations),
@@ -94,9 +96,4 @@ class DatabaseProvider(private val context: Context) {
         .build()
 
     fun appDao() = database.appDao()
-
-    // https://gist.github.com/florina-muntenescu/697e543652b03d3d2a06703f5d6b44b5
-    fun ioThread(f: () -> Unit) {
-        Executors.newSingleThreadExecutor().execute(f)
-    }
 }

@@ -1,20 +1,18 @@
 package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.Survey
-import io.reactivex.Completable
-import io.reactivex.Single
 
 interface ISurveysRepository {
 
-    fun getSurveysByType(typeId: Long): Single<List<Survey>>
+    suspend fun getSurveysByType(typeId: Long): List<Survey>
 
-    fun getAllSurveys(): Single<List<Survey>>
+    suspend fun getAllSurveys(): List<Survey>
 
-    fun getSurvey(surveyId: Long): Single<Survey>
+    suspend fun getSurvey(surveyId: Long): Survey
 
-    fun createSurvey(survey: Survey): Completable
+    suspend fun createSurvey(survey: Survey)
 
-    fun updateSurvey(survey: Survey): Completable
+    suspend fun updateSurvey(survey: Survey)
 
-    fun deleteSurvey(surveyId: Long): Completable
+    suspend fun deleteSurvey(surveyId: Long)
 }

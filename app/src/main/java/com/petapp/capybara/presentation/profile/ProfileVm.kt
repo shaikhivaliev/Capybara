@@ -1,26 +1,18 @@
 package com.petapp.capybara.presentation.profile
 
-import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.*
 import com.petapp.capybara.R
 import com.petapp.capybara.core.DataState
 import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IHealthDiaryRepository
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
-import com.petapp.capybara.extensions.createImageFile
-import com.petapp.capybara.presentation.toPresentationModel
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 class ProfileVmFactory(
     private val mainNavigator: IMainNavigator,
@@ -41,7 +33,7 @@ class ProfileVm(
     private val mainNavigator: IMainNavigator,
     private val profileRepository: IProfileRepository,
     private val healthDiaryRepository: IHealthDiaryRepository
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val _profileState = MutableLiveData<DataState<ProfileMode>>()
     val profileState: LiveData<DataState<ProfileMode>> get() = _profileState
@@ -59,34 +51,43 @@ class ProfileVm(
                 )
             )
         } else {
-            getProfileHealthDiary(profileId)
+            getProfile(profileId)
         }
     }
 
-    private fun getProfileHealthDiary(profileId: Long) {
-        Single.zip(
-            profileRepository.getProfile(profileId)
-                .subscribeOn(Schedulers.io()),
-            healthDiaryRepository.getItemsHealthDiary()
-                .subscribeOn(Schedulers.io())
-        ) { profile, healthDiary ->
-            ProfileUI(
-                colors = COLORS,
-                profile = profile,
-                healthDiary = healthDiary.toPresentationModel(profileId)
-            )
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _profileState.value = DataState.DATA(
-                    ProfileMode.READONLY(it)
-                )
-            },
-                {
-                    _profileState.value = DataState.ERROR(it)
+    private fun getProfile(profileId: Long) {
+        viewModelScope.launch {
+            runCatching {
+            }
+                .onSuccess {
                 }
-            ).connect()
+                .onFailure {
+                }
+        }
+
+//        Single.zip(
+//            profileRepository.getProfile(profileId)
+//                .subscribeOn(Schedulers.io()),
+//            healthDiaryRepository.getItemsHealthDiary()
+//                .subscribeOn(Schedulers.io())
+//        ) { profile, healthDiary ->
+//            ProfileUI(
+//                colors = COLORS,
+//                profile = profile,
+//                healthDiary = healthDiary.toPresentationModel(profileId)
+//            )
+//        }
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                _profileState.value = DataState.DATA(
+//                    ProfileMode.READONLY(it)
+//                )
+//            },
+//                {
+//                    _profileState.value = DataState.ERROR(it)
+//                }
+//            ).connect()
     }
 
     fun toEditMode(data: ProfileUI) {
@@ -105,26 +106,23 @@ class ProfileVm(
         ) {
             _sideEffect.value = SideEffect.ACTION
         } else {
-            val profile = createProfile(mode, profileInputData)
+            val profile = createProfile(mode, profileInputData) ?: return
 
-            val request = when {
-                mode is ProfileMode.NEW && profile != null -> {
-                    profileRepository.createProfile(profile)
+            viewModelScope.launch {
+                runCatching {
+                    if (mode is ProfileMode.NEW) {
+                        profileRepository.createProfile(profile)
+                    } else {
+                        profileRepository.updateProfile(profile)
+                    }
                 }
-                mode is ProfileMode.EDIT && profile != null -> {
-                    profileRepository.updateProfile(profile)
-                }
-                else -> return
+                    .onSuccess {
+                        openProfilesScreen()
+                    }
+                    .onFailure {
+                        _profileState.value = DataState.ERROR(it)
+                    }
             }
-
-            request
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    openProfilesScreen()
-                }, {
-                    _profileState.value = DataState.ERROR(it)
-                }).connect()
         }
     }
 
@@ -152,16 +150,17 @@ class ProfileVm(
     }
 
     fun deleteProfile(profileId: Long) {
-        profileRepository.deleteProfile(profileId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+        viewModelScope.launch {
+            runCatching {
+                profileRepository.deleteProfile(profileId)
+            }
+                .onSuccess {
                     openProfilesScreen()
-                },
-                {
+                }
+                .onFailure {
                     _profileState.value = DataState.ERROR(it)
                 }
-            ).connect()
+        }
     }
 
     private fun openProfilesScreen() {
@@ -189,19 +188,6 @@ class ProfileVm(
                 }
             }
         }
-    }
-
-    fun createImageFile(context: Context) {
-        Single.just(context.createImageFile())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    // _imageFile.value = it
-                },
-                {
-                    _profileState.value = DataState.ERROR(it)
-                }
-            ).connect()
     }
 
     companion object {

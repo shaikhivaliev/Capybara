@@ -5,79 +5,71 @@ import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
-import io.reactivex.Single
 
 @Dao
 interface AppDao {
 
     // profile
-    @Query("SELECT * FROM profile")
-    fun getProfiles(): Single<List<ProfileEntity>>
-
     @Query("SELECT * FROM profile WHERE id = :profileId")
-    fun getProfile(profileId: Long): Single<ProfileEntity>
+    suspend fun getProfile(profileId: Long): ProfileEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createProfile(profile: ProfileEntity)
+    suspend fun createProfile(profile: ProfileEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateProfile(profile: ProfileEntity)
+    suspend fun updateProfile(profile: ProfileEntity)
 
     @Query("DELETE FROM profile WHERE id = :profileId")
-    fun deleteProfile(profileId: Long)
+    suspend fun deleteProfile(profileId: Long)
 
     @Transaction
     @Query("SELECT * FROM profile")
-    fun getProfilesWithSurveys(): Single<List<ProfileWithSurveys>>
+    suspend fun getProfilesWithSurveys(): List<ProfileWithSurveys>
 
     // type
     @Query("SELECT * FROM type WHERE id = :typeId")
-    fun getType(typeId: Long): Single<TypeEntity>
+    suspend fun getType(typeId: Long): TypeEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createType(type: TypeEntity)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateType(profile: TypeEntity)
+    suspend fun createType(type: TypeEntity)
 
     @Query("DELETE FROM type WHERE id = :typeId")
-    fun deleteType(typeId: Long)
+    suspend fun deleteType(typeId: Long)
 
     @Transaction
     @Query("SELECT * FROM type")
-    fun getTypesWithSurveys(): Single<List<TypeWithSurveys>>
+    suspend fun getTypesWithSurveys(): List<TypeWithSurveys>
 
     // survey
     @Query("SELECT * FROM survey WHERE id = :surveyId")
-    fun getSurvey(surveyId: Long): Single<SurveyEntity>
+    suspend fun getSurvey(surveyId: Long): SurveyEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createSurvey(survey: SurveyEntity)
+    suspend fun createSurvey(survey: SurveyEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateSurvey(survey: SurveyEntity)
+    suspend fun updateSurvey(survey: SurveyEntity)
 
     @Query("DELETE FROM survey WHERE id = :surveyId")
-    fun deleteSurvey(surveyId: Long)
+    suspend fun deleteSurvey(surveyId: Long)
 
     @Query("SELECT * FROM survey")
-    fun getAllSurveys(): Single<List<SurveyEntity>>
+    suspend fun getAllSurveys(): List<SurveyEntity>
 
     // health_diary
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createHealthDiaryItem(item: ItemHealthDiaryEntity)
+    suspend fun createHealthDiaryItem(item: ItemHealthDiaryEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createHealthDiarySurvey(item: SurveyHealthDiaryEntity)
+    suspend fun createHealthDiarySurvey(item: SurveyHealthDiaryEntity)
 
     @Transaction
     @Query("SELECT * FROM health_diary")
-    fun getItemHealthDiaryWithSurveys(): Single<List<ItemHealthDiaryWithSurveys>>
+    suspend fun getItemHealthDiaryWithSurveys(): List<ItemHealthDiaryWithSurveys>
 
     @Query("DELETE FROM survey_health_diary WHERE id = :surveyId")
-    fun deleteSurveyHealthDiary(surveyId: Long)
+    suspend fun deleteSurveyHealthDiary(surveyId: Long)
 
     @Query("SELECT * FROM survey WHERE type_id = :typeId")
-    fun getSurveysByType(typeId: Long): Single<List<SurveyEntity>>
-
+    suspend fun getSurveysByType(typeId: Long): List<SurveyEntity>
 }

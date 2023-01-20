@@ -126,8 +126,7 @@ dependencies {
 
     // Room
     implementation(Libraries.Room.runtime)
-    implementation(Libraries.Room.ktx)
-    implementation(Libraries.Room.compiler)
+    annotationProcessor(Libraries.Room.compiler)
     implementation(Libraries.Room.testing)
     implementation(Libraries.Room.stetho)
 
@@ -150,10 +149,10 @@ dependencies {
     androidTestImplementation(Libraries.Test.coreTesting)
     androidTestImplementation(Libraries.Test.espressoCore)
 
-    // RxJava
-    implementation(Libraries.RxJava.rxJava)
-    implementation(Libraries.RxJava.rxAndroid)
-    implementation(Libraries.RxJava.roomRxJava)
+    // Coroutines
+    implementation(Libraries.Coroutines.coroutinesCore)
+    implementation(Libraries.Coroutines.coroutinesAndroid)
+    implementation(Libraries.Coroutines.coroutinesRoom)
 
     // Compose
     val composeBom = platform(Libraries.Compose.bom)

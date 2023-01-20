@@ -3,23 +3,32 @@ package com.petapp.capybara.data
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.database.AppDao
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class HealthDiaryRepository(private val appDao: AppDao) : IHealthDiaryRepository {
+class HealthDiaryRepository(
+    private val appDao: AppDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : IHealthDiaryRepository {
 
-    override fun getItemsHealthDiary(): Single<List<ItemHealthDiary>> {
-        return appDao.getItemHealthDiaryWithSurveys().map { it.toHealthDiaryItems() }
+    override suspend fun getItemsHealthDiary(): List<ItemHealthDiary> {
+        return withContext(dispatcher) {
+            appDao.getItemHealthDiaryWithSurveys().map {
+                it.toHealthDiaryItem()
+            }
+        }
     }
 
-    override fun createSurveyHealthDiary(survey: SurveyHealthDiary): Completable {
-        return Completable.fromAction { appDao.createHealthDiarySurvey(survey.toSurveyHealthDiaryEntity()) }
-            .subscribeOn(Schedulers.io())
+    override suspend fun createSurveyHealthDiary(survey: SurveyHealthDiary) {
+        return withContext(dispatcher) {
+            appDao.createHealthDiarySurvey(survey.toSurveyHealthDiaryEntity())
+        }
     }
 
-    override fun deleteSurveyHealthDiary(surveyId: Long): Completable {
-        return Completable.fromAction { appDao.deleteSurveyHealthDiary(surveyId) }
-            .subscribeOn(Schedulers.io())
+    override suspend fun deleteSurveyHealthDiary(surveyId: Long) {
+        return withContext(dispatcher) {
+            appDao.deleteSurveyHealthDiary(surveyId)
+        }
     }
 }

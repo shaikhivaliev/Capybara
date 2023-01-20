@@ -38,15 +38,6 @@ fun Profile.toProfileEntity(): ProfileEntity {
     )
 }
 
-fun List<ProfileWithSurveys>.toProfiles(): List<Profile> {
-    val profiles = arrayListOf<Profile>()
-    for (profileEntity in this) {
-        val profile = profileEntity.toProfile()
-        profiles.add(profile)
-    }
-    return profiles
-}
-
 fun SurveyEntity.toSurvey(): Survey {
     return Survey(
         id = id,
@@ -107,24 +98,6 @@ fun Type.toTypeEntity(): TypeEntity {
         name = name,
         icon = icon
     )
-}
-
-fun List<TypeWithSurveys>.toTypes(): List<Type> {
-    val types = arrayListOf<Type>()
-    for (typeEntity in this) {
-        val profile = typeEntity.toType()
-        types.add(profile)
-    }
-    return types
-}
-
-fun List<ItemHealthDiaryWithSurveys>.toHealthDiaryItems(): List<ItemHealthDiary> {
-    val items = arrayListOf<ItemHealthDiary>()
-    for (itemEntity in this) {
-        val survey = itemEntity.toHealthDiaryItem()
-        items.add(survey)
-    }
-    return items
 }
 
 fun ItemHealthDiaryWithSurveys.toHealthDiaryItem(): ItemHealthDiary {

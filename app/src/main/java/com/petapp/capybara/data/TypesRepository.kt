@@ -2,32 +2,36 @@ package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.database.AppDao
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class TypesRepository(private val appDao: AppDao) : ITypesRepository {
+class TypesRepository(
+    private val appDao: AppDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ITypesRepository {
 
-    override fun getTypes(): Single<List<Type>> {
-        return appDao.getTypesWithSurveys().map { it.toTypes() }
+    override suspend fun getTypes(): List<Type> {
+        return withContext(dispatcher) {
+            appDao.getTypesWithSurveys().map { it.toType() }
+        }
     }
 
-    override fun getType(typeId: Long): Single<Type> {
-        return appDao.getType(typeId).map { it.toType() }
+    override suspend fun getType(typeId: Long): Type {
+        return withContext(dispatcher) {
+            appDao.getType(typeId).toType()
+        }
     }
 
-    override fun createType(type: Type): Completable {
-        return Completable.fromAction { appDao.createType(type.toTypeEntity()) }
-            .subscribeOn(Schedulers.io())
+    override suspend fun createType(type: Type) {
+        return withContext(dispatcher) {
+            appDao.createType(type.toTypeEntity())
+        }
     }
 
-    override fun updateType(type: Type): Completable {
-        return Completable.fromAction { appDao.updateType(type.toTypeEntity()) }
-            .subscribeOn(Schedulers.io())
-    }
-
-    override fun deleteType(typeId: Long): Completable {
-        return Completable.fromAction { appDao.deleteType(typeId) }
-            .subscribeOn(Schedulers.io())
+    override suspend fun deleteType(typeId: Long) {
+        return withContext(dispatcher) {
+            appDao.deleteType(typeId)
+        }
     }
 }

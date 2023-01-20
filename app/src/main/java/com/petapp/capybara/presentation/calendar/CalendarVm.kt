@@ -1,19 +1,15 @@
 package com.petapp.capybara.presentation.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.*
 import com.petapp.capybara.core.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.BaseViewModel
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.ISurveysRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.presentation.filterSurveys
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -37,7 +33,7 @@ class CalendarVm(
     private val mainNavigator: IMainNavigator,
     private val profileRepository: IProfileRepository,
     private val surveysRepository: ISurveysRepository
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val _calendarState = MutableLiveData<DataState<CalendarUI>>()
     val calendarState: LiveData<DataState<CalendarUI>> get() = _calendarState
@@ -47,29 +43,29 @@ class CalendarVm(
     }
 
     private fun getProfiles() {
-        profileRepository.getProfiles()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+        viewModelScope.launch {
+            runCatching {
+                profileRepository.getProfiles()
+            }
+                .onSuccess {
                     if (it.isEmpty()) {
                         _calendarState.value = DataState.EMPTY
                     } else {
                         getSurveys(it)
                     }
-                },
-                {
+                }
+                .onFailure {
                     _calendarState.value = DataState.ERROR(it)
                 }
-            ).connect()
+        }
     }
 
     private fun getSurveys(profiles: List<Profile>) {
-        surveysRepository.getAllSurveys()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
+        viewModelScope.launch {
+            runCatching {
+                surveysRepository.getAllSurveys()
+            }
+                .onSuccess {
                     val firstProfileId = profiles.first().id
                     _calendarState.value = DataState.DATA(
                         CalendarUI(
@@ -79,11 +75,11 @@ class CalendarVm(
                             checkedSurveysDates = it.toDates(firstProfileId)
                         )
                     )
-                },
-                {
+                }
+                .onFailure {
                     _calendarState.value = DataState.ERROR(it)
                 }
-            ).connect()
+        }
     }
 
     fun getCheckedSurveys(id: Long) {
