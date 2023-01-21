@@ -14,7 +14,7 @@ object Versions {
     const val preferenceKtx = "1.1.1"
     const val constraintLayout = "2.1.0-alpha2"
     const val lifecycle = "2.4.0"
-    const val room = "2.2.5"
+    const val room = "2.5.0"
     const val navigation = "2.3.5"
     const val junit = "4.13.2"
     const val espressoCore = "3.3.0"
