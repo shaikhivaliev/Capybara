@@ -94,3 +94,16 @@ fun List<Profile>.toUiData(
 fun List<Survey>.filterSurveys(id: Long): List<Survey> {
     return this.filter { item -> item.profileId == id }
 }
+
+fun List<ItemHealthDiary>.toInitItemHealthItems(): List<ItemHealthDiary> =
+    groupBy { it.type }.map { (itemType, items) ->
+        val isExpanded = false
+        val surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
+        ItemHealthDiary(
+            id = itemType.ordinal.toLong(),
+            type = itemType,
+            isExpanded = isExpanded,
+            surveys = surveys
+        )
+    }
+

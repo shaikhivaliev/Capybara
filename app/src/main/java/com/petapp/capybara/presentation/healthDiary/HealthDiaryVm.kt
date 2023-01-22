@@ -1,14 +1,18 @@
 package com.petapp.capybara.presentation.healthDiary
 
-import androidx.lifecycle.*
-import com.petapp.capybara.R
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IHealthDiaryRepository
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
+import com.petapp.capybara.presentation.toInitItemHealthItems
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,34 +39,53 @@ class HealthDiaryVm(
     private val profileRepository: IProfileRepository
 ) : ViewModel() {
 
-    private val _healthDiaryItems = MutableStateFlow<List<ItemHealthDiary>?>(null)
-    val healthDiaryItems: StateFlow<List<ItemHealthDiary>?> = _healthDiaryItems.asStateFlow()
-
-    private val _errorMessage = MutableStateFlow<Int?>(null)
-    val errorMessage: StateFlow<Int?> get() = _errorMessage.asStateFlow()
-
-    private val _profiles = MutableStateFlow<List<Profile>?>(null)
-    val profiles: StateFlow<List<Profile>?> get() = _profiles.asStateFlow()
-
-    val profileId = MutableLiveData<Long>()
+    private val _healthDiaryState = MutableStateFlow<DataState<HealthDiaryUI>>(DataState.READY)
+    val healthDiaryState: StateFlow<DataState<HealthDiaryUI>> = _healthDiaryState.asStateFlow()
 
     init {
-        getMarks()
+        initProfiles()
     }
 
-    fun getHealthDiaryItems() {
+    private fun initProfiles() {
+        viewModelScope.launch {
+            runCatching {
+                profileRepository.getProfiles()
+            }
+                .onSuccess {
+                    if (it.isEmpty()) {
+                        _healthDiaryState.value = DataState.EMPTY
+                    } else {
+                        initHealthDiaryItems(it)
+                    }
+                }
+                .onFailure {
+                    _healthDiaryState.value = DataState.ERROR(it)
+                }
+        }
+    }
+
+    private fun initHealthDiaryItems(profiles: List<Profile>) {
         viewModelScope.launch {
             runCatching {
                 healthDiaryRepository.getItemsHealthDiary()
             }
                 .onSuccess {
-                    val sortedItems = it.toRangeItems()
-                    _healthDiaryItems.value = sortedItems.filtered(profileId.value)
+                    val sortedItems = it.toInitItemHealthItems()
+                    val firstProfileId = profiles.first().id
+                    val healthDiaryUI = HealthDiaryUI(
+                        profiles = profiles,
+                        checkedProfileId = firstProfileId,
+                        healthDiaryList = sortedItems
+                    )
+                    _healthDiaryState.value = DataState.DATA(healthDiaryUI)
                 }
                 .onFailure {
-                    _errorMessage.value = R.string.error_get_health_diary_items
+                    _healthDiaryState.value = DataState.ERROR(it)
                 }
         }
+    }
+
+    fun getHealthDiaryItemsByProfile(profileId: Long) {
     }
 
     fun createHealthDiarySurvey(survey: SurveyHealthDiary?) {
@@ -72,10 +95,10 @@ class HealthDiaryVm(
                     healthDiaryRepository.createSurveyHealthDiary(survey)
                 }
                     .onSuccess {
-                        getHealthDiaryItems()
+                       // initHealthDiaryItems()
                     }
                     .onFailure {
-                        _errorMessage.value = R.string.error_get_health_diary_items
+                        _healthDiaryState.value = DataState.ERROR(it)
                     }
             }
         }
@@ -87,25 +110,10 @@ class HealthDiaryVm(
                 healthDiaryRepository.deleteSurveyHealthDiary(surveyId)
             }
                 .onSuccess {
-                    getHealthDiaryItems()
+                   // initHealthDiaryItems()
                 }
                 .onFailure {
-                    _errorMessage.value = R.string.error_delete_type
-                }
-        }
-    }
-
-    private fun getMarks() {
-        viewModelScope.launch {
-            runCatching {
-                profileRepository.getProfiles()
-            }
-                .onSuccess {
-                    _profiles.value = it
-                }
-                .onFailure {
-                    _errorMessage.value = R.string.error_get_marks
-
+                    _healthDiaryState.value = DataState.ERROR(it)
                 }
         }
     }
@@ -114,34 +122,44 @@ class HealthDiaryVm(
         mainNavigator.openProfiles()
     }
 
-    fun handleStepClick(item: ItemHealthDiary) {
-        _healthDiaryItems.value?.let { items ->
-            items.find { it.id == item.id }?.also {
-                it.isExpanded = item.isExpanded
-            }
-            _healthDiaryItems.value = items
-        }
+    fun expandItem(it: ItemHealthDiary) {
+        // todo
     }
-
-    private fun List<ItemHealthDiary>.toRangeItems(): List<ItemHealthDiary> =
-        groupBy { it.type }.map { (itemType, items) ->
-
-            val isExpanded = _healthDiaryItems.value?.find { it.type == itemType }?.isExpanded ?: false
-            val surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
-
-            ItemHealthDiary(
-                id = itemType.ordinal.toLong(),
-                type = itemType,
-                isExpanded = isExpanded,
-                surveys = surveys
-            )
-        }
-
-    private fun List<ItemHealthDiary>.filtered(profileId: Long?): List<ItemHealthDiary> {
-        return this.map { item ->
-            val surveys = item.surveys.filter { it.profileId == profileId }
-            item.surveys = surveys
-            item
-        }
-    }
+    //    fun handleStepClick(item: ItemHealthDiary) {
+//        _healthDiaryItems.value?.let { items ->
+//            items.find { it.id == item.id }?.also {
+//                it.isExpanded = item.isExpanded
+//            }
+//            _healthDiaryItems.value = items
+//        }
+//    }
+//
+//    private fun List<ItemHealthDiary>.toRangeItems(): List<ItemHealthDiary> =
+//        groupBy { it.type }.map { (itemType, items) ->
+//
+//            val isExpanded = _healthDiaryItems.value?.find { it.type == itemType }?.isExpanded ?: false
+//            val surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
+//
+//            ItemHealthDiary(
+//                id = itemType.ordinal.toLong(),
+//                type = itemType,
+//                isExpanded = isExpanded,
+//                surveys = surveys
+//            )
+//        }
+//
+//    private fun List<ItemHealthDiary>.filtered(profileId: Long?): List<ItemHealthDiary> {
+//        return this.map { item ->
+//            val surveys = item.surveys.filter { it.profileId == profileId }
+//            item.surveys = surveys
+//            item
+//        }
+//    }
 }
+
+data class HealthDiaryUI(
+    val profiles: List<Profile>,
+    val checkedProfileId: Long,
+    val healthDiaryList: List<ItemHealthDiary>
+)
+

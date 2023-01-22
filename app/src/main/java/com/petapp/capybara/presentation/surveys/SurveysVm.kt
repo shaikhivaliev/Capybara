@@ -38,7 +38,7 @@ class SurveysVm(
     private val _surveysState = MutableStateFlow<DataState<SurveysState>>(DataState.READY)
     val surveysState: StateFlow<DataState<SurveysState>> get() = _surveysState.asStateFlow()
 
-    fun getMarks(typeId: Long?) {
+    fun getProfiles(typeId: Long?) {
         if (typeId == null) {
             _surveysState.value = DataState.ERROR()
             return

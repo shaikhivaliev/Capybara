@@ -48,7 +48,7 @@ class SurveysFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return ComposeView(requireContext()).apply {
-            vm.getMarks(args?.value)
+            vm.getProfiles(args?.value)
             setContent {
                 MdcTheme {
                     SurveysScreen()
