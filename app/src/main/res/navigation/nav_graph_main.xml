@@ -27,8 +27,7 @@
 
     <fragment
         android:id="@+id/tab_calendar"
-        android:name="com.petapp.capybara.presentation.calendar.CalendarFragment"
-        tools:layout="@layout/fragment_calendar">
+        android:name="com.petapp.capybara.presentation.calendar.CalendarFragment">
         <action
             android:id="@+id/to_survey"
             app:destination="@id/nav_graph_survey">

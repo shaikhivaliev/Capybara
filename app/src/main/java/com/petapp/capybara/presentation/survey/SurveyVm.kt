@@ -3,9 +3,9 @@ package com.petapp.capybara.presentation.survey
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import com.petapp.capybara.core.DataState
-import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.state.SideEffect
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.ISurveysRepository
@@ -14,6 +14,9 @@ import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.extensions.currentDateMonthYear
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,11 +44,11 @@ class SurveyVm(
     private val profileRepository: IProfileRepository
 ) : ViewModel() {
 
-    private val _surveyState = MutableLiveData<DataState<SurveyMode>>()
-    val surveyState: LiveData<DataState<SurveyMode>> get() = _surveyState
+    private val _surveyState = MutableStateFlow<DataState<SurveyMode>>(DataState.READY)
+    val surveyState: StateFlow<DataState<SurveyMode>> get() = _surveyState.asStateFlow()
 
-    private val _sideEffect = MutableLiveData<SideEffect>()
-    val sideEffect: LiveData<SideEffect> get() = _sideEffect
+    private val _sideEffect = MutableStateFlow<SideEffect>(SideEffect.READY)
+    val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
     fun getSurvey(survey: Survey?) {
         if (survey == null) {
@@ -58,67 +61,45 @@ class SurveyVm(
     private fun getProfilesTypes() {
         viewModelScope.launch {
             runCatching {
+                val profiles = profileRepository.getProfiles()
+                val types = typesRepository.getTypes()
+                SurveyNew(
+                    profiles = profiles,
+                    types = types
+                )
             }
                 .onSuccess {
+                    _surveyState.value = DataState.DATA(SurveyMode.NEW(it))
                 }
                 .onFailure {
+                    _surveyState.value = DataState.ERROR(it)
                 }
         }
-
-//        Single.zip(
-//            profileRepository.getProfiles()
-//                .subscribeOn(Schedulers.io()),
-//            typesRepository.getTypes()
-//                .subscribeOn(Schedulers.io())
-//        ) { profiles, types ->
-//            SurveyNew(
-//                profiles = profiles,
-//                types = types
-//            )
-//        }
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                _surveyState.value = DataState.DATA(SurveyMode.NEW(it))
-//            }, {
-//                _surveyState.value = DataState.ERROR(it)
-//            }).connect()
-
     }
 
     private fun getSurveyProfilesTypes(surveyId: Long) {
         viewModelScope.launch {
             runCatching {
+                val survey = surveysRepository.getSurvey(surveyId)
+                val profiles = profileRepository.getProfiles()
+                val types = typesRepository.getTypes()
+                val profileTitle = profiles.find { it.id == survey.profileId }?.name.orEmpty()
+                val typeTitle = types.find { it.id == survey.typeId }?.name.orEmpty()
+                SurveyUI(
+                    survey = survey,
+                    profileTitle = profileTitle,
+                    typeTitle = typeTitle,
+                    profiles = profiles,
+                    types = types
+                )
             }
                 .onSuccess {
+                    _surveyState.value = DataState.DATA(SurveyMode.READONLY(it))
                 }
                 .onFailure {
+                    _surveyState.value = DataState.ERROR(it)
                 }
         }
-
-//        Single.zip(
-//            surveysRepository.getSurvey(surveyId)
-//                .subscribeOn(Schedulers.io()),
-//            profileRepository.getProfiles()
-//                .subscribeOn(Schedulers.io()),
-//            typesRepository.getTypes()
-//                .subscribeOn(Schedulers.io())
-//        ) { survey, profiles, types ->
-//            val profileTitle = profiles.find { it.id == survey.profileId }?.name.orEmpty()
-//            val typeTitle = types.find { it.id == survey.typeId }?.name.orEmpty()
-//            SurveyUI(
-//                survey = survey,
-//                profileTitle = profileTitle,
-//                typeTitle = typeTitle,
-//                profiles = profiles,
-//                types = types
-//            )
-//        }
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                _surveyState.value = DataState.DATA(SurveyMode.READONLY(it))
-//            }, {
-//                _surveyState.value = DataState.ERROR(it)
-//            }).connect()
     }
 
     fun verifySurvey(

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
@@ -19,7 +19,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.di.features.FeaturesComponentHolder
@@ -56,7 +56,7 @@ class ProfilesFragment : Fragment() {
     @Composable
     private fun ProfilesScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val profileState by vm.profilesState.observeAsState()
+        val profileState by vm.profilesState.collectAsState()
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {

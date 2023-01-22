@@ -9,6 +9,9 @@ import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HealthDiaryVmFactory(
@@ -32,14 +35,14 @@ class HealthDiaryVm(
     private val profileRepository: IProfileRepository
 ) : ViewModel() {
 
-    private val _healthDiaryItems = MutableLiveData<List<ItemHealthDiary>>()
-    val healthDiaryItems: LiveData<List<ItemHealthDiary>> = _healthDiaryItems
+    private val _healthDiaryItems = MutableStateFlow<List<ItemHealthDiary>?>(null)
+    val healthDiaryItems: StateFlow<List<ItemHealthDiary>?> = _healthDiaryItems.asStateFlow()
 
-    private val _errorMessage = MutableLiveData<Int>()
-    val errorMessage: LiveData<Int> get() = _errorMessage
+    private val _errorMessage = MutableStateFlow<Int?>(null)
+    val errorMessage: StateFlow<Int?> get() = _errorMessage.asStateFlow()
 
-    private val _profiles = MutableLiveData<List<Profile>>()
-    val profiles: LiveData<List<Profile>> get() = _profiles
+    private val _profiles = MutableStateFlow<List<Profile>?>(null)
+    val profiles: StateFlow<List<Profile>?> get() = _profiles.asStateFlow()
 
     val profileId = MutableLiveData<Long>()
 

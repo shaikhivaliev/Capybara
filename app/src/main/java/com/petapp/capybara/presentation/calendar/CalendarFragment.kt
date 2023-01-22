@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
@@ -19,7 +18,7 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
@@ -58,7 +57,7 @@ class CalendarFragment : Fragment() {
     @Composable
     fun CalendarScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val calendarState by vm.calendarState.observeAsState()
+        val calendarState by vm.calendarState.collectAsState()
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {

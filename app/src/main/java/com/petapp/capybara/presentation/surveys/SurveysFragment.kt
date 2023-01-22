@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.navigation.LongNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
@@ -61,7 +61,7 @@ class SurveysFragment : Fragment() {
     @Composable
     fun SurveysScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val surveysState by vm.surveysState.observeAsState()
+        val surveysState by vm.surveysState.collectAsState()
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {

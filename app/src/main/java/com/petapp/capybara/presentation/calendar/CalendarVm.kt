@@ -1,7 +1,7 @@
 package com.petapp.capybara.presentation.calendar
 
 import androidx.lifecycle.*
-import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository
@@ -9,6 +9,9 @@ import com.petapp.capybara.data.ISurveysRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.presentation.filterSurveys
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -35,8 +38,8 @@ class CalendarVm(
     private val surveysRepository: ISurveysRepository
 ) : ViewModel() {
 
-    private val _calendarState = MutableLiveData<DataState<CalendarUI>>()
-    val calendarState: LiveData<DataState<CalendarUI>> get() = _calendarState
+    private val _calendarState = MutableStateFlow<DataState<CalendarUI>>(DataState.READY)
+    val calendarState: StateFlow<DataState<CalendarUI>> get() = _calendarState.asStateFlow()
 
     init {
         getProfiles()
@@ -83,7 +86,7 @@ class CalendarVm(
     }
 
     fun getCheckedSurveys(id: Long) {
-        _calendarState.value?.onData {
+        _calendarState.value.onData {
             _calendarState.value = DataState.DATA(
                 CalendarUI(
                     profiles = it.profiles,

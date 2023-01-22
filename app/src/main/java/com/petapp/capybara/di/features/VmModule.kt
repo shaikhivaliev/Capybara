@@ -40,7 +40,7 @@ class VmModule {
         mainNavigator: IMainNavigator,
         profileRepository: IProfileRepository,
         healthDiaryRepository: IHealthDiaryRepository
-    ): ProfileVmFactory = ProfileVmFactory(mainNavigator, profileRepository, healthDiaryRepository)
+    ): ProfileVmFactory = ProfileVmFactory(mainNavigator, profileRepository)
 
     @Provides
     @FeaturesScope

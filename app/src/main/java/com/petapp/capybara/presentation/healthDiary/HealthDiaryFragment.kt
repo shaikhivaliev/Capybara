@@ -18,6 +18,7 @@ import com.google.android.material.chip.Chip
 import com.petapp.capybara.R
 import com.petapp.capybara.core.navigation.LongNavDto
 import com.petapp.capybara.core.navigation.navDto
+import com.petapp.capybara.core.state.observeData
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
@@ -29,6 +30,7 @@ import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.extensions.toast
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toPresentationModel
+import kotlinx.coroutines.flow.filterNotNull
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -183,34 +185,34 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
     }
 
     private fun initObservers() {
-        with(vm) {
-            profiles.observe(viewLifecycleOwner) { profiles ->
-                if (profiles.isEmpty()) {
-                    showAlertEmptyProfiles()
+        observeData(vm.profiles.filterNotNull()) { profiles ->
+            if (profiles.isEmpty()) {
+                showAlertEmptyProfiles()
+            } else {
+                for (profile in profiles) {
+                    val chip = createChip(requireContext(), profile, CHIP_PADDING)
+                    viewBinding.marksGroup.addView(chip)
+                    chipIdToProfileId[chip.id] = profile.id
+                }
+                if (args?.value != 0L) {
+                    val index = chipIdToProfileId.filterValues { it == args?.value }.keys.first()
+                    viewBinding.marksGroup.post {
+                        viewBinding.marksGroup.check(index)
+                        val chip = viewBinding.marksGroup.findViewById<Chip>(viewBinding.marksGroup.checkedChipId)
+                        viewBinding.markGroupContainer.smoothScrollTo(chip.left, chip.top)
+                    }
                 } else {
-                    for (profile in profiles) {
-                        val chip = createChip(requireContext(), profile, CHIP_PADDING)
-                        viewBinding.marksGroup.addView(chip)
-                        chipIdToProfileId[chip.id] = profile.id
-                    }
-                    if (args?.value != 0L) {
-                        val index = chipIdToProfileId.filterValues { it == args?.value }.keys.first()
-                        viewBinding.marksGroup.post {
-                            viewBinding.marksGroup.check(index)
-                            val chip = viewBinding.marksGroup.findViewById<Chip>(viewBinding.marksGroup.checkedChipId)
-                            viewBinding.markGroupContainer.smoothScrollTo(chip.left, chip.top)
-                        }
-                    } else {
-                        (viewBinding.marksGroup[0] as? Chip)?.isChecked = true
-                    }
+                    (viewBinding.marksGroup[0] as? Chip)?.isChecked = true
                 }
             }
-            healthDiaryItems.observe(viewLifecycleOwner) {
-                adapter.items = it.toPresentationModel()
-            }
-            errorMessage.observe(viewLifecycleOwner) { error ->
-                requireActivity().toast(error)
-            }
+        }
+
+        observeData(vm.healthDiaryItems.filterNotNull()) {
+            adapter.items = it.toPresentationModel()
+        }
+
+        observeData(vm.errorMessage.filterNotNull()) { error ->
+            requireActivity().toast(error)
         }
     }
 

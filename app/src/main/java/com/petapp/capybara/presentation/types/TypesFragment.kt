@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.di.features.FeaturesComponentHolder
@@ -61,7 +61,7 @@ class TypesFragment : Fragment() {
     @Composable
     private fun TypesScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val typeState by vm.typesState.observeAsState()
+        val typeState by vm.typesState.collectAsState()
         Scaffold(
             scaffoldState = scaffoldState,
             content = {

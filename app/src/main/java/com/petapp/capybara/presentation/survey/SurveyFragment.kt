@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -24,10 +23,10 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
-import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.SurveyNavDto
 import com.petapp.capybara.core.navigation.navDto
+import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.state.SideEffect
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
@@ -70,8 +69,8 @@ class SurveyFragment : Fragment() {
     @Composable
     private fun SurveyScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val surveyState by vm.surveyState.observeAsState()
-        val sideEffect by vm.sideEffect.observeAsState()
+        val surveyState by vm.surveyState.collectAsState()
+        val sideEffect by vm.sideEffect.collectAsState()
         val surveyInputData = SurveyInputData()
 
         Scaffold(

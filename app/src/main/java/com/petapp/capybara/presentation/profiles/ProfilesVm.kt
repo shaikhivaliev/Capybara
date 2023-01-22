@@ -1,11 +1,16 @@
 package com.petapp.capybara.presentation.profiles
 
-import androidx.lifecycle.*
-import com.petapp.capybara.core.DataState
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfilesVmFactory(
@@ -26,8 +31,8 @@ class ProfilesVm(
     private val profileRepository: IProfileRepository
 ) : ViewModel() {
 
-    private val _profilesState = MutableLiveData<DataState<List<Profile>>>()
-    val profilesState: LiveData<DataState<List<Profile>>> get() = _profilesState
+    private val _profilesState = MutableStateFlow<DataState<List<Profile>>>(DataState.READY)
+    val profilesState: StateFlow<DataState<List<Profile>>> get() = _profilesState.asStateFlow()
 
     init {
         getProfiles()

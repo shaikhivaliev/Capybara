@@ -11,8 +11,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,8 +29,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
-import com.petapp.capybara.core.SideEffect
+import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.state.SideEffect
 import com.petapp.capybara.core.navigation.ProfileNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel
@@ -76,8 +76,8 @@ class ProfileFragment : Fragment() {
     @Composable
     private fun ProfileScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val profileState by vm.profileState.observeAsState()
-        val sideEffect by vm.sideEffect.observeAsState()
+        val profileState by vm.profileState.collectAsState()
+        val sideEffect by vm.sideEffect.collectAsState()
         val profileInputData = ProfileInputData()
 
         Scaffold(

@@ -1,7 +1,7 @@
 package com.petapp.capybara.presentation.surveys
 
 import androidx.lifecycle.*
-import com.petapp.capybara.core.DataState
+import com.petapp.capybara.core.state.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository
@@ -9,6 +9,9 @@ import com.petapp.capybara.data.ISurveysRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.presentation.filterSurveys
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SurveysVmFactory(
@@ -32,8 +35,8 @@ class SurveysVm(
     private val profileRepository: IProfileRepository
 ) : ViewModel() {
 
-    private val _surveysState = MutableLiveData<DataState<SurveysState>>()
-    val surveysState: LiveData<DataState<SurveysState>> get() = _surveysState
+    private val _surveysState = MutableStateFlow<DataState<SurveysState>>(DataState.READY)
+    val surveysState: StateFlow<DataState<SurveysState>> get() = _surveysState.asStateFlow()
 
     fun getMarks(typeId: Long?) {
         if (typeId == null) {
@@ -84,7 +87,7 @@ class SurveysVm(
     }
 
     fun getCheckedSurveys(id: Long) {
-        _surveysState.value?.onData {
+        _surveysState.value.onData {
             _surveysState.value = DataState.DATA(
                 SurveysState(
                     profiles = it.profiles,

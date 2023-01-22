@@ -2,44 +2,44 @@ package com.petapp.capybara.presentation.profile
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.R
-import com.petapp.capybara.core.DataState
-import com.petapp.capybara.core.SideEffect
 import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.state.SideEffect
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.IHealthDiaryRepository
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfileVmFactory(
     private val mainNavigator: IMainNavigator,
-    private val profileRepository: IProfileRepository,
-    private val healthDiaryRepository: IHealthDiaryRepository
+    private val profileRepository: IProfileRepository
 ) : SavedStateVmAssistedFactory<ProfileVm> {
     override fun create(handle: SavedStateHandle) =
         ProfileVm(
             savedStateHandle = handle,
             mainNavigator = mainNavigator,
-            profileRepository = profileRepository,
-            healthDiaryRepository = healthDiaryRepository
+            profileRepository = profileRepository
         )
 }
 
 class ProfileVm(
     private val savedStateHandle: SavedStateHandle,
     private val mainNavigator: IMainNavigator,
-    private val profileRepository: IProfileRepository,
-    private val healthDiaryRepository: IHealthDiaryRepository
+    private val profileRepository: IProfileRepository
 ) : ViewModel() {
 
-    private val _profileState = MutableLiveData<DataState<ProfileMode>>()
-    val profileState: LiveData<DataState<ProfileMode>> get() = _profileState
+    private val _profileState = MutableStateFlow<DataState<ProfileMode>>(DataState.READY)
+    val profileState: StateFlow<DataState<ProfileMode>> get() = _profileState.asStateFlow()
 
-    private val _sideEffect = MutableLiveData<SideEffect>()
-    val sideEffect: LiveData<SideEffect> get() = _sideEffect
+    private val _sideEffect = MutableStateFlow<SideEffect>(SideEffect.READY)
+    val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
     fun getProfile(profileId: Long?) {
         if (profileId == null) {
@@ -58,36 +58,21 @@ class ProfileVm(
     private fun getProfile(profileId: Long) {
         viewModelScope.launch {
             runCatching {
+                profileRepository.getProfile(profileId)
             }
                 .onSuccess {
+                    val profile = ProfileUI(
+                        colors = COLORS,
+                        profile = it
+                    )
+                    _profileState.value = DataState.DATA(
+                        ProfileMode.READONLY(profile)
+                    )
                 }
                 .onFailure {
+                    _profileState.value = DataState.ERROR(it)
                 }
         }
-
-//        Single.zip(
-//            profileRepository.getProfile(profileId)
-//                .subscribeOn(Schedulers.io()),
-//            healthDiaryRepository.getItemsHealthDiary()
-//                .subscribeOn(Schedulers.io())
-//        ) { profile, healthDiary ->
-//            ProfileUI(
-//                colors = COLORS,
-//                profile = profile,
-//                healthDiary = healthDiary.toPresentationModel(profileId)
-//            )
-//        }
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                _profileState.value = DataState.DATA(
-//                    ProfileMode.READONLY(it)
-//                )
-//            },
-//                {
-//                    _profileState.value = DataState.ERROR(it)
-//                }
-//            ).connect()
     }
 
     fun toEditMode(data: ProfileUI) {
@@ -172,7 +157,7 @@ class ProfileVm(
     }
 
     fun updatePhoto(uri: String) {
-        _profileState.value?.onData { mode ->
+        _profileState.value.onData { mode ->
             _profileState.value = when (mode) {
                 is ProfileMode.EDIT -> {
                     val profile = mode.data.profile.copy(photo = uri)
@@ -221,8 +206,7 @@ data class ProfileNew(
 
 data class ProfileUI(
     val colors: List<Int>,
-    val profile: Profile,
-    val healthDiary: HealthDiaryForProfile
+    val profile: Profile
 )
 
 data class ProfileInputData(
