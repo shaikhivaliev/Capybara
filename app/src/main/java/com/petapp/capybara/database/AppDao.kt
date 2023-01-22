@@ -56,6 +56,9 @@ interface AppDao {
     @Query("SELECT * FROM survey")
     suspend fun getAllSurveys(): List<SurveyEntity>
 
+    @Query("SELECT * FROM survey WHERE type_id = :typeId")
+    suspend fun getSurveysByType(typeId: Long): List<SurveyEntity>
+
     // health_diary
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createHealthDiaryItem(item: ItemHealthDiaryEntity)
@@ -70,6 +73,4 @@ interface AppDao {
     @Query("DELETE FROM survey_health_diary WHERE id = :surveyId")
     suspend fun deleteSurveyHealthDiary(surveyId: Long)
 
-    @Query("SELECT * FROM survey WHERE type_id = :typeId")
-    suspend fun getSurveysByType(typeId: Long): List<SurveyEntity>
 }

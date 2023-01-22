@@ -7,46 +7,9 @@ import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.data.model.healthDiary.HealthDiary
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryForProfile
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.ui.data.Chip
 import com.petapp.capybara.ui.data.IconTitleDescription
-
-fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = this.flatMap {
-    listOf(it) + if (it.isExpanded && it.surveys.isNotEmpty()) {
-        it.surveys.sortedBy { survey -> survey.date }.reversed()
-    } else if (it.isExpanded) {
-        listOf(it.emptyItem)
-    } else emptyList()
-}
-
-fun List<ItemHealthDiary>.toPresentationModel(profileId: Long): HealthDiaryForProfile {
-    val profilesItems = this.map { item ->
-        val surveys = item.surveys.filter { it.profileId == profileId }
-        item.surveys = surveys.sortedBy { survey -> survey.date }.reversed()
-        item
-    }
-    val healthDiaryForProfile = HealthDiaryForProfile.Builder()
-    profilesItems.forEach {
-        when (it.type) {
-            HealthDiaryType.BLOOD_PRESSURE ->
-                if (it.surveys.isNotEmpty()) healthDiaryForProfile.bloodPressure(it.surveys.first().surveyValue)
-            HealthDiaryType.PULSE ->
-                if (it.surveys.isNotEmpty()) healthDiaryForProfile.pulse(it.surveys.first().surveyValue)
-
-            HealthDiaryType.BLOOD_GLUCOSE ->
-                if (it.surveys.isNotEmpty()) healthDiaryForProfile.bloodGlucose(it.surveys.first().surveyValue)
-
-            HealthDiaryType.HEIGHT ->
-                if (it.surveys.isNotEmpty()) healthDiaryForProfile.height(it.surveys.first().surveyValue)
-
-            HealthDiaryType.WEIGHT ->
-                if (it.surveys.isNotEmpty()) healthDiaryForProfile.weight(it.surveys.first().surveyValue)
-        }
-    }
-    return healthDiaryForProfile.build()
-}
 
 @Composable
 fun Type.toUiData(): IconTitleDescription {
@@ -91,19 +54,46 @@ fun List<Profile>.toUiData(
     }
 }
 
+fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = this.flatMap {
+    listOf(it) + if (it.isExpanded && it.surveys.isNotEmpty()) {
+        it.surveys.sortedBy { survey -> survey.date }.reversed()
+    } else if (it.isExpanded) {
+        listOf(it.emptyItem)
+    } else emptyList()
+}
+
 fun List<Survey>.filterSurveys(id: Long): List<Survey> {
     return this.filter { item -> item.profileId == id }
 }
 
-fun List<ItemHealthDiary>.toInitItemHealthItems(): List<ItemHealthDiary> =
-    groupBy { it.type }.map { (itemType, items) ->
-        val isExpanded = false
-        val surveys = items.find { itemType == it.type }?.surveys ?: emptyList()
-        ItemHealthDiary(
-            id = itemType.ordinal.toLong(),
-            type = itemType,
-            isExpanded = isExpanded,
-            surveys = surveys
-        )
+fun List<ItemHealthDiary>.filterHealthDiary(id: Long): List<ItemHealthDiary> {
+    // todo
+    return this
+}
+
+fun List<ItemHealthDiary>.expandItem(item: ItemHealthDiary): List<ItemHealthDiary> {
+    val isExpandedType = this.find { it.type == item.type }?.isExpanded ?: false
+    return this.map {
+        if (it.type == item.type) {
+            it.copy(isExpanded = !isExpandedType)
+        } else {
+            it
+        }
     }
+}
+
+fun List<ItemHealthDiary>.expandItems(oldList: List<ItemHealthDiary>): List<ItemHealthDiary> {
+    return this.map { item ->
+        val type = oldList.find { it.type == item.type }?.type
+        val isExpandedType = oldList.find { it.type == item.type }?.isExpanded ?: false
+        if (item.type == type) {
+            item.copy(isExpanded = isExpandedType)
+        } else {
+            item
+        }
+    }
+}
+
+
+
 

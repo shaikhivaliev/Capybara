@@ -71,8 +71,8 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
 
     private fun initViews() {
         viewBinding.marksGroup.setOnCheckedChangeListener { _, checkedId ->
-            val profileId = chipIdToProfileId[checkedId]
-            profileId?.let { vm.getHealthDiaryItemsByProfile(profileId) }
+//            val profileId = chipIdToProfileId[checkedId]
+//            profileId?.let { vm.getHealthDiaryItemsByProfile(profileId) }
         }
 
         with(viewBinding.recyclerView) {
