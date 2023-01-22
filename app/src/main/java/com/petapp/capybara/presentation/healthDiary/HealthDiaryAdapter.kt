@@ -68,10 +68,8 @@ fun itemHealthDiaryDelegate(
                     }
                 )
                 arrowDown.setOnClickListener {
-                    expandItem(item.apply {
-                        isExpanded = isExpanded.not()
-                        showAddingButton(isExpanded)
-                    })
+                    expandItem(item)
+                    showAddingButton(!item.isExpanded)
                 }
                 addHealthDiarySurvey.setOnClickListener {
                     addSurvey(item)

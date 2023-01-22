@@ -125,7 +125,7 @@ class HealthDiaryVm(
     fun expandItem(it: ItemHealthDiary) {
         // todo
     }
-    //    fun handleStepClick(item: ItemHealthDiary) {
+//    fun handleStepClick(item: ItemHealthDiary) {
 //        _healthDiaryItems.value?.let { items ->
 //            items.find { it.id == item.id }?.also {
 //                it.isExpanded = item.isExpanded
