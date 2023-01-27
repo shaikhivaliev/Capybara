@@ -4,12 +4,12 @@
 
 **branches**
 - develop
-architecture - multimodule, mvi 
-ui - compose
-streams of data - coroutines + flow
-di - dagger
-navigation - navigation component
-database - room
+ - architecture - multimodule, mvi 
+ - ui - compose
+ - streams of data - coroutines + flow
+ - di - dagger
+ - navigation - navigation component
+ - database - room
 
 - compose_mvvm_coroutines_flow_dagger_navcomp_room 
 - compose_mvvm_coroutines_dagger_navcomp 
