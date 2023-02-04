@@ -1,7 +1,7 @@
 package com.petapp.capybara.presentation.calendar
 
 import androidx.lifecycle.*
-import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository

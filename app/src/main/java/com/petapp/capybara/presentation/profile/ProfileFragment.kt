@@ -29,8 +29,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.state.DataState
-import com.petapp.capybara.core.state.SideEffect
+import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.mvi.SideEffect
 import com.petapp.capybara.core.navigation.ProfileNavDto
 import com.petapp.capybara.core.navigation.navDto
 import com.petapp.capybara.core.viewmodel.stateViewModel

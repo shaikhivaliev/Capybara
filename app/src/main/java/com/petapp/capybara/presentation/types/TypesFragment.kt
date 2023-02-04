@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.di.features.FeaturesComponentHolder
@@ -61,7 +61,7 @@ class TypesFragment : Fragment() {
     @Composable
     private fun TypesScreen() {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val typeState by vm.typesState.collectAsState()
+        val typeState by vm.collectStore().collectAsState()
         Scaffold(
             scaffoldState = scaffoldState,
             content = {
@@ -89,7 +89,7 @@ class TypesFragment : Fragment() {
                                 )
                             })
                     }
-                    when (val state = typeState) {
+                    when (val state = typeState.state) {
                         DataState.EMPTY -> Empty(stringResource(R.string.profile_mock))
                         is DataState.ERROR -> Error()
                         is DataState.DATA -> ShowTypes(state.data)

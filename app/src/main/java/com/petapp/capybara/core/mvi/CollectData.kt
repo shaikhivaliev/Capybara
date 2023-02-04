@@ -1,4 +1,4 @@
-package com.petapp.capybara.core.state
+package com.petapp.capybara.core.mvi
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle

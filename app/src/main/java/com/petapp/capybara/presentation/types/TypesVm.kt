@@ -1,40 +1,40 @@
 package com.petapp.capybara.presentation.types
 
-import androidx.lifecycle.*
-import com.petapp.capybara.core.state.DataState
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.ITypesRepository
-import com.petapp.capybara.data.model.Type
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class TypesVmFactory(
     private val mainNavigator: IMainNavigator,
-    private val typesRepository: ITypesRepository
+    private val typesRepository: ITypesRepository,
+    private val store: TypesStore
 ) : SavedStateVmAssistedFactory<TypesVm> {
     override fun create(handle: SavedStateHandle) =
         TypesVm(
             savedStateHandle = handle,
             mainNavigator = mainNavigator,
-            typesRepository = typesRepository
+            typesRepository = typesRepository,
+            store = store
         )
 }
 
 class TypesVm(
     private val savedStateHandle: SavedStateHandle,
     private val mainNavigator: IMainNavigator,
-    private val typesRepository: ITypesRepository
+    private val typesRepository: ITypesRepository,
+    val store: TypesStore
 ) : ViewModel() {
 
-    private val _typesState = MutableStateFlow<DataState<List<Type>>>(DataState.READY)
-    val typesState: StateFlow<DataState<List<Type>>> get() = _typesState.asStateFlow()
-
     init {
+        store.launch(viewModelScope)
         getTypes()
     }
+
+    fun collectStore() = store.state
 
     private fun getTypes() {
         viewModelScope.launch {
@@ -43,13 +43,13 @@ class TypesVm(
             }
                 .onSuccess {
                     if (it.isEmpty()) {
-                        _typesState.value = DataState.EMPTY
+                        store.dispatch(TypesEvent.TypesEmpty)
                     } else {
-                        _typesState.value = DataState.DATA(it)
+                        store.dispatch(TypesEvent.TypesLoaded(it))
                     }
                 }
                 .onFailure {
-                    _typesState.value = DataState.ERROR(it)
+                    store.dispatch(TypesEvent.TypesError(it))
                 }
         }
     }

@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.R
 import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.state.DataState
-import com.petapp.capybara.core.state.SideEffect
+import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.mvi.SideEffect
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile

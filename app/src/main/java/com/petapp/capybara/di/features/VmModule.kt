@@ -11,6 +11,7 @@ import com.petapp.capybara.presentation.profile.ProfileVmFactory
 import com.petapp.capybara.presentation.profiles.ProfilesVmFactory
 import com.petapp.capybara.presentation.survey.SurveyVmFactory
 import com.petapp.capybara.presentation.surveys.SurveysVmFactory
+import com.petapp.capybara.presentation.types.TypesStore
 import com.petapp.capybara.presentation.types.TypesVmFactory
 import dagger.Module
 import dagger.Provides
@@ -70,6 +71,7 @@ class VmModule {
     @FeaturesScope
     fun provideTypesVmFactory(
         mainNavigator: IMainNavigator,
-        typesRepository: ITypesRepository
-    ): TypesVmFactory = TypesVmFactory(mainNavigator, typesRepository)
+        typesRepository: ITypesRepository,
+        store: TypesStore
+    ): TypesVmFactory = TypesVmFactory(mainNavigator, typesRepository, store)
 }

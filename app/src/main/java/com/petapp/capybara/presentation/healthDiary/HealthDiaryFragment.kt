@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.petapp.capybara.R
-import com.petapp.capybara.core.state.DataState
-import com.petapp.capybara.core.state.observeData
+import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.mvi.observeData
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary

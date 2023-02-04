@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.core.state.DataState
+import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity

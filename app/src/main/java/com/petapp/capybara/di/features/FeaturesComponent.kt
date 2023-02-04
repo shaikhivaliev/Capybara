@@ -3,9 +3,9 @@ package com.petapp.capybara.di.features
 import com.petapp.capybara.core.navigation.NavControllerProvider
 import com.petapp.capybara.di.app.AppComponent
 import com.petapp.capybara.di.core.CoreComponent
-import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.calendar.CalendarFragment
 import com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment
+import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.profile.ProfileFragment
 import com.petapp.capybara.presentation.profiles.ProfilesFragment
 import com.petapp.capybara.presentation.survey.SurveyFragment
@@ -22,7 +22,8 @@ import dagger.Component
     modules = [
         VmModule::class,
         DataModule::class,
-        NavigationModule::class
+        NavigationModule::class,
+        StoreModule::class
     ]
 )
 @FeaturesScope
@@ -32,6 +33,7 @@ interface FeaturesComponent {
     interface Builder {
         fun bindAppComponent(appComponent: AppComponent): Builder
         fun bindCoreComponent(coreComponent: CoreComponent): Builder
+
         @BindsInstance
         fun bindMainActivity(activity: MainActivity): Builder
         fun build(): FeaturesComponent

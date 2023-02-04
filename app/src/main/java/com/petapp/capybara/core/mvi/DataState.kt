@@ -1,4 +1,4 @@
-package com.petapp.capybara.core.state
+package com.petapp.capybara.core.mvi
 
 sealed class DataState<out TData> {
 
