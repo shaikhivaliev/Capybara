@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.data
+package com.petapp.capybara.ui.model
 
 data class IconTitleDescription(
     val icon: Any,

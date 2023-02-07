@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui
+package com.petapp.capybara.ui.styles
 
 import androidx.compose.ui.graphics.Color
 

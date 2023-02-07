@@ -1,30 +1,40 @@
 package com.petapp.capybara.presentation.healthDiary
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.mvi.observeData
 import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.databinding.DialogHealthDiarySurveyBinding
-import com.petapp.capybara.databinding.FragmentHealthDiaryBinding
 import com.petapp.capybara.di.features.FeaturesComponentHolder
-import com.petapp.capybara.extensions.createChip
 import com.petapp.capybara.presentation.main.MainActivity
-import com.petapp.capybara.presentation.toPresentationModel
-import com.petapp.capybara.ui.openAddingSurveyDialog
+import com.petapp.capybara.presentation.toUiData
+import com.petapp.capybara.ui.*
+import com.petapp.capybara.ui.dialogs.openAddingSurveyDialog
+import com.petapp.capybara.ui.dialogs.showAlertEmptyProfiles
+import com.petapp.capybara.ui.list.*
+import com.petapp.capybara.ui.state.Error
+import com.petapp.capybara.ui.styles.textSmall
 import javax.inject.Inject
 
-class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
-
-    private val viewBinding by viewBinding(FragmentHealthDiaryBinding::bind)
+class HealthDiaryFragment : Fragment() {
 
     @Inject
     lateinit var vmFactory: HealthDiaryVmFactory
@@ -33,106 +43,123 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
         vmFactoryProducer = { vmFactory }
     )
 
-    private val chipIdToProfileId = mutableMapOf<Int, Long>()
-    private var profileId: Long? = null
-
-    private val adapter: HealthDiaryAdapter =
-        HealthDiaryAdapter(
-            expandItem = {
-                vm.expandItem(it)
-            },
-            addSurvey = {
-                openAddingSurveyDialog(
-                    context = requireContext(),
-                    item = it,
-                    onClick = { binding ->
-                        vm.createHealthDiarySurvey(
-                            healthDiarySurveyBuilder(
-                                binding = binding,
-                                item = it
-                            )
-                        )
-                    }
-                )
-            },
-            onDelete = { openDeleteDialog(it.id) }
-        )
+//    private val adapter: HealthDiaryAdapter =
+//        HealthDiaryAdapter(
+//            expandItem = {
+//                vm.expandItem(it)
+//            },
+//            addSurvey = {
+//                openAddingSurveyDialog(
+//                    context = requireContext(),
+//                    item = it,
+//                    onClick = { binding ->
+//                        vm.createHealthDiarySurvey(
+//                            healthDiarySurveyBuilder(
+//                                binding = binding,
+//                                item = it
+//                            )
+//                        )
+//                    }
+//                )
+//            },
+//            onDelete = { openDeleteDialog(it.id) }
+//        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViews()
-        initObservers()
-    }
-
-    private fun initViews() {
-        viewBinding.marksGroup.setOnCheckedChangeListener { _, checkedId ->
-//            val profileId = chipIdToProfileId[checkedId]
-//            profileId?.let { vm.getHealthDiaryItemsByProfile(profileId) }
-        }
-
-        with(viewBinding.recyclerView) {
-            this.layoutManager = LinearLayoutManager(context)
-            adapter = this@HealthDiaryFragment.adapter
-        }
-    }
-
-    private fun initObservers() {
-        observeData(vm.healthDiaryState) { state ->
-            when (state) {
-                DataState.EMPTY -> showAlertEmptyProfiles()
-                is DataState.DATA -> {
-                    if (chipIdToProfileId.isEmpty()) {
-                        initChips(state.data)
-                    }
-                    showHealthDiary(state.data)
-                }
-                is DataState.ERROR -> showError()
-                else -> { // nothing
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MdcTheme {
+                    HealthDiaryScreen()
                 }
             }
         }
     }
 
-    private fun initChips(data: HealthDiaryUI) {
-        for (profile in data.profiles) {
-            val chip = createChip(requireContext(), profile, CHIP_PADDING)
-            viewBinding.marksGroup.addView(chip)
-            chipIdToProfileId[chip.id] = profile.id
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @Composable
+    fun HealthDiaryScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val healthDiaryState by vm.healthDiaryState.collectAsState()
+        Scaffold(
+            scaffoldState = scaffoldState,
+            content = {
+                when (val state = healthDiaryState) {
+                    DataState.EMPTY -> showAlertEmptyProfiles { vm.openProfileScreen() }
+                    is DataState.DATA -> ShowHealthDiary(state.data)
+                    is DataState.ERROR -> Error()
+                    else -> { // nothing
+                    }
+                }
+            }
+        )
+    }
+
+    @Composable
+    private fun ShowHealthDiary(state: HealthDiaryUI) {
+        Column {
+            ChipLazyRow(
+                chips = state.profiles.toUiData(
+                    selectedChipId = state.checkedProfileId,
+                    click = {
+                        vm.getHealthDiaryItemsByProfile(it)
+                    }
+                ))
+            BaseLazyColumn {
+                state.checkedHealthDiary.forEach { healthDiary ->
+                    item {
+                        HealthDiaryHeader(
+                            item = healthDiary,
+                            expand = { vm.expandItem(healthDiary) },
+                            addNew = {
+                                openAddingSurveyDialog(
+                                    context = requireContext(),
+                                    item = healthDiary,
+                                    onClick = { binding ->
+                                        vm.createHealthDiarySurvey(
+                                            healthDiarySurveyBuilder(
+                                                binding = binding,
+                                                item = healthDiary,
+                                                profileId = state.checkedProfileId
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    }
+                    if (healthDiary.isExpanded && healthDiary.surveys.isEmpty()) {
+                        item {
+                            Text(
+                                text = stringResource(id = R.string.health_diary_empty_survey),
+                                style = textSmall()
+                            )
+                        }
+                    }
+                    if (healthDiary.isExpanded && healthDiary.surveys.isNotEmpty()) {
+                        items(healthDiary.surveys) { item ->
+                            HealthDiarySurveyItem(
+                                item = item,
+                                deleteSurvey = { openDeleteDialog(item.id) }
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun showHealthDiary(data: HealthDiaryUI) {
-        checkChip(data.checkedProfileId)
-        adapter.items = data.healthDiaryList.toPresentationModel()
-    }
-
-    private fun checkChip(checkedProfileId: Long) {
-        val index = chipIdToProfileId.filterValues { it == checkedProfileId }.keys.first()
-        viewBinding.marksGroup.check(index)
-    }
-
-    private fun showError() {
-        // todo
-    }
-
-    // todo move to vm
     private fun healthDiarySurveyBuilder(
         binding: DialogHealthDiarySurveyBinding,
-        item: ItemHealthDiary
+        item: ItemHealthDiary,
+        profileId: Long
     ): SurveyHealthDiary {
         with(binding) {
-            val id = DEFAULT_ID_FOR_ENTITY
-            val type = item.type
-            val profileId = profileId ?: DEFAULT_ID_FOR_ENTITY
-            val date = surveyDate.text.toString()
-            val time = surveyTime.text.toString()
-            val measure = unitOfMeasure.text.toString()
-            val surveyValue = if (type == HealthDiaryType.BLOOD_PRESSURE) {
+            val surveyValue = if (item.type == HealthDiaryType.BLOOD_PRESSURE) {
                 StringBuilder()
                     .append(bloodPressureFirst.text.toString())
                     .append(getString(R.string.health_diary_slash))
@@ -143,17 +170,16 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
             }
 
             return SurveyHealthDiary(
-                id = id,
-                type = type,
+                id = 0L,
+                type = item.type,
                 profileId = profileId,
-                date = date,
-                time = time,
+                date = surveyDate.text.toString(),
+                time = surveyTime.text.toString(),
                 surveyValue = surveyValue,
-                unitOfMeasure = measure
+                unitOfMeasure = unitOfMeasure.text.toString()
             )
         }
     }
-
 
     private fun openDeleteDialog(surveyId: Long) {
         MaterialDialog(requireActivity()).show {
@@ -164,19 +190,5 @@ class HealthDiaryFragment : Fragment(R.layout.fragment_health_diary) {
             }
             negativeButton { cancel() }
         }
-    }
-
-    private fun showAlertEmptyProfiles() {
-        MaterialDialog(requireActivity())
-            .cancelable(false)
-            .show {
-                title(text = getString(R.string.survey_incomplete_data))
-                positiveButton { vm.openProfileScreen() }
-            }
-    }
-
-    companion object {
-        private const val DEFAULT_ID_FOR_ENTITY = 0L
-        private const val CHIP_PADDING = 56F
     }
 }

@@ -6,9 +6,13 @@ import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
+import com.petapp.capybara.database.entity.profile.ProfileEntity
+import com.petapp.capybara.database.entity.profile.ProfileWithSurveys
+import com.petapp.capybara.database.entity.survey.SurveyEntity
+import com.petapp.capybara.database.entity.type.TypeEntity
+import com.petapp.capybara.database.entity.type.TypeWithSurveys
 
 fun ProfileEntity.toProfile(): Profile {
     return Profile(

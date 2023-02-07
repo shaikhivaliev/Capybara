@@ -5,6 +5,11 @@ import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
+import com.petapp.capybara.database.entity.profile.ProfileEntity
+import com.petapp.capybara.database.entity.profile.ProfileWithSurveys
+import com.petapp.capybara.database.entity.survey.SurveyEntity
+import com.petapp.capybara.database.entity.type.TypeEntity
+import com.petapp.capybara.database.entity.type.TypeWithSurveys
 
 @Dao
 interface AppDao {

@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui
+package com.petapp.capybara.ui.state
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver

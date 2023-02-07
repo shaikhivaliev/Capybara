@@ -15,7 +15,6 @@ import com.petapp.capybara.data.ITypesRepository
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.extensions.currentDateMonthYear
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -149,7 +148,7 @@ class SurveyVm(
 
                 val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
                 val time = dateFormat.parse(surveyInputData.date.value)
-                val monthYear = time?.let { currentDateMonthYear(it) }
+                val monthYear = time?.let { SimpleDateFormat("LLLL yyyy", Locale("ru")).format(it).capitalize() }
 
                 if (profile != null && type != null) {
                     Survey(
@@ -175,7 +174,7 @@ class SurveyVm(
 
                 val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
                 val time = dateFormat.parse(surveyInputData.date.value)
-                val monthYear = time?.let { currentDateMonthYear(it) }
+                val monthYear = time?.let { SimpleDateFormat("LLLL yyyy", Locale("ru")).format(it).capitalize() }
 
                 if (profile != null && type != null) {
                     Survey(

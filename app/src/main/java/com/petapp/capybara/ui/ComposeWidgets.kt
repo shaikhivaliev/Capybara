@@ -1,18 +1,11 @@
 package com.petapp.capybara.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -22,55 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.petapp.capybara.ui.data.Chip
-
-@Composable
-fun ShowSnackbar(
-    errorMessage: String,
-    retryMessage: String? = null,
-    snackbarHostState: SnackbarHostState,
-    action: (() -> Unit)? = null,
-    dismissed: (() -> Unit)? = null
-) {
-    val onActionState = rememberUpdatedState(action)
-    val onDismissedState = rememberUpdatedState(dismissed)
-
-    LaunchedEffect(errorMessage, retryMessage, snackbarHostState) {
-        val snackbarResult = snackbarHostState.showSnackbar(
-            message = errorMessage,
-            actionLabel = retryMessage
-        )
-        if (snackbarResult == SnackbarResult.ActionPerformed) {
-            onActionState.value?.invoke()
-        }
-        onDismissedState.value?.invoke()
-    }
-}
-
-@Composable
-fun ChipLazyRow(chips: List<Chip>) {
-    LazyRow(
-        modifier = Modifier.padding(top = 12.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        content = {
-            items(chips) { item ->
-                ChipItem(item)
-            }
-        })
-}
-
-@Composable
-fun BaseLazyColumn(content: LazyListScope.() -> Unit) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        content = content
-    )
-}
+import com.petapp.capybara.ui.styles.textSmall
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

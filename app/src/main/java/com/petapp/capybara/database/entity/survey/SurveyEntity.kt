@@ -1,9 +1,11 @@
-package com.petapp.capybara.database.entity
+package com.petapp.capybara.database.entity.survey
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.petapp.capybara.database.entity.profile.ProfileEntity
+import com.petapp.capybara.database.entity.type.TypeEntity
 
 @Entity(
     tableName = "survey",

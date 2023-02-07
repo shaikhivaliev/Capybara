@@ -3,9 +3,9 @@ package com.petapp.capybara.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.petapp.capybara.database.entity.ProfileEntity
-import com.petapp.capybara.database.entity.SurveyEntity
-import com.petapp.capybara.database.entity.TypeEntity
+import com.petapp.capybara.database.entity.profile.ProfileEntity
+import com.petapp.capybara.database.entity.survey.SurveyEntity
+import com.petapp.capybara.database.entity.type.TypeEntity
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryEntity
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
 

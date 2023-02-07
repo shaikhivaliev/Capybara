@@ -46,14 +46,6 @@ object Libraries {
         const val androidProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
     }
 
-    object AdapterDelegates {
-        const val layoutContainer =
-            "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-layoutcontainer:${Versions.adapterDelegates}"
-        const val adapterDelegates = "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:${Versions.adapterDelegates}"
-        const val viewBinding =
-            "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:${Versions.adapterDelegates}"
-    }
-
     object Glide {
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
     }
@@ -84,7 +76,6 @@ object Libraries {
     object Coroutines {
         const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
         const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-        const val coroutinesRoom = "androidx.room:room-coroutines:${Versions.coroutinesRoom}"
     }
 
     object Compose {
@@ -96,7 +87,6 @@ object Libraries {
         const val uiTestManifest = "androidx.compose.ui:ui-test-manifest"
         const val themeAdapter = "com.google.accompanist:accompanist-themeadapter-material:${Versions.themeAdapter}"
         const val glide = "com.github.bumptech.glide:compose:${Versions.glideCompose}"
-        const val livedata = "androidx.compose.runtime:runtime-livedata"
         const val activityCompose = "androidx.activity:activity-compose:${Versions.activityCompose}"
         const val composeCalendar =
             "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeCalendar}"

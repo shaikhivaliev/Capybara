@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui
+package com.petapp.capybara.ui.styles
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.border

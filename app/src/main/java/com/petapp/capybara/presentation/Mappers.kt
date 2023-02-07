@@ -6,10 +6,9 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Profile
 import com.petapp.capybara.data.model.Survey
 import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.data.model.healthDiary.HealthDiary
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
-import com.petapp.capybara.ui.data.Chip
-import com.petapp.capybara.ui.data.IconTitleDescription
+import com.petapp.capybara.ui.model.Chip
+import com.petapp.capybara.ui.model.IconTitleDescription
 
 @Composable
 fun Type.toUiData(): IconTitleDescription {
@@ -54,14 +53,6 @@ fun List<Profile>.toUiData(
     }
 }
 
-fun List<ItemHealthDiary>.toPresentationModel(): List<HealthDiary> = this.flatMap {
-    listOf(it) + if (it.isExpanded && it.surveys.isNotEmpty()) {
-        it.surveys.sortedBy { survey -> survey.date }.reversed()
-    } else if (it.isExpanded) {
-        listOf(it.emptyItem)
-    } else emptyList()
-}
-
 fun List<Survey>.filterSurveys(id: Long): List<Survey> {
     return this.filter { item -> item.profileId == id }
 }
@@ -93,7 +84,3 @@ fun List<ItemHealthDiary>.expandItems(oldList: List<ItemHealthDiary>): List<Item
         }
     }
 }
-
-
-
-

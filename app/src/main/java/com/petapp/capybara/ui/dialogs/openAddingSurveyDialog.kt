@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui
+package com.petapp.capybara.ui.dialogs
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog

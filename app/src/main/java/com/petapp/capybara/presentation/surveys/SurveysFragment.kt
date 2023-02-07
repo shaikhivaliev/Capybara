@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.fragment.app.Fragment
-import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
@@ -28,6 +27,12 @@ import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
 import com.petapp.capybara.ui.*
+import com.petapp.capybara.ui.dialogs.showAlertEmptyProfiles
+import com.petapp.capybara.ui.list.BaseLazyColumn
+import com.petapp.capybara.ui.list.ChipLazyRow
+import com.petapp.capybara.ui.list.IconTitleDescItem
+import com.petapp.capybara.ui.state.Empty
+import com.petapp.capybara.ui.state.Error
 import javax.inject.Inject
 
 class SurveysFragment : Fragment() {
@@ -77,7 +82,7 @@ class SurveysFragment : Fragment() {
             },
             content = {
                 when (val state = surveysState) {
-                    DataState.EMPTY -> showAlertEmptyProfiles()
+                    DataState.EMPTY -> showAlertEmptyProfiles { vm.openProfileScreen() }
                     is DataState.DATA -> ShowSurveys(state.data)
                     is DataState.ERROR -> Error()
                     else -> { // nothing
@@ -88,20 +93,20 @@ class SurveysFragment : Fragment() {
     }
 
     @Composable
-    private fun ShowSurveys(surveys: SurveysState) {
+    private fun ShowSurveys(state: SurveysState) {
         Column {
             ChipLazyRow(
-                chips = surveys.profiles.toUiData(
-                    selectedChipId = surveys.profiles.first().id,
+                chips = state.profiles.toUiData(
+                    selectedChipId = state.checkedProfileId,
                     click = {
                         vm.getCheckedSurveys(it)
                     }
                 ))
-            if (surveys.checkedSurveys.isEmpty()) {
+            if (state.checkedSurveys.isEmpty()) {
                 Empty(stringResource(R.string.survey_mock))
             } else {
                 BaseLazyColumn {
-                    items(surveys.checkedSurveys) { item ->
+                    items(state.checkedSurveys) { item ->
                         IconTitleDescItem(
                             onClick = { vm.openSurveyScreen(item) },
                             item = item.toUiData(),
@@ -111,14 +116,5 @@ class SurveysFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun showAlertEmptyProfiles() {
-        MaterialDialog(requireActivity())
-            .cancelable(false)
-            .show {
-                title(text = getString(R.string.survey_incomplete_data))
-                positiveButton { vm.openProfileScreen() }
-            }
     }
 }

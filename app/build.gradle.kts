@@ -119,11 +119,6 @@ dependencies {
     kapt(Libraries.Dagger.compiler)
     kapt(Libraries.Dagger.androidProcessor)
 
-    // Recycler
-    implementation(Libraries.AdapterDelegates.layoutContainer)
-    implementation(Libraries.AdapterDelegates.adapterDelegates)
-    implementation(Libraries.AdapterDelegates.viewBinding)
-
     // Room
     implementation(Libraries.Room.runtime)
     annotationProcessor(Libraries.Room.compiler)

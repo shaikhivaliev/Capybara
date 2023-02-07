@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.vectorResource
 import androidx.fragment.app.Fragment
-import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
@@ -23,9 +22,10 @@ import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
-import com.petapp.capybara.ui.ChipLazyRow
-import com.petapp.capybara.ui.Error
-import com.petapp.capybara.ui.rememberStaticSelectionState
+import com.petapp.capybara.ui.dialogs.showAlertEmptyProfiles
+import com.petapp.capybara.ui.list.ChipLazyRow
+import com.petapp.capybara.ui.state.Error
+import com.petapp.capybara.ui.state.rememberStaticSelectionState
 import io.github.boguszpawlowski.composecalendar.Calendar
 import javax.inject.Inject
 
@@ -73,7 +73,7 @@ class CalendarFragment : Fragment() {
             },
             content = {
                 when (val state = calendarState) {
-                    DataState.EMPTY -> showAlertEmptyProfiles()
+                    DataState.EMPTY -> showAlertEmptyProfiles { vm.openProfileScreen()}
                     is DataState.DATA -> ShowCalendar(state.data)
                     is DataState.ERROR -> Error()
                     else -> { // nothing
@@ -99,14 +99,5 @@ class CalendarFragment : Fragment() {
                 ))
             Calendar(calendarState = state)
         }
-    }
-
-    private fun showAlertEmptyProfiles() {
-        MaterialDialog(requireActivity())
-            .cancelable(false)
-            .show {
-                title(text = getString(R.string.survey_incomplete_data))
-                positiveButton { vm.openProfileScreen() }
-            }
     }
 }

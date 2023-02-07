@@ -24,6 +24,11 @@ import com.petapp.capybara.R
 import com.petapp.capybara.data.model.Settings
 import com.petapp.capybara.presentation.auth.AuthActivity
 import com.petapp.capybara.ui.*
+import com.petapp.capybara.ui.list.IconTitleItem
+import com.petapp.capybara.ui.styles.colorPrimaryDark
+import com.petapp.capybara.ui.styles.neutralN50
+import com.petapp.capybara.ui.styles.textMedium
+import com.petapp.capybara.ui.styles.textSmall
 
 @Suppress("ForbiddenComment")
 class SettingFragment : Fragment() {

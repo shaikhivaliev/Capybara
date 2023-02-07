@@ -3,15 +3,20 @@ package com.petapp.capybara.presentation.healthDiary
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.navigation.IMainNavigator
 import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
 import com.petapp.capybara.data.IHealthDiaryRepository
 import com.petapp.capybara.data.IProfileRepository
 import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import com.petapp.capybara.presentation.*
+import com.petapp.capybara.databinding.DialogHealthDiarySurveyBinding
+import com.petapp.capybara.presentation.expandItem
+import com.petapp.capybara.presentation.expandItems
+import com.petapp.capybara.presentation.filterHealthDiary
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,7 +78,8 @@ class HealthDiaryVm(
                     val healthDiaryUI = HealthDiaryUI(
                         profiles = profiles,
                         checkedProfileId = firstProfileId,
-                        healthDiaryList = it
+                        healthDiary = it,
+                        checkedHealthDiary = it.filterHealthDiary(firstProfileId)
                     )
                     _healthDiaryState.value = DataState.DATA(healthDiaryUI)
                 }
@@ -120,11 +126,12 @@ class HealthDiaryVm(
                     healthDiaryRepository.getItemsHealthDiary()
                 }
                     .onSuccess {
-                        val checkedExpandedItems = it.expandItems(state.healthDiaryList)
+                        val checkedExpandedItems = it.expandItems(state.healthDiary)
                         val healthDiaryUI = HealthDiaryUI(
                             profiles = state.profiles,
                             checkedProfileId = state.checkedProfileId,
-                            healthDiaryList = checkedExpandedItems
+                            healthDiary = checkedExpandedItems,
+                            checkedHealthDiary = checkedExpandedItems
                         )
                         _healthDiaryState.value = DataState.DATA(healthDiaryUI)
                     }
@@ -137,11 +144,12 @@ class HealthDiaryVm(
 
     fun expandItem(item: ItemHealthDiary) {
         _healthDiaryState.value.onData {
-            val filteredItems = it.healthDiaryList.expandItem(item)
+            val filteredItems = it.healthDiary.expandItem(item)
             val healthDiaryUI = HealthDiaryUI(
                 profiles = it.profiles,
                 checkedProfileId = it.checkedProfileId,
-                healthDiaryList = filteredItems
+                healthDiary = filteredItems,
+                checkedHealthDiary = filteredItems
             )
             _healthDiaryState.value = DataState.DATA(healthDiaryUI)
         }
@@ -149,11 +157,12 @@ class HealthDiaryVm(
 
     fun getHealthDiaryItemsByProfile(profileId: Long) {
         _healthDiaryState.value.onData {
-            val filteredItems = it.healthDiaryList.filterHealthDiary(profileId)
+            val filteredItems = it.healthDiary.filterHealthDiary(profileId)
             val healthDiaryUI = HealthDiaryUI(
                 profiles = it.profiles,
                 checkedProfileId = profileId,
-                healthDiaryList = filteredItems
+                healthDiary = it.healthDiary,
+                checkedHealthDiary = filteredItems
             )
             _healthDiaryState.value = DataState.DATA(healthDiaryUI)
         }
@@ -167,6 +176,7 @@ class HealthDiaryVm(
 data class HealthDiaryUI(
     val profiles: List<Profile>,
     val checkedProfileId: Long,
-    val healthDiaryList: List<ItemHealthDiary>
+    val checkedHealthDiary: List<ItemHealthDiary>,
+    val healthDiary: List<ItemHealthDiary>
 )
 

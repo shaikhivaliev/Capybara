@@ -1,4 +1,4 @@
-package com.petapp.capybara.ui.data
+package com.petapp.capybara.ui.model
 
 data class Chip(
     val id: Long,

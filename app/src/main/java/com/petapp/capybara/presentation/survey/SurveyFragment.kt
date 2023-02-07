@@ -31,6 +31,8 @@ import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.ui.*
+import com.petapp.capybara.ui.state.Error
+import com.petapp.capybara.ui.state.ShowSnackbar
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

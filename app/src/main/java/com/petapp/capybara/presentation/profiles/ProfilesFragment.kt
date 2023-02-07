@@ -26,6 +26,10 @@ import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
 import com.petapp.capybara.ui.*
+import com.petapp.capybara.ui.list.BaseLazyColumn
+import com.petapp.capybara.ui.list.IconTitleDescItem
+import com.petapp.capybara.ui.state.Empty
+import com.petapp.capybara.ui.state.Error
 import javax.inject.Inject
 
 class ProfilesFragment : Fragment() {
