@@ -11,9 +11,4 @@
     <dimen name="widget_corner_radius">8dp</dimen>
     <dimen name="widget_elevation">4dp</dimen>
     <dimen name="min_clickable_size">48dp</dimen>
-    <dimen name="item_icon_size">56dp</dimen>
-
-    <dimen name="profile_photo_size">320dp</dimen>
-    <dimen name="profile_marker_size">16dp</dimen>
-    <dimen name="profile_name_margin_top">295dp</dimen>
 </resources>

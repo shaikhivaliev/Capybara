@@ -1,18 +1,37 @@
 package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.Type
-import io.reactivex.Completable
-import io.reactivex.Single
+import com.petapp.capybara.database.AppDao
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-interface TypesRepository {
+class TypesRepository(
+    private val appDao: AppDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ITypesRepository {
 
-    fun getTypes(): Single<List<Type>>
+    override suspend fun getTypes(): List<Type> {
+        return withContext(dispatcher) {
+            appDao.getTypesWithSurveys().map { it.toType() }
+        }
+    }
 
-    fun getType(typeId: Long): Single<Type>
+    override suspend fun getType(typeId: Long): Type {
+        return withContext(dispatcher) {
+            appDao.getType(typeId).toType()
+        }
+    }
 
-    fun createType(type: Type): Completable
+    override suspend fun createType(type: Type) {
+        return withContext(dispatcher) {
+            appDao.createType(type.toTypeEntity())
+        }
+    }
 
-    fun updateType(type: Type): Completable
-
-    fun deleteType(typeId: Long): Completable
+    override suspend fun deleteType(typeId: Long) {
+        return withContext(dispatcher) {
+            appDao.deleteType(typeId)
+        }
+    }
 }

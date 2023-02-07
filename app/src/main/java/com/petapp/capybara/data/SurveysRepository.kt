@@ -1,24 +1,49 @@
 package com.petapp.capybara.data
 
-import com.petapp.capybara.data.model.Months
 import com.petapp.capybara.data.model.Survey
-import io.reactivex.Completable
-import io.reactivex.Single
-import java.util.*
+import com.petapp.capybara.database.AppDao
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-interface SurveysRepository {
+class SurveysRepository(
+    private val appDao: AppDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ISurveysRepository {
 
-    fun getSurveysByType(typeId: Long): Single<List<Survey>>
+    override suspend fun getSurveysByType(typeId: Long): List<Survey> {
+        return withContext(dispatcher) {
+            appDao.getSurveysByType(typeId).map { it.toSurvey() }
+        }
+    }
 
-    fun getInitMonths(currentDate: Calendar): Single<Months>
+    override suspend fun getAllSurveys(): List<Survey> {
+        return withContext(dispatcher) {
+            appDao.getAllSurveys().map { it.toSurvey() }
+        }
+    }
 
-    fun getSurveysByMonth(currentDate: Calendar): Single<List<Survey>>
+    override suspend fun getSurvey(surveyId: Long): Survey {
+        return withContext(dispatcher) {
+            appDao.getSurvey(surveyId).toSurvey()
+        }
+    }
 
-    fun getSurvey(surveyId: Long): Single<Survey>
+    override suspend fun createSurvey(survey: Survey) {
+        return withContext(dispatcher) {
+            appDao.createSurvey(survey.toSurveyEntity())
+        }
+    }
 
-    fun createSurvey(survey: Survey): Completable
+    override suspend fun updateSurvey(survey: Survey) {
+        return withContext(dispatcher) {
+            appDao.updateSurvey(survey.toSurveyEntity())
+        }
+    }
 
-    fun updateSurvey(survey: Survey): Completable
-
-    fun deleteSurvey(surveyId: Long): Completable
+    override suspend fun deleteSurvey(surveyId: Long) {
+        return withContext(dispatcher) {
+            appDao.deleteSurvey(surveyId)
+        }
+    }
 }

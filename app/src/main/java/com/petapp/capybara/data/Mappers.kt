@@ -6,9 +6,13 @@ import com.petapp.capybara.data.model.Type
 import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
 import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
 import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
-import com.petapp.capybara.database.entity.*
 import com.petapp.capybara.database.entity.healthDiary.ItemHealthDiaryWithSurveys
 import com.petapp.capybara.database.entity.healthDiary.SurveyHealthDiaryEntity
+import com.petapp.capybara.database.entity.profile.ProfileEntity
+import com.petapp.capybara.database.entity.profile.ProfileWithSurveys
+import com.petapp.capybara.database.entity.survey.SurveyEntity
+import com.petapp.capybara.database.entity.type.TypeEntity
+import com.petapp.capybara.database.entity.type.TypeWithSurveys
 
 fun ProfileEntity.toProfile(): Profile {
     return Profile(
@@ -36,15 +40,6 @@ fun Profile.toProfileEntity(): ProfileEntity {
         color = color,
         photo = photo
     )
-}
-
-fun List<ProfileWithSurveys>.toProfiles(): List<Profile> {
-    val profiles = arrayListOf<Profile>()
-    for (profileEntity in this) {
-        val profile = profileEntity.toProfile()
-        profiles.add(profile)
-    }
-    return profiles
 }
 
 fun SurveyEntity.toSurvey(): Survey {
@@ -107,24 +102,6 @@ fun Type.toTypeEntity(): TypeEntity {
         name = name,
         icon = icon
     )
-}
-
-fun List<TypeWithSurveys>.toTypes(): List<Type> {
-    val types = arrayListOf<Type>()
-    for (typeEntity in this) {
-        val profile = typeEntity.toType()
-        types.add(profile)
-    }
-    return types
-}
-
-fun List<ItemHealthDiaryWithSurveys>.toHealthDiaryItems(): List<ItemHealthDiary> {
-    val items = arrayListOf<ItemHealthDiary>()
-    for (itemEntity in this) {
-        val survey = itemEntity.toHealthDiaryItem()
-        items.add(survey)
-    }
-    return items
 }
 
 fun ItemHealthDiaryWithSurveys.toHealthDiaryItem(): ItemHealthDiary {

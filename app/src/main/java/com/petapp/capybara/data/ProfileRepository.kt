@@ -1,18 +1,43 @@
 package com.petapp.capybara.data
 
 import com.petapp.capybara.data.model.Profile
-import io.reactivex.Completable
-import io.reactivex.Single
+import com.petapp.capybara.database.AppDao
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-interface ProfileRepository {
+class ProfileRepository(
+    private val appDao: AppDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : IProfileRepository {
 
-    fun getProfiles(): Single<List<Profile>>
+    override suspend fun getProfiles(): List<Profile> {
+        return withContext(dispatcher) {
+            appDao.getProfilesWithSurveys().map { it.toProfile() }
+        }
+    }
 
-    fun getProfile(profileId: Long): Single<Profile>
+    override suspend fun getProfile(profileId: Long): Profile {
+        return withContext(dispatcher) {
+            appDao.getProfile(profileId).toProfile()
+        }
+    }
 
-    fun createProfile(profile: Profile): Completable
+    override suspend fun createProfile(profile: Profile) {
+        return withContext(dispatcher) {
+            appDao.createProfile(profile.toProfileEntity())
+        }
+    }
 
-    fun updateProfile(profile: Profile): Completable
+    override suspend fun updateProfile(profile: Profile) {
+        return withContext(dispatcher) {
+            appDao.updateProfile(profile.toProfileEntity())
+        }
+    }
 
-    fun deleteProfile(profileId: Long): Completable
+    override suspend fun deleteProfile(profileId: Long) {
+        return withContext(dispatcher) {
+            appDao.deleteProfile(profileId)
+        }
+    }
 }

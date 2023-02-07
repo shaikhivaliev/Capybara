@@ -8,8 +8,7 @@
     <fragment
         android:id="@+id/survey"
         android:name="com.petapp.capybara.presentation.survey.SurveyFragment"
-        android:label="survey"
-        tools:layout="@layout/fragment_survey">
+        android:label="survey">
 
         <argument
             android:name="survey"

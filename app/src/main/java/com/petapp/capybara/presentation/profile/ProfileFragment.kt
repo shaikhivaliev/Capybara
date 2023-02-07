@@ -1,302 +1,302 @@
 package com.petapp.capybara.presentation.profile
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.FileProvider
-import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
-import com.afollestad.materialdialogs.list.customListAdapter
-import com.afollestad.materialdialogs.list.getListAdapter
-import com.afollestad.materialdialogs.list.getRecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
-import com.petapp.capybara.common.MarginItemDecoration
-import com.petapp.capybara.data.model.ImagePicker
-import com.petapp.capybara.data.model.ImagePickerType
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.extensions.hideKeyboard
-import com.petapp.capybara.extensions.showKeyboard
-import com.petapp.capybara.extensions.toast
-import kotlinx.android.synthetic.main.fragment_profile.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.mvi.SideEffect
+import com.petapp.capybara.core.navigation.ProfileNavDto
+import com.petapp.capybara.core.navigation.navDto
+import com.petapp.capybara.core.viewmodel.stateViewModel
+import com.petapp.capybara.di.features.FeaturesComponentHolder
+import com.petapp.capybara.presentation.main.MainActivity
+import com.petapp.capybara.ui.*
+import com.petapp.capybara.ui.list.IconTitleItem
+import com.petapp.capybara.ui.state.Error
+import com.petapp.capybara.ui.state.ShowSnackbar
+import com.petapp.capybara.ui.styles.neutralN40
+import javax.inject.Inject
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment : Fragment() {
 
-    private val viewModel: ProfileViewModel by viewModel {
-        parametersOf(findNavController())
-    }
+    @Inject
+    lateinit var vmFactory: ProfileVmFactory
 
-    private val args: ProfileFragmentArgs by navArgs()
-
-    private var currentPhotoUri: String? = null
-
-    private val currentColor = MutableLiveData<Int>()
-
-    private val adapterImagePickerDialog: ImagePickerDialogAdapter = ImagePickerDialogAdapter(
-        itemClick = { imagePicker ->
-            when (imagePicker.type) {
-                ImagePickerType.CAMERA -> viewModel.createImageFile(requireActivity())
-                ImagePickerType.GALLERY -> imageFromGallery.launch("image/*")
-            }
-            imagePickerDialog?.cancel()
-        }
+    private val vm: ProfileVm by stateViewModel(
+        vmFactoryProducer = { vmFactory }
     )
 
-    private var imagePickerDialog: MaterialDialog? = null
-
-    private val imageFromCamera =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
-            if (success) {
-                Glide.with(this)
-                    .load(currentPhotoUri)
-                    .centerCrop()
-                    .into(photo)
-            } else {
-                currentPhotoUri = args.profile?.photo
-            }
-        }
-    private val camera = ImagePicker(
-        ImagePickerType.CAMERA.ordinal.toLong(),
-        ImagePickerType.CAMERA,
-        R.string.profile_image_picker_camera,
-        R.drawable.ic_camera
-    )
-
-    private val gallery = ImagePicker(
-        ImagePickerType.GALLERY.ordinal.toLong(),
-        ImagePickerType.GALLERY,
-        R.string.profile_image_picker_gallery,
-        R.drawable.ic_gallery
-    )
+    private val args: ProfileNavDto? by navDto()
 
     private val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.apply {
-            currentPhotoUri = this.toString()
-            Glide.with(requireActivity())
-                .load(this)
-                .centerCrop()
-                .into(photo)
+            vm.updatePhoto(this.toString())
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-        initObservers()
-
-        args.profile?.id?.apply {
-            viewModel.getProfile(this)
-            viewModel.getHealthDiaryItems(this)
-        }
-        if (args.profile?.id == null) {
-            setEditMode(true)
-            Glide.with(this)
-                .load(R.drawable.ic_user_144dp)
-                .centerInside()
-                .into(photo)
-            name_et.requestFocus()
-            name_et.showKeyboard()
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)
     }
 
-    private fun initViews() {
-
-        edit.setOnClickListener {
-            setEditMode(true)
-            delete_profile.isVisible = true
-        }
-
-        done.setOnClickListener {
-            delete_profile.isVisible = false
-            if (args.profile != null) {
-                done.hideKeyboard()
-                viewModel.updateProfile(profileBuilder())
-            } else {
-                done.hideKeyboard()
-                viewModel.createProfile(profileBuilder())
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return ComposeView(requireContext()).apply {
+            vm.getProfile(args?.profile?.id)
+            setContent {
+                MdcTheme {
+                    ProfileScreen()
+                }
             }
         }
-
-        name_et.doAfterTextChanged { name_layout.error = null }
-
-        change_photo.setOnClickListener { pickImages(listOf(camera, gallery)) }
-
-        change_color.setOnClickListener { startColorDialog() }
-
-        delete_profile.setOnClickListener { deleteProfile() }
-
-        health_diary.setOnClickListener { viewModel.openHealthDiaryScreen(args.profile?.id) }
     }
 
-    private fun initObservers() {
-        with(viewModel) {
-            profile.observe(viewLifecycleOwner, Observer { profile ->
-                setProfileCard(profile)
-                setEditMode(false)
-            })
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @Composable
+    private fun ProfileScreen() {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val profileState by vm.profileState.collectAsState()
+        val sideEffect by vm.sideEffect.collectAsState()
+        val profileInputData = ProfileInputData()
 
-            imageFile.observe(viewLifecycleOwner, Observer { file ->
-                currentPhotoUri = FileProvider.getUriForFile(
-                    requireActivity(),
-                    requireActivity().getString(R.string.autority),
-                    file
-                ).toString()
-                imageFromCamera.launch(Uri.parse(currentPhotoUri))
-            })
+        Scaffold(
+            scaffoldState = scaffoldState,
+            floatingActionButton = {
+                ShowFab(profileState, profileInputData)
+            },
+            content = {
+                when (val state = profileState) {
+                    is DataState.DATA -> {
+                        ShowProfile(state.data, profileInputData)
+                    }
+                    is DataState.ERROR -> Error()
+                    else -> { // nothing
+                    }
+                }
+                if (sideEffect is SideEffect.ACTION) {
+                    ShowSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        errorMessage = stringResource(R.string.error_empty_data),
+                        dismissed = { vm.dismissSnackbar() }
+                    )
+                }
+            }
+        )
+    }
 
-            errorMessage.observe(viewLifecycleOwner, Observer { error ->
-                requireActivity().toast(error)
-            })
-
-            currentColor.observe(viewLifecycleOwner, Observer { color ->
-                color_marker.setBackgroundColor(color)
-            })
-
-            healthDiaryForProfile.observe(viewLifecycleOwner, Observer { profile ->
-                blood_pressure_value.text = profile.bloodPressure ?: getString(R.string.profile_item_health_diary_empty)
-                pulse_value.text = profile.pulse ?: getString(R.string.profile_item_health_diary_empty)
-                blood_glucose_value.text = profile.bloodGlucose ?: getString(R.string.profile_item_health_diary_empty)
-                height_value.text = profile.height ?: getString(R.string.profile_item_health_diary_empty)
-                weight_value.text = profile.weight ?: getString(R.string.profile_item_health_diary_empty)
-            })
+    @Composable
+    private fun ShowFab(surveyState: DataState<ProfileMode>?, profileInputData: ProfileInputData) {
+        surveyState?.onData { mode ->
+            FloatingActionButton(
+                onClick = {
+                    when (mode) {
+                        is ProfileMode.NEW, is ProfileMode.EDIT -> vm.verifyProfile(
+                            mode,
+                            profileInputData
+                        )
+                        is ProfileMode.READONLY -> vm.toEditMode(mode.data)
+                    }
+                }) {
+                val fabImage = when (mode) {
+                    is ProfileMode.NEW -> ImageVector.vectorResource(R.drawable.ic_done)
+                    is ProfileMode.EDIT -> ImageVector.vectorResource(R.drawable.ic_done)
+                    is ProfileMode.READONLY -> ImageVector.vectorResource(R.drawable.ic_edit)
+                }
+                Icon(
+                    imageVector = fabImage,
+                    contentDescription = null
+                )
+            }
         }
     }
 
-    private fun setProfileCard(profile: Profile) {
-        profile_name.text = profile.name
-        name_et.setText(profile.name)
-        currentColor.value = profile.color
-
-        if (profile.photo != DEFAULT_PROFILE_ICON) {
-            edit.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
-            done.setBackgroundResource(R.drawable.green_border_bgr_alpha40)
-            Glide.with(this)
-                .load(profile.photo)
-                .centerCrop()
-                .into(photo)
-        } else {
-            edit.setBackgroundResource(R.drawable.green_border_bgr)
-            done.setBackgroundResource(R.drawable.green_border_bgr)
-            Glide.with(this)
-                .load(R.drawable.ic_user_144dp)
-                .centerInside()
-                .into(photo)
+    @Composable
+    private fun ShowProfile(mode: ProfileMode, profileInputData: ProfileInputData) {
+        when (mode) {
+            is ProfileMode.NEW -> {
+                val photoUri = mode.data.photoUri
+                if (photoUri != null) {
+                    profileInputData.photoUri.value = photoUri
+                }
+                ProfileContent(
+                    colors = mode.data.colors,
+                    profileInputData = profileInputData
+                )
+            }
+            is ProfileMode.EDIT -> {
+                with(mode.data) {
+                    profileInputData.photoUri.value = profile.photo
+                    profileInputData.name.value = profile.name
+                    profileInputData.color.value = profile.color
+                }
+                ProfileContent(
+                    colors = mode.data.colors,
+                    profileInputData = profileInputData,
+                    profileId = mode.data.profile.id
+                )
+            }
+            is ProfileMode.READONLY -> ProfileContentReadOnly(mode.data)
         }
     }
 
-    private fun pickImages(items: List<ImagePicker>) {
+    @OptIn(ExperimentalGlideComposeApi::class)
+    @Composable
+    fun ProfileContent(
+        colors: List<Int>,
+        profileInputData: ProfileInputData,
+        profileId: Long? = null
+    ) {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
+            Row {
+                GlideImage(
+                    model = profileInputData.photoUri.value,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .border(
+                            color = neutralN40,
+                            width = 1.dp
+                        )
+                ) {
+                    it
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(Color(profileInputData.color.value))
+                )
+            }
+            OutlinedTextFieldOneLine(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                value = profileInputData.name.value,
+                onValueChange = {
+                    profileInputData.name.value = it
+                },
+                label = stringResource(R.string.name)
+            )
+            IconTitleItem(
+                icon = R.drawable.ic_palette,
+                title = R.string.profile_label
+            ) {
+                startColorDialog(colors) {
+                    profileInputData.color.value = it
+                }
+            }
+            IconTitleItem(
+                icon = R.drawable.ic_camera,
+                title = R.string.profile_photo
+            ) {
+                pickImageFromGallery()
+            }
+            if (profileId != null) {
+                DeleteButton(
+                    title = R.string.profile_delete,
+                    onClick = {
+                        deleteProfile(
+                            title = profileInputData.name.value,
+                            profileId = profileId
+                        )
+                    }
+                )
+            }
+        }
+    }
 
-        adapterImagePickerDialog.items = items
-
-        imagePickerDialog = MaterialDialog(requireActivity()).show {
-            title(R.string.profile_image_picker_dialog_title)
-            customListAdapter(adapterImagePickerDialog)
-            val itemCount = getListAdapter()?.itemCount ?: 0
-            getRecyclerView().addItemDecoration(
-                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_ml), itemCount - 1)
+    @OptIn(ExperimentalGlideComposeApi::class)
+    @Composable
+    fun ProfileContentReadOnly(data: ProfileUI) {
+        Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
+            Row {
+                GlideImage(
+                    model = data.profile.photo,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .border(
+                            color = neutralN40,
+                            width = 1.dp
+                        )
+                ) {
+                    it
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(Color(data.profile.color))
+                )
+            }
+            OutlinedTextFieldReadOnly(
+                value = data.profile.name,
+                label = stringResource(R.string.name)
             )
         }
     }
 
-    private fun startColorDialog() {
-
-        val colors = intArrayOf(
-            getColor(requireActivity(), R.color.red_500),
-            getColor(requireActivity(), R.color.pink_500),
-            getColor(requireActivity(), R.color.deep_purple_500),
-            getColor(requireActivity(), R.color.indigo_500),
-            getColor(requireActivity(), R.color.light_blue_500),
-            getColor(requireActivity(), R.color.cyan_500),
-            getColor(requireActivity(), R.color.teal_500),
-            getColor(requireActivity(), R.color.green_500),
-            getColor(requireActivity(), R.color.lime_500),
-            getColor(requireActivity(), R.color.yellow_500),
-            getColor(requireActivity(), R.color.amber_500),
-            getColor(requireActivity(), R.color.deep_orange_500)
-        )
-        val initialColor = args.profile?.color ?: 0
-
+    private fun deleteProfile(title: String, profileId: Long) {
         MaterialDialog(requireActivity()).show {
-            title(R.string.profile_choose_color)
-            colorChooser(colors, initialSelection = initialColor) { _, color ->
-                currentColor.value = color
-            }
-            negativeButton(R.string.cancel) { cancel() }
-        }
-    }
-
-    private fun deleteProfile() {
-        val name = profile_name.text
-        MaterialDialog(requireActivity()).show {
-            if (name.isNotBlank()) {
-                title(text = getString(R.string.profile_delete_explanation, name))
-            } else {
-                title(text = getString(R.string.profile_delete_explanation_empty))
-            }
+            title(text = getString(R.string.profile_delete_explanation, title))
             positiveButton {
-                if (args.profile?.id != null) {
-                    viewModel.deleteProfile(args.profile?.id!!)
-                } else {
-                    viewModel.back()
-                }
+                vm.deleteProfile(profileId)
                 cancel()
             }
             negativeButton { cancel() }
         }
     }
 
-    private fun profileBuilder(): Profile? {
-        return if (isNameValid() && isColorChosen()) {
-            val id = args.profile?.id ?: DEFAULT_ID_FOR_ENTITY
-            val etName = name_et.text.toString()
-            val name = if (etName.isNotBlank()) etName else args.profile?.name ?: ""
-            val photoUri = currentPhotoUri ?: args.profile?.photo ?: DEFAULT_PROFILE_ICON
-            Profile(id = id, name = name, color = requireNotNull(currentColor.value), photo = photoUri)
-        } else {
-            null
+    @SuppressLint("CheckResult")
+    private fun startColorDialog(colorsId: List<Int>, onClick: (Int) -> Unit) {
+        val initialColor = args?.profile?.color ?: 0
+        val colors = colorsId.map { ContextCompat.getColor(requireActivity(), it) }
+        MaterialDialog(requireActivity()).show {
+            title(R.string.profile_choose_color)
+            colorChooser(colors.toIntArray(), initialSelection = initialColor) { _, color ->
+                onClick(color)
+            }
+            negativeButton(R.string.cancel) { cancel() }
         }
     }
 
-    private fun setEditMode(isVisible: Boolean) {
-        current_profile.isVisible = !isVisible
-        edit_profile.isVisible = isVisible
+    private fun pickImageFromGallery() {
+        imageFromGallery.launch("image/*")
     }
 
-    private fun isNameValid(): Boolean {
-        val name = name_et.text.toString()
-        return if (name.isNotBlank()) true
-        else {
-            name_layout.error = requireActivity().getString(R.string.error_empty_name)
-            false
-        }
-    }
-
-    private fun isColorChosen(): Boolean {
-        return if (currentColor.value != null) true
-        else {
-            Toast.makeText(
-                requireActivity(),
-                resources.getString(R.string.error_profile_choose_color), Toast.LENGTH_LONG
-            ).show()
-            false
-        }
-    }
-
-    companion object {
-        private const val DEFAULT_ID_FOR_ENTITY = 0L
-        private const val DEFAULT_PROFILE_ICON = "default_profile_icon"
+    override fun onDestroy() {
+        super.onDestroy()
+        imageFromGallery.unregister()
     }
 }

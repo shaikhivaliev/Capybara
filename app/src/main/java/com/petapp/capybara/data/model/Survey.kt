@@ -1,12 +1,12 @@
 package com.petapp.capybara.data.model
 
 import android.os.Parcelable
-import com.petapp.capybara.common.ListItem
-import kotlinx.android.parcel.Parcelize
+import com.petapp.capybara.core.navigation.BaseNavDto
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Survey(
-    override val id: Long,
+    val id: Long,
     val typeId: Long,
     val profileId: Long,
     val color: Int,
@@ -15,4 +15,4 @@ data class Survey(
     val monthYear: String,
     val profileIcon: String,
     val typeIcon: Int
-) : Parcelable, ListItem
+) : Parcelable, BaseNavDto
