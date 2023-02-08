@@ -43,28 +43,6 @@ class HealthDiaryFragment : Fragment() {
         vmFactoryProducer = { vmFactory }
     )
 
-//    private val adapter: HealthDiaryAdapter =
-//        HealthDiaryAdapter(
-//            expandItem = {
-//                vm.expandItem(it)
-//            },
-//            addSurvey = {
-//                openAddingSurveyDialog(
-//                    context = requireContext(),
-//                    item = it,
-//                    onClick = { binding ->
-//                        vm.createHealthDiarySurvey(
-//                            healthDiarySurveyBuilder(
-//                                binding = binding,
-//                                item = it
-//                            )
-//                        )
-//                    }
-//                )
-//            },
-//            onDelete = { openDeleteDialog(it.id) }
-//        )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FeaturesComponentHolder.getComponent(requireActivity() as MainActivity)?.inject(this)

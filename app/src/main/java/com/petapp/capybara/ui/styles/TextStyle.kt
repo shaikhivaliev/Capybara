@@ -19,26 +19,8 @@ fun textSmall(): TextStyle {
     )
 }
 
-fun textMediumSmall(): TextStyle {
-    return defaultTextStyle.copy(
-        fontSize = 20.sp
-    )
-}
-
 fun textMedium(): TextStyle {
     return defaultTextStyle.copy(
         fontSize = 24.sp
     )
 }
-
-fun textLarge(): TextStyle {
-    return defaultTextStyle.copy(
-        fontSize = 32.sp
-    )
-}
-
-
-
-
-
-

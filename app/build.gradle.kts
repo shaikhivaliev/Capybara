@@ -91,12 +91,9 @@ dependencies {
     // Kotlin
     implementation(Libraries.Kotlin.stdLib)
 
-    // Android X
+    // AndroidX
     implementation(Libraries.AndroidX.appcompat)
     implementation(Libraries.AndroidX.coreKtx)
-    implementation(Libraries.AndroidX.preferenceKtx)
-    implementation(Libraries.AndroidX.constraintLayout)
-    implementation(Libraries.AndroidX.viewPager)
 
     // Navigation
     implementation(Libraries.Navigation.fragmentKtx)

@@ -2,7 +2,6 @@
     <!-- common-->
     <string name="app_name">Capybara</string>
     <string name="autority">com.petapp.capybara</string>
-    <string name="database_name">database</string>
     <string name="name">Имя</string>
     <string name="surveys_amount">Исследований: %1$s</string>
     <string name="repeat">Повторить</string>
@@ -23,32 +22,19 @@
 
     <!-- profile-->
     <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
-    <string name="profile_delete_explanation_empty">Вы действительно хотите удалить профиль?</string>
     <string name="profile_mock">Пока не создано ни одного\nпрофиля</string>
-    <string name="profile">профиль</string>
     <string name="profile_caps">Профиль</string>
     <string name="profile_choose_color">Изменить цвет</string>
-    <string name="profile_change_photo">Изменить фотографию</string>
-    <string name="profile_delete_photo">Удалить фотографию</string>
     <string name="profile_delete">Удалить профиль</string>
-    <string name="profile_item_health_diary_empty">нет данных</string>
-    <string name="profile_image_picker_camera">Камера</string>
-    <string name="profile_image_picker_gallery">Галерея</string>
-    <string name="profile_image_picker_delete_image">Удалить\nизобрежение</string>
     <string name="profile_label">Метки…</string>
     <string name="profile_photo">Фото…</string>
 
     <!-- survey-->
     <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
-    <string name="survey_delete_explanation_empty">Вы действительно хотите удалить исследование?</string>
     <string name="survey_incomplete_data">Создайте хотя бы один профиль, чтобы затем создать запись исследования</string>
     <string name="survey_delete">Удалить исследование</string>
     <string name="survey_change_survey_type">Тип исследования</string>
-    <string name="survey_change_survey_profile">Профиль</string>
-    <string name="survey_name">Название исследования</string>
-    <string name="survey_date">Дата исследования</string>
     <string name="survey_mock">У вас пока нет записей</string>
-    <string name="survey_add_new_survey">Добавить\nисследование</string>
     <string name="survey">Исследование</string>
 
     <!-- settings-->
@@ -100,12 +86,4 @@
     <!-- errors-->
     <string name="error_empty_data">Заполнены не все поля</string>
     <string name="error_explanation">Что-то пошло не так</string>
-    <string name="error_get_profiles">Не удалось получить профили</string>
-    <string name="error_get_marks">Не удалось получить профили</string>
-    <string name="error_update_survey">Произошла ошибка при обновление исследования</string>
-    <string name="error_get_surveys">Не удалось получить исследования</string>
-    <string name="error_delete_type">Произошла ошибка при удаление типа исследования</string>
-    <string name="error_get_types">Не удалось получить тип исследований</string>
-    <string name="error_get_health_diary_items">Не удалось получить информацию о дневнике здоровья</string>
-
 </resources>

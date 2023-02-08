@@ -58,8 +58,10 @@ fun List<Survey>.filterSurveys(id: Long): List<Survey> {
 }
 
 fun List<ItemHealthDiary>.filterHealthDiary(id: Long): List<ItemHealthDiary> {
-    // todo
-    return this
+    return this.map {
+        val surveys = it.surveys.filter { item -> item.profileId == id }
+        it.copy(surveys = surveys)
+    }
 }
 
 fun List<ItemHealthDiary>.expandItem(item: ItemHealthDiary): List<ItemHealthDiary> {

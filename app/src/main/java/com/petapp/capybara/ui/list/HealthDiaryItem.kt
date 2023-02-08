@@ -20,7 +20,6 @@ import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.ui.styles.textMedium
 import com.petapp.capybara.ui.styles.textSmall
 
-
 @Composable
 fun HealthDiaryHeader(
     item: ItemHealthDiary,

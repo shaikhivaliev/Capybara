@@ -3,12 +3,8 @@ package com.petapp.capybara.data.model.healthDiary
 data class ItemHealthDiary(
     val id: Long,
     val type: HealthDiaryType,
-    var isExpanded: Boolean = false,
-    var surveys: List<SurveyHealthDiary> = emptyList(),
-    val emptyItem: EmptyItemHealthDiary = EmptyItemHealthDiary(
-        id = id,
-        type = type
-    )
+    val isExpanded: Boolean = false,
+    var surveys: List<SurveyHealthDiary> = emptyList()
 )
 
 data class SurveyHealthDiary(
@@ -19,9 +15,4 @@ data class SurveyHealthDiary(
     val time: String,
     val surveyValue: String,
     val unitOfMeasure: String
-)
-
-data class EmptyItemHealthDiary(
-    val id: Long,
-    val type: HealthDiaryType
 )

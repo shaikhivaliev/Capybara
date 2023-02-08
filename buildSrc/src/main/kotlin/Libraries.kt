@@ -17,9 +17,6 @@ object Libraries {
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
         const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
-        const val preferenceKtx = "androidx.preference:preference-ktx:${Versions.preferenceKtx}"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
-        const val viewPager = "androidx.viewpager2:viewpager2:1.1.0-alpha01"
         const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
         const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
     }
