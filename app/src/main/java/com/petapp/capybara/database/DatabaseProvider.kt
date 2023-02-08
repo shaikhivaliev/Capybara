@@ -92,7 +92,6 @@ class DatabaseProvider(private val context: Context) {
         "database.db"
     )
         .addCallback(setInitialData)
-        .fallbackToDestructiveMigrationOnDowngrade()
         .build()
 
     fun appDao() = database.appDao()
