@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
@@ -26,6 +25,7 @@ import com.petapp.capybara.ui.dialogs.showAlertEmptyProfiles
 import com.petapp.capybara.ui.list.ChipLazyRow
 import com.petapp.capybara.ui.state.Error
 import com.petapp.capybara.ui.state.rememberStaticSelectionState
+import com.petapp.capybara.viewmodel.stateViewModel
 import io.github.boguszpawlowski.composecalendar.Calendar
 import javax.inject.Inject
 

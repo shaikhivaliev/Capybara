@@ -1,7 +1,0 @@
-const val ANDROID_APPLICATION_PLUGIN = "com.android.application"
-const val KOTLIN_ANDROID_PLUGIN = "kotlin-android"
-const val KOTLIN_PARCELIZE_PLUGIN = "kotlin-parcelize"
-const val KOTLIN_KAPT_PLUGIN = "kotlin-kapt"
-const val CHECK_DEPENDENCY_UPDATES_PLUGIN = "name.remal.check-dependency-updates"
-const val GOOGLE_SERVICES = "com.google.gms.google-services"
-const val DETEKT = "io.gitlab.arturbosch.detekt"

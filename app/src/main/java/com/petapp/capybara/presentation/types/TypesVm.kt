@@ -3,14 +3,14 @@ package com.petapp.capybara.presentation.types
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.ITypesRepository
+import com.petapp.capybara.core.data.repository.TypesRepository
+import com.petapp.capybara.navigation.MainNavigatorImpl
+import com.petapp.capybara.viewmodel.SavedStateVmAssistedFactory
 import kotlinx.coroutines.launch
 
 class TypesVmFactory(
-    private val mainNavigator: IMainNavigator,
-    private val typesRepository: ITypesRepository,
+    private val mainNavigator: MainNavigatorImpl,
+    private val typesRepository: TypesRepository,
     private val store: TypesStore
 ) : SavedStateVmAssistedFactory<TypesVm> {
     override fun create(handle: SavedStateHandle) =
@@ -24,8 +24,8 @@ class TypesVmFactory(
 
 class TypesVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
-    private val typesRepository: ITypesRepository,
+    private val mainNavigator: MainNavigatorImpl,
+    private val typesRepository: TypesRepository,
     val store: TypesStore
 ) : ViewModel() {
 

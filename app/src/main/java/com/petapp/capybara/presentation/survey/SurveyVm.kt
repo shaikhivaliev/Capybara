@@ -5,16 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.petapp.capybara.core.data.model.Profile
+import com.petapp.capybara.core.data.model.Survey
+import com.petapp.capybara.core.data.model.Type
+import com.petapp.capybara.core.data.repository.ProfileRepository
+import com.petapp.capybara.core.data.repository.SurveysRepository
+import com.petapp.capybara.core.data.repository.TypesRepository
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.IProfileRepository
-import com.petapp.capybara.data.ISurveysRepository
-import com.petapp.capybara.data.ITypesRepository
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.navigation.MainNavigatorImpl
+import com.petapp.capybara.viewmodel.SavedStateVmAssistedFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,10 +23,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SurveyVmFactory(
-    private val mainNavigator: IMainNavigator,
-    private val surveysRepository: ISurveysRepository,
-    private val typesRepository: ITypesRepository,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val surveysRepository: SurveysRepository,
+    private val typesRepository: TypesRepository,
+    private val profileRepository: ProfileRepository
 ) : SavedStateVmAssistedFactory<SurveyVm> {
     override fun create(handle: SavedStateHandle) = SurveyVm(
         savedStateHandle = handle,
@@ -39,10 +39,10 @@ class SurveyVmFactory(
 
 class SurveyVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
-    private val surveysRepository: ISurveysRepository,
-    private val typesRepository: ITypesRepository,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val surveysRepository: SurveysRepository,
+    private val typesRepository: TypesRepository,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     private val _surveyState = MutableStateFlow<DataState<SurveyMode>>(DataState.READY)

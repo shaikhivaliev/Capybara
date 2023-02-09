@@ -1,6 +1,6 @@
 package com.petapp.capybara.di.core
 
-import com.petapp.capybara.database.AppDao
+import com.petapp.capybara.core.database.AppDao
 import com.petapp.capybara.di.app.AppComponent
 import dagger.Component
 

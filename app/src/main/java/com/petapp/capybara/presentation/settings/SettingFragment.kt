@@ -21,7 +21,7 @@ import com.google.accompanist.themeadapter.material.MdcTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.BuildConfig
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Settings
+import com.petapp.capybara.core.data.model.Settings
 import com.petapp.capybara.presentation.auth.AuthActivity
 import com.petapp.capybara.ui.*
 import com.petapp.capybara.ui.list.IconTitleItem

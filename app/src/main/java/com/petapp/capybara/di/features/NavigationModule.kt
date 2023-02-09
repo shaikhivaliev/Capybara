@@ -1,9 +1,8 @@
 package com.petapp.capybara.di.features
 
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.navigation.INavControllerProvider
-import com.petapp.capybara.core.navigation.MainNavigator
-import com.petapp.capybara.core.navigation.NavControllerProvider
+import com.petapp.capybara.navigation.NavControllerProvider
+import com.petapp.capybara.navigation.MainNavigatorImpl
+import com.petapp.capybara.navigation.NavControllerProviderImpl
 import dagger.Module
 import dagger.Provides
 
@@ -12,11 +11,11 @@ class NavigationModule {
 
     @Provides
     @FeaturesScope
-    fun provideNavControllerProvider(): INavControllerProvider = NavControllerProvider()
+    fun provideNavControllerProvider(): NavControllerProvider = NavControllerProviderImpl()
 
     @Provides
     @FeaturesScope
     fun provideMainNavigator(
-        navControllerProvider: INavControllerProvider
-    ): IMainNavigator = MainNavigator(navControllerProvider)
+        navControllerProvider: NavControllerProvider
+    ): MainNavigatorImpl = MainNavigatorImpl(navControllerProvider)
 }

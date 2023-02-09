@@ -1,12 +1,12 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 plugins {
-    id(ANDROID_APPLICATION_PLUGIN)
-    id(GOOGLE_SERVICES)
-    id(CHECK_DEPENDENCY_UPDATES_PLUGIN)
-    id(KOTLIN_ANDROID_PLUGIN)
-    id(KOTLIN_KAPT_PLUGIN)
-    id(KOTLIN_PARCELIZE_PLUGIN)
+    id(Plugins.ANDROID_APPLICATION)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_KAPT)
+    id(Plugins.KOTLIN_PARCELIZE)
+    id(Plugins.GOOGLE_SERVICES)
+    id(Plugins.CHECK_DEPENDENCY_UPDATES)
 }
 
 android {
@@ -82,6 +82,9 @@ android {
 tasks.named("check").dependsOn("ktlintCheck")
 
 dependencies {
+    // Project
+    implementation(project(Modules.core))
+
     // Desugar JdkLibs
     coreLibraryDesugaring(Libraries.AndroidTools.desugarJdkLibs)
 

@@ -3,27 +3,26 @@ package com.petapp.capybara.presentation.healthDiary
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.petapp.capybara.R
+import com.petapp.capybara.core.data.model.ItemHealthDiary
+import com.petapp.capybara.core.data.model.Profile
+import com.petapp.capybara.core.data.model.SurveyHealthDiary
+import com.petapp.capybara.core.data.repository.HealthDiaryRepository
+import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.IHealthDiaryRepository
-import com.petapp.capybara.data.IProfileRepository
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
-import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
+import com.petapp.capybara.navigation.MainNavigatorImpl
 import com.petapp.capybara.presentation.expandItem
 import com.petapp.capybara.presentation.expandItems
 import com.petapp.capybara.presentation.filterHealthDiary
+import com.petapp.capybara.viewmodel.SavedStateVmAssistedFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HealthDiaryVmFactory(
-    private val mainNavigator: IMainNavigator,
-    private val healthDiaryRepository: IHealthDiaryRepository,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val healthDiaryRepository: HealthDiaryRepository,
+    private val profileRepository: ProfileRepository
 ) : SavedStateVmAssistedFactory<HealthDiaryVm> {
     override fun create(handle: SavedStateHandle) =
         HealthDiaryVm(
@@ -36,9 +35,9 @@ class HealthDiaryVmFactory(
 
 class HealthDiaryVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
-    private val healthDiaryRepository: IHealthDiaryRepository,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val healthDiaryRepository: HealthDiaryRepository,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     private val _healthDiaryState = MutableStateFlow<DataState<HealthDiaryUI>>(DataState.READY)

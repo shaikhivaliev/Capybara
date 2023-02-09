@@ -20,10 +20,9 @@ import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.navigation.LongNavDto
-import com.petapp.capybara.core.navigation.navDto
-import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
+import com.petapp.capybara.navigation.LongNavDto
+import com.petapp.capybara.navigation.navDto
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.presentation.toUiData
 import com.petapp.capybara.ui.*
@@ -33,6 +32,7 @@ import com.petapp.capybara.ui.list.ChipLazyRow
 import com.petapp.capybara.ui.list.IconTitleDescItem
 import com.petapp.capybara.ui.state.Empty
 import com.petapp.capybara.ui.state.Error
+import com.petapp.capybara.viewmodel.stateViewModel
 import javax.inject.Inject
 
 class SurveysFragment : Fragment() {

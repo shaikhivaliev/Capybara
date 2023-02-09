@@ -1,0 +1,8 @@
+<resources>
+    <!-- type-->
+    <string name="type_default_health_diary">Дневник здоровья</string>
+    <string name="type_default_vaccinations">Прививки</string>
+    <string name="type_default_analyzes">Анализы</string>
+    <string name="type_default_recipes">Рецепты</string>
+    <string name="type_default_surveys">Исследования</string>
+</resources>

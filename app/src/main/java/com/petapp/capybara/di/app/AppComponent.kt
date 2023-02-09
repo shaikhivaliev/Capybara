@@ -2,7 +2,7 @@ package com.petapp.capybara.di.app
 
 import android.app.Application
 import android.content.Context
-import com.petapp.capybara.core.App
+import com.petapp.capybara.App
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

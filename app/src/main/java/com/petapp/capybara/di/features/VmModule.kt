@@ -1,10 +1,10 @@
 package com.petapp.capybara.di.features
 
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.data.IHealthDiaryRepository
-import com.petapp.capybara.data.IProfileRepository
-import com.petapp.capybara.data.ISurveysRepository
-import com.petapp.capybara.data.ITypesRepository
+import com.petapp.capybara.core.data.repository.HealthDiaryRepository
+import com.petapp.capybara.core.data.repository.ProfileRepository
+import com.petapp.capybara.core.data.repository.SurveysRepository
+import com.petapp.capybara.core.data.repository.TypesRepository
+import com.petapp.capybara.navigation.MainNavigatorImpl
 import com.petapp.capybara.presentation.calendar.CalendarVmFactory
 import com.petapp.capybara.presentation.healthDiary.HealthDiaryVmFactory
 import com.petapp.capybara.presentation.profile.ProfileVmFactory
@@ -22,56 +22,55 @@ class VmModule {
     @Provides
     @FeaturesScope
     fun provideCalendarVmFactory(
-        mainNavigator: IMainNavigator,
-        profileRepository: IProfileRepository,
-        surveysRepository: ISurveysRepository
+        mainNavigator: MainNavigatorImpl,
+        profileRepository: ProfileRepository,
+        surveysRepository: SurveysRepository
     ): CalendarVmFactory = CalendarVmFactory(mainNavigator, profileRepository, surveysRepository)
 
     @Provides
     @FeaturesScope
     fun provideHealthDiaryVmFactory(
-        mainNavigator: IMainNavigator,
-        healthDiaryRepository: IHealthDiaryRepository,
-        profileRepository: IProfileRepository
+        mainNavigator: MainNavigatorImpl,
+        healthDiaryRepository: HealthDiaryRepository,
+        profileRepository: ProfileRepository
     ): HealthDiaryVmFactory = HealthDiaryVmFactory(mainNavigator, healthDiaryRepository, profileRepository)
 
     @Provides
     @FeaturesScope
     fun provideProfileVmFactory(
-        mainNavigator: IMainNavigator,
-        profileRepository: IProfileRepository,
-        healthDiaryRepository: IHealthDiaryRepository
+        mainNavigator: MainNavigatorImpl,
+        profileRepository: ProfileRepository
     ): ProfileVmFactory = ProfileVmFactory(mainNavigator, profileRepository)
 
     @Provides
     @FeaturesScope
     fun provideProfilesVmFactory(
-        mainNavigator: IMainNavigator,
-        profileRepository: IProfileRepository
+        mainNavigator: MainNavigatorImpl,
+        profileRepository: ProfileRepository
     ): ProfilesVmFactory = ProfilesVmFactory(mainNavigator, profileRepository)
 
     @Provides
     @FeaturesScope
     fun provideSurveyVmFactory(
-        mainNavigator: IMainNavigator,
-        surveysRepository: ISurveysRepository,
-        typesRepository: ITypesRepository,
-        profileRepository: IProfileRepository
+        mainNavigator: MainNavigatorImpl,
+        surveysRepository: SurveysRepository,
+        typesRepository: TypesRepository,
+        profileRepository: ProfileRepository
     ): SurveyVmFactory = SurveyVmFactory(mainNavigator, surveysRepository, typesRepository, profileRepository)
 
     @Provides
     @FeaturesScope
     fun provideSurveysVmFactory(
-        mainNavigator: IMainNavigator,
-        surveysRepository: ISurveysRepository,
-        profileRepository: IProfileRepository
+        mainNavigator: MainNavigatorImpl,
+        surveysRepository: SurveysRepository,
+        profileRepository: ProfileRepository
     ): SurveysVmFactory = SurveysVmFactory(mainNavigator, surveysRepository, profileRepository)
 
     @Provides
     @FeaturesScope
     fun provideTypesVmFactory(
-        mainNavigator: IMainNavigator,
-        typesRepository: ITypesRepository,
+        mainNavigator: MainNavigatorImpl,
+        typesRepository: TypesRepository,
         store: TypesStore
     ): TypesVmFactory = TypesVmFactory(mainNavigator, typesRepository, store)
 }

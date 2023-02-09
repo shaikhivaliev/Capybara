@@ -14,9 +14,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
-import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
-import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
+import com.petapp.capybara.core.data.model.HealthDiaryType
+import com.petapp.capybara.core.data.model.ItemHealthDiary
+import com.petapp.capybara.core.data.model.SurveyHealthDiary
 import com.petapp.capybara.ui.styles.textMedium
 import com.petapp.capybara.ui.styles.textSmall
 
@@ -86,7 +86,9 @@ fun HealthDiarySurveyItem(
         Text(
             text = item.unitOfMeasure,
             style = textSmall(),
-            modifier = Modifier.padding(start = 8.dp).weight(0.5F)
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .weight(0.5F)
         )
         Image(
             modifier = Modifier

@@ -1,23 +1,25 @@
 package com.petapp.capybara.presentation.surveys
 
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.petapp.capybara.core.data.model.Profile
+import com.petapp.capybara.core.data.model.Survey
+import com.petapp.capybara.core.data.repository.ProfileRepository
+import com.petapp.capybara.core.data.repository.SurveysRepository
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.IProfileRepository
-import com.petapp.capybara.data.ISurveysRepository
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.navigation.MainNavigatorImpl
 import com.petapp.capybara.presentation.filterSurveys
+import com.petapp.capybara.viewmodel.SavedStateVmAssistedFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SurveysVmFactory(
-    private val mainNavigator: IMainNavigator,
-    private val surveysRepository: ISurveysRepository,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val surveysRepository: SurveysRepository,
+    private val profileRepository: ProfileRepository
 ) : SavedStateVmAssistedFactory<SurveysVm> {
     override fun create(handle: SavedStateHandle) =
         SurveysVm(
@@ -30,9 +32,9 @@ class SurveysVmFactory(
 
 class SurveysVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
-    private val surveysRepository: ISurveysRepository,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val surveysRepository: SurveysRepository,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     private val _surveysState = MutableStateFlow<DataState<SurveysState>>(DataState.READY)

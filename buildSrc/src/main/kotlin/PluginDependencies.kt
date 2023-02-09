@@ -4,8 +4,8 @@ import org.gradle.plugin.use.PluginDependencySpec
 
 @Suppress("ObjectPropertyName")
 val PluginDependenciesSpec.`checkDependencyUpdates`: PluginDependencySpec
-    get() = id(CHECK_DEPENDENCY_UPDATES_PLUGIN) version Versions.checkDependencyUpdates
+    get() = id(Plugins.CHECK_DEPENDENCY_UPDATES) version Versions.checkDependencyUpdates
 
 @Suppress("ObjectPropertyName")
 val PluginDependenciesSpec.`detekt`: PluginDependencySpec
-    get() = id(DETEKT) version Versions.detekt
+    get() = id(Plugins.DETEKT) version Versions.detekt

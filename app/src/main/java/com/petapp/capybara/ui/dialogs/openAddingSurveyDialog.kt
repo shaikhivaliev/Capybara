@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
-import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.core.data.model.HealthDiaryType
+import com.petapp.capybara.core.data.model.ItemHealthDiary
 import com.petapp.capybara.databinding.DialogHealthDiarySurveyBinding
 import java.text.SimpleDateFormat
 import java.util.*

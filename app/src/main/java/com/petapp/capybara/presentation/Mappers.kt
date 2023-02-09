@@ -3,10 +3,10 @@ package com.petapp.capybara.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.petapp.capybara.R
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.Survey
-import com.petapp.capybara.data.model.Type
-import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
+import com.petapp.capybara.core.data.model.ItemHealthDiary
+import com.petapp.capybara.core.data.model.Profile
+import com.petapp.capybara.core.data.model.Survey
+import com.petapp.capybara.core.data.model.Type
 import com.petapp.capybara.ui.model.Chip
 import com.petapp.capybara.ui.model.IconTitleDescription
 

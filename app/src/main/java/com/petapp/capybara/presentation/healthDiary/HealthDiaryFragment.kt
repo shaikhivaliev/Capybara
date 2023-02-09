@@ -17,11 +17,10 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
+import com.petapp.capybara.core.data.model.HealthDiaryType
+import com.petapp.capybara.core.data.model.ItemHealthDiary
+import com.petapp.capybara.core.data.model.SurveyHealthDiary
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.viewmodel.stateViewModel
-import com.petapp.capybara.data.model.healthDiary.HealthDiaryType
-import com.petapp.capybara.data.model.healthDiary.ItemHealthDiary
-import com.petapp.capybara.data.model.healthDiary.SurveyHealthDiary
 import com.petapp.capybara.databinding.DialogHealthDiarySurveyBinding
 import com.petapp.capybara.di.features.FeaturesComponentHolder
 import com.petapp.capybara.presentation.main.MainActivity
@@ -32,6 +31,7 @@ import com.petapp.capybara.ui.dialogs.showAlertEmptyProfiles
 import com.petapp.capybara.ui.list.*
 import com.petapp.capybara.ui.state.Error
 import com.petapp.capybara.ui.styles.textSmall
+import com.petapp.capybara.viewmodel.stateViewModel
 import javax.inject.Inject
 
 class HealthDiaryFragment : Fragment() {

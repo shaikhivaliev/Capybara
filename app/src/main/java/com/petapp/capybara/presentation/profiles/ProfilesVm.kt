@@ -3,19 +3,19 @@ package com.petapp.capybara.presentation.profiles
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.petapp.capybara.core.navigation.IMainNavigator
+import com.petapp.capybara.core.data.model.Profile
+import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.IProfileRepository
-import com.petapp.capybara.data.model.Profile
+import com.petapp.capybara.navigation.MainNavigatorImpl
+import com.petapp.capybara.viewmodel.SavedStateVmAssistedFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfilesVmFactory(
-    private val mainNavigator: IMainNavigator,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val profileRepository: ProfileRepository
 ) : SavedStateVmAssistedFactory<ProfilesVm> {
     override fun create(handle: SavedStateHandle) =
         ProfilesVm(
@@ -27,8 +27,8 @@ class ProfilesVmFactory(
 
 class ProfilesVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
-    private val profileRepository: IProfileRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     private val _profilesState = MutableStateFlow<DataState<List<Profile>>>(DataState.READY)

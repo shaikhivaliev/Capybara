@@ -20,7 +20,7 @@
 
             <argument
                 android:name="profile"
-                app:argType="com.petapp.capybara.data.model.Profile"
+                app:argType="com.petapp.capybara.core.data.model.Profile"
                 app:nullable="true" />
         </action>
     </fragment>
@@ -34,7 +34,7 @@
 
             <argument
                 android:name="survey"
-                app:argType="com.petapp.capybara.data.model.Survey"
+                app:argType="com.petapp.capybara.core.data.model.Survey"
                 app:nullable="true" />
 
         </action>
@@ -83,7 +83,7 @@
 
             <argument
                 android:name="survey"
-                app:argType="com.petapp.capybara.data.model.Survey"
+                app:argType="com.petapp.capybara.core.data.model.Survey"
                 app:nullable="true" />
 
         </action>
@@ -101,7 +101,7 @@
 
         <argument
             android:name="profile"
-            app:argType="com.petapp.capybara.data.model.Profile"
+            app:argType="com.petapp.capybara.core.data.model.Profile"
             app:nullable="true" />
 
         <action
@@ -117,8 +117,7 @@
     <fragment
         android:id="@+id/health_diary"
         android:name="com.petapp.capybara.presentation.healthDiary.HealthDiaryFragment"
-        android:label="healthDiary"
-        tools:layout="@layout/fragment_health_diary">
+        android:label="healthDiary">
 
         <argument
             android:name="profile_id"

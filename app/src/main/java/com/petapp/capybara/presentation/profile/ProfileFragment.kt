@@ -31,16 +31,16 @@ import com.google.accompanist.themeadapter.material.MdcTheme
 import com.petapp.capybara.R
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
-import com.petapp.capybara.core.navigation.ProfileNavDto
-import com.petapp.capybara.core.navigation.navDto
-import com.petapp.capybara.core.viewmodel.stateViewModel
 import com.petapp.capybara.di.features.FeaturesComponentHolder
+import com.petapp.capybara.navigation.ProfileNavDto
+import com.petapp.capybara.navigation.navDto
 import com.petapp.capybara.presentation.main.MainActivity
 import com.petapp.capybara.ui.*
 import com.petapp.capybara.ui.list.IconTitleItem
 import com.petapp.capybara.ui.state.Error
 import com.petapp.capybara.ui.state.ShowSnackbar
 import com.petapp.capybara.ui.styles.neutralN40
+import com.petapp.capybara.viewmodel.stateViewModel
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {

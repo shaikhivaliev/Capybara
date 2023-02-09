@@ -12,7 +12,7 @@
 
         <argument
             android:name="survey"
-            app:argType="com.petapp.capybara.data.model.Survey"
+            app:argType="com.petapp.capybara.core.data.model.Survey"
             app:nullable="true" />
 
         <action

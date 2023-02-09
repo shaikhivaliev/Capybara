@@ -1,14 +1,14 @@
 package com.petapp.capybara.presentation.calendar
 
 import androidx.lifecycle.*
+import com.petapp.capybara.core.data.model.Profile
+import com.petapp.capybara.core.data.model.Survey
+import com.petapp.capybara.core.data.repository.ProfileRepository
+import com.petapp.capybara.core.data.repository.SurveysRepository
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.navigation.IMainNavigator
-import com.petapp.capybara.core.viewmodel.SavedStateVmAssistedFactory
-import com.petapp.capybara.data.IProfileRepository
-import com.petapp.capybara.data.ISurveysRepository
-import com.petapp.capybara.data.model.Profile
-import com.petapp.capybara.data.model.Survey
+import com.petapp.capybara.navigation.MainNavigatorImpl
 import com.petapp.capybara.presentation.filterSurveys
+import com.petapp.capybara.viewmodel.SavedStateVmAssistedFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,9 +18,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CalendarVmFactory(
-    private val mainNavigator: IMainNavigator,
-    private val profileRepository: IProfileRepository,
-    private val surveysRepository: ISurveysRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val profileRepository: ProfileRepository,
+    private val surveysRepository: SurveysRepository
 ) : SavedStateVmAssistedFactory<CalendarVm> {
     override fun create(handle: SavedStateHandle) =
         CalendarVm(
@@ -33,9 +33,9 @@ class CalendarVmFactory(
 
 class CalendarVm(
     private val savedStateHandle: SavedStateHandle,
-    private val mainNavigator: IMainNavigator,
-    private val profileRepository: IProfileRepository,
-    private val surveysRepository: ISurveysRepository
+    private val mainNavigator: MainNavigatorImpl,
+    private val profileRepository: ProfileRepository,
+    private val surveysRepository: SurveysRepository
 ) : ViewModel() {
 
     private val _calendarState = MutableStateFlow<DataState<CalendarUI>>(DataState.READY)

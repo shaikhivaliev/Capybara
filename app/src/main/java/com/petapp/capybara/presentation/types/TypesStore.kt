@@ -1,11 +1,7 @@
 package com.petapp.capybara.presentation.types
 
-import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.mvi.IStore
-import com.petapp.capybara.core.mvi.Store
-import com.petapp.capybara.core.mvi.Next
-import com.petapp.capybara.core.mvi.Update
-import com.petapp.capybara.data.model.Type
+import com.petapp.capybara.core.data.model.Type
+import com.petapp.capybara.core.mvi.*
 
 class TypesStore(
     update: TypesUpdate
