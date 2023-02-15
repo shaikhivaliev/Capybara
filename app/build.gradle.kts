@@ -22,11 +22,6 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         @Suppress("UnstableApiUsage")
-        buildFeatures {
-            viewBinding = true
-        }
-
-        @Suppress("UnstableApiUsage")
         compileOptions {
             // Flag to enable support for the new language APIs
             isCoreLibraryDesugaringEnabled = true
@@ -84,6 +79,13 @@ tasks.named("check").dependsOn("ktlintCheck")
 dependencies {
     // Project
     implementation(project(Modules.core))
+    implementation(project(Modules.uicomponents))
+    implementation(project(Modules.setting))
+    implementation(project(Modules.profile))
+    implementation(project(Modules.calendar))
+    implementation(project(Modules.types))
+    implementation(project(Modules.survey))
+    implementation(project(Modules.healthdiary))
 
     // Desugar JdkLibs
     coreLibraryDesugaring(Libraries.AndroidTools.desugarJdkLibs)
@@ -98,19 +100,8 @@ dependencies {
     implementation(Libraries.AndroidX.appcompat)
     implementation(Libraries.AndroidX.coreKtx)
 
-    // Navigation
-    implementation(Libraries.Navigation.fragmentKtx)
-    implementation(Libraries.Navigation.uiKtx)
-
-    // Lifecycle
-    implementation(Libraries.AndroidX.viewModelKtx)
-    implementation(Libraries.AndroidX.lifecycle)
-
     // Material
     implementation(Libraries.Android.material)
-
-    // ViewBinding property delegate
-    implementation(Libraries.ViewBinding.viewBindingPropertyDelegate)
 
     // Dagger
     implementation(Libraries.Dagger.core)
@@ -120,31 +111,12 @@ dependencies {
     kapt(Libraries.Dagger.androidProcessor)
 
     // Room
-    implementation(Libraries.Room.runtime)
-    annotationProcessor(Libraries.Room.compiler)
-    kapt(Libraries.Room.compiler)
-    implementation(Libraries.Room.ktx)
-    implementation(Libraries.Room.testing)
     implementation(Libraries.Room.stetho)
-
-    // Image
-    implementation(Libraries.Glide.glide)
 
     // Firebase
     implementation(Libraries.Firebase.firebaseCore)
     implementation(Libraries.Firebase.firebaseAuth)
     implementation(Libraries.Firebase.firebaseUiAuth)
-
-    // Material dialogs
-    implementation(Libraries.MaterialDialog.materialDialogsCore)
-    implementation(Libraries.MaterialDialog.materialDialogsColor)
-
-    // Tests
-    testImplementation(Libraries.Test.junit)
-    testImplementation(Libraries.Test.mockito)
-    testImplementation(Libraries.Test.coreTesting)
-    androidTestImplementation(Libraries.Test.coreTesting)
-    androidTestImplementation(Libraries.Test.espressoCore)
 
     // Coroutines
     implementation(Libraries.Coroutines.coroutinesCore)
@@ -154,14 +126,9 @@ dependencies {
     val composeBom = platform(Libraries.Compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
+    implementation(Libraries.Compose.navigation)
     implementation(Libraries.Compose.materialDesign)
     implementation(Libraries.Compose.toolingPreview)
     implementation(Libraries.Compose.themeAdapter)
     implementation(Libraries.Compose.glide)
-    implementation(Libraries.Compose.activityCompose)
-    debugImplementation(Libraries.Compose.uiTooling)
-    androidTestImplementation(Libraries.Compose.uiTest)
-    debugImplementation(Libraries.Compose.uiTestManifest)
-    implementation(Libraries.Compose.composeCalendar)
-    implementation(Libraries.Compose.composeCalendarDateTime)
 }

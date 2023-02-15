@@ -1,7 +1,6 @@
 package com.petapp.capybara.core.data.model
 
 import android.os.Parcelable
-import com.petapp.capybara.core.BaseNavDto
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,4 +14,4 @@ data class Survey(
     val monthYear: String,
     val profileIcon: String,
     val typeIcon: Int
-) : Parcelable, BaseNavDto
+) : Parcelable

@@ -2,15 +2,12 @@ package com.petapp.capybara
 
 import android.app.Application
 import com.facebook.stetho.Stetho
-import com.petapp.capybara.di.app.AppComponentHolder
-import com.petapp.capybara.di.app.DaggerAppComponent
-import com.petapp.capybara.di.core.CoreComponentHolder
-import com.petapp.capybara.di.core.DaggerCoreComponent
+import com.petapp.capybara.core.di.CoreComponentHolder
+import com.petapp.capybara.core.di.DaggerCoreComponent
 
 class App : Application() {
 
     companion object {
-        val appComponentHolder = AppComponentHolder
         val coreComponentHolder = CoreComponentHolder
     }
 
@@ -24,16 +21,9 @@ class App : Application() {
     }
 
     private fun initComponents() {
-        appComponentHolder.appComponent = DaggerAppComponent
+        coreComponentHolder.coreComponent = DaggerCoreComponent
             .builder()
             .bindApplication(this)
             .build()
-
-        coreComponentHolder.coreComponent = DaggerCoreComponent
-            .builder()
-            .bindAppComponent(appComponentHolder.appComponent)
-            .build()
-
-        appComponentHolder.appComponent.inject(this)
     }
 }

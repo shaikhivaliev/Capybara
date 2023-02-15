@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.petapp.capybara.presentation.auth.AuthActivity"
+            android:name="com.petapp.capybara.auth.AuthActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
 
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name="com.petapp.capybara.presentation.main.MainActivity"
+            android:name="com.petapp.capybara.MainActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <provider
