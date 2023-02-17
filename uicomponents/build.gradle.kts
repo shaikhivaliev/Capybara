@@ -3,28 +3,14 @@ plugins {
     id(Plugins.KOTLIN_ANDROID)
 }
 
+@Suppress("UnstableApiUsage")
 android {
-    compileSdkVersion = "android-33"
     namespace = "com.petapp.capybara.uicomponents"
-    defaultConfig {
-        minSdk = 26
-        @Suppress("UnstableApiUsage")
-        targetSdk = 33
+    compileSdk = 33
 
-        @Suppress("UnstableApiUsage")
-        vectorDrawables.useSupportLibrary = true
-
-        @Suppress("UnstableApiUsage")
-        buildFeatures {
-            viewBinding = true
-        }
-    }
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         compose = true
     }
-
-    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"
     }
@@ -42,8 +28,6 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
     implementation(Libraries.Compose.materialDesign)
-    implementation(Libraries.Compose.toolingPreview)
     implementation(Libraries.Compose.glide)
     implementation(Libraries.Compose.composeCalendar)
-    implementation(Libraries.Compose.composeCalendarDateTime)
 }

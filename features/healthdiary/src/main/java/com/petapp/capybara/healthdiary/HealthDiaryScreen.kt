@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import com.petapp.capybara.core.data.model.HealthDiaryType
 import com.petapp.capybara.core.data.model.ItemHealthDiary
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.vm.viewModel
 import com.petapp.capybara.healthdiary.di.HealthDiaryComponentHolder
 import com.petapp.capybara.list.BaseLazyColumn
 import com.petapp.capybara.list.ChipLazyRow
@@ -21,7 +20,6 @@ import com.petapp.capybara.list.HealthDiaryHeader
 import com.petapp.capybara.list.HealthDiarySurveyItem
 import com.petapp.capybara.state.ErrorState
 import com.petapp.capybara.styles.textSmall
-import com.petapp.capybara.uicomponents.databinding.DialogHealthDiarySurveyBinding
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -147,12 +145,12 @@ private fun ShowHealthDiary(
     }
 }
 
-private fun healthDiarySurveyBuilder(
-    binding: DialogHealthDiarySurveyBinding,
-    item: ItemHealthDiary,
-    profileId: Long
-) {
-    // todo
+// todo
+//private fun healthDiarySurveyBuilder(
+//    binding: DialogHealthDiarySurveyBinding,
+//    item: ItemHealthDiary,
+//    profileId: Long
+//) {
 //    with(binding) {
 //        val surveyValue = if (item.type == HealthDiaryType.BLOOD_PRESSURE) {
 //            StringBuilder()
@@ -174,7 +172,7 @@ private fun healthDiarySurveyBuilder(
 //            unitOfMeasure = unitOfMeasure.text.toString()
 //        )
 //    }
-}
+//}
 
 private fun openDeleteDialog(surveyId: Long) {
     // todo

@@ -5,22 +5,14 @@ plugins {
     id(Plugins.KOTLIN_PARCELIZE)
 }
 
+@Suppress("UnstableApiUsage")
 android {
     namespace = "com.petapp.capybara.healthdiary"
     compileSdk = 33
 
-    @Suppress("UnstableApiUsage")
-    defaultConfig {
-        minSdk = 26
-        targetSdk = 33
-    }
-
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         compose = true
     }
-
-    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"
     }
@@ -45,7 +37,6 @@ dependencies {
     val composeBom = platform(Libraries.Compose.bom)
     implementation(composeBom)
     implementation(Libraries.Compose.materialDesign)
-    implementation(Libraries.Compose.toolingPreview)
     implementation(Libraries.Compose.themeAdapter)
 
     // Material

@@ -5,19 +5,14 @@ plugins {
     id(Plugins.KOTLIN_PARCELIZE)
 }
 
+@Suppress("UnstableApiUsage")
 android {
     namespace = "com.petapp.capybara.calendar"
     compileSdk = 33
 
-    defaultConfig {
-        minSdk = 26
-        targetSdk = 33
-    }
-
     buildFeatures {
         compose = true
     }
-
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"
     }
@@ -35,7 +30,6 @@ dependencies {
     val composeBom = platform(Libraries.Compose.bom)
     implementation(composeBom)
     implementation(Libraries.Compose.materialDesign)
-    implementation(Libraries.Compose.toolingPreview)
     implementation(Libraries.Compose.composeCalendar)
     implementation(Libraries.Compose.themeAdapter)
 

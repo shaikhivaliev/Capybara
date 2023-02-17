@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.petapp.capybara.DeleteButton
 import com.petapp.capybara.core.data.model.Settings
@@ -18,7 +17,6 @@ import com.petapp.capybara.styles.neutralN50
 import com.petapp.capybara.styles.textMedium
 import com.petapp.capybara.styles.textSmall
 
-@Preview
 @Composable
 fun SettingsScreen() {
     // todo
@@ -41,6 +39,7 @@ fun SettingsScreen() {
             style = textMedium(),
             modifier = Modifier.padding(top = 16.dp)
         )
+        // todo
         Text(
             text = stringResource(R.string.settings_app_version, "1.0.0"),
             color = neutralN50,
