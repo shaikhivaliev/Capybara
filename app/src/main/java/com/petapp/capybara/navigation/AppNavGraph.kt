@@ -1,10 +1,16 @@
 package com.petapp.capybara.navigation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.firebase.auth.FirebaseAuth
+import com.petapp.capybara.R
+import com.petapp.capybara.auth.AuthActivity
 import com.petapp.capybara.calendar.CalendarScreen
 import com.petapp.capybara.calendar.navigation.CalendarNavigationScreen
 import com.petapp.capybara.healthdiary.HealthDiaryScreen
@@ -27,6 +33,7 @@ fun AppNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = ProfilesNavigationScreen.route
@@ -52,7 +59,26 @@ fun AppNavGraph(
             )
         }
         composable(SettingNavigationScreen.route) {
-            SettingsScreen()
+            SettingsScreen(
+                signOut = {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(context, AuthActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    context.startActivity(intent)
+                },
+                sendEmail = {
+                    val address = arrayListOf(context.getString(R.string.dev_email)).toTypedArray()
+                    val subject = context.getString(R.string.email_subject)
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_EMAIL, address)
+                        putExtra(Intent.EXTRA_SUBJECT, subject)
+                    }
+                    if (intent.resolveActivity(context.packageManager) != null) {
+                        context.startActivity(intent)
+                    }
+                }
+            )
         }
 
         composable(SurveyNavigationScreen.route) {

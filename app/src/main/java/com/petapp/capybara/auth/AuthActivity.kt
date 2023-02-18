@@ -31,8 +31,7 @@ class AuthActivity : AppCompatActivity() {
             result.resultCode == Activity.RESULT_OK -> openMainScreen()
             result.data == null -> finish()
             else -> {
-                // todo
-                // viewBinding.error.isVisible = true
+                // nothing
             }
         }
     }
@@ -63,16 +62,6 @@ class AuthActivity : AppCompatActivity() {
             .setTheme(R.style.AppThemeFirebaseAuth)
             .build()
         startAuthUI.launch(authIntent)
-
-        // todo
-//        viewBinding.tryAgain.setOnClickListener {
-//            val intent = intent
-//            overridePendingTransition(0, 0)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-//            finish()
-//            overridePendingTransition(0, 0)
-//            startActivity(intent)
-//        }
     }
 
     private fun openMainScreen() {
