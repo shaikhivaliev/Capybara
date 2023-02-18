@@ -24,7 +24,7 @@ fun ProfilesScreen(
     openNewProfile: () -> Unit,
     openProfileScreen: (Profile) -> Unit
 ) {
-    val vm: ProfilesVm = ProfileComponentHolder.getComponent()?.provideProfilesVm()!!
+    val vm: ProfilesVm = ProfileComponentHolder.component.provideProfilesVm()
     val profileState = vm.profilesState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(

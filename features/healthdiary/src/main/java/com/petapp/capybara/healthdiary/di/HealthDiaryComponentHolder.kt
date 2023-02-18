@@ -1,21 +1,15 @@
 package com.petapp.capybara.healthdiary.di
 
+import com.petapp.capybara.core.di.BaseComponentHolder
 import com.petapp.capybara.core.di.CoreComponentHolder
 
-object HealthDiaryComponentHolder {
-    var componentHealthDiary: HealthDiaryComponent? = null
-
-    fun getComponent(): HealthDiaryComponent? {
-        if (componentHealthDiary == null) {
-            componentHealthDiary = DaggerHealthDiaryComponent
-                .builder()
-                .bindCoreComponent(CoreComponentHolder.coreComponent)
-                .build()
-        }
-        return componentHealthDiary
-    }
-
-    fun clearComponent() {
-        componentHealthDiary = null
-    }
+object HealthDiaryComponentHolder : BaseComponentHolder<HealthDiaryComponent>() {
+    override val component: HealthDiaryComponent
+        get() = _component ?: DaggerHealthDiaryComponent
+            .builder()
+            .bindCoreComponent(CoreComponentHolder.component)
+            .build()
+            .also { calendarComponent ->
+                _component = calendarComponent
+            }
 }

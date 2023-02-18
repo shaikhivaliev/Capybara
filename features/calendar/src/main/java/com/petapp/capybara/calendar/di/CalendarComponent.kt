@@ -1,6 +1,7 @@
 package com.petapp.capybara.calendar.di
 
 import com.petapp.capybara.calendar.CalendarVm
+import com.petapp.capybara.core.di.BaseComponent
 import com.petapp.capybara.core.di.CoreComponent
 import dagger.Component
 
@@ -9,7 +10,7 @@ import dagger.Component
     modules = [CalendarModule::class]
 )
 @CalendarScope
-interface CalendarComponent {
+interface CalendarComponent : BaseComponent {
 
     @Component.Builder
     interface Builder {

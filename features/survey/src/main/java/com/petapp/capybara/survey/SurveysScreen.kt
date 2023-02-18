@@ -27,7 +27,7 @@ fun SurveysScreen(
     openNewSurveyScreen: () -> Unit,
     openSurveyScreen: (Survey) -> Unit
 ) {
-    val vm: SurveysVm = SurveyComponentHolder.getComponent()?.provideSurveysVm()!!
+    val vm: SurveysVm = SurveyComponentHolder.component.provideSurveysVm()
     val surveysState by vm.surveysState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(

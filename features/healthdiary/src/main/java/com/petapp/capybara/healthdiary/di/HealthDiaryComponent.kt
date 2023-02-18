@@ -1,5 +1,6 @@
 package com.petapp.capybara.healthdiary.di
 
+import com.petapp.capybara.core.di.BaseComponent
 import com.petapp.capybara.core.di.CoreComponent
 import com.petapp.capybara.healthdiary.HealthDiaryVm
 import dagger.Component
@@ -9,7 +10,7 @@ import dagger.Component
     modules = [HealthDiaryModule::class]
 )
 @HealthDiaryScope
-interface HealthDiaryComponent {
+interface HealthDiaryComponent : BaseComponent {
 
     @Component.Builder
     interface Builder {

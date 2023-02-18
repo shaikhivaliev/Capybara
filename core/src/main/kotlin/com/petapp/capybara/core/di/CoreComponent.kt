@@ -18,7 +18,7 @@ import javax.inject.Singleton
     modules = [AppModule::class, DatabaseModule::class, DataModule::class]
 )
 @Singleton
-interface CoreComponent {
+interface CoreComponent: BaseComponent {
 
     @Component.Builder
     interface Builder {

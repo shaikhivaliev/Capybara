@@ -1,5 +1,6 @@
 package com.petapp.capybara.survey.di
 
+import com.petapp.capybara.core.di.BaseComponent
 import com.petapp.capybara.core.di.CoreComponent
 import com.petapp.capybara.survey.SurveyVm
 import com.petapp.capybara.survey.SurveysVm
@@ -10,7 +11,7 @@ import dagger.Component
     modules = [SurveyModule::class]
 )
 @SurveyScope
-interface SurveyComponent {
+interface SurveyComponent: BaseComponent {
 
     @Component.Builder
     interface Builder {

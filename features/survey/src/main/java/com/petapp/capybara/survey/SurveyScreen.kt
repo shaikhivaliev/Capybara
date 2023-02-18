@@ -27,7 +27,7 @@ import java.util.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SurveyScreen() {
-    val vm: SurveyVm = SurveyComponentHolder.getComponent()?.provideSurveyVm()!!
+    val vm: SurveyVm = SurveyComponentHolder.component.provideSurveyVm()
     val surveyState by vm.surveyState.collectAsState()
     val sideEffect by vm.sideEffect.collectAsState()
     val input = SurveyInputData()

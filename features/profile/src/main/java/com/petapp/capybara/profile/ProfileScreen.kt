@@ -33,7 +33,7 @@ import com.petapp.capybara.styles.neutralN40
 fun ProfileScreen(
     openProfilesScreen: () -> Unit
 ) {
-    val vm: ProfileVm = ProfileComponentHolder.getComponent()?.provideProfileVm()!!
+    val vm: ProfileVm = ProfileComponentHolder.component.provideProfileVm()
     val profileState = vm.profileState.collectAsState()
     val sideEffect = vm.sideEffect.collectAsState()
     val input = ProfileInputData()

@@ -33,7 +33,7 @@ fun TypesScreen(
     openHealthDiary: () -> Unit,
     openSurveysScreen: (Long) -> Unit
 ) {
-    val vm: TypesVm = TypesComponentHolder.getComponent()?.provideTypesVm()!!
+    val vm: TypesVm = TypesComponentHolder.component.provideTypesVm()
     val typeState by vm.collectStore().collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(

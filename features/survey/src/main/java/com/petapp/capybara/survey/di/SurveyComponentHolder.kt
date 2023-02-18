@@ -1,21 +1,15 @@
 package com.petapp.capybara.survey.di
 
+import com.petapp.capybara.core.di.BaseComponentHolder
 import com.petapp.capybara.core.di.CoreComponentHolder
 
-object SurveyComponentHolder {
-    var componentSurvey: SurveyComponent? = null
-
-    fun getComponent(): SurveyComponent? {
-        if (componentSurvey == null) {
-            componentSurvey = DaggerSurveyComponent
-                .builder()
-                .bindCoreComponent(CoreComponentHolder.coreComponent)
-                .build()
-        }
-        return componentSurvey
-    }
-
-    fun clearComponent() {
-        componentSurvey = null
-    }
+object SurveyComponentHolder : BaseComponentHolder<SurveyComponent>() {
+    override val component: SurveyComponent
+        get() = _component ?: DaggerSurveyComponent
+            .builder()
+            .bindCoreComponent(CoreComponentHolder.component)
+            .build()
+            .also { commonComponent ->
+                _component = commonComponent
+            }
 }

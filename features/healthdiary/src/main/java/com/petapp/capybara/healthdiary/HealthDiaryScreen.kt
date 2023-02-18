@@ -24,7 +24,7 @@ import com.petapp.capybara.styles.textSmall
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HealthDiaryScreen() {
-    val vm: HealthDiaryVm = HealthDiaryComponentHolder.getComponent()?.provideViewModel()!!
+    val vm: HealthDiaryVm = HealthDiaryComponentHolder.component.provideViewModel()
     val healthDiaryState = vm.healthDiaryState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(
