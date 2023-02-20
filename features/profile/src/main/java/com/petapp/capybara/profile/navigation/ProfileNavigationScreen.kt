@@ -1,6 +1,6 @@
 package com.petapp.capybara.profile.navigation
 
-import com.petapp.capybara.core.NavigationScreen
+import com.petapp.capybara.core.navigation.NavigationScreen
 
 object ProfileNavigationScreen : NavigationScreen {
     override val route = "profile"

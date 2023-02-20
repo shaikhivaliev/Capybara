@@ -84,7 +84,7 @@ class ProfileVm(
                     }
                 }
                     .onSuccess {
-                        openProfilesScreen()
+                        // todo
                     }
                     .onFailure {
                         _profileState.value = DataState.ERROR(it)
@@ -122,17 +122,12 @@ class ProfileVm(
                 profileRepository.deleteProfile(profileId)
             }
                 .onSuccess {
-                    openProfilesScreen()
+                    // todo
                 }
                 .onFailure {
                     _profileState.value = DataState.ERROR(it)
                 }
         }
-    }
-
-    private fun openProfilesScreen() {
-        // todo
-        // mainNavigator.openProfiles()
     }
 
     fun dismissSnackbar() {

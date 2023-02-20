@@ -5,16 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.petapp.capybara.calendar.di.CalendarComponentHolder
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.vm.viewModel
+import com.petapp.capybara.dialogs.ShowAlertEmptyProfiles
 import com.petapp.capybara.list.ChipLazyRow
 import com.petapp.capybara.state.ErrorState
 import com.petapp.capybara.state.rememberStaticSelectionState
@@ -23,10 +20,10 @@ import io.github.boguszpawlowski.composecalendar.Calendar
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CalendarScreen(
-    openProfileScreen: () -> Unit,
+    openProfilesScreen: () -> Unit,
     openNewSurveyScreen: () -> Unit
 ) {
-    val vm: CalendarVm =  CalendarComponentHolder.component.provideViewModel()
+    val vm: CalendarVm = CalendarComponentHolder.component.provideViewModel()
     val calendarState by vm.calendarState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(
@@ -45,7 +42,10 @@ fun CalendarScreen(
         content = {
             when (val state = calendarState) {
                 DataState.EMPTY -> {
-                    // todo showAlertEmptyProfiles { openProfileScreen() }
+                    ShowAlertEmptyProfiles(
+                        onClick = { openProfilesScreen()},
+                        isOpen = true
+                    )
                 }
                 is DataState.DATA -> ShowCalendar(state.data) { vm.getCheckedSurveys(it) }
                 is DataState.ERROR -> ErrorState()

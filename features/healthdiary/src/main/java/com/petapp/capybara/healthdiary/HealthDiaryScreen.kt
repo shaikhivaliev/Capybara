@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import com.petapp.capybara.core.data.model.HealthDiaryType
 import com.petapp.capybara.core.data.model.ItemHealthDiary
 import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.dialogs.ShowAlertEmptyProfiles
 import com.petapp.capybara.healthdiary.di.HealthDiaryComponentHolder
 import com.petapp.capybara.list.BaseLazyColumn
 import com.petapp.capybara.list.ChipLazyRow
@@ -23,7 +24,9 @@ import com.petapp.capybara.styles.textSmall
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HealthDiaryScreen() {
+fun HealthDiaryScreen(
+    openProfilesScreen: () -> Unit,
+) {
     val vm: HealthDiaryVm = HealthDiaryComponentHolder.component.provideViewModel()
     val healthDiaryState = vm.healthDiaryState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
@@ -32,7 +35,10 @@ fun HealthDiaryScreen() {
         content = {
             when (val state = healthDiaryState.value) {
                 DataState.EMPTY -> {
-                    // todo showAlertEmptyProfiles { vm.openProfileScreen() }
+                    ShowAlertEmptyProfiles(
+                        onClick = { openProfilesScreen() },
+                        isOpen = true
+                    )
                 }
                 is DataState.DATA -> ShowHealthDiary(
                     state = state.data,

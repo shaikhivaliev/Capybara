@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.vm.viewModel
 import com.petapp.capybara.list.BaseLazyColumn
 import com.petapp.capybara.list.IconTitleDescItem
 import com.petapp.capybara.profile.di.ProfileComponentHolder

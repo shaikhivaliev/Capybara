@@ -106,7 +106,7 @@ class SurveyVm(
                     }
                 }
                     .onSuccess {
-                        openTypesScreen()
+                        // todo
                     }
                     .onFailure {
                         _surveyState.value = DataState.ERROR(it)
@@ -182,17 +182,12 @@ class SurveyVm(
                 surveysRepository.deleteSurvey(surveyId)
             }
                 .onSuccess {
-                    openTypesScreen()
+                    // todo
                 }
                 .onFailure {
                     _surveyState.value = DataState.ERROR(it)
                 }
         }
-    }
-
-    private fun openTypesScreen() {
-        // todo
-        // mainNavigator.openTypes()
     }
 
     fun toEditMode(data: SurveyUI) {

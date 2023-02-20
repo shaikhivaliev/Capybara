@@ -21,7 +21,6 @@ import com.petapp.capybara.OutlinedTextFieldOneLine
 import com.petapp.capybara.OutlinedTextFieldReadOnly
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
-import com.petapp.capybara.core.vm.viewModel
 import com.petapp.capybara.list.IconTitleItem
 import com.petapp.capybara.profile.di.ProfileComponentHolder
 import com.petapp.capybara.state.ErrorState

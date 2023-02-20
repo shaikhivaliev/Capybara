@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.petapp.capybara.*
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
-import com.petapp.capybara.core.vm.viewModel
 import com.petapp.capybara.state.ErrorState
 import com.petapp.capybara.state.ShowSnackbar
 import com.petapp.capybara.survey.di.SurveyComponentHolder

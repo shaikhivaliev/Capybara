@@ -15,7 +15,7 @@
     <string name="auth_mail">Войти по адресу электронной почты</string>
 
     <!-- tabs-->
-    <string name="tab_list">Исследования</string>
+    <string name="tab_list">Дневник</string>
     <string name="tab_calendar">Календарь</string>
     <string name="tab_new_profile">Профили</string>
     <string name="tab_settings">Настройки</string>

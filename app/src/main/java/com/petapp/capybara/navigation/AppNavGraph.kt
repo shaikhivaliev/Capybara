@@ -3,7 +3,6 @@ package com.petapp.capybara.navigation
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,6 +12,7 @@ import com.petapp.capybara.R
 import com.petapp.capybara.auth.AuthActivity
 import com.petapp.capybara.calendar.CalendarScreen
 import com.petapp.capybara.calendar.navigation.CalendarNavigationScreen
+import com.petapp.capybara.core.navigateTo
 import com.petapp.capybara.healthdiary.HealthDiaryScreen
 import com.petapp.capybara.healthdiary.navigation.HealthDiaryNavigationScreen
 import com.petapp.capybara.profile.ProfileScreen
@@ -30,7 +30,6 @@ import com.petapp.capybara.types.navigation.TypesNavigationScreen
 
 @Composable
 fun AppNavGraph(
-    modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
     val context = LocalContext.current
@@ -40,22 +39,36 @@ fun AppNavGraph(
     ) {
         composable(CalendarNavigationScreen.route) {
             CalendarScreen(
-                openNewSurveyScreen = {},
-                openProfileScreen = {}
+                openNewSurveyScreen = {
+                    navController.navigateTo(SurveyNavigationScreen)
+                },
+                openProfilesScreen = {
+                    navController.navigateTo(ProfilesNavigationScreen)
+                }
             )
         }
         composable(HealthDiaryNavigationScreen.route) {
-            HealthDiaryScreen()
+            HealthDiaryScreen(
+                openProfilesScreen = {
+                    navController.navigateTo(ProfilesNavigationScreen)
+                }
+            )
         }
         composable(ProfileNavigationScreen.route) {
             ProfileScreen(
-                openProfilesScreen = {}
+                openProfilesScreen = {
+                    navController.navigateTo(ProfilesNavigationScreen)
+                }
             )
         }
         composable(ProfilesNavigationScreen.route) {
             ProfilesScreen(
-                openNewProfile = {},
-                openProfileScreen = {}
+                openNewProfile = {
+                    navController.navigateTo(ProfileNavigationScreen)
+                },
+                openProfileScreen = {
+                    navController.navigateTo(ProfileNavigationScreen)
+                }
             )
         }
         composable(SettingNavigationScreen.route) {
@@ -87,15 +100,26 @@ fun AppNavGraph(
 
         composable(SurveysNavigationScreen.route) {
             SurveysScreen(
-                openNewSurveyScreen = {},
-                openSurveyScreen = {}
+                openProfilesScreen = {
+                    navController.navigateTo(ProfilesNavigationScreen)
+                },
+                openNewSurveyScreen = {
+                    navController.navigateTo(SurveyNavigationScreen)
+                },
+                openSurveyScreen = {
+                    navController.navigateTo(SurveyNavigationScreen)
+                }
             )
         }
 
         composable(TypesNavigationScreen.route) {
             TypesScreen(
-                openHealthDiary = {},
-                openSurveysScreen = {}
+                openHealthDiary = {
+                    navController.navigateTo(HealthDiaryNavigationScreen)
+                },
+                openSurveysScreen = {
+                    navController.navigateTo(SurveysNavigationScreen)
+                }
             )
         }
     }
