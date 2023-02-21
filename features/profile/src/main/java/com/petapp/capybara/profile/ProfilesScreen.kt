@@ -21,7 +21,7 @@ import com.petapp.capybara.state.ErrorState
 @Composable
 fun ProfilesScreen(
     openNewProfile: () -> Unit,
-    openProfileScreen: (Profile) -> Unit
+    openProfileScreen: (Long) -> Unit
 ) {
     val vm: ProfilesVm = ProfileComponentHolder.component.provideProfilesVm()
     val profileState = vm.profilesState.collectAsState()
@@ -43,7 +43,7 @@ fun ProfilesScreen(
                 is DataState.ERROR -> ErrorState()
                 is DataState.DATA -> ShowProfiles(
                     state = state.data,
-                    openProfileScreen = { openProfileScreen(it) })
+                    openProfileScreen = { openProfileScreen(it.id) })
                 else -> { // nothing
                 }
             }

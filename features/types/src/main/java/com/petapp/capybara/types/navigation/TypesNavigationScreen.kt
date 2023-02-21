@@ -1,7 +1,7 @@
 package com.petapp.capybara.types.navigation
 
-import com.petapp.capybara.core.navigation.NavigationScreen
+import com.petapp.capybara.core.navigation.NavigationDirection
 
-object TypesNavigationScreen : NavigationScreen {
+object TypesNavigationScreen : NavigationDirection {
     override val route = "types"
 }

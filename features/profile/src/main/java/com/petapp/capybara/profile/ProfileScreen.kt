@@ -30,9 +30,11 @@ import com.petapp.capybara.styles.neutralN40
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(
+    profileId: Long? = null,
     openProfilesScreen: () -> Unit
 ) {
     val vm: ProfileVm = ProfileComponentHolder.component.provideProfileVm()
+    vm.getProfile(profileId)
     val profileState = vm.profileState.collectAsState()
     val sideEffect = vm.sideEffect.collectAsState()
     val input = ProfileInputData()

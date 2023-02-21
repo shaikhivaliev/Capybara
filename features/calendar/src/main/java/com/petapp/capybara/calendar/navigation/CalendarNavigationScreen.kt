@@ -1,7 +1,7 @@
 package com.petapp.capybara.calendar.navigation
 
-import com.petapp.capybara.core.navigation.NavigationScreen
+import com.petapp.capybara.core.navigation.NavigationDirection
 
-object CalendarNavigationScreen : NavigationScreen {
+object CalendarNavigationScreen : NavigationDirection {
     override val route = "calendar"
 }

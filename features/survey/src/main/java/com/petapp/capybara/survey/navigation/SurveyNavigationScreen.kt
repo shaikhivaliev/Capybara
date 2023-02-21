@@ -1,11 +1,11 @@
 package com.petapp.capybara.survey.navigation
 
-import com.petapp.capybara.core.navigation.NavigationScreen
+import com.petapp.capybara.core.navigation.NavigationDirection
 
-object SurveyNavigationScreen : NavigationScreen {
+object SurveyNavigationScreen : NavigationDirection {
     override val route = "survey"
 }
 
-object SurveysNavigationScreen : NavigationScreen {
+object SurveysNavigationScreen : NavigationDirection {
     override val route = "surveys"
 }

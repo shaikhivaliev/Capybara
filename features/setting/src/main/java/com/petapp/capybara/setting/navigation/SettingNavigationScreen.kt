@@ -1,7 +1,7 @@
 package com.petapp.capybara.setting.navigation
 
-import com.petapp.capybara.core.navigation.NavigationScreen
+import com.petapp.capybara.core.navigation.NavigationDirection
 
-object SettingNavigationScreen : NavigationScreen {
+object SettingNavigationScreen : NavigationDirection {
     override val route = "setting"
 }

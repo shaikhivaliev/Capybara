@@ -12,12 +12,11 @@ import com.petapp.capybara.R
 import com.petapp.capybara.auth.AuthActivity
 import com.petapp.capybara.calendar.CalendarScreen
 import com.petapp.capybara.calendar.navigation.CalendarNavigationScreen
-import com.petapp.capybara.core.navigateTo
 import com.petapp.capybara.healthdiary.HealthDiaryScreen
 import com.petapp.capybara.healthdiary.navigation.HealthDiaryNavigationScreen
 import com.petapp.capybara.profile.ProfileScreen
 import com.petapp.capybara.profile.ProfilesScreen
-import com.petapp.capybara.profile.navigation.ProfileNavigationScreen
+import com.petapp.capybara.profile.navigation.ProfileNavigation
 import com.petapp.capybara.profile.navigation.ProfilesNavigationScreen
 import com.petapp.capybara.setting.SettingsScreen
 import com.petapp.capybara.setting.navigation.SettingNavigationScreen
@@ -28,6 +27,7 @@ import com.petapp.capybara.survey.navigation.SurveysNavigationScreen
 import com.petapp.capybara.types.TypesScreen
 import com.petapp.capybara.types.navigation.TypesNavigationScreen
 
+// todo separate to several graphs
 @Composable
 fun AppNavGraph(
     navController: NavHostController
@@ -40,34 +40,46 @@ fun AppNavGraph(
         composable(CalendarNavigationScreen.route) {
             CalendarScreen(
                 openNewSurveyScreen = {
-                    navController.navigateTo(SurveyNavigationScreen)
+                    navController.navigate(SurveyNavigationScreen.route)
                 },
                 openProfilesScreen = {
-                    navController.navigateTo(ProfilesNavigationScreen)
+                    navController.navigate(ProfilesNavigationScreen.route)
                 }
             )
         }
         composable(HealthDiaryNavigationScreen.route) {
             HealthDiaryScreen(
                 openProfilesScreen = {
-                    navController.navigateTo(ProfilesNavigationScreen)
+                    navController.navigate(ProfilesNavigationScreen.route)
                 }
             )
         }
-        composable(ProfileNavigationScreen.route) {
+        composable(
+            route = ProfileNavigation.routeWithArgs,
+            arguments = ProfileNavigation.arguments
+        ) { navBackStackEntry ->
+            val profileId = navBackStackEntry.arguments?.getLong(ProfileNavigation.typeArg)
+            ProfileScreen(
+                profileId = profileId,
+                openProfilesScreen = {
+                    navController.navigate(ProfilesNavigationScreen.route)
+                }
+            )
+        }
+        composable(route = ProfileNavigation.route) {
             ProfileScreen(
                 openProfilesScreen = {
-                    navController.navigateTo(ProfilesNavigationScreen)
+                    navController.navigate(ProfilesNavigationScreen.route)
                 }
             )
         }
-        composable(ProfilesNavigationScreen.route) {
+        composable(route = ProfilesNavigationScreen.route) {
             ProfilesScreen(
                 openNewProfile = {
-                    navController.navigateTo(ProfileNavigationScreen)
+                    navController.navigate(ProfileNavigation.route)
                 },
                 openProfileScreen = {
-                    navController.navigateTo(ProfileNavigationScreen)
+                    navController.navigate("${ProfileNavigation.route}/${id}")
                 }
             )
         }
@@ -101,13 +113,13 @@ fun AppNavGraph(
         composable(SurveysNavigationScreen.route) {
             SurveysScreen(
                 openProfilesScreen = {
-                    navController.navigateTo(ProfilesNavigationScreen)
+                    navController.navigate(ProfilesNavigationScreen.route)
                 },
                 openNewSurveyScreen = {
-                    navController.navigateTo(SurveyNavigationScreen)
+                    navController.navigate(SurveyNavigationScreen.route)
                 },
                 openSurveyScreen = {
-                    navController.navigateTo(SurveyNavigationScreen)
+                    navController.navigate(SurveyNavigationScreen.route)
                 }
             )
         }
@@ -115,10 +127,10 @@ fun AppNavGraph(
         composable(TypesNavigationScreen.route) {
             TypesScreen(
                 openHealthDiary = {
-                    navController.navigateTo(HealthDiaryNavigationScreen)
+                    navController.navigate(HealthDiaryNavigationScreen.route)
                 },
                 openSurveysScreen = {
-                    navController.navigateTo(SurveysNavigationScreen)
+                    navController.navigate(SurveysNavigationScreen.route)
                 }
             )
         }
