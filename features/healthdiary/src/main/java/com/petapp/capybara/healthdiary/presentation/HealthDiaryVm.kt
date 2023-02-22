@@ -1,4 +1,4 @@
-package com.petapp.capybara.healthdiary
+package com.petapp.capybara.healthdiary.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +8,12 @@ import com.petapp.capybara.core.data.model.SurveyHealthDiary
 import com.petapp.capybara.core.data.repository.HealthDiaryRepository
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.mvi.SideEffect
+import com.petapp.capybara.healthdiary.expandItem
+import com.petapp.capybara.healthdiary.expandItems
+import com.petapp.capybara.healthdiary.filterHealthDiary
+import com.petapp.capybara.healthdiary.state.HealthDiaryEffect
+import com.petapp.capybara.healthdiary.state.HealthDiaryUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +27,9 @@ class HealthDiaryVm(
     private val _healthDiaryState = MutableStateFlow<DataState<HealthDiaryUI>>(DataState.READY)
     val healthDiaryState: StateFlow<DataState<HealthDiaryUI>> = _healthDiaryState.asStateFlow()
 
+    private val _sideEffect = MutableStateFlow<SideEffect>(HealthDiaryEffect.Ready)
+    val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
+
     init {
         initProfiles()
     }
@@ -32,7 +41,7 @@ class HealthDiaryVm(
             }
                 .onSuccess {
                     if (it.isEmpty()) {
-                        _healthDiaryState.value = DataState.EMPTY
+                        setEffect(HealthDiaryEffect.ShowInfoDialog)
                     } else {
                         initHealthDiaryItems(it)
                     }
@@ -145,14 +154,7 @@ class HealthDiaryVm(
         }
     }
 
-    fun openProfileScreen() {
-        // mainNavigator.openProfiles()
+    fun setEffect(effect: SideEffect) {
+        _sideEffect.value = effect
     }
 }
-
-data class HealthDiaryUI(
-    val profiles: List<Profile>,
-    val checkedProfileId: Long,
-    val checkedHealthDiary: List<ItemHealthDiary>,
-    val healthDiary: List<ItemHealthDiary>
-)

@@ -2,7 +2,7 @@ package com.petapp.capybara.types.di
 
 import com.petapp.capybara.core.di.BaseComponent
 import com.petapp.capybara.core.di.CoreComponent
-import com.petapp.capybara.types.TypesVm
+import com.petapp.capybara.types.presentation.TypesVm
 import dagger.Component
 
 @Component(

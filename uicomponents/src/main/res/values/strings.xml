@@ -21,7 +21,7 @@
     <string name="tab_settings">Настройки</string>
 
     <!-- profile-->
-    <string name="profile_delete_explanation">Вы действительно хотите удалить профиль %1$s?\nБудут потеряны все исследования связанные с этим профилем</string>
+    <string name="profile_delete_explanation">Вы действительно хотите удалить профиль?\nБудут потеряны все исследования связанные с этим профилем</string>
     <string name="profile_mock">Пока не создано ни одного\nпрофиля</string>
     <string name="profile_caps">Профиль</string>
     <string name="profile_choose_color">Изменить цвет</string>
@@ -30,7 +30,7 @@
     <string name="profile_photo">Фото…</string>
 
     <!-- survey-->
-    <string name="survey_delete_explanation">Вы действительно хотите удалить исследование %1$s?</string>
+    <string name="survey_delete_explanation">Вы действительно хотите удалить исследование?</string>
     <string name="survey_incomplete_data">Создайте хотя бы один профиль, чтобы затем создать запись исследования</string>
     <string name="survey_delete">Удалить исследование</string>
     <string name="survey_change_survey_type">Тип исследования</string>

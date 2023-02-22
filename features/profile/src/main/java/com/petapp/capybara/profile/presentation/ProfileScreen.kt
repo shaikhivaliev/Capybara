@@ -1,6 +1,9 @@
-package com.petapp.capybara.profile
+package com.petapp.capybara.profile.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -20,12 +23,22 @@ import com.petapp.capybara.DeleteButton
 import com.petapp.capybara.OutlinedTextFieldOneLine
 import com.petapp.capybara.OutlinedTextFieldReadOnly
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.mvi.SideEffect
+import com.petapp.capybara.dialogs.InfoDialog
 import com.petapp.capybara.list.IconTitleItem
+import com.petapp.capybara.profile.ProfileVm
+import com.petapp.capybara.profile.R
 import com.petapp.capybara.profile.di.ProfileComponentHolder
+import com.petapp.capybara.profile.state.ProfileEffect
+import com.petapp.capybara.profile.state.ProfileInputData
+import com.petapp.capybara.profile.state.ProfileMode
+import com.petapp.capybara.profile.state.ProfileUI
 import com.petapp.capybara.state.ErrorState
 import com.petapp.capybara.state.ShowSnackbar
 import com.petapp.capybara.styles.neutralN40
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.color.colorChooser
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import com.vanpra.composematerialdialogs.title
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -45,25 +58,46 @@ fun ProfileScreen(
             ShowFab(
                 state = profileState.value,
                 input = input,
-                verifyProfile = { mode, input -> vm.verifyProfile(mode, input) },
-                toEditMode = { vm.toEditMode(it) }
+                vm = vm
             )
         },
         content = {
             when (val state = profileState.value) {
                 is DataState.DATA -> {
-                    ShowProfile(state.data, input)
+                    ShowProfile(
+                        state = state.data,
+                        input = input,
+                        vm = vm
+                    )
                 }
                 is DataState.ERROR -> ErrorState()
                 else -> { // nothing
                 }
             }
-            if (sideEffect.value is SideEffect.ACTION) {
-                ShowSnackbar(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    errorMessage = stringResource(R.string.error_empty_data),
-                    dismissed = { vm.dismissSnackbar() }
-                )
+            when (val effect = sideEffect.value) {
+                ProfileEffect.ShowSnackbar -> {
+                    ShowSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        errorMessage = stringResource(R.string.error_empty_data),
+                        dismissed = { vm.setSideEffect(ProfileEffect.Ready) }
+                    )
+                }
+                is ProfileEffect.ShowDeleteDialog -> {
+                    InfoDialog(
+                        title = R.string.profile_delete_explanation,
+                        click = { vm.deleteProfile(effect.profileId) },
+                    )
+                }
+                is ProfileEffect.NavigateToProfile -> openProfilesScreen()
+                ProfileEffect.ShowAddingColor -> UpdateColor {
+                    Log.d("aaaa", "updateColor: $it")
+                    vm.updateColor(it)
+                }
+                ProfileEffect.ShowAddingColor -> UpdatePhoto {
+                    vm.updatePhoto(it)
+                }
+                else -> { // nothing
+                }
             }
         }
     )
@@ -73,18 +107,14 @@ fun ProfileScreen(
 private fun ShowFab(
     state: DataState<ProfileMode>?,
     input: ProfileInputData,
-    verifyProfile: (ProfileMode, ProfileInputData) -> Unit,
-    toEditMode: (ProfileUI) -> Unit
+    vm: ProfileVm
 ) {
     state?.onData { mode ->
         FloatingActionButton(
             onClick = {
                 when (mode) {
-                    is ProfileMode.NEW, is ProfileMode.EDIT -> verifyProfile(
-                        mode,
-                        input
-                    )
-                    is ProfileMode.READONLY -> toEditMode(mode.data)
+                    is ProfileMode.NEW, is ProfileMode.EDIT -> vm.verifyProfile(mode, input)
+                    is ProfileMode.READONLY -> vm.toEditMode(mode.data)
                 }
             }) {
             val fabImage = when (mode) {
@@ -101,40 +131,42 @@ private fun ShowFab(
 }
 
 @Composable
-private fun ShowProfile(mode: ProfileMode, profileInputData: ProfileInputData) {
-    when (mode) {
+private fun ShowProfile(
+    state: ProfileMode,
+    input: ProfileInputData,
+    vm: ProfileVm
+) {
+    when (state) {
         is ProfileMode.NEW -> {
-            val photoUri = mode.data.photoUri
-            if (photoUri != null) {
-                profileInputData.photoUri.value = photoUri
-            }
+            state.data.color?.let { input.color.value = it }
+            state.data.photoUri?.let { input.photoUri.value = it }
             ProfileContent(
-                colors = mode.data.colors,
-                input = profileInputData
+                input = input,
+                vm = vm
             )
         }
         is ProfileMode.EDIT -> {
-            with(mode.data) {
-                profileInputData.photoUri.value = profile.photo
-                profileInputData.name.value = profile.name
-                profileInputData.color.value = profile.color
+            with(state.data) {
+                input.photoUri.value = profile.photo
+                input.name.value = profile.name
+                input.color.value = profile.color
             }
             ProfileContent(
-                colors = mode.data.colors,
-                input = profileInputData,
-                profileId = mode.data.profile.id
+                input = input,
+                profileId = state.data.profile.id,
+                vm = vm
             )
         }
-        is ProfileMode.READONLY -> ProfileContentReadOnly(mode.data)
+        is ProfileMode.READONLY -> ProfileContentReadOnly(state.data)
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProfileContent(
-    colors: List<Int>,
     input: ProfileInputData,
-    profileId: Long? = null
+    profileId: Long? = null,
+    vm: ProfileVm
 ) {
     Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
         Row {
@@ -174,25 +206,18 @@ fun ProfileContent(
             icon = R.drawable.ic_palette,
             title = R.string.profile_label
         ) {
-            startColorDialog(colors) {
-                input.color.value = it
-            }
+            vm.setSideEffect(ProfileEffect.ShowAddingColor)
         }
         IconTitleItem(
             icon = R.drawable.ic_camera,
             title = R.string.profile_photo
         ) {
-            pickImageFromGallery()
+            vm.setSideEffect(ProfileEffect.ShowAddingPhoto)
         }
         if (profileId != null) {
             DeleteButton(
                 title = R.string.profile_delete,
-                onClick = {
-                    deleteProfile(
-                        title = input.name.value,
-                        profileId = profileId
-                    )
-                }
+                onClick = { vm.setSideEffect(ProfileEffect.ShowDeleteDialog(profileId)) }
             )
         }
     }
@@ -232,38 +257,30 @@ fun ProfileContentReadOnly(data: ProfileUI) {
     }
 }
 
-private fun deleteProfile(title: String, profileId: Long) {
-    // todo
-//    MaterialDialog(requireActivity()).show {
-//        title(text = getString(R.string.profile_delete_explanation, title))
-//        positiveButton {
-//            vm.deleteProfile(profileId)
-//            cancel()
-//        }
-//        negativeButton { cancel() }
-//    }
-}
-
 @SuppressLint("CheckResult")
-private fun startColorDialog(colorsId: List<Int>, onClick: (Int) -> Unit) {
-    // todo
-//    val initialColor = 0
-//    val colors = colorsId.map { ContextCompat.getColor(requireActivity(), it) }
-//    MaterialDialog(requireActivity()).show {
-//        title(R.string.profile_choose_color)
-//        colorChooser(colors.toIntArray(), initialSelection = initialColor) { _, color ->
-//            onClick(color)
-//        }
-//        negativeButton(R.string.cancel) { cancel() }
-//    }
+@Composable
+private fun UpdateColor(onClick: (Int) -> Unit) {
+    val dialogState = rememberMaterialDialogState()
+    MaterialDialog(
+        dialogState = dialogState,
+        buttons = {
+            positiveButton("Ok") {
+                dialogState.hide()
+            }
+        }
+    ) {
+        title(stringResource(R.string.profile_choose_color))
+        colorChooser(ProfileVm.COLORS.map { it.first }, initialSelection = 0) { color ->
+            ProfileVm.COLORS.map { if (it.first == color) onClick(it.second) }
+        }
+    }
+    dialogState.show()
 }
 
-private fun pickImageFromGallery() {
-    // todo
-//    val imageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//        uri?.apply {
-//            vm.updatePhoto(this.toString())
-//        }
-//    }
-//    imageFromGallery.launch("image/*")
+@Composable
+fun UpdatePhoto(update: (String) -> Unit) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        update(it.toString())
+    }
+    launcher.launch("image/*")
 }

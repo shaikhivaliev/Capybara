@@ -19,8 +19,5 @@ sealed class DataState<out TData> {
     }
 }
 
-sealed class SideEffect {
-    object READY : SideEffect()
-    object ACTION : SideEffect()
-}
+interface SideEffect
 

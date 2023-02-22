@@ -1,4 +1,4 @@
-package com.petapp.capybara.profile
+package com.petapp.capybara.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

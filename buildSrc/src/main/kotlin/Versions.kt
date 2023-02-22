@@ -17,4 +17,6 @@ object Versions {
     const val themeAdapter = "0.28.0"
     const val glideCompose = "1.0.0-alpha.1"
     const val composeCalendar = "1.0.2"
+    const val activityCompose = "1.6.1"
+    const val colorPicker = "0.9.0"
 }

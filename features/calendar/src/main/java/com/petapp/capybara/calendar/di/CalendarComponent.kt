@@ -1,6 +1,6 @@
 package com.petapp.capybara.calendar.di
 
-import com.petapp.capybara.calendar.CalendarVm
+import com.petapp.capybara.calendar.presentation.CalendarVm
 import com.petapp.capybara.core.di.BaseComponent
 import com.petapp.capybara.core.di.CoreComponent
 import dagger.Component

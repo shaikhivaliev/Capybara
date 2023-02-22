@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import com.petapp.capybara.list.model.Chip
+import com.petapp.capybara.model.Chip
 import com.petapp.capybara.styles.mainBlack
 import com.petapp.capybara.uicomponents.R
 

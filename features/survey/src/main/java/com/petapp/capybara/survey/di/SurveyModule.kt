@@ -3,8 +3,8 @@ package com.petapp.capybara.survey.di
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.data.repository.SurveysRepository
 import com.petapp.capybara.core.data.repository.TypesRepository
-import com.petapp.capybara.survey.SurveyVm
-import com.petapp.capybara.survey.SurveysVm
+import com.petapp.capybara.survey.presentation.SurveyVm
+import com.petapp.capybara.survey.presentation.SurveysVm
 import dagger.Module
 import dagger.Provides
 

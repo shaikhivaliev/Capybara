@@ -10,18 +10,18 @@ import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.R
 import com.petapp.capybara.auth.AuthActivity
-import com.petapp.capybara.calendar.CalendarScreen
+import com.petapp.capybara.calendar.presentation.CalendarScreen
 import com.petapp.capybara.calendar.navigation.CalendarNavigationScreen
-import com.petapp.capybara.healthdiary.HealthDiaryScreen
+import com.petapp.capybara.healthdiary.presentation.HealthDiaryScreen
 import com.petapp.capybara.healthdiary.navigation.HealthDiaryNavigationScreen
-import com.petapp.capybara.profile.ProfileScreen
-import com.petapp.capybara.profile.ProfilesScreen
+import com.petapp.capybara.profile.presentation.ProfileScreen
+import com.petapp.capybara.profile.presentation.ProfilesScreen
 import com.petapp.capybara.profile.navigation.ProfileNavigation
 import com.petapp.capybara.profile.navigation.ProfilesNavigationScreen
 import com.petapp.capybara.setting.SettingsScreen
 import com.petapp.capybara.setting.navigation.SettingNavigationScreen
-import com.petapp.capybara.survey.SurveyScreen
-import com.petapp.capybara.survey.SurveysScreen
+import com.petapp.capybara.survey.presentation.SurveyScreen
+import com.petapp.capybara.survey.presentation.SurveysScreen
 import com.petapp.capybara.survey.navigation.SurveyNavigationScreen
 import com.petapp.capybara.survey.navigation.SurveysNavigationScreen
 import com.petapp.capybara.types.TypesScreen
@@ -79,7 +79,7 @@ fun AppNavGraph(
                     navController.navigate(ProfileNavigation.route)
                 },
                 openProfileScreen = {
-                    navController.navigate("${ProfileNavigation.route}/${id}")
+                    navController.navigate("${ProfileNavigation.route}/${it}")
                 }
             )
         }

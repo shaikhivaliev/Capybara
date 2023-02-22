@@ -3,7 +3,7 @@ package com.petapp.capybara.calendar
 import androidx.compose.runtime.Composable
 import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.data.model.Survey
-import com.petapp.capybara.list.model.Chip
+import com.petapp.capybara.model.Chip
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*

@@ -26,6 +26,7 @@ import com.petapp.capybara.state.EmptyState
 import com.petapp.capybara.state.ErrorState
 import com.petapp.capybara.styles.textMedium
 import com.petapp.capybara.types.di.TypesComponentHolder
+import com.petapp.capybara.types.presentation.TypesVm
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

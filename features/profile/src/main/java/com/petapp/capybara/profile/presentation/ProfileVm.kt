@@ -1,13 +1,14 @@
 package com.petapp.capybara.profile
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
+import com.petapp.capybara.profile.state.*
+import com.petapp.capybara.styles.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,17 +21,13 @@ class ProfileVm(
     private val _profileState = MutableStateFlow<DataState<ProfileMode>>(DataState.READY)
     val profileState: StateFlow<DataState<ProfileMode>> get() = _profileState.asStateFlow()
 
-    private val _sideEffect = MutableStateFlow<SideEffect>(SideEffect.READY)
+    private val _sideEffect = MutableStateFlow<SideEffect>(ProfileEffect.Ready)
     val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
     fun getProfile(profileId: Long?) {
         if (profileId == null) {
             _profileState.value = DataState.DATA(
-                ProfileMode.NEW(
-                    ProfileNew(
-                        colors = COLORS
-                    )
-                )
+                ProfileMode.NEW(ProfileNew())
             )
         } else {
             getProfile(profileId)
@@ -43,10 +40,7 @@ class ProfileVm(
                 profileRepository.getProfile(profileId)
             }
                 .onSuccess {
-                    val profile = ProfileUI(
-                        colors = COLORS,
-                        profile = it
-                    )
+                    val profile = ProfileUI(it)
                     _profileState.value = DataState.DATA(
                         ProfileMode.READONLY(profile)
                     )
@@ -71,7 +65,7 @@ class ProfileVm(
             profileInputData.name.value.isEmpty() ||
             profileInputData.color.value == 0
         ) {
-            _sideEffect.value = SideEffect.ACTION
+            _sideEffect.value = ProfileEffect.ShowSnackbar
         } else {
             val profile = createProfile(mode, profileInputData) ?: return
 
@@ -84,7 +78,7 @@ class ProfileVm(
                     }
                 }
                     .onSuccess {
-                        // todo
+                        setSideEffect(ProfileEffect.NavigateToProfile)
                     }
                     .onFailure {
                         _profileState.value = DataState.ERROR(it)
@@ -116,22 +110,20 @@ class ProfileVm(
         }
     }
 
-    fun deleteProfile(profileId: Long) {
-        viewModelScope.launch {
-            runCatching {
-                profileRepository.deleteProfile(profileId)
+    fun deleteProfile(profileId: Long?) {
+        if (profileId != null) {
+            viewModelScope.launch {
+                runCatching {
+                    profileRepository.deleteProfile(profileId)
+                }
+                    .onSuccess {
+                        setSideEffect(ProfileEffect.NavigateToProfile)
+                    }
+                    .onFailure {
+                        _profileState.value = DataState.ERROR(it)
+                    }
             }
-                .onSuccess {
-                    // todo
-                }
-                .onFailure {
-                    _profileState.value = DataState.ERROR(it)
-                }
         }
-    }
-
-    fun dismissSnackbar() {
-        _sideEffect.value = SideEffect.READY
     }
 
     fun updatePhoto(uri: String) {
@@ -153,42 +145,42 @@ class ProfileVm(
         }
     }
 
+    fun updateColor(color: Int) {
+        _profileState.value.onData { mode ->
+            _profileState.value = when (mode) {
+                is ProfileMode.EDIT -> {
+                    val profile = mode.data.profile.copy(color = color)
+                    val data = mode.data.copy(profile = profile)
+                    DataState.DATA(mode.copy(data = data))
+                }
+                is ProfileMode.NEW -> {
+                    val data = mode.data.copy(color = color)
+                    DataState.DATA(mode.copy(data = data))
+                }
+                is ProfileMode.READONLY -> {
+                    DataState.DATA(mode)
+                }
+            }
+        }
+    }
+
+    fun setSideEffect(effect: SideEffect) {
+        _sideEffect.value = effect
+    }
+
     companion object {
-        private val COLORS: List<Int> = listOf(
-            R.color.red_500,
-            R.color.pink_500,
-            R.color.deep_purple_500,
-            R.color.indigo_500,
-            R.color.light_blue_500,
-            R.color.cyan_500,
-            R.color.teal_500,
-            R.color.green_500,
-            R.color.lime_500,
-            R.color.yellow_500,
-            R.color.amber_500,
-            R.color.deep_orange_500
+        val COLORS: List<Pair<Color, Int>> = listOf(
+            Pair(red500, R.color.red_500),
+            Pair(deepPurple500, R.color.deep_purple_500),
+            Pair(indigo500, R.color.indigo_500),
+            Pair(lightBlue500, R.color.light_blue_500),
+            Pair(cyan500, R.color.cyan_500),
+            Pair(teal500, R.color.teal_500),
+            Pair(green500, R.color.green_500),
+            Pair(lime500, R.color.lime_500),
+            Pair(yellow500, R.color.yellow_500),
+            Pair(amber500, R.color.amber_500),
+            Pair(deepOrange500, R.color.deep_orange_500)
         )
     }
 }
-
-sealed class ProfileMode {
-    data class NEW(val data: ProfileNew) : ProfileMode()
-    data class EDIT(val data: ProfileUI) : ProfileMode()
-    data class READONLY(val data: ProfileUI) : ProfileMode()
-}
-
-data class ProfileNew(
-    val photoUri: String? = null,
-    val colors: List<Int>
-)
-
-data class ProfileUI(
-    val colors: List<Int>,
-    val profile: Profile
-)
-
-data class ProfileInputData(
-    val photoUri: MutableState<String> = mutableStateOf(""),
-    val name: MutableState<String> = mutableStateOf(""),
-    val color: MutableState<Int> = mutableStateOf(0)
-)

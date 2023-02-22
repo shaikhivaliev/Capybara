@@ -39,7 +39,7 @@ dependencies {
     implementation(Libraries.Compose.materialDesign)
     implementation(Libraries.Compose.themeAdapter)
     implementation(Libraries.Compose.glide)
-
-    // Navigation
+    implementation(Libraries.Compose.activity)
     implementation(Libraries.Compose.navigation)
+    implementation(Libraries.Compose.colorPicker)
 }

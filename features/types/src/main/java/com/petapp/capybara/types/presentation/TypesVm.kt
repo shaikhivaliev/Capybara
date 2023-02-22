@@ -1,8 +1,10 @@
-package com.petapp.capybara.types
+package com.petapp.capybara.types.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.core.data.repository.TypesRepository
+import com.petapp.capybara.types.state.TypesEvent
+import com.petapp.capybara.types.state.TypesStore
 import kotlinx.coroutines.launch
 
 class TypesVm(

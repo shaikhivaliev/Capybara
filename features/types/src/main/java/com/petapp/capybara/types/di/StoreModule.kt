@@ -1,7 +1,7 @@
 package com.petapp.capybara.types.di
 
-import com.petapp.capybara.types.TypesStore
-import com.petapp.capybara.types.TypesUpdate
+import com.petapp.capybara.types.state.TypesStore
+import com.petapp.capybara.types.state.TypesUpdate
 import dagger.Module
 import dagger.Provides
 

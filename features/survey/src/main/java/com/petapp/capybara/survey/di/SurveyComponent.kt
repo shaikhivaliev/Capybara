@@ -2,8 +2,8 @@ package com.petapp.capybara.survey.di
 
 import com.petapp.capybara.core.di.BaseComponent
 import com.petapp.capybara.core.di.CoreComponent
-import com.petapp.capybara.survey.SurveyVm
-import com.petapp.capybara.survey.SurveysVm
+import com.petapp.capybara.survey.presentation.SurveyVm
+import com.petapp.capybara.survey.presentation.SurveysVm
 import dagger.Component
 
 @Component(

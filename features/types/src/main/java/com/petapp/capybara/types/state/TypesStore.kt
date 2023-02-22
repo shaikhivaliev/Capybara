@@ -1,4 +1,4 @@
-package com.petapp.capybara.types
+package com.petapp.capybara.types.state
 
 import com.petapp.capybara.core.data.model.Type
 import com.petapp.capybara.core.mvi.*

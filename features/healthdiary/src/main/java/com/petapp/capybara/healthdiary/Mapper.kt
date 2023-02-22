@@ -3,7 +3,7 @@ package com.petapp.capybara.healthdiary
 import androidx.compose.runtime.Composable
 import com.petapp.capybara.core.data.model.ItemHealthDiary
 import com.petapp.capybara.core.data.model.Profile
-import com.petapp.capybara.list.model.Chip
+import com.petapp.capybara.model.Chip
 
 @Composable
 fun List<Profile>.toUiData(

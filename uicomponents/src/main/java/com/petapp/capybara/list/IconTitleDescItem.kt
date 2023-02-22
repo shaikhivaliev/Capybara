@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.petapp.capybara.list.model.IconTitleDescription
+import com.petapp.capybara.model.IconTitleDescription
 import com.petapp.capybara.styles.neutralN40
 import com.petapp.capybara.styles.textMedium
 import com.petapp.capybara.styles.textSmall

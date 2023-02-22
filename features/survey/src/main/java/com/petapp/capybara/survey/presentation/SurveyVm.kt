@@ -1,17 +1,14 @@
-package com.petapp.capybara.survey
+package com.petapp.capybara.survey.presentation
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.data.model.Survey
-import com.petapp.capybara.core.data.model.Type
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.data.repository.SurveysRepository
 import com.petapp.capybara.core.data.repository.TypesRepository
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
+import com.petapp.capybara.survey.state.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +25,7 @@ class SurveyVm(
     private val _surveyState = MutableStateFlow<DataState<SurveyMode>>(DataState.READY)
     val surveyState: StateFlow<DataState<SurveyMode>> get() = _surveyState.asStateFlow()
 
-    private val _sideEffect = MutableStateFlow<SideEffect>(SideEffect.READY)
+    private val _sideEffect = MutableStateFlow<SideEffect>(SurveyEffect.Ready)
     val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
     fun getSurvey(survey: Survey?) {
@@ -93,7 +90,7 @@ class SurveyVm(
             surveyInputData.profile.value.isEmpty() ||
             surveyInputData.type.value.isEmpty()
         ) {
-            _sideEffect.value = SideEffect.ACTION
+            _sideEffect.value = SurveyEffect.ShowSnackbar
         } else {
             val survey = createSurvey(mode, surveyInputData) ?: return
 
@@ -106,7 +103,7 @@ class SurveyVm(
                     }
                 }
                     .onSuccess {
-                        // todo
+                        setSideEffect(SurveyEffect.NavigateToType)
                     }
                     .onFailure {
                         _surveyState.value = DataState.ERROR(it)
@@ -182,7 +179,7 @@ class SurveyVm(
                 surveysRepository.deleteSurvey(surveyId)
             }
                 .onSuccess {
-                    // todo
+                    setSideEffect(SurveyEffect.NavigateToType)
                 }
                 .onFailure {
                     _surveyState.value = DataState.ERROR(it)
@@ -190,39 +187,13 @@ class SurveyVm(
         }
     }
 
+    fun setSideEffect(effect: SideEffect) {
+        _sideEffect.value = effect
+    }
+
     fun toEditMode(data: SurveyUI) {
         _surveyState.value = DataState.DATA(
             SurveyMode.EDIT(data)
         )
     }
-
-    fun dismissSnackbar() {
-        _sideEffect.value = SideEffect.READY
-    }
 }
-
-sealed class SurveyMode {
-    data class NEW(val data: SurveyNew) : SurveyMode()
-    data class EDIT(val data: SurveyUI) : SurveyMode()
-    data class READONLY(val data: SurveyUI) : SurveyMode()
-}
-
-data class SurveyNew(
-    val profiles: List<Profile>,
-    val types: List<Type>
-)
-
-data class SurveyUI(
-    val survey: Survey,
-    val profileTitle: String,
-    val typeTitle: String,
-    val profiles: List<Profile>,
-    val types: List<Type>
-)
-
-data class SurveyInputData(
-    val survey: MutableState<String> = mutableStateOf(""),
-    val date: MutableState<String> = mutableStateOf(""),
-    val profile: MutableState<String> = mutableStateOf(""),
-    val type: MutableState<String> = mutableStateOf("")
-)

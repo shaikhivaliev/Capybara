@@ -1,4 +1,4 @@
-package com.petapp.capybara.profile
+package com.petapp.capybara.profile.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.lazy.items
@@ -13,7 +13,9 @@ import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.list.BaseLazyColumn
 import com.petapp.capybara.list.IconTitleDescItem
+import com.petapp.capybara.profile.R
 import com.petapp.capybara.profile.di.ProfileComponentHolder
+import com.petapp.capybara.profile.toUiData
 import com.petapp.capybara.state.EmptyState
 import com.petapp.capybara.state.ErrorState
 

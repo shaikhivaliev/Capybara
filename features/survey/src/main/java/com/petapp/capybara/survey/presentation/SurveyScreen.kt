@@ -1,6 +1,8 @@
-package com.petapp.capybara.survey
+package com.petapp.capybara.survey.presentation
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,16 +13,20 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.petapp.capybara.*
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.core.mvi.SideEffect
 import com.petapp.capybara.state.ErrorState
-import com.petapp.capybara.state.ShowSnackbar
+import com.petapp.capybara.survey.R
 import com.petapp.capybara.survey.di.SurveyComponentHolder
+import com.petapp.capybara.survey.state.SurveyInputData
+import com.petapp.capybara.survey.state.SurveyMode
+import com.petapp.capybara.survey.state.SurveyUI
+import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -51,13 +57,13 @@ fun SurveyScreen() {
                 else -> { // nothing
                 }
             }
-            if (sideEffect is SideEffect.ACTION) {
-                ShowSnackbar(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    errorMessage = stringResource(R.string.error_empty_data),
-                    dismissed = { vm.dismissSnackbar() }
-                )
-            }
+//            if (sideEffect is SideEffect.SNACKBAR) {
+//                ShowSnackbar(
+//                    snackbarHostState = scaffoldState.snackbarHostState,
+//                    errorMessage = stringResource(R.string.error_empty_data),
+//                    dismissed = { vm.setSideEffect(SurveyEffect.Ready) }
+//                )
+//            }
         }
     )
 }
@@ -103,7 +109,7 @@ private fun ShowSurvey(
         is SurveyMode.NEW -> SurveyContent(
             profiles = mode.data.profiles.map { it.name },
             types = mode.data.types.map { it.name },
-            surveyInputData = input
+            input = input
         )
         is SurveyMode.EDIT -> {
             with(mode.data) {
@@ -114,7 +120,7 @@ private fun ShowSurvey(
                 SurveyContent(
                     profiles = profiles.map { it.name },
                     types = types.map { it.name },
-                    surveyInputData = input,
+                    input = input,
                     surveyId = survey.id
                 )
             }
@@ -127,7 +133,7 @@ private fun ShowSurvey(
 fun SurveyContent(
     profiles: List<String>,
     types: List<String>,
-    surveyInputData: SurveyInputData,
+    input: SurveyInputData,
     surveyId: Long? = null
 ) {
     val profilesMenuExpanded = remember { mutableStateOf(false) }
@@ -135,6 +141,8 @@ fun SurveyContent(
 
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
+
+    val context = LocalContext.current
     Column(
         modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
     ) {
@@ -142,9 +150,9 @@ fun SurveyContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            value = surveyInputData.survey.value,
+            value = input.survey.value,
             onValueChange = {
-                surveyInputData.survey.value = it
+                input.survey.value = it
             },
             label = stringResource(R.string.survey)
         )
@@ -155,51 +163,52 @@ fun SurveyContent(
                 .focusRequester(focusRequester)
                 .onFocusChanged { focus ->
                     if (focus.isFocused) {
-                        initCalendar {
-                            surveyInputData.date.value = it
+                        initCalendar(context) {
+                            input.date.value = it
                             focusManager.clearFocus()
                         }
                     }
                 },
-            value = surveyInputData.date.value,
+            value = input.date.value,
             onValueChange = {
-                surveyInputData.date.value = it
+                input.date.value = it
             },
             readOnly = true,
             label = { Text(stringResource(R.string.health_diary_survey_date)) }
         )
         ExpandedDropdownMenu(
             label = stringResource(R.string.profile_caps),
-            selectedTitle = surveyInputData.profile.value,
+            selectedTitle = input.profile.value,
             expanded = profilesMenuExpanded.value,
             selectionOptions = profiles,
             onExpandedChange = {
                 profilesMenuExpanded.value = !profilesMenuExpanded.value
             },
             onSelectedText = {
-                surveyInputData.profile.value = it
+                input.profile.value = it
             }
         )
         ExpandedDropdownMenu(
             label = stringResource(R.string.survey_change_survey_type),
-            selectedTitle = surveyInputData.type.value,
+            selectedTitle = input.type.value,
             expanded = typesMenuExpanded.value,
             selectionOptions = types,
             onExpandedChange = {
                 typesMenuExpanded.value = !typesMenuExpanded.value
             },
             onSelectedText = {
-                surveyInputData.type.value = it
+                input.type.value = it
             }
         )
         if (surveyId != null) {
             DeleteButton(
                 title = R.string.survey_delete,
                 onClick = {
-                    deleteSurvey(
-                        title = surveyInputData.survey.value,
-                        surveyId = surveyId
-                    )
+//                    InfoDialog(
+//                        title = R.string.survey_delete_explanation,
+//                        onClick = { vm.deleteSurvey(surveyId) },
+//                        isOpen = true
+//                    )
                 }
             )
         }
@@ -231,32 +240,22 @@ fun SurveyContentReadOnly(data: SurveyUI) {
     }
 }
 
-private fun deleteSurvey(title: String, surveyId: Long) {
-    // todo
-//    MaterialDialog(requireActivity()).show {
-//        title(text = getString(R.string.survey_delete_explanation, title))
-//        positiveButton {
-//            vm.deleteSurvey(surveyId)
-//            cancel()
-//        }
-//        negativeButton { cancel() }
-//    }
-}
+private fun initCalendar(
+    context: Context,
+    onClick: (String) -> Unit
+) {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    val calendar: Calendar = Calendar.getInstance()
+    val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        calendar.set(year, month, dayOfMonth)
+        onClick(dateFormat.format(calendar.time))
+    }
 
-private fun initCalendar(onClick: (String) -> Unit) {
-    // todo
-//    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
-//    val calendar: Calendar = Calendar.getInstance()
-//    val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-//        calendar.set(year, month, dayOfMonth)
-//        onClick(dateFormat.format(calendar.time))
-//    }
-//
-//    DatePickerDialog(
-//        requireActivity(),
-//        listener,
-//        calendar.get(Calendar.YEAR),
-//        calendar.get(Calendar.MONTH),
-//        calendar.get(Calendar.DAY_OF_MONTH)
-//    ).show()
+    DatePickerDialog(
+        context,
+        listener,
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    ).show()
 }

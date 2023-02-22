@@ -1,87 +1,84 @@
-package com.petapp.capybara.calendar
+package com.petapp.capybara.survey.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.petapp.capybara.core.data.model.Profile
-import com.petapp.capybara.core.data.model.Survey
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.data.repository.SurveysRepository
 import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.survey.filterSurveys
+import com.petapp.capybara.survey.state.SurveysState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
-class CalendarVm(
-    private val profileRepository: ProfileRepository,
-    private val surveysRepository: SurveysRepository
+class SurveysVm(
+    private val surveysRepository: SurveysRepository,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
-    private val _calendarState = MutableStateFlow<DataState<CalendarUI>>(DataState.READY)
-    val calendarState: StateFlow<DataState<CalendarUI>> get() = _calendarState.asStateFlow()
+    private val _surveysState = MutableStateFlow<DataState<SurveysState>>(DataState.READY)
+    val surveysState: StateFlow<DataState<SurveysState>> get() = _surveysState.asStateFlow()
 
-    init {
-        getProfiles()
-    }
-
-    private fun getProfiles() {
+    fun getProfiles(typeId: Long?) {
+        if (typeId == null) {
+            _surveysState.value = DataState.ERROR()
+            return
+        }
+        _surveysState.value = DataState.READY
         viewModelScope.launch {
             runCatching {
                 profileRepository.getProfiles()
             }
                 .onSuccess {
                     if (it.isEmpty()) {
-                        _calendarState.value = DataState.EMPTY
+                        _surveysState.value = DataState.EMPTY
                     } else {
-                        getSurveys(it)
+                        getSurveys(
+                            typeId = typeId,
+                            profiles = it
+                        )
                     }
                 }
                 .onFailure {
-                    _calendarState.value = DataState.ERROR(it)
+                    _surveysState.value = DataState.ERROR(it)
                 }
         }
     }
 
-    private fun getSurveys(profiles: List<Profile>) {
+    private fun getSurveys(typeId: Long, profiles: List<Profile>) {
         viewModelScope.launch {
             runCatching {
-                surveysRepository.getAllSurveys()
+                surveysRepository.getSurveysByType(typeId)
             }
                 .onSuccess {
                     val firstProfileId = profiles.first().id
-                    _calendarState.value = DataState.DATA(
-                        CalendarUI(
+                    _surveysState.value = DataState.DATA(
+                        SurveysState(
                             profiles = profiles,
                             surveys = it,
                             checkedProfileId = firstProfileId,
-                            checkedSurveysDates = it.toDates(firstProfileId)
+                            checkedSurveys = it.filterSurveys(firstProfileId)
                         )
                     )
                 }
                 .onFailure {
-                    _calendarState.value = DataState.ERROR(it)
+                    _surveysState.value = DataState.ERROR(it)
                 }
         }
     }
 
     fun getCheckedSurveys(id: Long) {
-        _calendarState.value.onData {
-            _calendarState.value = DataState.DATA(
-                CalendarUI(
+        _surveysState.value.onData {
+            _surveysState.value = DataState.DATA(
+                SurveysState(
                     profiles = it.profiles,
                     surveys = it.surveys,
                     checkedProfileId = id,
-                    checkedSurveysDates = it.surveys.toDates(id)
+                    checkedSurveys = it.surveys.filterSurveys(id)
                 )
             )
         }
     }
 }
-
-data class CalendarUI(
-    val profiles: List<Profile>,
-    val surveys: List<Survey>,
-    val checkedProfileId: Long,
-    val checkedSurveysDates: List<LocalDate>,
-)

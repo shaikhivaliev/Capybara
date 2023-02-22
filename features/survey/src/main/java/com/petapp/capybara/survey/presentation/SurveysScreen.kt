@@ -1,4 +1,4 @@
-package com.petapp.capybara.survey
+package com.petapp.capybara.survey.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -13,13 +13,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.petapp.capybara.core.data.model.Survey
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.dialogs.ShowAlertEmptyProfiles
+import com.petapp.capybara.dialogs.InfoDialog
 import com.petapp.capybara.list.BaseLazyColumn
 import com.petapp.capybara.list.ChipLazyRow
 import com.petapp.capybara.list.IconTitleDescItem
 import com.petapp.capybara.state.EmptyState
 import com.petapp.capybara.state.ErrorState
+import com.petapp.capybara.survey.R
 import com.petapp.capybara.survey.di.SurveyComponentHolder
+import com.petapp.capybara.survey.state.SurveysState
+import com.petapp.capybara.survey.toUiData
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -45,9 +48,9 @@ fun SurveysScreen(
         content = {
             when (val state = surveysState) {
                 DataState.EMPTY -> {
-                    ShowAlertEmptyProfiles(
-                        onClick = { openProfilesScreen() },
-                        isOpen = true
+                    InfoDialog(
+                        title = R.string.survey_incomplete_data,
+                        click = { openProfilesScreen() }
                     )
                 }
                 is DataState.DATA -> ShowSurveys(

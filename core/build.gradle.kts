@@ -11,6 +11,9 @@ android {
 }
 
 dependencies {
+    // Project
+    implementation(project(Modules.uicomponents))
+    
     // Material
     implementation(Libraries.Android.material)
 

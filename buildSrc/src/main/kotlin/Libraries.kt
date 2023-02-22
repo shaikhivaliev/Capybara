@@ -41,6 +41,8 @@ object Libraries {
         const val navigation = "androidx.navigation:navigation-compose:2.5.3"
         const val themeAdapter = "com.google.accompanist:accompanist-themeadapter-material:${Versions.themeAdapter}"
         const val glide = "com.github.bumptech.glide:compose:${Versions.glideCompose}"
+        const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
+        const val colorPicker = "io.github.vanpra.compose-material-dialogs:color:${Versions.colorPicker}"
         const val composeCalendar =
             "io.github.boguszpawlowski.composecalendar:composecalendar:${Versions.composeCalendar}"
     }
