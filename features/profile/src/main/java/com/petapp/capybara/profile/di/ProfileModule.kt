@@ -1,7 +1,7 @@
 package com.petapp.capybara.profile.di
 
 import com.petapp.capybara.core.data.repository.ProfileRepository
-import com.petapp.capybara.profile.ProfileVm
+import com.petapp.capybara.profile.presentation.ProfileVm
 import com.petapp.capybara.profile.presentation.ProfilesVm
 import dagger.Module
 import dagger.Provides

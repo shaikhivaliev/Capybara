@@ -7,6 +7,9 @@ plugins {
 android {
     namespace = "com.petapp.capybara.uicomponents"
     compileSdk = 33
+    defaultConfig {
+        minSdk = 26
+    }
 
     buildFeatures {
         compose = true

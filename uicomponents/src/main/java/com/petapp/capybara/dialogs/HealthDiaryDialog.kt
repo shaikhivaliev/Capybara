@@ -13,11 +13,12 @@ import androidx.compose.ui.window.Dialog
 
 
 @Composable
-fun AddingSurveyDialog(
+fun HealthDiaryDialog(
     title: Int,
-    add: () -> Unit
+    add: () -> Unit,
+    dismiss: () -> Unit
 ) {
-    Dialog(onDismissRequest = {}) {
+    Dialog(onDismissRequest = dismiss) {
         Surface(shape = MaterialTheme.shapes.medium) {
             Column {
                 Column(Modifier.padding(24.dp)) {
@@ -30,6 +31,7 @@ fun AddingSurveyDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
+                        add()
                     }) {
                         Text(text = stringResource(android.R.string.ok))
                     }

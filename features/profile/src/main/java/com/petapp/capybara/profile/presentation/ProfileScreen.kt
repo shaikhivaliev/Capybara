@@ -1,7 +1,6 @@
 package com.petapp.capybara.profile.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -25,7 +24,6 @@ import com.petapp.capybara.OutlinedTextFieldReadOnly
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.dialogs.InfoDialog
 import com.petapp.capybara.list.IconTitleItem
-import com.petapp.capybara.profile.ProfileVm
 import com.petapp.capybara.profile.R
 import com.petapp.capybara.profile.di.ProfileComponentHolder
 import com.petapp.capybara.profile.state.ProfileEffect
@@ -85,15 +83,18 @@ fun ProfileScreen(
                 is ProfileEffect.ShowDeleteDialog -> {
                     InfoDialog(
                         title = R.string.profile_delete_explanation,
-                        click = { vm.deleteProfile(effect.profileId) },
+                        click = {
+                            vm.deleteProfile(effect.profileId)
+                        },
+                        dismiss = { vm.setSideEffect(ProfileEffect.Ready) }
                     )
                 }
                 is ProfileEffect.NavigateToProfile -> openProfilesScreen()
-                ProfileEffect.ShowAddingColor -> UpdateColor {
-                    Log.d("aaaa", "updateColor: $it")
-                    vm.updateColor(it)
-                }
-                ProfileEffect.ShowAddingColor -> UpdatePhoto {
+                is ProfileEffect.ShowAddingColor -> UpdateColor(
+                    choose = { vm.updateColor(it) },
+                    dismiss = { vm.setSideEffect(ProfileEffect.Ready) }
+                )
+                is ProfileEffect.ShowAddingPhoto -> UpdatePhoto {
                     vm.updatePhoto(it)
                 }
                 else -> { // nothing
@@ -259,19 +260,21 @@ fun ProfileContentReadOnly(data: ProfileUI) {
 
 @SuppressLint("CheckResult")
 @Composable
-private fun UpdateColor(onClick: (Int) -> Unit) {
+private fun UpdateColor(choose: (Int) -> Unit, dismiss: () -> Unit) {
     val dialogState = rememberMaterialDialogState()
     MaterialDialog(
+        onCloseRequest = { dismiss() },
         dialogState = dialogState,
         buttons = {
             positiveButton("Ok") {
+                dismiss()
                 dialogState.hide()
             }
         }
     ) {
         title(stringResource(R.string.profile_choose_color))
         colorChooser(ProfileVm.COLORS.map { it.first }, initialSelection = 0) { color ->
-            ProfileVm.COLORS.map { if (it.first == color) onClick(it.second) }
+            ProfileVm.COLORS.map { if (it.first == color) choose(it.second) }
         }
     }
     dialogState.show()

@@ -18,10 +18,11 @@ import androidx.compose.ui.window.DialogProperties
 @Composable
 fun InfoDialog(
     title: Int,
-    click: () -> Unit
+    click: () -> Unit,
+    dismiss: () -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = {},
+        onDismissRequest = dismiss,
         modifier = Modifier
             .fillMaxWidth()
             .padding(32.dp),

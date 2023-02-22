@@ -47,7 +47,8 @@ fun CalendarScreen(
                 DataState.EMPTY -> {
                     InfoDialog(
                         title = R.string.survey_incomplete_data,
-                        click = { openProfilesScreen() }
+                        click = { openProfilesScreen() },
+                        dismiss = { }
                     )
                 }
                 is DataState.DATA -> ShowCalendar(state.data) { vm.getCheckedSurveys(it) }

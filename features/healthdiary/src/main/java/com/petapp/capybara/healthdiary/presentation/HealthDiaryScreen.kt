@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
 import com.petapp.capybara.core.mvi.DataState
-import com.petapp.capybara.dialogs.AddingSurveyDialog
+import com.petapp.capybara.dialogs.HealthDiaryDialog
 import com.petapp.capybara.dialogs.InfoDialog
 import com.petapp.capybara.healthdiary.R
 import com.petapp.capybara.healthdiary.di.HealthDiaryComponentHolder
@@ -46,27 +46,28 @@ fun HealthDiaryScreen(
                 else -> { // nothing
                 }
             }
-
             when (val effect = sideEffect.value) {
                 HealthDiaryEffect.ShowInfoDialog ->
                     InfoDialog(
                         title = R.string.survey_incomplete_data,
-                        click = { openProfilesScreen() }
+                        click = { openProfilesScreen() },
+                        dismiss = { vm.setEffect(HealthDiaryEffect.Ready) }
                     )
                 is HealthDiaryEffect.ShowAddingSurveyDialog ->
-                    AddingSurveyDialog(
+                    HealthDiaryDialog(
                         title = effect.title,
                         add = {
                             // todo
                             vm.createHealthDiarySurvey(null)
-                        }
+                        },
+                        dismiss = { vm.setEffect(HealthDiaryEffect.Ready) }
                     )
                 is HealthDiaryEffect.ShowDeleteDialog ->
                     InfoDialog(
                         title = R.string.health_diary_delete_survey,
-                        click = { vm.deleteHealthDiary(effect.surveyId) }
+                        click = { vm.deleteHealthDiary(effect.surveyId) },
+                        dismiss = { vm.setEffect(HealthDiaryEffect.Ready) }
                     )
-
             }
         }
     )

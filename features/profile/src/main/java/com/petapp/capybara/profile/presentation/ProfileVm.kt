@@ -1,4 +1,4 @@
-package com.petapp.capybara.profile
+package com.petapp.capybara.profile.presentation
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.core.mvi.SideEffect
+import com.petapp.capybara.profile.R
 import com.petapp.capybara.profile.state.*
 import com.petapp.capybara.styles.*
 import kotlinx.coroutines.flow.MutableStateFlow
