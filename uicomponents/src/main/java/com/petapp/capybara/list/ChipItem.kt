@@ -18,7 +18,7 @@ fun ChipItem(item: Chip) {
         leadingIcon = {
             if (item.selected) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_capybara),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_done),
                     contentDescription = null
                 )
             }

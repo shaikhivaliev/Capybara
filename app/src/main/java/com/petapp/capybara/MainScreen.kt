@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.themeadapter.material.MdcTheme
-import com.petapp.capybara.navigation.AppNavGraph
 import com.petapp.capybara.navigation.BottomBar
 import com.petapp.capybara.navigation.BottomTabs
+import com.petapp.capybara.navigation.graphs.RootGraph
 
 @Composable
 fun MainScreen() {
@@ -23,7 +23,7 @@ fun MainScreen() {
             bottomBar = { BottomBar(navController = navController, tabs) }
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                AppNavGraph(navController = navController)
+                RootGraph(navController = navController)
             }
         }
     }
