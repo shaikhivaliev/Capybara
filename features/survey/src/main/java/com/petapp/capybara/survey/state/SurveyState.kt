@@ -42,9 +42,6 @@ data class SurveyInputData(
 
 sealed class SurveyEffect : SideEffect {
     object Ready : SurveyEffect()
-    data class ShowDeleteDialog(val surveyId: Long) : SurveyEffect()
-    object ShowAddingColor : SurveyEffect()
     object NavigateToType : SurveyEffect()
     object ShowSnackbar : SurveyEffect()
-    object ShowAddingPhoto : SurveyEffect()
 }

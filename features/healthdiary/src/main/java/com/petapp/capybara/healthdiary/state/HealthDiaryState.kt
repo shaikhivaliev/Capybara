@@ -2,7 +2,6 @@ package com.petapp.capybara.healthdiary.state
 
 import com.petapp.capybara.core.data.model.ItemHealthDiary
 import com.petapp.capybara.core.data.model.Profile
-import com.petapp.capybara.core.data.model.SurveyHealthDiary
 import com.petapp.capybara.core.mvi.SideEffect
 
 data class HealthDiaryUI(

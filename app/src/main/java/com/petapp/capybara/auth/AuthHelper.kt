@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 class AuthHelper {
 
     enum class AuthState {
-        AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
+        AUTHENTICATED, UNAUTHENTICATED
     }
 
     private val _authenticationState = MutableLiveData<AuthState>()

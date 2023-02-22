@@ -1,12 +1,8 @@
 <resources>
     <!-- common-->
     <string name="app_name">Capybara</string>
-    <string name="autority">com.petapp.capybara</string>
     <string name="name">Имя</string>
     <string name="surveys_amount">Исследований: %1$s</string>
-    <string name="repeat">Повторить</string>
-    <string name="save">СОХРАНИТЬ</string>
-    <string name="cancel">ОТМЕНА</string>
     <string name="dev_email">capybaraaplication@gmail.com</string>
     <string name="email_subject">Capybara app feedback</string>
 
@@ -30,7 +26,6 @@
     <string name="profile_photo">Фото…</string>
 
     <!-- survey-->
-    <string name="survey_delete_explanation">Вы действительно хотите удалить исследование?</string>
     <string name="survey_incomplete_data">Создайте хотя бы один профиль, чтобы затем создать запись исследования</string>
     <string name="survey_delete">Удалить исследование</string>
     <string name="survey_change_survey_type">Тип исследования</string>
@@ -39,7 +34,6 @@
 
     <!-- settings-->
     <string name="settings_feedback">Обратная связь</string>
-    <string name="settings_about_app">О приложении</string>
     <string name="settings_rules">Политика конфиденциальности</string>
     <string name="settings_exit">Выход</string>
     <string name="settings_capybara_title">Capybara app</string>
@@ -48,28 +42,15 @@
     <string name="settings_share_link">Поделиться</string>
 
     <!-- type-->
-    <string name="type_default_health_diary">Дневник здоровья</string>
     <string name="type_default_vaccinations">Прививки</string>
     <string name="type_default_analyzes">Анализы</string>
     <string name="type_default_recipes">Рецепты</string>
     <string name="type_default_surveys">Исследования</string>
 
     <!-- health diary-->
-    <string name="health_diary_blood_pressure_title">Артериальное\nдавление</string>
-    <string name="health_diary_blood_pressure_title_one_line">Артериальное давление</string>
-    <string name="health_diary_blood_pressure_value">1$s/2$s мм рт. ст.</string>
-    <string name="health_diary_pulse_title">Пульс</string>
-    <string name="health_diary_pulse_value">1$s уд./мин.</string>
-    <string name="health_diary_blood_glucose_title">Глюкоза в крови</string>
-    <string name="health_diary_blood_glucose_value">1$s ммоль/л</string>
-    <string name="health_diary_height_title">Рост</string>
-    <string name="health_diary_height_value">1$s см</string>
-    <string name="health_diary_weight_title">Вес</string>
-    <string name="health_diary_weight_value">1$s кг</string>
     <string name="health_diary_health_diary">Дневник здоровья</string>
     <string name="health_diary_empty_survey">У вас пока нет записей</string>
     <string name="health_diary_survey_date">Дата</string>
-    <string name="health_diary_survey_time">Время</string>
     <string name="health_diary_survey_blood_pressure">Значение давления</string>
     <string name="health_diary_survey_pulse">Значение пульса</string>
     <string name="health_diary_survey_blood_glucose">Уровень глюкозы</string>
@@ -80,7 +61,6 @@
     <string name="health_diary_blood_glucose_unit">ммоль/л</string>
     <string name="health_diary_height_unit">см</string>
     <string name="health_diary_weight_unit">кг</string>
-    <string name="health_diary_slash">/</string>
     <string name="health_diary_delete_survey">Вы действительно хотите удалить исследование</string>
 
     <!-- errors-->

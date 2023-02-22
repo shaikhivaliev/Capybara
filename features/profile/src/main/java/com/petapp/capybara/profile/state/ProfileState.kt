@@ -2,7 +2,6 @@ package com.petapp.capybara.profile.state
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.mvi.SideEffect
 

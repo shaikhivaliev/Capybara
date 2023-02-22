@@ -10,7 +10,7 @@ import com.petapp.capybara.survey.navigation.SurveyNavigationScreen
 import com.petapp.capybara.survey.navigation.SurveysNavigationScreen
 import com.petapp.capybara.survey.presentation.SurveyScreen
 import com.petapp.capybara.survey.presentation.SurveysScreen
-import com.petapp.capybara.types.TypesScreen
+import com.petapp.capybara.types.presentation.TypesScreen
 import com.petapp.capybara.types.navigation.TypesNavigationScreen
 
 fun NavGraphBuilder.surveyGraph(

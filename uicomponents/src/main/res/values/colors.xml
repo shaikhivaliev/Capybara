@@ -4,22 +4,9 @@
     <color name="colorPrimaryDark">#009595</color>
     <color name="colorAccent">#78D8BB</color>
 
-    <color name="black">#FF000000</color>
-    <color name="white">#ffffffff</color>
-    <color name="transparent">#00000000</color>
-    <color name="transparent_alpha40">#66000000</color>
-
-    <color name="neutral_n20">#F4F5F7</color>
-    <color name="neutral_n30">#EBECF0</color>
-    <color name="neutral_n40">#DFE1E6</color>
-    <color name="neutral_n50">#97A0AF</color>
-    <color name="neutral_n60">#505F79</color>
-
     <color name="main_black">#232526</color>
-    <color name="dark_43">#414345</color>
 
     <color name="red_500">#F44336</color>
-    <color name="pink_500">#E91E63</color>
     <color name="deep_purple_500">#673AB7</color>
     <color name="indigo_500">#3F51B5</color>
     <color name="light_blue_500">#03A9F4</color>

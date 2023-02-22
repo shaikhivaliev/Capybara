@@ -10,7 +10,7 @@ object Libraries {
     }
 
     object AndroidX {
-        val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
         const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     }
 

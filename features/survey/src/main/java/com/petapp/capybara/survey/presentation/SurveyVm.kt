@@ -187,7 +187,7 @@ class SurveyVm(
         }
     }
 
-    fun setSideEffect(effect: SideEffect) {
+    private fun setSideEffect(effect: SideEffect) {
         _sideEffect.value = effect
     }
 

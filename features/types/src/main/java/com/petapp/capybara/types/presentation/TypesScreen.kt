@@ -1,4 +1,4 @@
-package com.petapp.capybara.types
+package com.petapp.capybara.types.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -25,8 +25,9 @@ import com.petapp.capybara.list.IconTitleDescItem
 import com.petapp.capybara.state.EmptyState
 import com.petapp.capybara.state.ErrorState
 import com.petapp.capybara.styles.textMedium
+import com.petapp.capybara.types.R
 import com.petapp.capybara.types.di.TypesComponentHolder
-import com.petapp.capybara.types.presentation.TypesVm
+import com.petapp.capybara.types.toUiData
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
