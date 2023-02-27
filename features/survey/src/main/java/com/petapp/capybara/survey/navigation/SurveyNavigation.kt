@@ -2,9 +2,10 @@ package com.petapp.capybara.survey.navigation
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.petapp.capybara.core.navigation.NavigationDirection
 
-object SurveyNavigation : NavigationDirection {
+import com.petapp.capybara.core.navigation.NavigationDirectionWithArgs
+
+object SurveyNavigation : NavigationDirectionWithArgs {
     override val route = "survey"
     override val typeArg = "survey_type"
     override val routeWithArgs = "${route}/{$typeArg}"
@@ -13,7 +14,7 @@ object SurveyNavigation : NavigationDirection {
     )
 }
 
-object SurveysNavigation : NavigationDirection {
+object SurveysNavigation : NavigationDirectionWithArgs {
     override val route = "surveys"
     override val typeArg = "surveys_type"
     override val routeWithArgs = "${route}/{$typeArg}"
