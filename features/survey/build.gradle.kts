@@ -10,6 +10,10 @@ android {
     namespace = "com.petapp.capybara.survey"
     compileSdk = 33
 
+    defaultConfig {
+        minSdk = 26
+    }
+
     buildFeatures {
         compose = true
     }
@@ -38,4 +42,5 @@ dependencies {
     implementation(composeBom)
     implementation(Libraries.Compose.materialDesign)
     implementation(Libraries.Compose.themeAdapter)
+    implementation(Libraries.Compose.navigation)
 }

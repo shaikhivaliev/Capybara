@@ -4,20 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.petapp.capybara.R
 import com.petapp.capybara.auth.AuthActivity
 import com.petapp.capybara.setting.SettingsScreen
-import com.petapp.capybara.setting.navigation.SettingNavigationScreen
+import com.petapp.capybara.setting.navigation.SettingNavigation
 
 
 fun NavGraphBuilder.settingsGraph(
-    navController: NavHostController,
     context: Context
 ) {
-    composable(SettingNavigationScreen.route) {
+    composable(SettingNavigation.route) {
         SettingsScreen(
             signOut = {
                 FirebaseAuth.getInstance().signOut()

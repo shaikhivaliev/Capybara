@@ -28,11 +28,11 @@ class SurveyVm(
     private val _sideEffect = MutableStateFlow<SideEffect>(SurveyEffect.Ready)
     val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
-    fun getSurvey(survey: Survey?) {
-        if (survey == null) {
+    fun getSurvey(surveyId: Long?) {
+        if (surveyId == null) {
             getProfilesTypes()
         } else {
-            getSurveyProfilesTypes(survey.id)
+            getSurveyProfilesTypes(surveyId)
         }
     }
 
@@ -103,7 +103,7 @@ class SurveyVm(
                     }
                 }
                     .onSuccess {
-                        setSideEffect(SurveyEffect.NavigateToType)
+                        setEffect(SurveyEffect.NavigateToType)
                     }
                     .onFailure {
                         _surveyState.value = DataState.ERROR(it)
@@ -179,7 +179,7 @@ class SurveyVm(
                 surveysRepository.deleteSurvey(surveyId)
             }
                 .onSuccess {
-                    setSideEffect(SurveyEffect.NavigateToType)
+                    setEffect(SurveyEffect.NavigateToType)
                 }
                 .onFailure {
                     _surveyState.value = DataState.ERROR(it)
@@ -187,7 +187,7 @@ class SurveyVm(
         }
     }
 
-    private fun setSideEffect(effect: SideEffect) {
+    fun setEffect(effect: SideEffect) {
         _sideEffect.value = effect
     }
 

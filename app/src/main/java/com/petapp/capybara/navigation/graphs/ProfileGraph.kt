@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.petapp.capybara.profile.navigation.ProfileNavigation
-import com.petapp.capybara.profile.navigation.ProfilesNavigationScreen
+import com.petapp.capybara.profile.navigation.ProfilesNavigation
 import com.petapp.capybara.profile.presentation.ProfileScreen
 import com.petapp.capybara.profile.presentation.ProfilesScreen
 
@@ -20,18 +20,18 @@ fun NavGraphBuilder.profileGraph(
         ProfileScreen(
             profileId = profileId,
             openProfilesScreen = {
-                navController.navigate(ProfilesNavigationScreen.route)
+                navController.navigate(ProfilesNavigation.route)
             }
         )
     }
     composable(route = ProfileNavigation.route) {
         ProfileScreen(
             openProfilesScreen = {
-                navController.navigate(ProfilesNavigationScreen.route)
+                navController.navigate(ProfilesNavigation.route)
             }
         )
     }
-    composable(route = ProfilesNavigationScreen.route) {
+    composable(route = ProfilesNavigation.route) {
         ProfilesScreen(
             openNewProfile = {
                 navController.navigate(ProfileNavigation.route)

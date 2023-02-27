@@ -20,9 +20,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.petapp.capybara.*
 import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.dialogs.InfoDialog
 import com.petapp.capybara.state.ErrorState
+import com.petapp.capybara.state.ShowSnackbar
 import com.petapp.capybara.survey.R
 import com.petapp.capybara.survey.di.SurveyComponentHolder
+import com.petapp.capybara.survey.state.SurveyEffect
 import com.petapp.capybara.survey.state.SurveyInputData
 import com.petapp.capybara.survey.state.SurveyMode
 import com.petapp.capybara.survey.state.SurveyUI
@@ -31,10 +34,14 @@ import java.util.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SurveyScreen() {
+fun SurveyScreen(
+    surveyId: Long? = null,
+    openTypes: () -> Unit
+) {
     val vm: SurveyVm = SurveyComponentHolder.component.provideSurveyVm()
+    vm.getSurvey(surveyId)
     val surveyState by vm.surveyState.collectAsState()
-    val sideEffect by vm.sideEffect.collectAsState()
+    val sideEffect = vm.sideEffect.collectAsState()
     val input = SurveyInputData()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
@@ -44,26 +51,33 @@ fun SurveyScreen() {
             ShowFab(
                 state = surveyState,
                 input = input,
-                verifySurvey = { mode, input -> vm.verifySurvey(mode, input) },
-                toEditMode = { vm.toEditMode(it) }
+                vm = vm
             )
         },
         content = {
             when (val state = surveyState) {
                 is DataState.DATA -> {
-                    ShowSurvey(state.data, input)
+                    ShowSurvey(state.data, input, vm)
                 }
                 is DataState.ERROR -> ErrorState()
                 else -> { // nothing
                 }
             }
-//            if (sideEffect is SideEffect.SNACKBAR) {
-//                ShowSnackbar(
-//                    snackbarHostState = scaffoldState.snackbarHostState,
-//                    errorMessage = stringResource(R.string.error_empty_data),
-//                    dismissed = { vm.setSideEffect(SurveyEffect.Ready) }
-//                )
-//            }
+            when (val effect = sideEffect.value) {
+                SurveyEffect.ShowSnackbar ->
+                    ShowSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        errorMessage = stringResource(R.string.error_empty_data),
+                        dismissed = { vm.setEffect(SurveyEffect.Ready) }
+                    )
+                is SurveyEffect.ShowDeleteDialog ->
+                    InfoDialog(
+                        title = R.string.survey_delete_explanation,
+                        click = { vm.deleteSurvey(effect.surveyId) },
+                        dismiss = { vm.setEffect(SurveyEffect.Ready) }
+                    )
+                is SurveyEffect.NavigateToType -> openTypes()
+            }
         }
     )
 }
@@ -71,19 +85,15 @@ fun SurveyScreen() {
 @Composable
 private fun ShowFab(
     state: DataState<SurveyMode>?,
-    verifySurvey: (SurveyMode, SurveyInputData) -> Unit,
-    toEditMode: (SurveyUI) -> Unit,
-    input: SurveyInputData
+    input: SurveyInputData,
+    vm: SurveyVm
 ) {
     state?.onData { mode ->
         FloatingActionButton(
             onClick = {
                 when (mode) {
-                    is SurveyMode.NEW, is SurveyMode.EDIT -> verifySurvey(
-                        mode,
-                        input
-                    )
-                    is SurveyMode.READONLY -> toEditMode(mode.data)
+                    is SurveyMode.NEW, is SurveyMode.EDIT -> vm.verifySurvey(mode, input)
+                    is SurveyMode.READONLY -> vm.toEditMode(mode.data)
                 }
             }) {
             val fabImage = when (mode) {
@@ -103,13 +113,15 @@ private fun ShowFab(
 @Composable
 private fun ShowSurvey(
     mode: SurveyMode,
-    input: SurveyInputData
+    input: SurveyInputData,
+    vm: SurveyVm
 ) {
     when (mode) {
         is SurveyMode.NEW -> SurveyContent(
             profiles = mode.data.profiles.map { it.name },
             types = mode.data.types.map { it.name },
-            input = input
+            input = input,
+            vm = vm
         )
         is SurveyMode.EDIT -> {
             with(mode.data) {
@@ -121,7 +133,8 @@ private fun ShowSurvey(
                     profiles = profiles.map { it.name },
                     types = types.map { it.name },
                     input = input,
-                    surveyId = survey.id
+                    surveyId = survey.id,
+                    vm = vm
                 )
             }
         }
@@ -134,6 +147,7 @@ fun SurveyContent(
     profiles: List<String>,
     types: List<String>,
     input: SurveyInputData,
+    vm: SurveyVm,
     surveyId: Long? = null
 ) {
     val profilesMenuExpanded = remember { mutableStateOf(false) }
@@ -204,11 +218,7 @@ fun SurveyContent(
             DeleteButton(
                 title = R.string.survey_delete,
                 onClick = {
-//                    InfoDialog(
-//                        title = R.string.survey_delete_explanation,
-//                        onClick = { vm.deleteSurvey(surveyId) },
-//                        isOpen = true
-//                    )
+                    vm.setEffect(SurveyEffect.ShowDeleteDialog(surveyId))
                 }
             )
         }

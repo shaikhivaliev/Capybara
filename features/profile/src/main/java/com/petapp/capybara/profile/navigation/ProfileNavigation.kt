@@ -14,7 +14,7 @@ object ProfileNavigation : NavigationDirection {
     )
 }
 
-object ProfilesNavigationScreen : NavigationDirection {
+object ProfilesNavigation : NavigationDirection {
     override val route = "profiles"
 }
 

@@ -260,6 +260,7 @@ fun ProfileContentReadOnly(data: ProfileUI) {
 
 @SuppressLint("CheckResult")
 @Composable
+// todo
 private fun UpdateColor(choose: (Int) -> Unit, dismiss: () -> Unit) {
     val dialogState = rememberMaterialDialogState()
     MaterialDialog(
@@ -281,6 +282,7 @@ private fun UpdateColor(choose: (Int) -> Unit, dismiss: () -> Unit) {
 }
 
 @Composable
+// todo
 fun UpdatePhoto(update: (String) -> Unit) {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         update(it.toString())

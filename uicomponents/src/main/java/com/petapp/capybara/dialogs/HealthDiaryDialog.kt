@@ -31,7 +31,8 @@ fun HealthDiaryDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
-                        add()
+                        // todo
+                        dismiss()
                     }) {
                         Text(text = stringResource(android.R.string.ok))
                     }

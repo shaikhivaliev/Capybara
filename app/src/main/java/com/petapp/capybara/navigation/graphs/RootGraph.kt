@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.petapp.capybara.profile.navigation.ProfilesNavigationScreen
+import com.petapp.capybara.profile.navigation.ProfilesNavigation
 
 @Composable
 fun RootGraph(
@@ -13,9 +13,9 @@ fun RootGraph(
     val context = LocalContext.current
     NavHost(
         navController = navController,
-        startDestination = ProfilesNavigationScreen.route
+        startDestination = ProfilesNavigation.route
     ) {
-        settingsGraph(navController, context)
+        settingsGraph(context)
         profileGraph(navController)
         calendarGraph(navController)
         surveyGraph(navController)

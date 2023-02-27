@@ -40,8 +40,15 @@ data class SurveyInputData(
     val type: MutableState<String> = mutableStateOf("")
 )
 
+sealed class SurveysEffect : SideEffect {
+    object Ready : SurveysEffect()
+    object ShowInfoDialog : SurveysEffect()
+}
+
 sealed class SurveyEffect : SideEffect {
     object Ready : SurveyEffect()
-    object NavigateToType : SurveyEffect()
     object ShowSnackbar : SurveyEffect()
+    data class ShowDeleteDialog(val surveyId: Long) : SurveyEffect()
+
+    object NavigateToType : SurveyEffect()
 }

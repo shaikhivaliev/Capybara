@@ -6,7 +6,9 @@ import com.petapp.capybara.core.data.model.Profile
 import com.petapp.capybara.core.data.repository.ProfileRepository
 import com.petapp.capybara.core.data.repository.SurveysRepository
 import com.petapp.capybara.core.mvi.DataState
+import com.petapp.capybara.core.mvi.SideEffect
 import com.petapp.capybara.survey.filterSurveys
+import com.petapp.capybara.survey.state.SurveysEffect
 import com.petapp.capybara.survey.state.SurveysState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +22,9 @@ class SurveysVm(
 
     private val _surveysState = MutableStateFlow<DataState<SurveysState>>(DataState.READY)
     val surveysState: StateFlow<DataState<SurveysState>> get() = _surveysState.asStateFlow()
+
+    private val _sideEffect = MutableStateFlow<SideEffect>(SurveysEffect.Ready)
+    val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
     fun getProfiles(typeId: Long?) {
         if (typeId == null) {
@@ -80,5 +85,9 @@ class SurveysVm(
                 )
             )
         }
+    }
+
+    fun setEffect(effect: SideEffect) {
+        _sideEffect.value = effect
     }
 }
