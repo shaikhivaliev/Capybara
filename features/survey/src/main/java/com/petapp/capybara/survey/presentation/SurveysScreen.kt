@@ -50,6 +50,14 @@ fun SurveysScreen(
         },
         content = {
             when (val state = surveysState) {
+                DataState.EMPTY -> {
+                    InfoDialog(
+                        title = R.string.survey_incomplete_data,
+                        click = { openProfilesScreen() },
+                        dismiss = { }
+                    )
+                }
+
                 is DataState.DATA -> ShowSurveys(
                     state = state.data,
                     getCheckedSurveys = { vm.getCheckedSurveys(it) },

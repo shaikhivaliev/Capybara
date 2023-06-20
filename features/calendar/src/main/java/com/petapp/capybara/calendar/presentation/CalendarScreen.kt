@@ -27,6 +27,7 @@ fun CalendarScreen(
     openNewSurveyScreen: () -> Unit
 ) {
     val vm: CalendarVm = CalendarComponentHolder.component.provideViewModel()
+    vm.getProfiles()
     val calendarState by vm.calendarState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(

@@ -1,8 +1,10 @@
 package com.petapp.capybara.navigation.graphs
 
+import android.util.Log
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.petapp.capybara.core.navigation.navigateWithPopUp
 import com.petapp.capybara.profile.navigation.ProfileNavigation
 import com.petapp.capybara.profile.navigation.ProfilesNavigation
 import com.petapp.capybara.profile.presentation.ProfileScreen
@@ -34,10 +36,10 @@ fun NavGraphBuilder.profileGraph(
     composable(route = ProfilesNavigation.route) {
         ProfilesScreen(
             openNewProfile = {
-                navController.navigate(ProfileNavigation.route)
+                navController.navigateWithPopUp(ProfileNavigation.route, ProfilesNavigation.route)
             },
             openProfileScreen = {
-                navController.navigate("${ProfileNavigation.route}/${it}")
+                navController.navigateWithPopUp("${ProfileNavigation.route}/${it}", ProfilesNavigation.route)
             }
         )
     }

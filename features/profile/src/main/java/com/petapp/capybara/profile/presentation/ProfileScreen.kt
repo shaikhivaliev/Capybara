@@ -1,8 +1,6 @@
 package com.petapp.capybara.profile.presentation
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -24,6 +21,7 @@ import com.petapp.capybara.OutlinedTextFieldReadOnly
 import com.petapp.capybara.core.mvi.DataState
 import com.petapp.capybara.dialogs.InfoDialog
 import com.petapp.capybara.list.IconTitleItem
+import com.petapp.capybara.model.COLORS
 import com.petapp.capybara.profile.R
 import com.petapp.capybara.profile.di.ProfileComponentHolder
 import com.petapp.capybara.profile.state.ProfileEffect
@@ -60,18 +58,6 @@ fun ProfileScreen(
             )
         },
         content = {
-            when (val state = profileState.value) {
-                is DataState.DATA -> {
-                    ShowProfile(
-                        state = state.data,
-                        input = input,
-                        vm = vm
-                    )
-                }
-                is DataState.ERROR -> ErrorState()
-                else -> { // nothing
-                }
-            }
             when (val effect = sideEffect.value) {
                 ProfileEffect.ShowSnackbar -> {
                     ShowSnackbar(
@@ -89,14 +75,33 @@ fun ProfileScreen(
                         dismiss = { vm.setSideEffect(ProfileEffect.Ready) }
                     )
                 }
-                is ProfileEffect.NavigateToProfile -> openProfilesScreen()
+                is ProfileEffect.NavigateToProfiles -> {
+                    openProfilesScreen()
+                    vm.setSideEffect(ProfileEffect.Ready)
+                }
                 is ProfileEffect.ShowAddingColor -> UpdateColor(
                     choose = { vm.updateColor(it) },
                     dismiss = { vm.setSideEffect(ProfileEffect.Ready) }
                 )
-                is ProfileEffect.ShowAddingPhoto -> UpdatePhoto {
-                    vm.updatePhoto(it)
+                is ProfileEffect.ShowAddingPhoto -> {
+                    ShowSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        errorMessage = "TODO",
+                        dismissed = { vm.setSideEffect(ProfileEffect.Ready) }
+                    )
                 }
+                else -> { // nothing
+                }
+            }
+            when (val state = profileState.value) {
+                is DataState.DATA -> {
+                    ShowProfile(
+                        state = state.data,
+                        input = input,
+                        vm = vm
+                    )
+                }
+                is DataState.ERROR -> ErrorState()
                 else -> { // nothing
                 }
             }
@@ -190,7 +195,7 @@ fun ProfileContent(
                     .padding(start = 16.dp)
                     .fillMaxWidth()
                     .height(200.dp)
-                    .background(Color(input.color.value))
+                    .background(COLORS.find { it.second == input.color.value }?.first ?: neutralN40)
             )
         }
         OutlinedTextFieldOneLine(
@@ -248,7 +253,7 @@ fun ProfileContentReadOnly(data: ProfileUI) {
                     .padding(start = 16.dp)
                     .fillMaxWidth()
                     .height(200.dp)
-                    .background(Color(data.profile.color))
+                    .background(COLORS.find { it.second == data.profile.color }?.first ?: neutralN40)
             )
         }
         OutlinedTextFieldReadOnly(
@@ -260,7 +265,6 @@ fun ProfileContentReadOnly(data: ProfileUI) {
 
 @SuppressLint("CheckResult")
 @Composable
-// todo
 private fun UpdateColor(choose: (Int) -> Unit, dismiss: () -> Unit) {
     val dialogState = rememberMaterialDialogState()
     MaterialDialog(
@@ -274,18 +278,9 @@ private fun UpdateColor(choose: (Int) -> Unit, dismiss: () -> Unit) {
         }
     ) {
         title(stringResource(R.string.profile_choose_color))
-        colorChooser(ProfileVm.COLORS.map { it.first }, initialSelection = 0) { color ->
-            ProfileVm.COLORS.map { if (it.first == color) choose(it.second) }
+        colorChooser(COLORS.map { it.first }, initialSelection = 0) { color ->
+            COLORS.map { if (it.first == color) choose(it.second) }
         }
     }
     dialogState.show()
-}
-
-@Composable
-// todo
-fun UpdatePhoto(update: (String) -> Unit) {
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        update(it.toString())
-    }
-    launcher.launch("image/*")
 }

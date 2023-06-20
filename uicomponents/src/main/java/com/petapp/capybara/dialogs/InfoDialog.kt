@@ -45,6 +45,11 @@ fun InfoDialog(
                 }) {
                     Text(text = stringResource(android.R.string.ok))
                 }
+                TextButton(onClick = {
+                    dismiss()
+                }) {
+                    Text(text = stringResource(android.R.string.cancel))
+                }
             }
         }
     )

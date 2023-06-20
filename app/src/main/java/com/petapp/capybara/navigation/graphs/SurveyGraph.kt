@@ -3,6 +3,7 @@ package com.petapp.capybara.navigation.graphs
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.petapp.capybara.core.navigation.navigateWithPopUp
 import com.petapp.capybara.healthdiary.navigation.HealthDiaryNavigation
 import com.petapp.capybara.healthdiary.presentation.HealthDiaryScreen
 import com.petapp.capybara.profile.navigation.ProfilesNavigation
@@ -68,7 +69,7 @@ fun NavGraphBuilder.surveyGraph(
                 navController.navigate(HealthDiaryNavigation.route)
             },
             openSurveysScreen = {
-                navController.navigate("${SurveysNavigation.route}/${it}")
+                navController.navigateWithPopUp("${SurveysNavigation.route}/${it}", TypesNavigation.route)
             }
         )
     }

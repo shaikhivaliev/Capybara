@@ -21,11 +21,7 @@ class CalendarVm(
     private val _calendarState = MutableStateFlow<DataState<CalendarUI>>(DataState.READY)
     val calendarState: StateFlow<DataState<CalendarUI>> get() = _calendarState.asStateFlow()
 
-    init {
-        getProfiles()
-    }
-
-    private fun getProfiles() {
+     fun getProfiles() {
         viewModelScope.launch {
             runCatching {
                 profileRepository.getProfiles()

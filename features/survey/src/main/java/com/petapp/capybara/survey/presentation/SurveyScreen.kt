@@ -76,7 +76,10 @@ fun SurveyScreen(
                         click = { vm.deleteSurvey(effect.surveyId) },
                         dismiss = { vm.setEffect(SurveyEffect.Ready) }
                     )
-                is SurveyEffect.NavigateToType -> openTypes()
+                is SurveyEffect.NavigateToType -> {
+                    openTypes()
+                    vm.setEffect(SurveyEffect.Ready)
+                }
             }
         }
     )

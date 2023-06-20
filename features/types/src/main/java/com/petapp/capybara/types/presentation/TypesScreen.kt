@@ -36,6 +36,7 @@ fun TypesScreen(
     openSurveysScreen: (Long) -> Unit
 ) {
     val vm: TypesVm = TypesComponentHolder.component.provideTypesVm()
+    vm.getTypes()
     val typeState by vm.collectStore().collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(

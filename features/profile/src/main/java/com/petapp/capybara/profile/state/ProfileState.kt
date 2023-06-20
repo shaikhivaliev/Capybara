@@ -30,7 +30,7 @@ sealed class ProfileEffect : SideEffect {
     object Ready : ProfileEffect()
     data class ShowDeleteDialog(val profileId: Long) : ProfileEffect()
     object ShowAddingColor : ProfileEffect()
-    object NavigateToProfile : ProfileEffect()
+    object NavigateToProfiles : ProfileEffect()
     object ShowSnackbar : ProfileEffect()
     object ShowAddingPhoto : ProfileEffect()
 }

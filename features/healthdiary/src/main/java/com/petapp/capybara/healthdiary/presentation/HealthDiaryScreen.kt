@@ -31,6 +31,7 @@ fun HealthDiaryScreen(
     openProfilesScreen: () -> Unit,
 ) {
     val vm: HealthDiaryVm = HealthDiaryComponentHolder.component.provideViewModel()
+    vm.initProfiles()
     val healthDiaryState = vm.healthDiaryState.collectAsState()
     val sideEffect = vm.sideEffect.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()

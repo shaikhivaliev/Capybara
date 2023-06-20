@@ -30,11 +30,7 @@ class HealthDiaryVm(
     private val _sideEffect = MutableStateFlow<SideEffect>(HealthDiaryEffect.Ready)
     val sideEffect: StateFlow<SideEffect> get() = _sideEffect.asStateFlow()
 
-    init {
-        initProfiles()
-    }
-
-    private fun initProfiles() {
+    fun initProfiles() {
         viewModelScope.launch {
             runCatching {
                 profileRepository.getProfiles()

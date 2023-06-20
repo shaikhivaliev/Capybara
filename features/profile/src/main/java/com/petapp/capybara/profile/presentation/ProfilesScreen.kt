@@ -15,6 +15,7 @@ import com.petapp.capybara.list.BaseLazyColumn
 import com.petapp.capybara.list.IconTitleDescItem
 import com.petapp.capybara.profile.R
 import com.petapp.capybara.profile.di.ProfileComponentHolder
+import com.petapp.capybara.profile.state.ProfilesEffect
 import com.petapp.capybara.profile.toUiData
 import com.petapp.capybara.state.EmptyState
 import com.petapp.capybara.state.ErrorState
@@ -26,7 +27,9 @@ fun ProfilesScreen(
     openProfileScreen: (Long) -> Unit
 ) {
     val vm: ProfilesVm = ProfileComponentHolder.component.provideProfilesVm()
+    vm.getProfiles()
     val profileState = vm.profilesState.collectAsState()
+    val sideEffect = vm.sideEffect.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     Scaffold(
         scaffoldState = scaffoldState,
@@ -40,12 +43,18 @@ fun ProfilesScreen(
             }
         },
         content = {
+            when (val effect = sideEffect.value) {
+                is ProfilesEffect.NavigateToProfile -> {
+                    openProfileScreen(effect.profileId)
+                    vm.setSideEffect(ProfilesEffect.Ready)
+                }
+            }
             when (val state = profileState.value) {
                 DataState.EMPTY -> EmptyState(stringResource(R.string.profile_mock))
                 is DataState.ERROR -> ErrorState()
                 is DataState.DATA -> ShowProfiles(
                     state = state.data,
-                    openProfileScreen = { openProfileScreen(it.id) })
+                    openProfileScreen = { vm.setSideEffect(ProfilesEffect.NavigateToProfile(it.id)) })
                 else -> { // nothing
                 }
             }

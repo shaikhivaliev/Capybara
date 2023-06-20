@@ -14,12 +14,11 @@ class TypesVm(
 
     init {
         store.launch(viewModelScope)
-        getTypes()
     }
 
     fun collectStore() = store.state
 
-    private fun getTypes() {
+    fun getTypes() {
         viewModelScope.launch {
             runCatching {
                 typesRepository.getTypes()

@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import com.petapp.capybara.model.COLORS
 import com.petapp.capybara.model.Chip
 import com.petapp.capybara.styles.mainBlack
+import com.petapp.capybara.styles.neutralN40
 import com.petapp.capybara.uicomponents.R
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -24,7 +26,7 @@ fun ChipItem(item: Chip) {
             }
         },
         colors = ChipDefaults.filterChipColors(
-            backgroundColor = Color(item.color),
+            backgroundColor = COLORS.find { it.second == item.color }?.first ?: neutralN40,
             contentColor = mainBlack
         ),
         onClick = {
