@@ -31,7 +31,6 @@ fun HealthDiaryDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
-                        // todo
                         dismiss()
                     }) {
                         Text(text = stringResource(android.R.string.ok))
@@ -41,32 +40,3 @@ fun HealthDiaryDialog(
         }
     }
 }
-
-// todo
-//private fun healthDiarySurveyBuilder(
-//    binding: DialogHealthDiarySurveyBinding,
-//    item: ItemHealthDiary,
-//    profileId: Long
-//) {
-//    with(binding) {
-//        val surveyValue = if (item.type == HealthDiaryType.BLOOD_PRESSURE) {
-//            StringBuilder()
-//                .append(bloodPressureFirst.text.toString())
-//                .append(getString(R.string.health_diary_slash))
-//                .append(bloodPressureSecond.text.toString())
-//                .toString()
-//        } else {
-//            surveyValue.text.toString()
-//        }
-//
-//        return SurveyHealthDiary(
-//            id = 0L,
-//            type = item.type,
-//            profileId = profileId,
-//            date = surveyDate.text.toString(),
-//            time = surveyTime.text.toString(),
-//            surveyValue = surveyValue,
-//            unitOfMeasure = unitOfMeasure.text.toString()
-//        )
-//    }
-//}

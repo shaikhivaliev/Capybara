@@ -20,7 +20,7 @@ fun MainScreen() {
         val navController = rememberNavController()
         Scaffold(
             backgroundColor = Color.White,
-            bottomBar = { BottomBar(navController = navController, tabs) }
+            bottomBar = { BottomBar(navController = navController, tabs = tabs) }
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 RootGraph(navController = navController)

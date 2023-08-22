@@ -3,5 +3,4 @@
     <external-path
         name="my_images"
         path="Android/data/com.petapp.capybara/files/Pictures" />
-
 </paths>

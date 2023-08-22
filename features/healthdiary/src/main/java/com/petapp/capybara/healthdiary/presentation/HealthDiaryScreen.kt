@@ -58,7 +58,6 @@ fun HealthDiaryScreen(
                     HealthDiaryDialog(
                         title = effect.title,
                         add = {
-                            // todo
                             vm.createHealthDiarySurvey(null)
                         },
                         dismiss = { vm.setEffect(HealthDiaryEffect.Ready) }

@@ -30,9 +30,7 @@ class AuthActivity : AppCompatActivity() {
         when {
             result.resultCode == Activity.RESULT_OK -> openMainScreen()
             result.data == null -> finish()
-            else -> {
-                // nothing
-            }
+            else -> Log.d(TAG, "some error")
         }
     }
 
@@ -47,7 +45,7 @@ class AuthActivity : AppCompatActivity() {
                 when (state) {
                     AuthHelper.AuthState.AUTHENTICATED -> openMainScreen()
                     AuthHelper.AuthState.UNAUTHENTICATED -> signIn()
-                    else -> Log.d(TAG, "Navigation from Main activity is error")
+                    else -> Log.d(TAG, "some error")
                 }
             }
         }

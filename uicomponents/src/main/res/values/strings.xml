@@ -1,70 +1,70 @@
 <resources>
     <!-- common-->
     <string name="app_name">Capybara</string>
-    <string name="name">Имя</string>
-    <string name="surveys_amount">Исследований: %1$s</string>
+    <string name="name">Name</string>
+    <string name="surveys_amount">Surveys: %1$s</string>
     <string name="dev_email">capybaraaplication@gmail.com</string>
     <string name="email_subject">Capybara app feedback</string>
 
     <!-- auth-->
-    <string name="auth_phone">Войти по номеру телефона</string>
-    <string name="auth_mail">Войти по адресу электронной почты</string>
+    <string name="auth_phone">Sign-in with phone number</string>
+    <string name="auth_mail">Sign-in with email</string>
 
     <!-- tabs-->
-    <string name="tab_list">Дневник</string>
-    <string name="tab_calendar">Календарь</string>
-    <string name="tab_new_profile">Профили</string>
-    <string name="tab_settings">Настройки</string>
+    <string name="tab_list">Surveys</string>
+    <string name="tab_calendar">Calendar</string>
+    <string name="tab_new_profile">Profiles</string>
+    <string name="tab_settings">Setting</string>
 
     <!-- profile-->
-    <string name="profile_delete_explanation">Вы действительно хотите удалить профиль?\nБудут потеряны все исследования связанные с этим профилем</string>
-    <string name="profile_mock">Пока не создано ни одного\nпрофиля</string>
-    <string name="profile_caps">Профиль</string>
-    <string name="profile_choose_color">Изменить цвет</string>
-    <string name="profile_delete">Удалить профиль</string>
-    <string name="profile_label">Метки…</string>
-    <string name="profile_photo">Фото…</string>
+    <string name="profile_delete_explanation">Do you really want to delete the profile?\nAll surveys associated with this profile will be lost</string>
+    <string name="profile_mock">No profile has been created yet</string>
+    <string name="profile_caps">Profile</string>
+    <string name="profile_choose_color">Change color</string>
+    <string name="profile_delete">Delete profile</string>
+    <string name="profile_label">Tags…</string>
+    <string name="profile_photo">Photo…</string>
 
     <!-- survey-->
-    <string name="survey_delete_explanation">Вы действительно хотите удалить исследование?</string>
-    <string name="survey_incomplete_data">Создайте хотя бы один профиль, чтобы затем создать запись исследования</string>
-    <string name="survey_delete">Удалить исследование</string>
-    <string name="survey_change_survey_type">Тип исследования</string>
-    <string name="survey_mock">У вас пока нет записей</string>
-    <string name="survey">Исследование</string>
+    <string name="survey_delete_explanation">Are you sure you want to delete the survey?</string>
+    <string name="survey_incomplete_data">Create at least one profile before proceeding to create a survey entry</string>
+    <string name="survey_delete">Delete the survey</string>
+    <string name="survey_change_survey_type">Type of survey</string>
+    <string name="survey_mock">You do not have any entries yet</string>
+    <string name="survey">Survey</string>
 
     <!-- settings-->
-    <string name="settings_feedback">Обратная связь</string>
-    <string name="settings_rules">Политика конфиденциальности</string>
-    <string name="settings_exit">Выход</string>
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_rules">Privacy Policy</string>
+    <string name="settings_exit">Exit</string>
     <string name="settings_capybara_title">Capybara app</string>
-    <string name="settings_app_version">Версия %1$s</string>
-    <string name="settings_rate_app">Оцените приложение</string>
-    <string name="settings_share_link">Поделиться</string>
+    <string name="settings_app_version">Version %1$s</string>
+    <string name="settings_rate_app">Rate the app</string>
+    <string name="settings_share_link">Share</string>
 
     <!-- type-->
-    <string name="type_default_vaccinations">Прививки</string>
-    <string name="type_default_analyzes">Анализы</string>
-    <string name="type_default_recipes">Рецепты</string>
-    <string name="type_default_surveys">Исследования</string>
+    <string name="type_default_vaccinations">Vaccinations</string>
+    <string name="type_default_analyzes">Analyzes</string>
+    <string name="type_default_recipes">Prescription</string>
+    <string name="type_default_surveys">Surveys</string>
 
     <!-- health diary-->
-    <string name="health_diary_health_diary">Дневник здоровья</string>
-    <string name="health_diary_empty_survey">У вас пока нет записей</string>
-    <string name="health_diary_survey_date">Дата</string>
-    <string name="health_diary_survey_blood_pressure">Значение давления</string>
-    <string name="health_diary_survey_pulse">Значение пульса</string>
-    <string name="health_diary_survey_blood_glucose">Уровень глюкозы</string>
-    <string name="health_diary_survey_height">Значение роста</string>
-    <string name="health_diary_survey_weight">Значение веса</string>
-    <string name="health_diary_blood_pressure_unit">мм рт. ст.</string>
-    <string name="health_diary_pulse_unit">уд./мин.</string>
-    <string name="health_diary_blood_glucose_unit">ммоль/л</string>
-    <string name="health_diary_height_unit">см</string>
-    <string name="health_diary_weight_unit">кг</string>
-    <string name="health_diary_delete_survey">Вы действительно хотите удалить исследование</string>
+    <string name="health_diary_health_diary">Health diary</string>
+    <string name="health_diary_empty_survey">You do not have any entries yet</string>
+    <string name="health_diary_survey_date">Date</string>
+    <string name="health_diary_survey_blood_pressure">Blood pressure</string>
+    <string name="health_diary_survey_pulse">Pulse</string>
+    <string name="health_diary_survey_blood_glucose">Blood glucose</string>
+    <string name="health_diary_survey_height">Height</string>
+    <string name="health_diary_survey_weight">Weight</string>
+    <string name="health_diary_blood_pressure_unit">mm Hg</string>
+    <string name="health_diary_pulse_unit">bpm</string>
+    <string name="health_diary_blood_glucose_unit">mmol/L</string>
+    <string name="health_diary_height_unit">cm</string>
+    <string name="health_diary_weight_unit">kg</string>
+    <string name="health_diary_delete_survey">Are you sure you want to delete the survey?</string>
 
     <!-- errors-->
-    <string name="error_empty_data">Заполнены не все поля</string>
-    <string name="error_explanation">Что-то пошло не так</string>
+    <string name="error_empty_data">Not all fields are filled in</string>
+    <string name="error_explanation">Something went wrong</string>
 </resources>

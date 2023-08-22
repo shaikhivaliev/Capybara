@@ -43,7 +43,6 @@ fun HealthDiaryHeader(
                 contentDescription = null
             )
         }
-        // todo icon animation
         Icon(
             modifier = Modifier
                 .clickable { expand() },
